@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens extracted from nbnzia.com
+   (Webflow build: nbnzia-main.webflow.shared.72101dd3d.css)
+   --------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --background: #000000;
+  --surface: #0a0a0a;
+  --surface-raised: #141414;
+
+  /* Text */
+  --foreground: #ffffff;
+  --text-secondary: #b1b1b1;
+  --text-tinted: #858585;
+
+  /* Borders */
+  --border-main: #1c1c1c;
+  --border-secondary: #2d2d2d;
+
+  /* Accent */
+  --accent: #1fdb93;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--text-secondary);
+  --color-tinted: var(--text-tinted);
+  --color-line: var(--border-main);
+  --color-line-2: var(--border-secondary);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-grotesk);
+
+  --radius-card: 1rem;
+  --radius-xl2: 2rem;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-grotesk), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Type scale mirroring the source's --_typography tokens */
+.h1 { font-weight: 700; line-height: 1;       letter-spacing: -0.02em; }
+.h2 { font-weight: 700; line-height: 1.1;     letter-spacing: -0.02em; }
+.h3 { font-weight: 500; line-height: 1.33333; letter-spacing: -0.01em; }
+.eyebrow {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Marquee — source uses a GSAP horizontal loop; CSS keyframes here */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee-x 32s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+/* ---------------------------------------------------------------------------
+   Intro preloader gate.
+
+   The overlay is hidden by default and only shown when the pre-paint script in
+   layout.tsx stamps `data-intro="play"` on <html>. Defaulting to hidden (rather
+   than shown-then-hidden) is deliberate: it means a JS failure, a repeat visit
+   or `prefers-reduced-motion` can never leave a full-screen overlay covering
+   the page with no timeline running to dismiss it.
+   ------------------------------------------------------------------------ */
+.intro-overlay {
+  display: none;
+}
+:root[data-intro="play"] .intro-overlay {
+  display: flex;
+}
+/* While the intro runs, the page underneath must not scroll. Applied as a
+   CLASS, not by changing data-intro: the overlay's own `display:flex` rule is
+   keyed to data-intro="play", so mutating that attribute would hide the
+   preloader the moment it started. */
+:root.intro-lock,
+:root.intro-lock body {
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Load-in reveal for the hero headline and the header.
+
+   Driven by a class on <html> plus plain CSS transitions, NOT React state.
+   Flipping state in the page component re-rendered the whole tree at exactly
+   the frame the reveal started, which cost two dropped frames (measured: 69ms
+   and 63ms) and made the entrance visibly stutter on arrival. A class toggle
+   costs nothing and the transitions stay on the compositor.
+
+   Per-element stagger comes from an inline `--intro-delay`.
+   ------------------------------------------------------------------------ */
+/* One place to pace the whole load-in. The eases are the project's existing
+   `cubic-bezier(0.22, 1, 0.36, 1)` (same curve as the nav hide/show), which is
+   softer than the expo-out used before - that one covered most of its distance
+   in the first third and read as fast no matter how long the duration was. */
+:root {
+  --intro-rise-duration: 1.9s;
+  --intro-fade-duration: 1.35s;
+  --intro-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-rise {
+  transform: translateY(115%);
+}
+.intro-fade {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+:root.intro-done .intro-rise {
+  transform: translateY(0);
+  transition: transform var(--intro-rise-duration) var(--intro-ease);
+  transition-delay: var(--intro-delay, 0s);
+}
+:root.intro-done .intro-fade {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--intro-fade-duration) var(--intro-ease),
+    transform var(--intro-fade-duration) var(--intro-ease);
+  transition-delay: var(--intro-delay, 0s);
+}
+
+/* Reduced motion: final state immediately, and no transition to get there.
+   This is unconditional - it does not wait on `.intro-done` - so the content
+   is never left hidden if the intro never runs. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-rise,
+  .intro-fade,
+  :root.intro-done .intro-rise,
+  :root.intro-done .intro-fade {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Curved divider text size.
+
+   The SVG has an intrinsic viewBox width of 1516 and is capped by `max-w-full`,
+   so BELOW 1516px the whole graphic scales down in proportion to the viewport.
+   A `vw` font size therefore shrinks TWICE over that range - once because the
+   viewport is narrower, again because the graphic is scaled down - i.e.
+   quadratically. At 390px a 9vw declaration rendered at about nine effective
+   pixels; an earlier fix raised it to 78vw, which corrected the size but kept
+   the quadratic curve, and overshot the other way: the text ended up 3.35x
+   longer than the path it runs on and only ~8 characters were on screen at
+   once, so a 54-character sentence could never be read.
+
+   A FIXED px below 1516 makes the effective size scale linearly with the
+   viewport, which keeps the number of visible characters constant across every
+   width. 136px is 9vw evaluated at exactly 1516, so the two rules meet
+   continuously at the breakpoint with no jump.
+   ------------------------------------------------------------------------ */
+.curved-textpath-size {
+  font-size: 136px;
+}
+@media (min-width: 1516px) {
+  .curved-textpath-size {
+    font-size: 9vw;
+  }
+}

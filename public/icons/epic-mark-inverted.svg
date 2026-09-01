@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="epic. — Epic Digital Hub (inverted)">
+  <title>epic. — Epic Digital Hub (inverted)</title>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;display=swap');
+      .epic-word {
+        font-family: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-weight: 800;
+        font-size: 160px;
+        letter-spacing: -0.055em;
+        fill: #F2EFE8;
+        font-variation-settings: 'opsz' 96, 'wdth' 100;
+      }
+    </style>
+  </defs>
+  <text x="0" y="128" class="epic-word">epic</text>
+  <circle cx="440" cy="124" r="22" fill="#FF3A20"/>
+</svg>

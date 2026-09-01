@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 591 591" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Artboard1" transform="matrix(1,0,0,0.492126,0,0)">
+        <rect x="0" y="0" width="590.551" height="1200" style="fill:none;"/>
+        <g transform="matrix(0.987496,0,0,0.645507,-159.049353,209.598772)">
+            <g transform="matrix(1,0,0,2.032,-2.061967,0)">
+                <path d="M216.798,413.04L287.071,412.962L389.982,336.605L390.11,320.52L352.702,320.084L285.039,370.506L243.197,338.828L390.484,228.986L389.746,176.037L354.883,176.784L354.817,210.117L184.761,337.763L183.718,339.263L250.14,387.232L216.798,413.04Z" style="stroke:black;stroke-width:1.2px;"/>
+            </g>
+            <g transform="matrix(1,0,0,2.032,0,0)">
+                <path d="M180.818,300.357L321.956,194.962L320.907,176.037L287.101,176.037L180.304,256.289L180.818,300.357Z" style="stroke:black;stroke-width:1.2px;"/>
+            </g>
+        </g>
+        <g transform="matrix(2.149444,0,0,5.545585,-375.03222,-484.148664)">
+            <g transform="matrix(50,0,0,50,441.068849,208.922939)">
+            </g>
+            <text x="280.791px" y="208.923px" style="font-family:'HS_LunaObscura';font-stretch:expanded;font-size:50px;">EPIC</text>
+        </g>
+        <g transform="matrix(2.329736,0,0,2.790687,-402.857556,161.485935)">
+            <g transform="matrix(11.540894,0,0,11.540894,409.737477,208.922939)">
+            </g>
+            <text x="280.791px" y="208.923px" style="font-family:'PlusJakartaSans-Bold', 'Plus Jakarta Sans';font-weight:700;font-size:11.541px;">D<tspan x="295.102px 304.092px 319.188px 328.178px 339.627px 353.614px 365.651px 373.476px 387.706px 401.763px " y="208.923px 208.923px 208.923px 208.923px 208.923px 208.923px 208.923px 208.923px 208.923px 208.923px ">IGITAL HUB</tspan></text>
+        </g>
+    </g>
+</svg>
