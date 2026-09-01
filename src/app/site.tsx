@@ -16,9 +16,19 @@
    backgrounds intentionally left neutral.
    ========================================================================= */
 
-import { Fragment, useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
+import {
+  Fragment,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useSyncExternalStore,
+} from "react";
 import Image from "next/image";
 import { LogoGlyph, LogoLockup, LogoMark, LogoWordmark } from "./logo";
+import { COPY, LOCALES, type Copy, type Locale, localeHref } from "./content";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -44,166 +54,38 @@ if (typeof window !== "undefined") {
    DATA
    ========================================================================= */
 
-const NAV_LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Work", href: "#work" },
-  { label: "Clients", href: "#clients" },
-  { label: "About", href: "#about" },
+/* Copy lives in content.ts, keyed by locale. What stays here is the data that
+   is NOT language-dependent - colours, images and ordering - merged with the
+   copy by index at render time. Keeping them separate means a translation can
+   never accidentally change a brand colour or drop an image. */
+
+const WORK_VISUALS = [
+  { bg: "#1FDB93", fg: "#1F1F1F", img: "/images/work-auto.webp" },
+  { bg: "#1F1F1F", fg: "#F5F2F2", img: "/images/work-dental.webp" },
+  { bg: "#D2F9EA", fg: "#1F1F1F", img: "/images/work-agro.webp" },
+  { bg: "#DB641F", fg: "#1F1F1F", img: "/images/work-hotel.webp" },
+  { bg: "#E2B736", fg: "#1F1F1F", img: "/images/work-events.webp" },
+  { bg: "#21976A", fg: "#F5F2F2", img: "/images/work-industrial.webp" },
 ];
 
-const MARQUEE_STATS = [
-  "6500+ hours worked inside client systems",
-  "40+ strategies & campaign plans written",
-  "1200+ pieces of content shipped",
-  "150+ videos filmed & edited",
-  "500+ graphics & designs delivered",
-  "7 verticals operated",
+const SERVICE_IMAGES = [
+  "/images/about-strategy.webp",
+  "/images/about-design.webp",
+  "/images/hero-laptop.webp",
+  "/images/exclusivity-door.webp",
+  "/images/about-production.webp",
 ];
 
-const SERVICES = [
-  {
-    num: "01",
-    title: "Marketing strategy",
-    body: "Positioning, offer, channels, budget. The plan the rest of the system executes, written down and defended with data.",
-    img: "/images/about-strategy.webp",
-  },
-  {
-    num: "02",
-    title: "Brand & design",
-    body: "Identity, guidelines, and every asset your channels need to look like one brand, from business card to billboard.",
-    img: "/images/about-design.webp",
-  },
-  {
-    num: "03",
-    title: "Premium websites",
-    body: "Cinematic, parallax, interactive. Sites that position you before the first call, without sacrificing speed or SEO.",
-    img: "/images/hero-laptop.webp",
-  },
-  {
-    num: "04",
-    title: "Paid ads",
-    body: "Meta and Google campaigns, run weekly, cut when they stop earning their budget. Search term mining, negative keywords, honest reporting.",
-    img: "/images/exclusivity-door.webp",
-  },
-  {
-    num: "05",
-    title: "Photo-video",
-    body: "Shoots at your location, edited for ads, social and web. Your business on camera, not stock footage.",
-    img: "/images/about-production.webp",
-  },
-];
+/* Copy is read through context rather than threaded as props: the sections are
+   separate components several levels down, and prop-drilling one dictionary
+   through all of them would touch every signature for no benefit. */
+const CopyContext = createContext<Copy>(COPY.ro);
+const LocaleContext = createContext<Locale>("ro");
+const useCopy = () => useContext(CopyContext);
+const useLocale = () => useContext(LocaleContext);
 
-const WORK = [
-  {
-    n: "01",
-    name: "Automotive retail",
-    tag: "Auto / Oradea",
-    bg: "#1FDB93",
-    fg: "#1F1F1F",
-    body: "Full system: launch campaigns, reels, showroom content, paid social.",
-    img: "/images/work-auto.webp",
-  },
-  {
-    n: "02",
-    name: "Dental clinics",
-    tag: "Medical / Oradea",
-    bg: "#1F1F1F",
-    fg: "#F5F2F2",
-    body: "Content system, brand rules, patient-facing campaigns for two clinics.",
-    img: "/images/work-dental.webp",
-  },
-  {
-    n: "03",
-    name: "Agro machinery",
-    tag: "Agro / Bihor",
-    bg: "#D2F9EA",
-    fg: "#1F1F1F",
-    body: "E-commerce catalog, Google + Meta ads, dealer positioning.",
-    img: "/images/work-agro.webp",
-  },
-  {
-    n: "04",
-    name: "Hotels & hospitality",
-    tag: "Hospitality / Oradea",
-    bg: "#DB641F",
-    fg: "#1F1F1F",
-    body: "Brand reels, booking campaigns, B2B partner outreach.",
-    img: "/images/work-hotel.webp",
-  },
-  {
-    n: "05",
-    name: "Events & nightlife",
-    tag: "Events / Bihor",
-    bg: "#E2B736",
-    fg: "#1F1F1F",
-    body: "Event identities, posters, video teasers, full-season promotion.",
-    img: "/images/work-events.webp",
-  },
-  {
-    n: "06",
-    name: "Construction systems",
-    tag: "Industrial / RO",
-    bg: "#21976A",
-    fg: "#F5F2F2",
-    body: "Technical positioning, presentation site, field video production.",
-    img: "/images/work-industrial.webp",
-  },
-];
-
-const PROCESS = [
-  {
-    step: "STEP 01",
-    title: "We check your category",
-    body: "City + niche. If it is taken, we tell you straight away. If there is any overlap with an existing client, the answer is no, regardless of budget.",
-    items: ["City + niche", "Active engagements checked", "Straight answer in 2 working days"],
-  },
-  {
-    step: "STEP 02",
-    title: "You get a system preview",
-    body: "A short, concrete outline of what the Epic system would look like for your brand: channels, priorities, first 90 days.",
-    items: ["Diagnostic & positioning", "Strategy & customer journey", "Channels and priorities", "First 90 days"],
-  },
-  {
-    step: "STEP 03",
-    title: "You decide",
-    body: "If it makes sense for both sides, we start. If not, you keep the preview. No chasing, no pressure calls.",
-    items: ["No chasing", "No pressure calls", "You keep the preview"],
-  },
-];
-
-/* Client quotes — `testimonials` in the source dictionary. */
-const TESTIMONIAL_FEATURED = {
-  quote:
-    "Before, I had three different people for posts, ads and the website. Now it's one team that knows everything going on, and things move much faster.",
-  name: "DentalNet, Oradea",
-};
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "They filmed our cars in the showroom and made ads that bring people in for a test drive, not just likes.",
-    name: "AutoSiena, Oradea",
-  },
-  {
-    quote:
-      "We had campaigns burning money for nothing. They looked at the numbers seriously and cut what wasn't working. Now I know where every leu goes.",
-    name: "Agro Salso, Bihor",
-  },
-  {
-    quote:
-      "The reels they made for the hotel look like the big places abroad. Guests message us saying that's where they found us.",
-    name: "Hotel Maxim, Oradea",
-  },
-  {
-    quote:
-      "They took complicated technical material and made it clear even for a client outside the field.",
-    name: "ThermX",
-  },
-  {
-    quote: "The event posters and clips gave us a look nobody around here has.",
-    name: "HarmonyGarden",
-  },
-];
+/** Two-digit index label, "01".."06". */
+const nn = (i: number) => String(i + 1).padStart(2, "0");
 
 const CURVE_PATH =
   "M -700 252 C -470 200 -230 145 0 92.0674 C 528.5 -28.9327 977.5 -32.4328 1516.5 92.0674 C 1745 145 1980 200 2216 252";
@@ -320,6 +202,54 @@ function TrickButton({
   );
 }
 
+/* Language toggle.
+
+   Deliberately drawn in `currentColor`, not the emerald accent. It sits inside
+   the header, which is on `mix-blend-mode: difference` — under that blend
+   #1FDB93 over the cream sections resolves to a magenta (214, 23, 95), which
+   is not in the palette at all. White-on-difference is the header's own
+   treatment, so the toggle reads as part of it rather than as a bolted-on
+   widget, and the active language is marked with a rule instead of a colour.
+
+   Real <a> elements, not a JS switcher: each locale is its own URL, so the
+   toggle is also how a crawler follows the alternate. `hrefLang` and `lang`
+   tell it (and a screen reader) what it is pointing at. */
+function LocaleToggle({ className = "" }: { className?: string }) {
+  const locale = useLocale();
+  const copy = useCopy();
+  return (
+    <div
+      className={`flex items-center gap-1.5 tracking-[0.02em] uppercase ${className || "text-xs text-white"}`}
+    >
+      {LOCALES.map((l, i) => (
+        <Fragment key={l}>
+          {i > 0 && (
+            <span aria-hidden className="opacity-30">
+              /
+            </span>
+          )}
+          {l === locale ? (
+            <span aria-current="true" className="relative">
+              {l}
+              <span aria-hidden className="absolute -bottom-1 left-0 h-px w-full bg-current" />
+            </span>
+          ) : (
+            <a
+              href={localeHref(l)}
+              hrefLang={l}
+              lang={l}
+              title={copy.switchTitle}
+              className="opacity-45 transition-opacity duration-300 hover:opacity-100"
+            >
+              {l}
+            </a>
+          )}
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
 function NavLink({ label, href }: { label: string; href: string }) {
   return (
     <a
@@ -393,6 +323,7 @@ function CurvedDivider({
   reduceMotion: boolean;
   idSuffix: string;
 }) {
+  const copy = useCopy();
   const pinRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -489,7 +420,7 @@ function CurvedDivider({
         className="flex h-screen flex-col items-center justify-center overflow-hidden"
       >
         <div className="absolute top-16 w-full px-4">
-          <EyebrowMarquee label="Process" />
+          <EyebrowMarquee label={copy.eyebrow.process} />
         </div>
         <svg
           width="1516"
@@ -860,6 +791,7 @@ function Parallax({
    ========================================================================= */
 
 function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
+  const copy = useCopy();
   // Reveals use motion's `whileInView` (IntersectionObserver) rather than a
   // GSAP ScrollTrigger. This section sits after the sticky work stack and two
   // pinned dividers, so ScrollTrigger's cached start positions for it are
@@ -882,18 +814,18 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <section id="clients" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
       <div className="mx-auto max-w-[1440px] px-4">
-        <EyebrowMarquee label="Clients" />
+        <EyebrowMarquee label={copy.eyebrow.clients} />
 
         <div className="mt-16 grid gap-x-1 gap-y-16 md:grid-cols-8">
           <p className="text-[11px] tracking-[0.02em] text-white/50 uppercase md:col-span-3">
-            In their words.
+            {copy.testimonials.title}
           </p>
 
           {/* Featured quote — same wave reveal as the About statement. */}
           <div className="text-[26px] leading-[1.3333] font-medium tracking-[-0.01em] md:col-span-5 md:col-start-4 md:text-[36px]">
             <GradientWaveText
               reduceMotion={reduceMotion}
-              paragraphs={[`“${TESTIMONIAL_FEATURED.quote}”`]}
+              paragraphs={[`“${copy.testimonials.featured.quote}”`]}
               dark
             />
             {/* lands after the wave has swept the quote */}
@@ -901,13 +833,13 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
               {...reveal(3)}
               className="mt-6 text-sm tracking-[0.15em] text-[#1FDB93] uppercase"
             >
-              {TESTIMONIAL_FEATURED.name}
+              {copy.testimonials.featured.name}
             </motion.p>
           </div>
         </div>
 
         <ul className="mt-24 border-t border-white/15">
-          {TESTIMONIALS.map((t, i) => (
+          {copy.testimonials.items.map((t, i) => (
             <motion.li
               key={t.name}
               {...reveal(i)}
@@ -958,6 +890,7 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
    ========================================================================= */
 
 function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
+  const copy = useCopy();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -1125,14 +1058,16 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
 
   return (
     <section id="work" className="relative">
-      {WORK.map((w, i) => (
+      {copy.work.items.map((w, i) => {
+        const v = WORK_VISUALS[i];
+        return (
         <div
-          key={w.n}
+          key={w.name}
           /* Source `.case-content-wrapper`: #F5F2F3 (what shows through as the
              card recedes) and `perspective: 4762.5px` on a 1905px viewport —
              i.e. 250vw. Overflow stays visible so the tilted card isn't
              clipped. */
-          data-nav-bg={w.fg === "#1F1F1F" ? "light" : "dark"}
+          data-nav-bg={v.fg === "#1F1F1F" ? "light" : "dark"}
           className="sticky top-0 h-[100svh] w-full bg-[#F5F2F3] [perspective:250vw]"
         >
           <div
@@ -1147,7 +1082,7 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
                the whole page is ~1170x2532px of compositor memory each at
                DPR 3, which is what made mobile stutter. */
             className="grid h-full w-full grid-cols-1 items-center gap-10 px-4 py-16 [transform-origin:center_10%] [transform-style:preserve-3d] md:grid-cols-2 md:px-10"
-            style={{ backgroundColor: w.bg, color: w.fg }}
+            style={{ backgroundColor: v.bg, color: v.fg }}
           >
             <div className="flex h-full flex-col justify-between py-8">
               <div className="flex items-start justify-between">
@@ -1158,7 +1093,7 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
                   {w.name}
                 </h3>
                 <span data-reveal-text className="text-2xl md:text-[32px]">
-                  ({w.n})
+                  ({nn(i)})
                 </span>
               </div>
               <p
@@ -1180,7 +1115,7 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
                 data-reveal-text
                 className="group inline-flex w-fit items-center gap-2 text-sm tracking-[0.05em] uppercase"
               >
-                Visit website
+                {copy.work.visit}
                 <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
                   ↗
                 </span>
@@ -1196,7 +1131,7 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
                   and parallax cannot coexist. The cards already have the 3D
                   recede, which is the depth cue for this section. */}
               <Image
-                src={w.img}
+                src={v.img}
                 alt={`${w.name} project preview`}
                 fill
                 sizes="(min-width: 768px) 45vw, 100vw"
@@ -1205,7 +1140,8 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
             </div>
           </div>
         </div>
-      ))}
+        );
+      })}
       {/* Extra scroll room so the last card can recede and fade out IN PLACE
           against the cream background, instead of just scrolling away — the
           source keeps animating it well past the end of `.section-case`. */}
@@ -1219,6 +1155,7 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
    ========================================================================= */
 
 function Services() {
+  const copy = useCopy();
   const [active, setActive] = useState(0);
 
   // Source geometry, measured live on nbnzia.com:
@@ -1236,13 +1173,13 @@ function Services() {
   return (
     <section id="services" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
       <div className="mx-auto max-w-[1440px] px-4">
-        <EyebrowMarquee label="What we do" />
+        <EyebrowMarquee label={copy.eyebrow.whatWeDo} />
         <div className="mt-16 border-t border-white/15">
-          {SERVICES.map((s, i) => {
+          {copy.services.map((s, i) => {
             const isActive = active === i;
             return (
               <div
-                key={s.num}
+                key={s.title}
                 onMouseEnter={() => setActive(i)}
                 onClick={() => setActive(i)}
                 className="relative flex cursor-pointer flex-col justify-center overflow-hidden border-b border-white/15 transition-[min-height] duration-500 ease-in-out"
@@ -1253,7 +1190,7 @@ function Services() {
                 style={{ minHeight: isActive ? ROW_OPEN : ROW_CLOSED }}
               >
                 <div className="flex items-baseline gap-6">
-                  <span className="w-14 shrink-0 text-sm text-white/50">[ {s.num} ]</span>
+                  <span className="w-14 shrink-0 text-sm text-white/50">[ {nn(i)} ]</span>
                   <h3 className="text-[22px] font-medium tracking-[-0.02em] md:text-[36px]">
                     {s.title}
                   </h3>
@@ -1290,7 +1227,7 @@ function Services() {
                   style={{ width: MEDIA_W, height: MEDIA_H }}
                 >
                   <Image
-                    src={s.img}
+                    src={SERVICE_IMAGES[i]}
                     alt=""
                     width={MEDIA_W}
                     height={MEDIA_H}
@@ -1335,6 +1272,7 @@ const restPose = (i: number) => {
 };
 
 function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
+  const copy = useCopy();
   const rootRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const lastPoint = useRef<Record<number, { x: number; y: number; t: number }>>({});
@@ -1438,9 +1376,9 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
       className="relative mx-auto max-w-[1200px] px-4 py-16 md:py-32"
     >
     <div ref={rootRef} className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-10 md:h-[720px] md:flex-row md:justify-center md:gap-0">
-      {PROCESS.map((p, i) => (
+      {copy.process.items.map((p, i) => (
         <div
-          key={p.step}
+          key={p.title}
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
@@ -1453,7 +1391,7 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
         >
           <div>
             <span className="text-xs font-medium tracking-[0.05em] text-[#1FDB93]">
-              {p.step}
+              {`${copy.process.stepLabel} ${nn(i)}`}
             </span>
             <h3 className="mt-2 text-[36px] font-medium tracking-[-0.01em]">{p.title}</h3>
             <p className="mt-6 text-sm leading-relaxed text-[#1F1F1F]/80">{p.body}</p>
@@ -1484,6 +1422,7 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
    ========================================================================= */
 
 function ContactSpotlightEyebrow() {
+  const copy = useCopy();
   const wrapRef = useRef<HTMLDivElement>(null);
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = wrapRef.current?.getBoundingClientRect();
@@ -1495,7 +1434,7 @@ function ContactSpotlightEyebrow() {
   };
   return (
     <div ref={wrapRef} onMouseMove={onMove} className="relative">
-      <EyebrowMarquee label="Let's talk" />
+      <EyebrowMarquee label={copy.eyebrow.letsTalk} />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 text-[#1FDB93]"
@@ -1506,7 +1445,7 @@ function ContactSpotlightEyebrow() {
             "radial-gradient(circle at var(--xpercent,50%) var(--ypercent,50%), #000 20%, transparent 25%)",
         }}
       >
-        <EyebrowMarquee label="Let's talk" />
+        <EyebrowMarquee label={copy.eyebrow.letsTalk} />
       </div>
     </div>
   );
@@ -1707,7 +1646,8 @@ function Preloader({ onDone }: { onDone: () => void }) {
    PAGE
    ========================================================================= */
 
-export default function ClonePage() {
+export default function Site({ locale }: { locale: Locale }) {
+  const copy = COPY[locale];
   const reduceMotion = usePrefersReducedMotion();
   const [submitted, setSubmitted] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -1865,7 +1805,8 @@ export default function ClonePage() {
   };
 
   return (
-    <Fragment>
+    <CopyContext.Provider value={copy}>
+    <LocaleContext.Provider value={locale}>
       {/* Outside <main>: that element carries `overflow-x-clip`, which can
           clip fixed-position descendants. */}
       <Preloader onDone={handleIntroDone} />
@@ -1933,7 +1874,7 @@ export default function ClonePage() {
               height. Editable master: public/brand/edh-logo-editable.svg. */}
           <a
             href="#top"
-            aria-label="Epic Digital Hub, creative studio — home"
+            aria-label={copy.nav.home}
             className="flex items-center text-white intro-fade"
             style={{ "--intro-delay": "0.1s" } as React.CSSProperties}
           >
@@ -1943,7 +1884,7 @@ export default function ClonePage() {
             className="intro-fade absolute top-0 left-1/2 hidden h-full -translate-x-1/2 items-center gap-10 text-white lg:flex"
             style={{ "--intro-delay": "0.3s" } as React.CSSProperties}
           >
-            {NAV_LINKS.map((n) => (
+            {copy.nav.links.map((n) => (
               <li key={n.label}>
                 <NavLink label={n.label} href={n.href} />
               </li>
@@ -1953,14 +1894,15 @@ export default function ClonePage() {
             className="intro-fade flex items-center gap-3"
             style={{ "--intro-delay": "0.5s" } as React.CSSProperties}
           >
+            <LocaleToggle className="hidden text-xs text-white lg:flex" />
             <div className="hidden lg:block">
               <TrickButton href="#contact" variant="base" className="h-11 md:h-14">
-                Apply
+                {copy.nav.apply}
               </TrickButton>
             </div>
             <button
               type="button"
-              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileNavOpen ? copy.nav.closeMenu : copy.nav.openMenu}
               onClick={() => setMobileNavOpen((v) => !v)}
               className="relative z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 text-white lg:hidden"
             >
@@ -1985,7 +1927,7 @@ export default function ClonePage() {
             transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
             className="fixed inset-0 z-50 flex flex-col justify-center gap-8 bg-[#10412F] px-8 text-[#F5F2F2] lg:hidden"
           >
-            {NAV_LINKS.map((n) => (
+            {copy.nav.links.map((n) => (
               <a
                 key={n.href}
                 href={n.href}
@@ -2000,8 +1942,12 @@ export default function ClonePage() {
               onClick={() => setMobileNavOpen(false)}
               className="mt-4 text-4xl font-medium uppercase tracking-[-0.02em] text-[#1FDB93]"
             >
-              Let&rsquo;s talk
+              {copy.eyebrow.letsTalk}
             </a>
+            {/* The header toggle is hidden below lg — at 390px the logo lockup
+                is 234px wide and left only 4px before it, with "Hub" touching
+                "RO". The menu is where it belongs on a phone anyway. */}
+            <LocaleToggle className="mt-8 gap-3 text-2xl text-[#F5F2F2]" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -2033,7 +1979,7 @@ export default function ClonePage() {
             read against the image is the effect worth keeping.
             Each line rises out of its own clipping mask on load. */}
         <h1 className="mix-blend-difference absolute inset-x-0 top-1/2 mx-auto max-w-[1080px] -translate-y-1/2 px-4 text-center text-[10.5vw] font-normal leading-[1.02] uppercase tracking-[-0.03em] text-white md:px-10 md:text-[96px] md:leading-[1]">
-          {["Your competitors", "can’t hire us"].map((line, i) => (
+          {[copy.hero.line1, copy.hero.line2].map((line, i) => (
             <span key={line} className="block overflow-hidden">
               <span
                 className="intro-rise block"
@@ -2050,8 +1996,7 @@ export default function ClonePage() {
             visible (not sr-only — hidden keyword text is a cloaking risk) and
             sat low in the hero so the centred headline is unaffected. */}
         <p className="absolute inset-x-0 bottom-6 mx-auto max-w-[46ch] px-6 text-center text-[11px] leading-relaxed tracking-[0.02em] text-white/55 md:bottom-8 md:text-xs">
-          Epic Digital Hub is a strategy and brand systems studio in Oradea,
-          Romania, working with a single brand per niche, per city.
+          {copy.hero.entity}
         </p>
       </section>
 
@@ -2064,10 +2009,9 @@ export default function ClonePage() {
             five columns — and the eyebrow list in the first three. */}
         <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-x-1 gap-y-10 px-4 md:grid-cols-8">
           <ul className="flex flex-col gap-1 self-start text-[11px] uppercase tracking-[0.02em] text-[#1F1F1F]/70 md:col-span-3">
-            <li>One plan.</li>
-            <li>One team.</li>
-            <li>One report.</li>
-            <li>Your category, locked.</li>
+            {copy.about.list.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
           {/* Source h3: 36px / 48px line-height, weight 500, colour #1F1F1F */}
           <Parallax
@@ -2080,10 +2024,7 @@ export default function ClonePage() {
                 inside the sticky work cards). */}
             <GradientWaveText
               reduceMotion={reduceMotion}
-              paragraphs={[
-                "Most marketing fails because it is the same everywhere. The ads chase clicks. The website tries to explain everything. The visuals change every month. The content fills a calendar, but does not build memory.",
-                "Every touchpoint becomes a disconnected moment competing for attention on its own. Epic Digital Hub connects them.",
-              ]}
+              paragraphs={copy.about.paragraphs}
             />
           </Parallax>
 
@@ -2101,10 +2042,10 @@ export default function ClonePage() {
           </div>
           <div className="flex flex-wrap gap-3 self-end md:col-span-5 md:col-start-4">
             <TrickButton href="#contact" variant="orange">
-              Apply for your niche
+              {copy.about.ctaPrimary}
             </TrickButton>
             <TrickButton href="#work" variant="base">
-              See the work
+              {copy.about.ctaSecondary}
             </TrickButton>
           </div>
         </div>
@@ -2126,7 +2067,7 @@ export default function ClonePage() {
         <div className="marquee-track flex w-max items-center">
           {[0, 1].map((dup) => (
             <div key={dup} aria-hidden={dup === 1} className="flex shrink-0 items-center">
-              {MARQUEE_STATS.map((m, i) => (
+              {copy.marquee.map((m, i) => (
                 <span key={`${m}-${i}`} className="flex shrink-0 items-center text-sm">
                   <span className="whitespace-nowrap">{m}</span>
                   <LogoGlyph className="mx-8 h-3.5 w-auto" />
@@ -2151,7 +2092,7 @@ export default function ClonePage() {
           CURVED DIVIDER 1 — sits before Work (per source's own quirk)
           ============================================================ */}
       <CurvedDivider
-        text="Strategy becomes real when you can see the difference."
+        text={copy.dividers.beforeWork}
         reduceMotion={reduceMotion}
         idSuffix="a"
       />
@@ -2170,7 +2111,7 @@ export default function ClonePage() {
           CURVED DIVIDER 2 — sits before Process
           ============================================================ */}
       <CurvedDivider
-        text="The order matters. Every leu builds on the one before it."
+        text={copy.dividers.beforeProcess}
         reduceMotion={reduceMotion}
         idSuffix="b"
       />
@@ -2180,7 +2121,7 @@ export default function ClonePage() {
           ============================================================ */}
       <section id="process" className="bg-[#F5F2F2] pt-24">
         <div className="mx-auto max-w-[1440px] px-4">
-          <EyebrowMarquee label="Process" />
+          <EyebrowMarquee label={copy.eyebrow.process} />
         </div>
         <ProcessCards reduceMotion={reduceMotion} />
       </section>
@@ -2200,34 +2141,34 @@ export default function ClonePage() {
               it set naturally. */}
           <Parallax reduceMotion={reduceMotion} distance={56}>
             <h2 className="mt-16 max-w-[24ch] text-[8vw] font-medium leading-[1.02] tracking-[-0.02em] uppercase md:text-[4.6vw]">
-              If your market still has space for a brand to lead,{" "}
-              <span className="text-[#1FDB93]">we should talk.</span>
+              {copy.contact.headingLead}{" "}
+              <span className="text-[#1FDB93]">{copy.contact.headingAccent}</span>
             </h2>
           </Parallax>
 
           <form onSubmit={handleSubmit} className="mt-16 flex flex-col gap-3 md:flex-row">
             <input
               type="text"
-              placeholder="Name"
+              placeholder={copy.contact.namePlaceholder}
               className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={copy.contact.emailPlaceholder}
               className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
             />
             <button
               type="submit"
               className="flex h-16 items-center justify-between gap-4 bg-[#F5F2F2] px-6 text-sm font-medium text-[#1F1F1F] md:w-56"
             >
-              {submitted ? "Sent — thanks!" : "Submit"}
+              {submitted ? copy.contact.submitted : copy.contact.submit}
               <span aria-hidden>↵</span>
             </button>
           </form>
 
           <div className="mt-24 grid grid-cols-1 gap-10 border-t border-white/10 pt-12 md:grid-cols-2">
             <div>
-              <p className="text-xs uppercase tracking-[0.1em] text-white/40">Follow</p>
+              <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.follow}</p>
               <div className="mt-4 flex gap-3">
                 {[
                   { src: "/icons/social-webflow.svg", w: 19, h: 12 },
@@ -2245,7 +2186,7 @@ export default function ClonePage() {
               </div>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.1em] text-white/40">Write</p>
+              <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.write}</p>
               <a href="mailto:hello.epicdigitalhub@gmail.com" className="footer-email relative mt-3 inline-block text-[28px] tracking-[-0.01em] md:text-[36px]">
                 hello.epicdigitalhub@gmail.com
                 <span className="footer-email-underline absolute left-0 -bottom-1 h-1 w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out" />
@@ -2254,8 +2195,8 @@ export default function ClonePage() {
           </div>
 
           <div className="mt-16 flex flex-col gap-2 text-xs text-[#5F5F5F] md:flex-row md:items-center md:justify-between">
-            <span>Epic Digital Hub — strategy, execution, operation.</span>
-            <span>Based in Oradea, Romania</span>
+            <span>{copy.contact.footerLine}</span>
+            <span>{copy.contact.footerBased}</span>
           </div>
         </div>
       </section>
@@ -2264,6 +2205,7 @@ export default function ClonePage() {
         a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-origin: 0% 50%; }
       `}</style>
     </main>
-    </Fragment>
+    </LocaleContext.Provider>
+    </CopyContext.Provider>
   );
 }

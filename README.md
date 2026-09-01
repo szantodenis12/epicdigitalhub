@@ -26,12 +26,15 @@ adds hydration cost ahead of the intro. Judge pacing against `npm run build`.
 
 ```
 src/app/
-  page.tsx        the entire site — one client component, sections divided by banner comments
+  site.tsx        the entire site — one client component, sections divided by banner comments
+  content.ts      all copy, EN + RO. `const ro: typeof en` makes a missing key a compile error
   logo.tsx        logo geometry (outlined paths), shared by the header and the intro
-  layout.tsx      metadata, JSON-LD, fonts, the pre-paint intro gate
+  shell.tsx       fonts, metadata, JSON-LD, the pre-paint intro gate — shared by both locales
+  (ro)/           Romanian root layout + page      -> /
+  (en)/           English root layout + page       -> /en
   globals.css     Tailwind v4 theme, intro reveal, marquee keyframes
   robots.ts       includes 9 AI crawlers alongside the standard rules
-  sitemap.ts
+  sitemap.ts      both locales, with hreflang alternates
 public/
   brand/          edh-logo.svg (outlined master) + edh-logo-editable.svg (live text)
   fonts/          BDO Grotesk — see Licensing
@@ -44,6 +47,17 @@ public/
 `.tasks/` is the working record: measured values, what was tried, and why
 several obvious-looking approaches were wrong. Read it before changing
 animation code — a lot of the numbers in `page.tsx` are measured, not chosen.
+
+## Languages
+
+Romanian is the default and lives at `/`; English at `/en`. The header carries a
+RO / EN toggle (in the menu on mobile, where the logo lockup leaves no room).
+
+Copy is in `content.ts` — nothing user-visible is hardcoded in `site.tsx`. Each
+locale is a route group with its own root layout, because `<html lang>` must be
+correct in the server-rendered markup and one shared layout cannot vary it.
+There is deliberately no `src/app/layout.tsx`: Next.js allows only one root
+layout, unless each route group brings its own.
 
 ## Intro preloader
 

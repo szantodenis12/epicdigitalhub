@@ -73,3 +73,59 @@ the root.
 ## Not addressed (outside this brief)
 The `/services` accordion copy rewrite and the `/system` step 06 change both
 target routes that do not exist in this build.
+
+## Bilingual (2026-09-01)
+
+Romanian is now the default locale at `/`; English at `/en`. Copy lives in
+`src/app/content.ts`, lifted from the project's own bilingual deck
+(`F:\epicdigitalhub-v2\src\lib\dictionaries.ts`) and mapped onto this site's
+sections using content-mapping.md - not translated here.
+
+### Why route groups rather than a client-side toggle
+
+`<html lang>` has to be correct in the SERVER-rendered markup, and a single
+shared root layout cannot vary it per route. Next.js allows one root layout per
+route group, so:
+
+```
+src/app/(ro)/layout.tsx        <html lang="ro">   ->  /
+src/app/(ro)/page.tsx
+src/app/(en)/layout.tsx        <html lang="en">   ->  /en
+src/app/(en)/en/page.tsx
+```
+
+`src/app/layout.tsx` is gone - with multiple root layouts there cannot be one.
+Icon conventions (`icon.svg`, `icon.png`, `apple-icon.png`) still resolve from
+`src/app/` and were verified in the built output.
+
+The documented trade-off is that moving between the two groups is a full page
+load, not a client transition. For a language switch that is correct anyway:
+the whole document, `lang` included, has to change.
+
+A client-side toggle was rejected: Google would only ever see one language, and
+the Romanian copy - the language of the actual audience - would be invisible to
+search.
+
+### Verified in the built output
+
+| | `/` | `/en` |
+|--|-----|-------|
+| `<html lang>` | ro | en |
+| canonical | epicdigitalhub.ro | epicdigitalhub.ro/en |
+| og:locale | ro_RO | en_US |
+| h1 | CONCURENȚII TĂI NU NE POT ANGAJA | YOUR COMPETITORS CAN'T HIRE US |
+
+hreflang on both pages: `ro`, `en`, `x-default` (-> Romanian). The sitemap
+lists both URLs, and each entry carries the FULL alternates set including
+itself - the spec requires every member of a group to list every member,
+itself included, or the cluster is discarded.
+
+### Copy typing
+
+`const ro: typeof en` in content.ts keeps the two locales structurally
+identical, so a missing or misspelled Romanian key is a compile error rather
+than a silent English fallback.
+
+Language-independent data (work card colours, images, ordering) stays in
+site.tsx and is merged with the copy by index, so a translation can never
+change a brand colour or drop an image.

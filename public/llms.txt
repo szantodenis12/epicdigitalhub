@@ -4,6 +4,17 @@
 > system behind a brand — strategy, identity, website, content, ads, SEO and
 > photo-video — and we work with only one brand per niche, per city.
 
+## Languages
+
+The site is published in Romanian and English. Romanian is the default and the
+primary audience (Oradea, Bihor, Romania).
+
+- Romanian: https://epicdigitalhub.ro/
+- English:  https://epicdigitalhub.ro/en
+
+Both carry the same content; they are translations of one another, not
+different offerings.
+
 ## The rule that defines us
 
 One niche. One city. One brand. If we work with a dental clinic in Oradea, we
