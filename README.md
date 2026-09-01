@@ -46,7 +46,7 @@ public/
 
 `.tasks/` is the working record: measured values, what was tried, and why
 several obvious-looking approaches were wrong. Read it before changing
-animation code — a lot of the numbers in `page.tsx` are measured, not chosen.
+animation code — a lot of the numbers in `site.tsx` are measured, not chosen.
 
 ## Languages
 
