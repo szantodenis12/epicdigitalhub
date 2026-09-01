@@ -1894,7 +1894,12 @@ export default function Site({ locale }: { locale: Locale }) {
             className="intro-fade flex items-center gap-3"
             style={{ "--intro-delay": "0.5s" } as React.CSSProperties}
           >
-            <LocaleToggle className="hidden text-xs text-white lg:flex" />
+            {/* `lg:mr-7` on top of the row's own gap-3 puts 40px between the
+                toggle and the Apply button — the same rhythm as the nav links
+                beside it. At the bare 12px gap the toggle read as part of the
+                button rather than as a peer of the nav. Margin rather than a
+                bigger row gap, so the mobile hamburger spacing is untouched. */}
+            <LocaleToggle className="hidden text-xs text-white lg:mr-7 lg:flex" />
             <div className="hidden lg:block">
               <TrickButton href="#contact" variant="base" className="h-11 md:h-14">
                 {copy.nav.apply}
