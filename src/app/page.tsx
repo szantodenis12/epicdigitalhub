@@ -27,6 +27,17 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, Flip, InertiaPlugin);
+
+  /* On a phone, scrolling hides and shows the browser address bar, which fires
+     `resize` with a changed viewport HEIGHT. Left alone, ScrollTrigger treats
+     that as a real resize and refreshes every trigger on the page - a full
+     synchronous re-measure of six work cards, two pinned dividers, the
+     showreel Flip, services and the process cards - in the middle of a scroll
+     gesture. That is what "it stutters and blocks the scroll" on mobile
+     actually is. `ignoreMobileResize` makes it ignore height-only changes.
+
+     No effect on desktop, where the address bar does not move. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /* ============================================================================
@@ -542,15 +553,34 @@ function useShowreelFlip(
   const [resizeKey, setResizeKey] = useState(0);
   useEffect(() => {
     let t = 0;
+    /* WIDTH only.
+
+       The address bar on a phone hides and shows as you scroll, firing
+       `resize` with a new height over and over during an ordinary gesture.
+       Every one of those used to bump `resizeKey`, which tears down the Flip
+       tween, re-fits it, and calls ScrollTrigger.refresh() - re-measuring
+       every trigger on the page, synchronously, mid-scroll. It was the main
+       reason scrolling felt like it stuttered and caught on mobile.
+
+       Only a width change (or an explicit orientationchange) can invalidate
+       the baked Flip transform, so height is safe to ignore. */
+    let lastWidth = window.innerWidth;
     const onResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      window.clearTimeout(t);
+      t = window.setTimeout(() => setResizeKey((k) => k + 1), 200);
+    };
+    const onOrientation = () => {
+      lastWidth = window.innerWidth;
       window.clearTimeout(t);
       t = window.setTimeout(() => setResizeKey((k) => k + 1), 200);
     };
     window.addEventListener("resize", onResize);
-    window.addEventListener("orientationchange", onResize);
+    window.addEventListener("orientationchange", onOrientation);
     return () => {
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("orientationchange", onResize);
+      window.removeEventListener("orientationchange", onOrientation);
       window.clearTimeout(t);
     };
   }, []);
@@ -966,6 +996,10 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
               end: isLast ? "+=200%" : "+=150%",
               scrub: true,
               invalidateOnRefresh: true,
+              // promote only while this card is actually being scrubbed
+              onToggle: (self) => {
+                inner.style.willChange = self.isActive ? "transform" : "auto";
+              },
             },
           }
         )
@@ -1107,7 +1141,12 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
             }}
             /* Source pivot is `952.5px 108px` on a 1905x1080 card = center 10%,
                so the card hinges from near its top edge. */
-            className="grid h-full w-full grid-cols-1 items-center gap-10 px-4 py-16 will-change-transform [transform-origin:center_10%] [transform-style:preserve-3d] md:grid-cols-2 md:px-10"
+            /* No permanent `will-change` — it is set by the tilt's own
+               ScrollTrigger while that card is being scrubbed (see onToggle in
+               the effect above). Six full-screen 3D layers held promoted for
+               the whole page is ~1170x2532px of compositor memory each at
+               DPR 3, which is what made mobile stutter. */
+            className="grid h-full w-full grid-cols-1 items-center gap-10 px-4 py-16 [transform-origin:center_10%] [transform-style:preserve-3d] md:grid-cols-2 md:px-10"
             style={{ backgroundColor: w.bg, color: w.fg }}
           >
             <div className="flex h-full flex-col justify-between py-8">
@@ -1207,10 +1246,11 @@ function Services() {
                 onMouseEnter={() => setActive(i)}
                 onClick={() => setActive(i)}
                 className="relative flex cursor-pointer flex-col justify-center overflow-hidden border-b border-white/15 transition-[min-height] duration-500 ease-in-out"
-                style={{
-                  minHeight: isActive ? ROW_OPEN : ROW_CLOSED,
-                  willChange: "min-height",
-                }}
+                /* No `will-change` here: min-height is a layout property, so
+                   the hint cannot buy compositing and only forces a layer.
+                   Measured on a DPR-3 mobile profile at 6x CPU throttle, these
+                   layout hints were the largest single cause of scroll jank. */
+                style={{ minHeight: isActive ? ROW_OPEN : ROW_CLOSED }}
               >
                 <div className="flex items-baseline gap-6">
                   <span className="w-14 shrink-0 text-sm text-white/50">[ {s.num} ]</span>
@@ -1224,7 +1264,8 @@ function Services() {
                     mounted (no reconciliation churn on hover). */}
                 <div
                   className="overflow-hidden transition-[height] duration-500 ease-in-out"
-                  style={{ height: isActive ? CONTENT_H : 0, willChange: "height" }}
+                  /* Same as the row above - `height` is not compositable. */
+                  style={{ height: isActive ? CONTENT_H : 0 }}
                 >
                   <div
                     /* 50% is a desktop measure — the media sits in the other
@@ -1257,7 +1298,9 @@ function Services() {
                     className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={{
                       transform: isActive ? "translateY(0)" : "translateY(100%)",
-                      willChange: "transform",
+                      // promoted only while this row is the open one, so it is
+                      // one layer at a time instead of five held permanently
+                      willChange: isActive ? "transform" : "auto",
                     }}
                   />
                 </div>
@@ -1403,8 +1446,10 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
           }}
           onMouseMove={handleMove(i)}
           onMouseLeave={handleLeave(i)}
-          className="relative flex h-[520px] w-full max-w-[380px] shrink-0 flex-col justify-between rounded-2xl bg-white p-8 text-[#1F1F1F] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)] md:w-[340px]"
-          style={{ willChange: "transform" }}
+          /* `will-change` only under hover: the tilt is pointer-driven, so on
+             touch it would be a permanently promoted layer for an effect that
+             can never fire. */
+          className="relative flex h-[520px] w-full max-w-[380px] shrink-0 flex-col justify-between rounded-2xl bg-white p-8 text-[#1F1F1F] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)] hover:[will-change:transform] md:w-[340px]"
         >
           <div>
             <span className="text-xs font-medium tracking-[0.05em] text-[#1FDB93]">
@@ -1713,12 +1758,16 @@ export default function ClonePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   useShowreelFlip({ scalingRef, bigRef, videoRef }, reduceMotion);
 
-  /* Fallback only. When Lenis is running it drives this via its own per-frame
-     `scroll` callback (see the Lenis effect below) — Lenis coalesces native
-     scroll events down to roughly one per gesture, so this listener cannot
-     detect direction reliably on its own. */
+  /* Nav direction from native scroll. Used whenever Lenis is NOT running -
+     reduced motion, and every touch device (see the Lenis effect below).
+     When Lenis IS running it drives this from its own per-frame `scroll`
+     callback instead, because Lenis coalesces native scroll events down to
+     roughly one per gesture and this listener could not read direction. */
   useEffect(() => {
-    if (!reduceMotion) return;
+    const coarse =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    if (!reduceMotion && !coarse) return;
     let last = window.scrollY;
     let frame = 0;
     const onScroll = () => {
@@ -1739,9 +1788,18 @@ export default function ClonePage() {
     };
   }, [reduceMotion]);
 
-  /* Lenis smooth scroll, synced with ScrollTrigger */
+  /* Lenis smooth scroll, synced with ScrollTrigger.
+
+     Desktop only, deliberately. Lenis smooths WHEEL input; with the default
+     `syncTouch: false` it does not touch touch-scrolling at all, so on a phone
+     it changes nothing visible while still running a rAF loop every frame and
+     pushing a ScrollTrigger.update through the main thread on every scroll
+     event. Native mobile scrolling is already compositor-driven and smooth.
+     Skipping it on coarse pointers is free on mobile and leaves desktop
+     byte-for-byte identical. */
   useEffect(() => {
     if (reduceMotion) return;
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
     let lenisInstance: import("lenis").default | null = null;
     let tickerFn: ((time: number) => void) | null = null;
     let cancelled = false;
