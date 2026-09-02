@@ -1214,3 +1214,52 @@ numbers this session ran higher than the mobile-perf session for reasons not
 attributable to this change (machine load); variants that should be neutral or
 better measured worse, which is the signature of noise. Do not read the
 absolute figures here against those in mobile-perf.md.
+
+## Showreel video replaced (2026-09-02)
+
+Source: `EDH_MANIFEST_REEL_2026-09_v18.mp4` — 1080x1920, 24fps, 50s, 13.5 MB,
+with an AAC track.
+
+### It is a portrait file with a landscape picture inside it
+
+The container is 9:16 but the actual picture is letterboxed 16:9 within it:
+656px of black top and bottom. Dropped in as-is with `object-cover`, the 16:9
+showreel box would have shown a narrow horizontal slice of a portrait frame and
+cut the on-screen type in half.
+
+`cropdetect` across the clip agreed on the band every time past t=12:
+
+```
+crop=1080:608:0:656      # 1080/608 = 1.776, i.e. 16:9
+```
+
+Stored already cropped, so `object-cover` fills the box with essentially no
+crop: measured box aspect 1.775 small / 1.777 grown against a native 1.776.
+
+### Encoding
+
+| | |
+|--|--|
+| output | 1080x608, CRF 27, H.264 main/yuv420p, +faststart, **4.8 MB** |
+| audio | stripped — autoplay requires muted and there is no unmute control |
+| poster | reel-poster.webp, 9 KB |
+
+CRF 27 rather than 30: the reel has small on-screen type that goes mushy at
+higher CRF.
+
+Replaces `hero-wake.mp4` (8.7 MB for 10s), so the page is lighter despite the
+clip being five times longer. `about-showreel-720p.mp4` (10.8 MB) was
+unreferenced and is gone too.
+
+### Loading
+
+`preload="none"` and no `autoPlay`; an IntersectionObserver starts it when the
+box scrolls into view and pauses it when it leaves — same treatment as the hero
+loop. Verified: on page load only the hero loop is fetched, and the 4.8 MB reel
+is not requested until the visitor reaches it, on both desktop and mobile.
+
+### Known limit
+
+The picture is only 1080px wide, so at the grown state it is upscaled on a
+1440px+ viewport and will look slightly soft. That is the resolution the source
+has; a landscape master at 1920+ would be sharper.

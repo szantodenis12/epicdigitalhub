@@ -522,12 +522,24 @@ function useShowreelFlip(
     const video = videoRef.current;
     if (!big || !scaling || !video) return;
 
-    // Video plays muted/autoplay; some browsers only honor `muted` as a DOM
-    // property (not just the JSX/HTML attribute), so set it imperatively too.
+    // Some browsers only honour `muted` as a DOM property, not just the
+    // attribute, and the autoplay policy rejects play() without it.
     video.muted = true;
-    video.play().catch(() => {});
 
-    if (reduceMotion) return;
+    /* Play only while it is on screen. The reel is 50s and 4.8MB; decoding it
+       while the visitor is three sections away is pure waste, and with
+       `preload="none"` this is also what triggers the download in the first
+       place. Same treatment as the hero loop. */
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0 }
+    );
+    io.observe(video);
+
+    if (reduceMotion) return () => io.disconnect();
 
     // Source geometry (measured live off nbnzia.com):
     //   .scaling-element__small-box  320 x 180   (16:9)
@@ -557,6 +569,7 @@ function useShowreelFlip(
     ScrollTrigger.refresh();
 
     return () => {
+      io.disconnect();
       tl.scrollTrigger?.kill();
       tl.kill();
       gsap.set(scaling, { clearProps: "transform" });
@@ -581,12 +594,22 @@ function ShowreelSmall({
         ref={scalingRef}
         className="absolute inset-0 z-[55] overflow-hidden will-change-transform"
       >
+        {/* The supplied reel is a 1080x1920 social export whose picture is
+            letterboxed 16:9 inside it — 656px of black top and bottom. It is
+            stored here already cropped to that band (1080x608), so `object-cover`
+            fills this 16:9 box exactly instead of showing a narrow slice of a
+            portrait frame.
+
+            No `autoPlay`: it starts when it scrolls into view (see the
+            observer in useShowreelFlip). `preload="none"` keeps 4.8MB off the
+            wire until then — this box sits well below the fold. */}
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
-          src="/videos/hero-wake.mp4"
+          src="/videos/manifest-reel.mp4"
+          poster="/images/reel-poster.webp"
+          preload="none"
           muted
-          autoPlay
           loop
           playsInline
         />
