@@ -1170,6 +1170,27 @@ function Services() {
   const MEDIA_W = 350;
   const MEDIA_H = 196;
 
+  /* CONTENT_H is the source's measured 112px and stays the floor. But copy
+     length is not fixed - the Romanian service descriptions are longer than
+     the English ones, and at 390px "Website-uri și sisteme digitale" ran 49px
+     past the box and lost two lines behind `overflow: hidden`.
+
+     So each row is measured and opens to whatever its own copy needs, never
+     less than 112. Rows whose text already fits are pixel-identical to before;
+     only a row that would otherwise hide text grows. A ResizeObserver re-reads
+     them because the wrap changes with width. */
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [contentHeights, setContentHeights] = useState<number[]>([]);
+
+  useEffect(() => {
+    const measure = () =>
+      setContentHeights(contentRefs.current.map((el) => el?.offsetHeight ?? 0));
+    measure();
+    const ro = new ResizeObserver(measure);
+    contentRefs.current.forEach((el) => el && ro.observe(el));
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <section id="services" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
       <div className="mx-auto max-w-[1440px] px-4">
@@ -1177,6 +1198,7 @@ function Services() {
         <div className="mt-16 border-t border-white/15">
           {copy.services.map((s, i) => {
             const isActive = active === i;
+            const openH = Math.max(CONTENT_H, contentHeights[i] ?? 0);
             return (
               <div
                 key={s.title}
@@ -1187,7 +1209,9 @@ function Services() {
                    the hint cannot buy compositing and only forces a layer.
                    Measured on a DPR-3 mobile profile at 6x CPU throttle, these
                    layout hints were the largest single cause of scroll jank. */
-                style={{ minHeight: isActive ? ROW_OPEN : ROW_CLOSED }}
+                style={{
+                  minHeight: isActive ? ROW_OPEN + (openH - CONTENT_H) : ROW_CLOSED,
+                }}
               >
                 <div className="flex items-baseline gap-6">
                   <span className="w-14 shrink-0 text-sm text-white/50">[ {nn(i)} ]</span>
@@ -1202,9 +1226,12 @@ function Services() {
                 <div
                   className="overflow-hidden transition-[height] duration-500 ease-in-out"
                   /* Same as the row above - `height` is not compositable. */
-                  style={{ height: isActive ? CONTENT_H : 0 }}
+                  style={{ height: isActive ? openH : 0 }}
                 >
                   <div
+                    ref={(el) => {
+                      contentRefs.current[i] = el;
+                    }}
                     /* 50% is a desktop measure — the media sits in the other
                        half. On mobile the media is hidden, so constraining to
                        half the width made the copy wrap far more and get

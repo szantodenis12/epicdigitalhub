@@ -234,12 +234,12 @@ const ro: typeof en = {
   switchTitle: "Comută pe engleză",
 
   nav: {
-    home: "Epic Digital Hub, studio creativ — acasă",
+    home: "Epic Digital Hub, studio de strategie și brand — acasă",
     links: [
       { label: "Servicii", href: "#services" },
       { label: "Proiecte", href: "#work" },
       { label: "Clienți", href: "#clients" },
-      { label: "Despre", href: "#about" },
+      { label: "Despre noi", href: "#about" },
     ],
     apply: "Aplică",
     openMenu: "Deschide meniul",
@@ -247,29 +247,38 @@ const ro: typeof en = {
   },
 
   hero: {
+    // Split across the design's two masked lines, as in every locale.
     line1: "Concurenții tăi",
-    line2: "nu ne pot angaja",
+    line2: "nu pot lucra cu noi.",
     entity:
-      "Epic Digital Hub este un studio de strategie și sisteme de brand din Oradea, România, care lucrează cu un singur brand pe nișă, pe oraș.",
+      "Epic Digital Hub este un studio de strategie și sisteme de brand din Oradea. În fiecare oraș, colaborăm cu un singur brand din fiecare nișă.",
   },
 
   about: {
-    list: ["Un singur plan.", "O singură echipă.", "Un singur raport.", "Categoria ta, blocată."],
-    paragraphs: [
-      "Majoritatea marketingului eșuează pentru că arată la fel peste tot. Reclamele aleargă după clickuri. Site-ul încearcă să explice tot. Vizualurile se schimbă în fiecare lună. Conținutul umple un calendar, dar nu construiește memorie.",
-      "Fiecare punct de contact devine un moment deconectat care se luptă singur pentru atenție. Epic Digital Hub le leagă.",
+    list: [
+      "Un singur plan.",
+      "O singură echipă.",
+      "Un singur raport.",
+      "Iar categoria ta rămâne exclusivă.",
     ],
-    ctaPrimary: "Aplică pentru nișa ta",
+    /* The supplied copy runs to four short paragraphs; this block is built for
+       two, so they are joined in pairs rather than adding rows to the layout.
+       The wording itself is unchanged. */
+    paragraphs: [
+      "Prea mult marketing arată la fel și funcționează fără o direcție comună. Reclamele urmăresc clickuri. Site-ul încearcă să spună totul. Direcția vizuală se schimbă de la o lună la alta. Conținutul umple un calendar, dar nu construiește recunoaștere.",
+      "Fiecare punct de contact ajunge să funcționeze izolat și să concureze singur pentru atenție. Epic Digital Hub le transformă într-un sistem coerent.",
+    ],
+    ctaPrimary: "Aplică pentru categoria ta",
     ctaSecondary: "Vezi proiectele",
   },
 
   marquee: [
-    "6500+ ore lucrate în sistemele clienților",
-    "40+ strategii și planuri de campanie scrise",
-    "1200+ materiale de conținut livrate",
-    "150+ video filmate și editate",
-    "500+ grafici și materiale de design",
-    "7 verticale în care lucrăm",
+    "Peste 6.500 de ore investite în sistemele clienților noștri",
+    "Peste 40 de strategii și planuri de campanie dezvoltate",
+    "Peste 1.200 de materiale de conținut livrate",
+    "Peste 150 de materiale video filmate și editate",
+    "Peste 500 de materiale de grafică și design realizate",
+    "7 domenii în care avem experiență",
   ],
 
   eyebrow: {
@@ -285,72 +294,74 @@ const ro: typeof en = {
   },
 
   testimonials: {
-    title: "În cuvintele lor.",
+    title: "În cuvintele lor",
     featured: {
+      // No quotation marks inside the strings - the markup adds them.
       quote:
-        "Înainte lucram cu trei oameni diferiți pentru postări, reclame și site. Acum e o echipă care știe tot ce se întâmplă și mișcă lucrurile mult mai repede.",
-      name: "DentalNet, Oradea",
+        "Înainte, colaboram cu trei oameni diferiți pentru conținut, reclame și website. Acum avem o singură echipă care cunoaște imaginea de ansamblu și poate pune lucrurile în mișcare mult mai repede.",
+      name: "DentalNet · Oradea",
     },
     items: [
       {
         quote:
-          "Ne-au filmat mașinile în showroom și au scos reclame care aduc oameni la test drive, nu doar like-uri.",
-        name: "AutoSiena, Oradea",
+          "Au filmat mașinile direct în showroom și au creat reclame care aduc oameni la test-drive, nu doar aprecieri în social media.",
+        name: "AutoSiena · Oradea",
       },
       {
         quote:
-          "Aveam campanii care ardeau bani degeaba. S-au uitat serios la cifre și au oprit ce nu funcționa. Acum știu pe ce se duce fiecare leu.",
-        name: "Agro Salso, Bihor",
+          "Aveam campanii care consumau buget fără să producă rezultate. Au analizat serios cifrele și au oprit tot ce nu funcționa. Acum știm exact unde se duce fiecare leu.",
+        name: "Agro Salso · Bihor",
       },
       {
         quote:
-          "Reels-urile făcute pentru hotel arată ca la locațiile mari din afară. Ne scriu clienți că de acolo ne-au găsit.",
-        name: "Hotel Maxim, Oradea",
+          "Materialele video realizate pentru hotel au imaginea și atmosfera pe care le vezi la locațiile mari din străinătate. Clienții ne spun că ne-au descoperit datorită lor.",
+        name: "Hotel Maxim · Oradea",
       },
       {
         quote:
-          "Au luat un material tehnic complicat și l-au făcut clar și pentru un client din afara domeniului.",
+          "Au transformat un produs tehnic și dificil de explicat într-un mesaj clar, ușor de înțeles chiar și pentru cineva din afara domeniului.",
         name: "ThermX",
       },
       {
-        quote: "Afișele și clipurile de eveniment ne-au dat un look pe care nu îl are nimeni în zonă.",
-        name: "HarmonyGarden",
+        quote:
+          "Afișele și materialele video au construit pentru evenimentele noastre o identitate pe care nu o mai are nimeni în zonă.",
+        name: "Harmony Garden",
       },
     ],
   },
 
   work: {
-    visit: "Vezi site-ul",
+    visit: "Vezi proiectul",
     items: [
       {
-        name: "Auto retail",
-        tag: "Auto / Oradea",
-        body: "Sistem complet: campanii de lansare, reels, conținut de showroom, paid social.",
+        name: "Retail auto",
+        tag: "Auto · Oradea",
+        body: "Sistem complet de comunicare: campanii de lansare, reels, conținut realizat în showroom și campanii paid social.",
       },
       {
         name: "Clinici dentare",
-        tag: "Medical / Oradea",
-        body: "Sistem de conținut, reguli de brand, campanii pentru pacienți, pentru două clinici.",
+        tag: "Medical · Oradea",
+        body: "Strategie de conținut, reguli de brand și campanii de informare și atragere a pacienților.",
       },
       {
-        name: "Utilaje agricole",
-        tag: "Agro / Bihor",
-        body: "Catalog e-commerce, reclame Google + Meta, poziționare de dealer.",
+        name: "Agro Salso",
+        tag: "Utilaje agricole · România",
+        body: "Sistem digital de vânzare construit în jurul unui website cu catalog extins de utilaje, CRM pentru gestionarea solicitărilor, automatizări comerciale și campanii Google și Meta.",
       },
       {
-        name: "Hoteluri și ospitalitate",
-        tag: "Ospitalitate / Oradea",
-        body: "Reels de brand, campanii de rezervări, parteneriate B2B.",
+        name: "Hotel Maxim",
+        tag: "Ospitalitate · Oradea",
+        body: "Website de prezentare, sistem CRM pentru centralizarea solicitărilor, automatizări, producție foto-video și campanii dedicate rezervărilor, evenimentelor și segmentului corporate.",
       },
       {
         name: "Evenimente și nightlife",
-        tag: "Evenimente / Bihor",
-        body: "Identități de eveniment, afișe, teasere video, promovare pe tot sezonul.",
+        tag: "Evenimente · Bihor",
+        body: "Identități vizuale de eveniment, afișe, teasere video și campanii de promovare pentru întregul sezon.",
       },
       {
-        name: "Sisteme de construcții",
-        tag: "Industrial / RO",
-        body: "Poziționare tehnică, site de prezentare, producție video pe teren.",
+        name: "Sisteme pentru construcții",
+        tag: "Industrial · România",
+        body: "Poziționare tehnică, website de prezentare și producție video realizată direct pe teren.",
       },
     ],
   },
@@ -358,23 +369,23 @@ const ro: typeof en = {
   services: [
     {
       title: "Strategie de marketing",
-      body: "Poziționare, ofertă, canale, buget. Planul pe care restul sistemului îl execută, scris negru pe alb și susținut cu date.",
+      body: "Poziționare, ofertă, canale și buget. Stabilim, în scris și pe baza datelor, direcția pe care o urmează întregul sistem de marketing.",
     },
     {
-      title: "Brand și design",
-      body: "Identitate, reguli de brand și toate materialele de care au nevoie canalele tale, de la carte de vizită la banner.",
+      title: "Identitate de brand și design",
+      body: "Construim identitatea, regulile vizuale și materialele necesare fiecărui canal — de la cartea de vizită până la campaniile digitale și materialele outdoor.",
     },
     {
-      title: "Site-uri premium",
-      body: "Cinematice, cu parallax, interactive. Site-uri care te poziționează înainte de primul apel, fără să sacrifice viteza sau SEO.",
+      title: "Website-uri și sisteme digitale",
+      body: "Construim website-uri premium, pagini de campanie și infrastructura digitală din spatele lor: sisteme CRM, formulare inteligente, automatizări, integrări și sisteme de urmărire a solicitărilor. Totul este gândit să funcționeze împreună, fără compromisuri în privința designului, vitezei sau optimizării SEO.",
     },
     {
-      title: "Reclame plătite",
-      body: "Campanii Meta și Google, verificate săptămânal, oprite când nu-și mai merită bugetul. Analiză de termeni de căutare, cuvinte negative, raportare onestă.",
+      title: "Campanii plătite",
+      body: "Gestionăm campanii Meta și Google, analizate și optimizate săptămânal. Oprim ceea ce nu mai justifică investiția și urmărim atent termenii de căutare, cuvintele-cheie negative și distribuirea bugetului. Raportarea rămâne clară și transparentă.",
     },
     {
-      title: "Foto-video",
-      body: "Filmări la tine în locație, editate pentru reclame, social și web. Business-ul tău în fața camerei, nu filmări de stock.",
+      title: "Producție foto-video",
+      body: "Filmăm în locația ta și adaptăm materialele pentru reclame, social media și website. Punem afacerea ta reală în prim-plan — nu imagini de stoc.",
     },
   ],
 
@@ -382,54 +393,57 @@ const ro: typeof en = {
     stepLabel: "PASUL",
     items: [
       {
-        title: "Verificăm categoria ta",
-        body: "Oraș + nișă. Dacă e ocupată, îți spunem din prima. Dacă există orice suprapunere cu un client existent, răspunsul e nu, indiferent de buget.",
-        items: ["Oraș + nișă", "Colaborări active verificate", "Răspuns clar în 2 zile lucrătoare"],
+        title: "Verificăm disponibilitatea categoriei tale.",
+        body: "Analizăm orașul și nișa în care activezi. Dacă există orice suprapunere cu un client actual, îți spunem direct. Indiferent de buget, nu lucrăm cu branduri concurente.",
+        items: [
+          "Oraș și nișă",
+          "Colaborări active verificate",
+          "Răspuns în maximum două zile lucrătoare",
+        ],
       },
       {
-        title: "Primești o schiță de sistem",
-        body: "Un plan scurt și concret: cum ar arăta sistemul Epic pentru brandul tău, canale, priorități, primele 90 de zile.",
+        title: "Primești schița sistemului.",
+        body: "Îți prezentăm un plan scurt și concret despre cum ar putea arăta sistemul Epic pentru brandul tău: poziționare, parcursul clientului, canalele prioritare și direcția pentru primele 90 de zile.",
         items: [
           "Diagnostic și poziționare",
-          "Strategie și drumul clientului",
-          "Canale și priorități",
+          "Strategie și parcursul clientului",
+          "Canale prioritare",
           "Primele 90 de zile",
         ],
       },
       {
-        title: "Tu decizi",
-        body: "Dacă totul se leagă pentru ambele părți, începem. Dacă nu, schița rămâne la tine. Fără insistențe, fără telefoane de presiune.",
-        items: ["Fără insistențe", "Fără telefoane de presiune", "Schița rămâne la tine"],
+        title: "Tu decizi.",
+        body: "Dacă există compatibilitate de ambele părți, începem colaborarea. Dacă nu, schița rămâne la tine. Fără insistențe și fără apeluri de presiune.",
+        items: ["Fără insistențe", "Fără presiune", "Schița rămâne la tine"],
       },
     ],
   },
 
   contact: {
-    headingLead: "Dacă în piața ta mai e loc pentru un brand care conduce,",
+    headingLead:
+      "Dacă în piața ta mai este loc pentru un brand care să devină reperul categoriei,",
     headingAccent: "hai să vorbim.",
     namePlaceholder: "Nume",
-    emailPlaceholder: "Email",
+    emailPlaceholder: "Adresă de e-mail",
     submit: "Trimite",
     submitted: "Trimis — mulțumim!",
-    follow: "Urmărește",
+    follow: "Urmărește-ne",
     write: "Scrie-ne",
-    footerLine: "Epic Digital Hub — strategie, execuție, operare.",
-    footerBased: "Din Oradea, România",
+    footerLine: "Epic Digital Hub — strategie, execuție și optimizare.",
+    footerBased: "Oradea, România.",
   },
 
   meta: {
-    // The brand lockup itself reads "Epic Digital Hub / CREATIVE STUDIO", so
-    // the name stays as-is in both locales; only the prose is translated.
-    title: "Epic Digital Hub | Creative Studio",
+    title: "Epic Digital Hub | Studio de strategie și brand",
     template: "%s | Epic Digital Hub",
     description:
-      "Un singur brand pe nișă, pe oraș. Strategie, design, web, reclame și producție pentru un singur brand din categoria ta. Din Oradea, România.",
+      "Lucrăm cu un singur brand din fiecare nișă, în fiecare oraș. Strategie, identitate, website, conținut, reclame și producție foto-video.",
     ogDescription:
-      "Un singur brand pe nișă, pe oraș. Construim și operăm tot sistemul digital din spatele unui brand.",
-    twitterDescription: "Un singur brand pe nișă, pe oraș.",
+      "Un singur brand din fiecare nișă, în fiecare oraș. Construim și gestionăm întregul sistem digital din spatele brandului tău.",
+    twitterDescription: "Un singur brand din fiecare nișă, în fiecare oraș.",
     ogLocale: "ro_RO",
     schemaDescription:
-      "Studio de creștere din Oradea. Strategie, identitate, website, conținut, reclame și foto-video pentru un singur brand pe nișă, pe oraș.",
+      "Epic Digital Hub este un studio de strategie și creștere din Oradea. Construim sisteme complete de brand — de la strategie și identitate până la website, conținut, campanii și producție foto-video.",
   },
 };
 
