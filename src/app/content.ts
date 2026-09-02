@@ -94,7 +94,7 @@ const en = {
       },
       {
         quote:
-          "We had campaigns burning money for nothing. They looked at the numbers seriously and cut what wasn't working. Now I know where every leu goes.",
+          "We had campaigns burning budget without producing results. They put the whole system in order, from the website and CRM through to the marketing and the automations. Now we know exactly where every leu goes and what it brings back.",
         name: "Agro Salso, Bihor",
       },
       {
@@ -128,14 +128,14 @@ const en = {
         body: "Content system, brand rules, patient-facing campaigns for two clinics.",
       },
       {
-        name: "Agro machinery",
-        tag: "Agro / Bihor",
-        body: "E-commerce catalog, Google + Meta ads, dealer positioning.",
+        name: "Agro Salso",
+        tag: "Agro machinery / Romania",
+        body: "Digital sales system built around a website with a full machinery catalogue, a CRM for handling enquiries, commercial automations, and Google and Meta campaigns.",
       },
       {
-        name: "Hotels & hospitality",
+        name: "Hotel Maxim",
         tag: "Hospitality / Oradea",
-        body: "Brand reels, booking campaigns, B2B partner outreach.",
+        body: "Presentation website, a CRM that centralises enquiries, automations, photo-video production, and campaigns for bookings, events and the corporate segment.",
       },
       {
         name: "Events & nightlife",
@@ -309,7 +309,7 @@ const ro: typeof en = {
       },
       {
         quote:
-          "Aveam campanii care consumau buget fără să producă rezultate. Au analizat serios cifrele și au oprit tot ce nu funcționa. Acum știm exact unde se duce fiecare leu.",
+          "Aveam campanii care consumau buget fără să producă rezultate. Au pus ordine în tot sistemul, de la site și CRM până la marketing și automatizări. Acum știm exact unde se duce fiecare leu și ce rezultate produce.",
         name: "Agro Salso · Bihor",
       },
       {
