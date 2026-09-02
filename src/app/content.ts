@@ -99,7 +99,7 @@ const en = {
       },
       {
         quote:
-          "The reels they made for the hotel look like the big places abroad. Guests message us saying that's where they found us.",
+          "The videos they made for the hotel have the look and the atmosphere of the big places abroad. Guests tell us that is how they found us, and the new website and booking system make everything far easier to manage.",
         name: "Hotel Maxim, Oradea",
       },
       {
@@ -314,7 +314,7 @@ const ro: typeof en = {
       },
       {
         quote:
-          "Materialele video realizate pentru hotel au imaginea și atmosfera pe care le vezi la locațiile mari din străinătate. Clienții ne spun că ne-au descoperit datorită lor.",
+          "Materialele video realizate pentru hotel au imaginea și atmosfera pe care le vezi la locațiile mari din străinătate. Clienții ne spun că ne-au descoperit datorită lor, iar noul site și sistemul de rezervări ne ajută să gestionăm totul mult mai ușor.",
         name: "Hotel Maxim · Oradea",
       },
       {
