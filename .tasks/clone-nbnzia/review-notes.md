@@ -1134,3 +1134,83 @@ resting one.
 Verified settled state on every path: `["1","1","0.6","0.9","1"]` - desktop,
 mobile, and reduced motion (which skips the reveal entirely and leaves
 `clip-path: none`).
+
+## Hero background loop (2026-09-02)
+
+Source: `F:\epicdigitalhub-v2\hero_loop_v2_raw.mp4` — 1920x1080, 24fps, 25.08s,
+7.3 Mbps, no audio, 21.9 MB. A montage: opens black-and-white in an interior
+with blown-out windows, moves through brand-emerald scenes, ends on a dark
+emerald doorway.
+
+### It did not loop
+
+First and last frame are nothing alike, so `loop` alone produced a hard cut.
+Fixed by cross-dissolving the tail into the head, which also shortens the clip
+by the fade length:
+
+```
+[0:v]trim=0:1,setpts=PTS-STARTPTS[head];
+[0:v]trim=1:24.084,setpts=PTS-STARTPTS[mid];
+[0:v]trim=24.084:25.084,setpts=PTS-STARTPTS[tail];
+[tail][head]blend=all_expr='A*(1-T/1)+B*(T/1)'[bl];
+[mid][bl]concat=n=2:v=1:a=0
+```
+
+Loop seam, measured as PSNR between first and last frame:
+**7.0 dB before -> 29.7 dB after.**
+
+### Encoding
+
+| file | size | for |
+|------|------|-----|
+| hero-loop.mp4 | 1920x1080, 2.8 MB | desktop |
+| hero-loop-mobile.mp4 | 1280x720, 1.1 MB | <=900px |
+| hero-poster.webp | 77 KB | poster + preloader + LCP |
+| og-hero.webp | 52 KB | 1200x630 share card |
+
+H.264 main/yuv420p, CRF 31/32, `+faststart`. `media` on `<source>` inside
+`<video>` is not reliably honoured, so the file is chosen with matchMedia and
+assigned to `v.src`; `preload="none"` and no `<source>` in markup means a phone
+never starts fetching the 2.8 MB cut before that choice is made.
+
+### The headline had to lose its blend
+
+`mix-blend-mode: difference` only reads over a backdrop that is decisively dark
+or bright. This montage sits in the middle. Measured against the brightest
+pixel in the headline band, after the scrims:
+
+| scene | blend `difference` | solid white |
+|-------|--------------------|-------------|
+| 4 of 5 | 1.15 - 1.17 | 4.27 - 4.30 |
+| darkest | 4.37 | 8.91 |
+
+WCAG AA wants 3.0 for large text, so the blend was effectively invisible. The
+h1 is now solid white. **The header still blends** — it is a thin strip with a
+heavier scrim above it and reads correctly there.
+
+### Scrims
+
+Two non-interactive full-bleed layers below the headline in paint order: a
+vertical black gradient (strongest behind the nav, again through the headline
+band, and at the bottom behind the entity paragraph) and a 25% emerald wash
+that stops the black-and-white opening reading as monochrome.
+
+### Playback gating
+
+Two ref gates, no React state, so neither re-renders the page:
+- the intro must have finished — otherwise the loop advances behind the
+  preloader and the handoff jumps (the preloader grows the SAME poster frame
+  the video is paused on, which is what makes it invisible);
+- the hero must be on screen — an IntersectionObserver pauses it otherwise, so
+  nothing decodes while the rest of this long page scrolls.
+
+`prefers-reduced-motion` gets the poster and no <video> element at all.
+
+### Measurement note
+
+Within one run, video present vs hidden measured 35.6 vs 34.2 ms average in the
+hero and 22.1 vs 22.0 elsewhere — the video's marginal cost is small. Absolute
+numbers this session ran higher than the mobile-perf session for reasons not
+attributable to this change (machine load); variants that should be neutral or
+better measured worse, which is the signature of noise. Do not read the
+absolute figures here against those in mobile-perf.md.

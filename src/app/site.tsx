@@ -1613,7 +1613,7 @@ function Preloader({ onDone }: { onDone: () => void }) {
         style={{ clipPath: "inset(50% 50% 50% 50%)" }}
       >
         <Image
-          src="/images/hero-atmosphere.webp"
+          src="/images/hero-poster.webp"
           alt=""
           fill
           priority
@@ -1661,6 +1661,54 @@ export default function Site({ locale }: { locale: Locale }) {
      `.intro-fade` in globals.css); all this does is flip a class and release
      the scroll hold, neither of which renders anything. */
   const lenisRef = useRef<import("lenis").default | null>(null);
+
+  /* Hero loop playback.
+
+     Two gates, both refs rather than state so neither re-renders the page:
+       - the intro must have finished (otherwise the loop advances behind the
+         preloader and the handoff jumps), and
+       - the hero must be on screen. Decoding 1080p video while the rest of the
+         page scrolls is pure waste, and this page is long. */
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const heroInView = useRef(true);
+  const introFinished = useRef(false);
+
+  /* Source selection. `media` on <source> inside <video> is not reliably
+     honoured by browsers, so choose it here instead. 1080p is 2.8MB and 720p
+     is 1.1MB — on a phone the element is ~390px wide behind a scrim, so the
+     smaller cut is indistinguishable and halves what the visitor pays for. */
+  useEffect(() => {
+    const v = heroVideoRef.current;
+    if (!v) return;
+    const small = window.matchMedia("(max-width: 900px)").matches;
+    v.src = small ? "/videos/hero-loop-mobile.mp4" : "/videos/hero-loop.mp4";
+  }, [reduceMotion]);
+
+  const playHeroVideo = useCallback(() => {
+    const v = heroVideoRef.current;
+    if (!v || !introFinished.current || !heroInView.current) return;
+    // Some browsers only honour `muted` as a PROPERTY; without this the
+    // autoplay policy can reject play() on a video that is muted in markup.
+    v.muted = true;
+    void v.play().catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const section = heroRef.current;
+    const video = heroVideoRef.current;
+    if (!section || !video) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        heroInView.current = entry.isIntersecting;
+        if (entry.isIntersecting) playHeroVideo();
+        else video.pause();
+      },
+      { threshold: 0 }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, [playHeroVideo, reduceMotion]);
+
   const handleIntroDone = useCallback(() => {
     // rAF so the hidden start state is guaranteed to have been painted; adding
     // the class in the same frame it first renders would skip the transition.
@@ -1668,7 +1716,9 @@ export default function Site({ locale }: { locale: Locale }) {
       document.documentElement.classList.add("intro-done");
     });
     lenisRef.current?.start();
-  }, []);
+    introFinished.current = true;
+    playHeroVideo();
+  }, [playHeroVideo]);
 
   /* Nav hide-on-scroll-down / show-on-scroll-up.
      Source `.willen-nav` is position:fixed and animates `top` (NOT transform)
@@ -1969,21 +2019,79 @@ export default function Site({ locale }: { locale: Locale }) {
           className="absolute inset-x-0 -top-[15%] h-[130%] will-change-transform"
           style={reduceMotion ? undefined : { y: heroImageY }}
         >
-          <Image
-            src="/images/hero-atmosphere.webp"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+          {reduceMotion ? (
+            /* Reduced motion gets the still. `autoplay` on a looping background
+               is exactly the kind of unrequested movement the preference is
+               asking us not to start. */
+            <Image
+              src="/images/hero-poster.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          ) : (
+            /* NOT `autoPlay`: playback starts from the intro handoff (see
+               handleIntroDone) so the loop is still on frame 0 while the
+               preloader's growing image — the same poster frame — settles into
+               place. With autoplay the video would be ~2.2s in by then and the
+               handoff would visibly jump.
+
+               `poster` is that same frame, so first paint is instant and the
+               LCP element is a 76KB image rather than 2.8MB of video. */
+            <video
+              ref={heroVideoRef}
+              className="h-full w-full object-cover"
+              poster="/images/hero-poster.webp"
+              loop
+              muted
+              playsInline
+              /* `preload="none"` and NO <source> in markup on purpose: the
+                 effect below picks the 1080p or the 720p file and only then
+                 assigns src, so a phone never starts fetching the 2.8MB
+                 desktop cut before we have chosen. The poster covers the gap,
+                 and if JS never runs the poster is simply what you see. */
+              preload="none"
+            />
+          )}
         </motion.div>
-        {/* Headline centred in the viewport. Kept on `mix-blend-mode:
-            difference` — unlike the fixed header this element scrolls with the
-            page, so it does not force a re-blend every frame, and the two-tone
-            read against the image is the effect worth keeping.
-            Each line rises out of its own clipping mask on load. */}
-        <h1 className="mix-blend-difference absolute inset-x-0 top-1/2 mx-auto max-w-[1080px] -translate-y-1/2 px-4 text-center text-[10.5vw] font-normal leading-[1.02] uppercase tracking-[-0.03em] text-white md:px-10 md:text-[96px] md:leading-[1]">
+
+        {/* Legibility scrims.
+
+            The clip is a montage: it opens on a black-and-white interior with
+            blown-out windows dead centre, then moves through brand-emerald
+            scenes. The headline sits on `mix-blend-mode: difference`, so
+            without help it would flip between black and white as the scenes
+            cut — unstable and hard to read.
+
+            Two layers, both non-interactive and below the headline in paint
+            order so the blend composites against them:
+              1. a vertical black gradient — strongest at the top (behind the
+                 nav), again through the headline band, and at the bottom
+                 (behind the entity paragraph);
+              2. a low emerald wash that pulls the black-and-white opening
+                 scenes back toward the brand, so the section does not read as
+                 monochrome for its first few seconds. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.34)_20%,rgba(0,0,0,0.52)_46%,rgba(0,0,0,0.52)_58%,rgba(0,0,0,0.40)_74%,rgba(0,0,0,0.88)_100%)]"
+        />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#0B3B2C]/25" />
+        {/* Headline centred in the viewport, each line rising out of its own
+            clipping mask on load.
+
+            NOT on `mix-blend-mode: difference` any more. That worked over the
+            old still, but `difference` only reads over a backdrop that is
+            decisively dark or bright, and this montage sits in the middle:
+            measured against the brightest pixel in the headline band, the
+            blend gave a contrast ratio of 1.15-1.17 in four of the five scenes
+            — invisible, where WCAG AA wants 3.0 for large text. Solid white
+            over the scrim measures 4.27-8.91 across the same scenes.
+
+            The HEADER still blends; it sits in a thin strip with its own
+            heavier scrim above, and it reads correctly there. */}
+        <h1 className="absolute inset-x-0 top-1/2 mx-auto max-w-[1080px] -translate-y-1/2 px-4 text-center text-[10.5vw] font-normal leading-[1.02] uppercase tracking-[-0.03em] text-white md:px-10 md:text-[96px] md:leading-[1]">
           {[copy.hero.line1, copy.hero.line2].map((line, i) => (
             <span key={line} className="block overflow-hidden">
               <span

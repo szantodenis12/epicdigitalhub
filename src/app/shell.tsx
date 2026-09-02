@@ -66,15 +66,15 @@ export function buildMetadata(locale: Locale): Metadata {
       description: m.ogDescription,
       locale: m.ogLocale,
       alternateLocale: LOCALES.filter((l) => l !== locale).map((l) => COPY[l].meta.ogLocale),
-      // TODO: replace with a purpose-made 1200x630 card. This is a reused site
-      // image, so it will crop badly in some previews.
-      images: [{ url: "/images/hero-atmosphere.webp", width: 1200, height: 630 }],
+      // Cut to 1200x630 from the hero loop's first frame, so the share card is
+      // actually that shape rather than a site image cropped at random.
+      images: [{ url: "/images/og-hero.webp", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: m.title,
       description: m.twitterDescription,
-      images: ["/images/hero-atmosphere.webp"],
+      images: ["/images/og-hero.webp"],
     },
     robots: { index: true, follow: true },
   };
