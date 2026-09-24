@@ -9,15 +9,25 @@
    contact form), the RO wording is composed from the deck's own phrasing so the
    voice stays consistent.
 
-   Romanian is the DEFAULT locale and lives at `/`; English lives at `/en`.
+   English is the DEFAULT locale and lives at `/`; Romanian lives at `/ro`.
    The audience is Oradea and Bihor.
    ------------------------------------------------------------------------ */
 
-export const LOCALES = ["ro", "en"] as const;
+export const LOCALES = ["en", "ro"] as const;
 export type Locale = (typeof LOCALES)[number];
 
-/** Romanian is served from the root, English from a prefixed path. */
-export const localeHref = (locale: Locale) => (locale === "ro" ? "/" : "/en");
+/** URL prefix per locale. English is served from the root, Romanian from /ro. */
+const LOCALE_PREFIX: Record<Locale, string> = { en: "", ro: "/ro" };
+
+/** A page's URL in one locale. `path` is the locale-independent part —
+    "" for the home page, "/services/seo-geo" for a subpage — so the same page
+    in the other language is always `localePath(other, path)`. Slugs are shared
+    between the locales; if they are ever localised, this is the one place. */
+export const localePath = (locale: Locale, path = "") =>
+  `${LOCALE_PREFIX[locale]}${path}` || "/";
+
+/** The home page of a locale. */
+export const localeHref = (locale: Locale) => localePath(locale);
 
 /** The label shown on the toggle is the language it switches TO. */
 export const otherLocale = (locale: Locale): Locale => (locale === "ro" ? "en" : "ro");
@@ -30,10 +40,12 @@ const en = {
 
   nav: {
     home: "Epic Digital Hub, creative studio — home",
+    /** `#anchor` = a section of the home page; `/path` = a page, localised
+        by the header (see navHref in _components/chrome.tsx). */
     links: [
-      { label: "Services", href: "#services" },
-      { label: "Work", href: "#work" },
-      { label: "Clients", href: "#clients" },
+      { label: "Services", href: "/services" },
+      { label: "Work", href: "/case-studies" },
+      { label: "Articles", href: "/articles" },
       { label: "About", href: "#about" },
     ],
     apply: "Apply",
@@ -150,6 +162,9 @@ const en = {
     ],
   },
 
+  /** Link at the foot of each open services row, to that service's page. */
+  serviceLink: "See the service",
+
   services: [
     {
       title: "Marketing strategy",
@@ -206,6 +221,8 @@ const en = {
     emailPlaceholder: "Email",
     submit: "Submit",
     submitted: "Sent — thanks!",
+    sending: "Sending…",
+    failed: "Didn't go through. Try again.",
     follow: "Follow",
     write: "Write",
     footerLine: "Epic Digital Hub — strategy, execution, operation.",
@@ -236,9 +253,9 @@ const ro: typeof en = {
   nav: {
     home: "Epic Digital Hub, studio de strategie și brand — acasă",
     links: [
-      { label: "Servicii", href: "#services" },
-      { label: "Proiecte", href: "#work" },
-      { label: "Clienți", href: "#clients" },
+      { label: "Servicii", href: "/services" },
+      { label: "Proiecte", href: "/case-studies" },
+      { label: "Articole", href: "/articles" },
       { label: "Despre noi", href: "#about" },
     ],
     apply: "Aplică",
@@ -366,6 +383,9 @@ const ro: typeof en = {
     ],
   },
 
+  /** Link at the foot of each open services row, to that service's page. */
+  serviceLink: "Vezi serviciul",
+
   services: [
     {
       title: "Strategie de marketing",
@@ -427,6 +447,8 @@ const ro: typeof en = {
     emailPlaceholder: "Adresă de e-mail",
     submit: "Trimite",
     submitted: "Trimis — mulțumim!",
+    sending: "Se trimite…",
+    failed: "Nu a mers. Mai încearcă.",
     follow: "Urmărește-ne",
     write: "Scrie-ne",
     footerLine: "Epic Digital Hub — strategie, execuție și optimizare.",

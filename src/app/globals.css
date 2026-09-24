@@ -186,3 +186,73 @@ body {
     font-size: 9vw;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Shared chrome: marquee loop, TrickButton hover, footer email underline.
+
+   These lived in inline <style> tags on the home page. They are here so every
+   page gets them. Unlayered, like the inline tags were, so they still outrank
+   Tailwind's layered utilities exactly as before.
+   ------------------------------------------------------------------------ */
+@keyframes marquee-loop {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee-loop 26s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+@media (min-width: 992px) {
+  .btn:hover .btn-arrow-bottom { transform: translateX(-9.7rem) rotate(90deg); }
+  .btn:hover .btn-arrow-top { transform: translateX(9.7rem) rotate(90deg); }
+}
+.btn-arrow-top, .btn-arrow-bottom { transition: transform 0.45s ease; }
+.btn:hover .btn-label:first-child { transform: translateY(-100%); }
+.btn:hover .btn-label:last-child { transform: translateY(-100%); }
+
+a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-origin: 0% 50%; }
+
+/* ---------------------------------------------------------------------------
+   Service device draw-in (_components/service-device.tsx).
+
+   Each line has pathLength=1, so a dash of 1 offset by 1 hides it and
+   offsetting back to 0 strokes it in from the top. Keyed to `intro-done`
+   like the header, so it starts after first paint and never leaves the
+   device hidden when JS has not run: without the class nothing is hidden.
+   ------------------------------------------------------------------------ */
+:root.intro-done .device-line {
+  stroke-dasharray: 1;
+  animation: device-draw 1.4s var(--intro-ease) var(--intro-delay, 0s) both;
+}
+:root.intro-done .device-fill {
+  animation: device-fade 1.2s var(--intro-ease) 0.2s both;
+}
+@keyframes device-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes device-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------------------
+   Headline rise for subpages (page-kit PageHero): each word rises out of its
+   own mask, reusing `.intro-rise`. The mask is padded out and the padding
+   cancelled with negative margins, so it clips the rising word without also
+   clipping what sticks out of the line box at rest: the Romanian capitals'
+   accents above (Â, Ă, Î) and the comma-below (Ș, Ț) and descenders under.
+   Measured at leading 1.02, a bare mask cut the tops off "CÂND" and "ÎNȚELEAGĂ".
+   ------------------------------------------------------------------------ */
+.rise-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-top: 0.2em;
+  margin-top: -0.2em;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.rise-word > span {
+  display: inline-block;
+}

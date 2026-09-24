@@ -1,0 +1,7 @@
+[
+  { "city": "Oradea", "niche": "stomatologie", "client": "DentalNet" },
+  { "city": "Oradea", "niche": "hotel", "client": "Hotel Maxim" },
+  { "city": "Oradea", "niche": "curatatorie", "client": "OkClean" },
+  { "city": "Oradea", "niche": "izolatii termice", "client": "ThermX" },
+  { "city": "Bihor", "niche": "utilaje agricole", "client": "Agro Salso" }
+]

@@ -16,38 +16,25 @@
    backgrounds intentionally left neutral.
    ========================================================================= */
 
-import {
-  Fragment,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import { LogoGlyph, LogoLockup, LogoMark, LogoWordmark } from "./logo";
-import { COPY, LOCALES, type Copy, type Locale, localeHref } from "./content";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LogoMark, LogoWordmark } from "./logo";
+import { COPY, type Locale, localePath } from "./content";
+import { APPLY_PATH, servicePath } from "./routes";
+import { motion, useScroll, useTransform } from "motion/react";
+import { gsap, ScrollTrigger } from "./_components/gsap";
 import { Flip } from "gsap/Flip";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
+import { SiteProviders, useCopy, useLocale, usePrefersReducedMotion } from "./_components/context";
+import { EyebrowMarquee, GradientWaveText, Parallax, StatsMarquee, TrickButton } from "./_components/ui";
+import { nn } from "./_components/format";
+import { HoverAccordion, MEDIA_H, MEDIA_W, mediaMotion } from "./_components/hover-accordion";
+import { ContactFooter, SiteHeader, useSmoothScrollNav } from "./_components/chrome";
+import { CurvedDivider } from "./_components/curved-divider";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, Flip, InertiaPlugin);
-
-  /* On a phone, scrolling hides and shows the browser address bar, which fires
-     `resize` with a changed viewport HEIGHT. Left alone, ScrollTrigger treats
-     that as a real resize and refreshes every trigger on the page - a full
-     synchronous re-measure of six work cards, two pinned dividers, the
-     showreel Flip, services and the process cards - in the middle of a scroll
-     gesture. That is what "it stutters and blocks the scroll" on mobile
-     actually is. `ignoreMobileResize` makes it ignore height-only changes.
-
-     No effect on desktop, where the address bar does not move. */
-  ScrollTrigger.config({ ignoreMobileResize: true });
+  // ScrollTrigger itself is registered (and configured) in _components/gsap.
+  gsap.registerPlugin(Flip, InertiaPlugin);
 }
 
 /* ============================================================================
@@ -76,387 +63,16 @@ const SERVICE_IMAGES = [
   "/images/about-production.webp",
 ];
 
-/* Copy is read through context rather than threaded as props: the sections are
-   separate components several levels down, and prop-drilling one dictionary
-   through all of them would touch every signature for no benefit. */
-const CopyContext = createContext<Copy>(COPY.ro);
-const LocaleContext = createContext<Locale>("ro");
-const useCopy = () => useContext(CopyContext);
-const useLocale = () => useContext(LocaleContext);
-
-/** Two-digit index label, "01".."06". */
-const nn = (i: number) => String(i + 1).padStart(2, "0");
-
-const CURVE_PATH =
-  "M -700 252 C -470 200 -230 145 0 92.0674 C 528.5 -28.9327 977.5 -32.4328 1516.5 92.0674 C 1745 145 1980 200 2216 252";
-
-/* ============================================================================
-   HOOKS
-   ========================================================================= */
-
-function subscribeReducedMotion(callback: () => void) {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  mq.addEventListener("change", callback);
-  return () => mq.removeEventListener("change", callback);
-}
-function getReducedMotionSnapshot() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-function getReducedMotionServerSnapshot() {
-  return false;
-}
-function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot
-  );
-}
-
-/* ============================================================================
-   SMALL SHARED PIECES
-   ========================================================================= */
-
-/** Heart-shaped eyebrow glyph — real asset, `fill: currentColor`. */
-/** Two tiny quarter-arc corner brackets — the real button "arrow-wrap" markup. */
-function CornerBrackets() {
-  return (
-    /* Source geometry (measured live): both arcs are 8x8, position absolute,
-       transform-origin center. .arrow-top sits at top:4px left:4px and slides
-       +9.7rem to the RIGHT on hover; .arrow-bottom sits at bottom:4px
-       right:4px and slides -9.7rem to the LEFT. They swap corners ALONG the
-       button edges and stay inside it — anchoring them the other way round
-       makes them fly outwards, which is wrong. */
-    <span aria-hidden className="pointer-events-none absolute inset-0 z-10">
-      <svg
-        viewBox="0 0 8 8"
-        className="btn-arrow-top absolute top-1 left-1 h-2 w-2 origin-center"
-      >
-        <path d="M0 0H8V0.67C3.95 0.67 0.67 3.95 0.67 8H0V0Z" fill="currentColor" />
-      </svg>
-      <svg
-        viewBox="0 0 8 8"
-        className="btn-arrow-bottom absolute right-1 bottom-1 h-2 w-2 origin-center"
-      >
-        <path d="M8 8L0 8L0 7.33C4.05 7.33 7.33 4.05 7.33 0L8 0Z" fill="currentColor" />
-      </svg>
-    </span>
-  );
-}
-
-/** Duplicate stacked text nodes -> clip + translateY(-100%) label-flip on hover. */
-function LabelFlip({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    /* Source .button-text_wrap: overflow hidden, height 20px (12px/20px text) */
-    <span className={`relative block h-5 overflow-hidden ${className}`}>
-      {/* Source .button-text: transition all 0.3s `ease` (not ease-out) */}
-      <span className="btn-label block transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
-        {children}
-      </span>
-      <span className="btn-label absolute inset-0 block translate-y-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
-        {children}
-      </span>
-    </span>
-  );
-}
-
-function TrickButton({
-  children,
-  href = "#",
-  variant = "base",
-  onClick,
-  className = "",
-}: {
-  children: React.ReactNode;
-  href?: string;
-  variant?: "base" | "orange" | "solid";
-  onClick?: (e: React.MouseEvent) => void;
-  className?: string;
-}) {
-  const base =
-    variant === "orange"
-      ? "bg-[#1FDB93] text-white border-black hover:border-[#21976A]"
-      : variant === "solid"
-        ? // for use on light backdrops, where the blended white pill vanishes
-          "bg-[#1F1F1F] text-[#F5F2F2] border-transparent"
-        : "bg-white text-black mix-blend-difference border-transparent";
-  return (
-    <a
-      href={href}
-      onClick={onClick}
-      /* Source: height 56px, padding 16px 24px, font-size 12px/20px,
-         border-radius 2.08px, transition 0.3s, and crucially
-         `overflow: visible` — the corner arcs travel +/-9.7rem OUTSIDE the
-         button on hover, so clipping here kills the whole effect. */
-      className={`btn group relative inline-flex h-14 min-w-[172px] items-center justify-center rounded-[0.13rem] border px-6 text-xs leading-5 tracking-[0em] transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${base} ${className}`}
-    >
-      <CornerBrackets />
-      <LabelFlip className="pointer-events-none">{children}</LabelFlip>
-    </a>
-  );
-}
-
-/* Language toggle.
-
-   Deliberately drawn in `currentColor`, not the emerald accent. It sits inside
-   the header, which is on `mix-blend-mode: difference` — under that blend
-   #1FDB93 over the cream sections resolves to a magenta (214, 23, 95), which
-   is not in the palette at all. White-on-difference is the header's own
-   treatment, so the toggle reads as part of it rather than as a bolted-on
-   widget, and the active language is marked with a rule instead of a colour.
-
-   Real <a> elements, not a JS switcher: each locale is its own URL, so the
-   toggle is also how a crawler follows the alternate. `hrefLang` and `lang`
-   tell it (and a screen reader) what it is pointing at. */
-function LocaleToggle({ className = "" }: { className?: string }) {
-  const locale = useLocale();
-  const copy = useCopy();
-  return (
-    <div
-      className={`flex items-center gap-1.5 tracking-[0.02em] uppercase ${className || "text-xs text-white"}`}
-    >
-      {LOCALES.map((l, i) => (
-        <Fragment key={l}>
-          {i > 0 && (
-            <span aria-hidden className="opacity-30">
-              /
-            </span>
-          )}
-          {l === locale ? (
-            <span aria-current="true" className="relative">
-              {l}
-              <span aria-hidden className="absolute -bottom-1 left-0 h-px w-full bg-current" />
-            </span>
-          ) : (
-            <a
-              href={localeHref(l)}
-              hrefLang={l}
-              lang={l}
-              title={copy.switchTitle}
-              className="opacity-45 transition-opacity duration-300 hover:opacity-100"
-            >
-              {l}
-            </a>
-          )}
-        </Fragment>
-      ))}
-    </div>
-  );
-}
-
-function NavLink({ label, href }: { label: string; href: string }) {
-  return (
-    <a
-      href={href}
-      className="group relative block h-4 overflow-hidden text-xs uppercase tracking-[0.02em]"
-    >
-      <span className="block transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-full">
-        {label}
-      </span>
-      <span className="absolute inset-0 block translate-y-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-y-0">
-        {label}
-      </span>
-    </a>
-  );
-}
-
-/** "{ LABEL ♥ LABEL }" repeating eyebrow row used by Services / Contact / dividers. */
-function EyebrowMarquee({ label }: { label: string }) {
-  // Repeat count is sized so ONE half is wider than the viewport — otherwise
-  // the track runs out of content on the right partway through the cycle and a
-  // blank gap appears. 6 repeats measured ~1013px against a 1920px viewport.
-  //
-  // Two IDENTICAL halves, and the spacing lives on each item as a margin
-  // rather than as a flex `gap` on the track. `translateX(-50%)` only loops
-  // seamlessly if the two halves are exactly equal in width — a `gap` adds one
-  // extra space between the halves that isn't inside either of them, which put
-  // the loop out by one gap every cycle and made it visibly jump.
-  const half = (
-    <div className="flex shrink-0 items-center">
-      {Array.from({ length: 16 }).map((_, i) => (
-        <span key={i} className="flex shrink-0 items-center">
-          <span className="whitespace-nowrap">{label}</span>
-          <LogoGlyph className="mx-8 h-3 w-auto md:mx-12" />
-        </span>
-      ))}
-    </div>
-  );
-  return (
-    <div className="relative flex w-full items-center overflow-hidden text-[10px] uppercase tracking-[0.15em]">
-      {/* Braces sit ON the edges rather than as flex siblings of the track —
-          as siblings, the `w-max` track pushed them out of the row and then
-          slid across them. */}
-      <span className="pointer-events-none absolute left-0 z-10 px-4 md:px-6">{"{"}</span>
-      <div className="marquee-track flex w-max shrink-0 items-center">
-        {half}
-        <div aria-hidden className="flex shrink-0 items-center">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <span key={i} className="flex shrink-0 items-center">
-              <span className="whitespace-nowrap">{label}</span>
-              <LogoGlyph className="mx-8 h-3 w-auto md:mx-12" />
-            </span>
-          ))}
-        </div>
-      </div>
-      <span className="pointer-events-none absolute right-0 z-10 px-4 md:px-6">{"}"}</span>
-    </div>
-  );
-}
-
-
-/* ============================================================================
-   CURVED TEXT DIVIDER — SVG textPath, GSAP ScrollTrigger scrub on startOffset
-   ========================================================================= */
-
-function CurvedDivider({
-  text,
-  reduceMotion,
-  idSuffix,
-}: {
-  text: string;
-  reduceMotion: boolean;
-  idSuffix: string;
-}) {
-  const copy = useCopy();
-  const pinRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const textPathRef = useRef<SVGTextPathElement>(null);
-  const pathId = `mwg032-path-${idSuffix}`;
-
-  useEffect(() => {
-    const path = pathRef.current;
-    const textPath = textPathRef.current;
-    if (!path || !textPath) return;
-
-    // Measured off the source across a full pin: startOffset runs
-    // 82.7% -> -150.87%. It does NOT start off-path — at progress 0 the text
-    // is already on screen (its left edge sits at x~33 on a 1905px viewport)
-    // and it simply travels left from there.
-    //
-    // The previous formula started at `100 + (textWidth/pathLen)*100` (~184%),
-    // parking the text entirely off the path so the first chunk of the 3240px
-    // pin rendered as blank background before anything appeared.
-    // Start: 82.7 is the source's own measured value — it parks the text just
-    // off the right edge, and the lead-in trigger below walks it into view as
-    // the section approaches.
-    const startOffset = 82.7;
-
-    // End: MUST be derived from THIS string's length, not hardcoded. -150.87
-    // was measured off the source and only ever cleared the source's own
-    // sentence; with our (longer) copy the text stopped with ~700px still on
-    // screen, froze there, and then dragged down over the next section.
-    // -(textLength / pathLength) * 100 is exactly the point at which the
-    // trailing glyph passes the start of the path, whatever the copy says.
-    // No safety margin: an extra 6% here pushed the text off ~240px before the
-    // pin ended and reintroduced dead scroll at the tail. The viewport is
-    // narrower than the path, so the text is out of SIGHT slightly before this
-    // value anyway — the bare ratio lands it just as the pin finishes.
-    const totalLength = path.getTotalLength();
-    const textLength =
-      typeof textPath.getComputedTextLength === "function"
-        ? textPath.getComputedTextLength()
-        : totalLength;
-    const endOffset = -((textLength / totalLength) * 100);
-    textPath.setAttribute("startOffset", `${startOffset}%`);
-
-    if (reduceMotion || !pinRef.current || !stickyRef.current) return;
-
-    // TWO triggers, because the pin and the text animation do NOT start at the
-    // same point on the source.
-    //
-    // Measured on nbnzia.com, offsets relative to its pin top:
-    //   -300 -> 82.70%   (not yet moving)
-    //   -100 -> 74.91%   (already animating, BEFORE the pin engages)
-    //      0 -> 67.70%   (pin starts, text already well into its travel)
-    //   +150 -> 56.89%
-    //
-    // Driving both from one `start: "top top"` trigger left the text frozen in
-    // place while the section scrolled into view — it just sat there rather
-    // than animating in. The pin must still engage at "top top" (otherwise the
-    // section freezes before it fills the screen), so the scrub gets its own
-    // trigger that starts a quarter-viewport earlier.
-    const pinST = ScrollTrigger.create({
-      trigger: pinRef.current,
-      start: "top top",
-      end: "+=3240",
-      pin: stickyRef.current,
-      scrub: true,
-    });
-
-    const LEAD = Math.round(window.innerHeight * 0.25);
-    const textST = ScrollTrigger.create({
-      trigger: pinRef.current,
-      start: "top 25%",
-      end: `+=${3240 + LEAD}`,
-      scrub: true,
-      onUpdate: (self) => {
-        const val = gsap.utils.interpolate(startOffset, endOffset, self.progress);
-        textPath.setAttribute("startOffset", `${val}%`);
-      },
-    });
-
-    return () => {
-      pinST.kill();
-      textST.kill();
-    };
-  }, [text, reduceMotion]);
-
-  return (
-    /* NO explicit height here. GSAP's pin creates its own pin-spacer
-       (element height 1080 + pin distance 3240 = 4320), which is exactly what
-       the source's spacer measures. Setting height:4320 as well double-counted
-       the scroll — the section ate ~7560px and left a long empty tail after
-       the text had finished animating. */
-    <div ref={pinRef} data-nav-bg="light" className="relative bg-[#F5F2F2] text-[#1F1F1F]">
-      <div
-        ref={stickyRef}
-        className="flex h-screen flex-col items-center justify-center overflow-hidden"
-      >
-        <div className="absolute top-16 w-full px-4">
-          <EyebrowMarquee label={copy.eyebrow.process} />
-        </div>
-        <svg
-          width="1516"
-          height="300"
-          viewBox="0 -208 1516 300"
-          /* Do NOT stretch this to the container width. The source's SVG
-             renders at its intrinsic viewBox width (1516) and is then scaled
-             1.1 -> 1668px inside a 1905px viewport. `w-full` stretched it to
-             1905 -> 2096px, running the path past the right edge so the text
-             sat off-screen for the first stretch of the pin — which read as a
-             long blank scroll before anything appeared. */
-          className="w-[1516px] max-w-full shrink-0 overflow-visible"
-          /* Source CSS is translate(0, -100%) scale(1.1), but the source's
-             container is not vertically centred the way this one is, so a
-             literal -100% lands the text ~200px too high. -30% puts the arc at
-             the same on-screen y (~280px) as the original. */
-          style={{ transform: "translate(0, -30%) scale(1.1)" }}
-          aria-hidden={false}
-        >
-          <path ref={pathRef} d={CURVE_PATH} id={pathId} fill="none" />
-          <text>
-            <textPath
-              ref={textPathRef}
-              href={`#${pathId}`}
-              /* Size lives entirely in globals.css - an inline style would
-                 outrank the class and reintroduce the quadratic shrink. */
-              className="curved-textpath-size fill-current uppercase"
-            >
-              {text}
-            </textPath>
-          </text>
-        </svg>
-      </div>
-    </div>
-  );
-}
+/* The dedicated page each home services row links to, by index. The home page
+   keeps its five broad services; each one opens the service page that covers
+   it. The other five pages are reached from the /services hub. */
+const SERVICE_PAGES = [
+  "consultanta-marketing", // Marketing strategy
+  "design-grafic", // Brand & design
+  "website-uri-prezentare", // Premium websites
+  "campanii-ppc", // Paid ads
+  "continut-video", // Photo-video
+];
 
 /* ============================================================================
    SHOWREEL — GSAP Flip morph from a small inline box to a full-bleed box
@@ -643,162 +259,6 @@ function ShowreelBig({ bigRef }: Pick<ShowreelRefs, "bigRef">) {
         />
       </div>
     </section>
-  );
-}
-
-/* ============================================================================
-   GRADIENT WAVE TEXT — scroll-scrubbed per-character reveal
-
-   Source marks this block `data-gradient-wave-text` and splits it into words,
-   each word holding one <div> per character. As the block travels up the
-   viewport each character runs through a colour wave, staggered left-to-right:
-
-       rgba(255,255,255,0.2)  invisible against the cream background
-       -> rgb(31,219,147)      orange crest
-       -> rgb(31,31,31)       settled body colour
-
-   It is scrubbed, not triggered, so scrolling back up plays it in reverse.
-   ========================================================================= */
-
-function GradientWaveText({
-  paragraphs,
-  className = "",
-  reduceMotion,
-  dark = false,
-}: {
-  paragraphs: string[];
-  className?: string;
-  reduceMotion: boolean;
-  /** On a dark panel the wave must settle to the light body colour —
-      settling to #1F1F1F would leave the text invisible. */
-  dark?: boolean;
-}) {
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root || reduceMotion) return;
-    const chars = root.querySelectorAll<HTMLElement>("[data-wave-char]");
-    if (!chars.length) return;
-
-    const tween = gsap.fromTo(
-      chars,
-      { color: "rgba(255,255,255,0.2)" },
-      {
-        keyframes: [
-          { color: "rgb(31,219,147)" },
-          { color: dark ? "rgb(245,242,242)" : "rgb(31,31,31)" },
-        ],
-        ease: "power1.inOut",
-        // The source is a broad GRADIENT, not a moving edge. Sampling it
-        // mid-scroll shows the start of the block near-solid, the middle
-        // part-way through, and the end untouched — i.e. most of the text is
-        // in transition at once. duration 60 against a 0.5 stagger keeps
-        // ~120 characters in flight simultaneously, which reads as a soft
-        // sweep rather than the hard boundary a short duration produced.
-        duration: 60,
-        stagger: { each: 0.5 },
-        scrollTrigger: {
-          trigger: root,
-          start: "top 90%",
-          end: "bottom 40%",
-          // numeric scrub adds inertia so the wave glides instead of snapping
-          // frame-to-frame with the wheel
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-        },
-      }
-    );
-
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [paragraphs, reduceMotion, dark]);
-
-  return (
-    <div ref={rootRef} className={className}>
-      {paragraphs.map((para, pi) => (
-        <p key={pi} className={pi > 0 ? "mt-8" : undefined}>
-          {/* words kept whole so they never break mid-word, then split to chars */}
-          {para.split(" ").map((word, wi, arr) => (
-            <Fragment key={`${word}-${wi}`}>
-              <span className="relative inline-block">
-                {Array.from(word).map((ch, ci) => (
-                  <span
-                    key={ci}
-                    data-wave-char
-                    className="inline-block"
-                    style={
-                      reduceMotion ? undefined : { color: "rgba(255,255,255,0.2)" }
-                    }
-                  >
-                    {ch}
-                  </span>
-                ))}
-              </span>
-              {/* The separator must sit BETWEEN the word boxes, not inside
-                  them: trailing whitespace at the end of an inline-block is
-                  collapsed, which ran every word together. As a text node here
-                  it renders as a real space and still allows line wrapping. */}
-              {wi < arr.length - 1 ? " " : null}
-            </Fragment>
-          ))}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-/* ============================================================================
-   PARALLAX
-
-   Deliberately narrow in scope. This page is already dense with scroll-driven
-   motion (3D card stacking, scrubbed curved text, the Flip video morph, the
-   gradient wave), so parallax is applied ONLY where it adds depth without
-   competing:
-
-     - the hero image, drifting slower than the page as you leave it
-     - the image inside each work card, drifting within its own frame
-     - the process-card deck as a whole
-
-   Deliberately NOT applied to: the showreel (its transform is owned by
-   Flip.fit), the pinned curved dividers (their content is fixed while pinned),
-   the process CARDS themselves (GSAP owns those transforms), or the services
-   media (hover-driven). Adding parallax to any of those fights an existing
-   animation for the same property.
-
-   Uses motion's `useScroll` rather than another ScrollTrigger: this page has
-   repeatedly hit stale cached positions from GSAP triggers created around
-   pinned sections, and motion's scroll tracking does not suffer that.
-   ========================================================================= */
-
-function Parallax({
-  children,
-  className = "",
-  distance = 60,
-  reduceMotion,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  /** total px travelled across the element's whole pass through the viewport */
-  distance?: number;
-  reduceMotion: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [-distance / 2, distance / 2]);
-
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-  return (
-    <motion.div ref={ref} style={{ y }} className={className}>
-      {children}
-    </motion.div>
   );
 }
 
@@ -1174,127 +634,42 @@ function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
 }
 
 /* ============================================================================
-   SERVICES — hover accordion, one row open at a time
+   SERVICES — hover accordion, one row open at a time (_components/hover-accordion)
    ========================================================================= */
 
 function Services() {
   const copy = useCopy();
-  const [active, setActive] = useState(0);
-
-  // Source geometry, measured live on nbnzia.com:
-  //   .mwg035-li        height 96px collapsed / 244px open, overflow hidden
-  //   .accordion-content  height 0 -> 112px, overflow hidden
-  //   .mwg035-medias    349 x 196, position absolute, overflow hidden — ONE PER ROW
-  //   .mwg035-media     slides translateY(196) -> translateY(0), i.e. up from
-  //                     below its own clipping box. Not an opacity crossfade.
-  const ROW_CLOSED = 96;
-  const ROW_OPEN = 244;
-  const CONTENT_H = 112;
-  const MEDIA_W = 350;
-  const MEDIA_H = 196;
-
-  /* CONTENT_H is the source's measured 112px and stays the floor. But copy
-     length is not fixed - the Romanian service descriptions are longer than
-     the English ones, and at 390px "Website-uri și sisteme digitale" ran 49px
-     past the box and lost two lines behind `overflow: hidden`.
-
-     So each row is measured and opens to whatever its own copy needs, never
-     less than 112. Rows whose text already fits are pixel-identical to before;
-     only a row that would otherwise hide text grows. A ResizeObserver re-reads
-     them because the wrap changes with width. */
-  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [contentHeights, setContentHeights] = useState<number[]>([]);
-
-  useEffect(() => {
-    const measure = () =>
-      setContentHeights(contentRefs.current.map((el) => el?.offsetHeight ?? 0));
-    measure();
-    const ro = new ResizeObserver(measure);
-    contentRefs.current.forEach((el) => el && ro.observe(el));
-    return () => ro.disconnect();
-  }, []);
+  const locale = useLocale();
 
   return (
     <section id="services" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
       <div className="mx-auto max-w-[1440px] px-4">
         <EyebrowMarquee label={copy.eyebrow.whatWeDo} />
-        <div className="mt-16 border-t border-white/15">
-          {copy.services.map((s, i) => {
-            const isActive = active === i;
-            const openH = Math.max(CONTENT_H, contentHeights[i] ?? 0);
+        <HoverAccordion
+          items={copy.services.map((s, i) => ({
+            key: s.title,
+            title: s.title,
+            body: s.body,
+            link: {
+              href: localePath(locale, servicePath(SERVICE_PAGES[i])),
+              label: copy.serviceLink,
+            },
+          }))}
+          media={(i, isActive) => {
+            const m = mediaMotion(isActive);
             return (
-              <div
-                key={s.title}
-                onMouseEnter={() => setActive(i)}
-                onClick={() => setActive(i)}
-                className="relative flex cursor-pointer flex-col justify-center overflow-hidden border-b border-white/15 transition-[min-height] duration-500 ease-in-out"
-                /* No `will-change` here: min-height is a layout property, so
-                   the hint cannot buy compositing and only forces a layer.
-                   Measured on a DPR-3 mobile profile at 6x CPU throttle, these
-                   layout hints were the largest single cause of scroll jank. */
-                style={{
-                  minHeight: isActive ? ROW_OPEN + (openH - CONTENT_H) : ROW_CLOSED,
-                }}
-              >
-                <div className="flex items-baseline gap-6">
-                  <span className="w-14 shrink-0 text-sm text-white/50">[ {nn(i)} ]</span>
-                  <h3 className="text-[22px] font-medium tracking-[-0.02em] md:text-[36px]">
-                    {s.title}
-                  </h3>
-                </div>
-
-                {/* Source `.accordion-content`: overflow hidden, height 0 -> 112.
-                    Keeps the collapsed row at exactly 96px while the copy stays
-                    mounted (no reconciliation churn on hover). */}
-                <div
-                  className="overflow-hidden transition-[height] duration-500 ease-in-out"
-                  /* Same as the row above - `height` is not compositable. */
-                  style={{ height: isActive ? openH : 0 }}
-                >
-                  <div
-                    ref={(el) => {
-                      contentRefs.current[i] = el;
-                    }}
-                    /* 50% is a desktop measure — the media sits in the other
-                       half. On mobile the media is hidden, so constraining to
-                       half the width made the copy wrap far more and get
-                       clipped mid-sentence by the fixed content height. */
-                    className="max-w-none pt-6 pl-0 text-sm leading-relaxed text-white/70 transition-opacity duration-400 ease-out md:max-w-[50%] md:pl-[4.5rem]"
-                    style={{ opacity: isActive ? 1 : 0 }}
-                  >
-                    {s.body}
-                  </div>
-                </div>
-
-                {/* Source `.mwg035-medias`: its own absolutely-positioned,
-                    overflow-hidden box per row. The image inside slides up from
-                    translateY(100%) to translateY(0) — the source drives this
-                    with GSAP (its CSS transition-duration is 0s), so the easing
-                    here is an expo-out approximation of that tween. */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 overflow-hidden md:block"
-                  style={{ width: MEDIA_W, height: MEDIA_H }}
-                >
-                  <Image
-                    src={SERVICE_IMAGES[i]}
-                    alt=""
-                    width={MEDIA_W}
-                    height={MEDIA_H}
-                    priority={i === 0}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    style={{
-                      transform: isActive ? "translateY(0)" : "translateY(100%)",
-                      // promoted only while this row is the open one, so it is
-                      // one layer at a time instead of five held permanently
-                      willChange: isActive ? "transform" : "auto",
-                    }}
-                  />
-                </div>
-              </div>
+              <Image
+                src={SERVICE_IMAGES[i]}
+                alt=""
+                width={MEDIA_W}
+                height={MEDIA_H}
+                priority={i === 0}
+                className={`object-cover ${m.className}`}
+                style={m.style}
+              />
             );
-          })}
-        </div>
+          }}
+        />
       </div>
     </section>
   );
@@ -1464,40 +839,6 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
       ))}
     </div>
     </Parallax>
-  );
-}
-
-/* ============================================================================
-   CONTACT — cursor-tracked orange spotlight duplicate over the eyebrow row
-   ========================================================================= */
-
-function ContactSpotlightEyebrow() {
-  const copy = useCopy();
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = wrapRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const xp = ((e.clientX - rect.left) / rect.width) * 100;
-    const yp = ((e.clientY - rect.top) / rect.height) * 100;
-    wrapRef.current?.style.setProperty("--xpercent", `${xp}%`);
-    wrapRef.current?.style.setProperty("--ypercent", `${yp}%`);
-  };
-  return (
-    <div ref={wrapRef} onMouseMove={onMove} className="relative">
-      <EyebrowMarquee label={copy.eyebrow.letsTalk} />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 text-[#1FDB93]"
-        style={{
-          WebkitMaskImage:
-            "radial-gradient(circle at var(--xpercent,50%) var(--ypercent,50%), #000 20%, transparent 25%)",
-          maskImage:
-            "radial-gradient(circle at var(--xpercent,50%) var(--ypercent,50%), #000 20%, transparent 25%)",
-        }}
-      >
-        <EyebrowMarquee label={copy.eyebrow.letsTalk} />
-      </div>
-    </div>
   );
 }
 
@@ -1699,8 +1040,6 @@ function Preloader({ onDone }: { onDone: () => void }) {
 export default function Site({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
   const reduceMotion = usePrefersReducedMotion();
-  const [submitted, setSubmitted] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   /* Intro handoff.
 
@@ -1710,7 +1049,7 @@ export default function Site({ locale }: { locale: Locale }) {
      the arrival stutter. The reveal is CSS instead (see `.intro-rise` /
      `.intro-fade` in globals.css); all this does is flip a class and release
      the scroll hold, neither of which renders anything. */
-  const lenisRef = useRef<import("lenis").default | null>(null);
+  const { navHidden, lenisRef } = useSmoothScrollNav(reduceMotion);
 
   /* Hero loop playback.
 
@@ -1768,13 +1107,9 @@ export default function Site({ locale }: { locale: Locale }) {
     lenisRef.current?.start();
     introFinished.current = true;
     playHeroVideo();
-  }, [playHeroVideo]);
-
-  /* Nav hide-on-scroll-down / show-on-scroll-up.
-     Source `.willen-nav` is position:fixed and animates `top` (NOT transform)
-     between 16px (shown) and -100px (hidden), with
-     `transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1)`. */
-  const [navHidden, setNavHidden] = useState(false);
+    // lenisRef is a stable ref from useSmoothScrollNav; listed only because the
+    // linter cannot see that across the hook boundary.
+  }, [playHeroVideo, lenisRef]);
 
   /* Hero image parallax. Tracked against the hero section so the drift is tied
      to leaving the hero, not to absolute page position. */
@@ -1798,264 +1133,13 @@ export default function Site({ locale }: { locale: Locale }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   useShowreelFlip({ scalingRef, bigRef, videoRef }, reduceMotion);
 
-  /* Nav direction from native scroll. Used whenever Lenis is NOT running -
-     reduced motion, and every touch device (see the Lenis effect below).
-     When Lenis IS running it drives this from its own per-frame `scroll`
-     callback instead, because Lenis coalesces native scroll events down to
-     roughly one per gesture and this listener could not read direction. */
-  useEffect(() => {
-    const coarse =
-      typeof window !== "undefined" &&
-      window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-    if (!reduceMotion && !coarse) return;
-    let last = window.scrollY;
-    let frame = 0;
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const y = window.scrollY;
-        const delta = y - last;
-        if (Math.abs(delta) < 6) return;
-        setNavHidden(delta > 0 && y > 120);
-        last = y;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [reduceMotion]);
-
-  /* Lenis smooth scroll, synced with ScrollTrigger.
-
-     Desktop only, deliberately. Lenis smooths WHEEL input; with the default
-     `syncTouch: false` it does not touch touch-scrolling at all, so on a phone
-     it changes nothing visible while still running a rAF loop every frame and
-     pushing a ScrollTrigger.update through the main thread on every scroll
-     event. Native mobile scrolling is already compositor-driven and smooth.
-     Skipping it on coarse pointers is free on mobile and leaves desktop
-     byte-for-byte identical. */
-  useEffect(() => {
-    if (reduceMotion) return;
-    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
-    let lenisInstance: import("lenis").default | null = null;
-    let tickerFn: ((time: number) => void) | null = null;
-    let cancelled = false;
-
-    import("lenis").then(({ default: Lenis }) => {
-      if (cancelled) return;
-      // lerp-based (Lenis default) rather than duration-based: frame-rate
-      // independent and noticeably less stuttery under ScrollTrigger scrubs
-      // than `duration`, which re-tweens on every wheel event.
-      const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-      lenisInstance = lenis;
-      lenisRef.current = lenis;
-      // Lenis loads async, so it can come up either during or after the
-      // intro. `intro-lock` is present only while the preloader is running,
-      // which makes this correct in both orders.
-      if (document.documentElement.classList.contains("intro-lock")) lenis.stop();
-      lenis.on("scroll", ScrollTrigger.update);
-
-      // Nav hide/show. Lenis coalesces native `scroll` events down to roughly
-      // one per gesture, so a window scroll listener cannot read direction.
-      // ScrollTrigger is already synced to Lenis above and exposes a reliable
-      // `direction` (1 = down, -1 = up), so drive it from there.
-      // Nav hide/show is driven off Lenis's own per-event `direction`.
-      //
-      // Do NOT route this through ScrollTrigger.getVelocity(): GSAP computes
-      // velocity against a MODULE-LEVEL timestamp shared by every
-      // ScrollTrigger on the page, refreshed only every >=50ms. This page runs
-      // five concurrent triggers (2 curved dividers, the showreel Flip, the
-      // process-card reveal, and this one), so under a continuous ~16ms scroll
-      // cadence the reading starves toward zero and the nav simply freezes in
-      // whatever state it started in. Lenis's `direction` is per-instance and
-      // has no such contention.
-      lenis.on("scroll", ({ scroll, direction }: { scroll: number; direction: number }) => {
-        if (scroll <= 120) {
-          setNavHidden(false);
-          return;
-        }
-        if (direction === 1) setNavHidden(true);
-        else if (direction === -1) setNavHidden(false);
-      });
-      tickerFn = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(tickerFn);
-      gsap.ticker.lagSmoothing(0);
-    });
-
-    return () => {
-      cancelled = true;
-      if (tickerFn) gsap.ticker.remove(tickerFn);
-
-      lenisInstance?.destroy();
-    };
-  }, [reduceMotion]);
-
-  /* Nav entrance, staggered in behind the intro. Class + inline delay only -
-     the transition itself lives in globals.css.
-     Note: Tailwind v4 emits `-translate-x-1/2` as the standalone `translate`
-     property rather than `transform`, so `.intro-fade`'s transform composes
-     with it instead of overwriting the links' centring. */
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    window.setTimeout(() => setSubmitted(false), 2500);
-  };
-
   return (
-    <CopyContext.Provider value={copy}>
-    <LocaleContext.Provider value={locale}>
+    <SiteProviders locale={locale}>
       {/* Outside <main>: that element carries `overflow-x-clip`, which can
           clip fixed-position descendants. */}
       <Preloader onDone={handleIntroDone} />
     <main className="relative w-full overflow-x-clip bg-[#F5F2F2] text-[#1F1F1F]">
-      <style>{`
-        @keyframes marquee-loop {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .marquee-track { animation: marquee-loop 26s linear infinite; }
-        @media (prefers-reduced-motion: reduce) {
-          .marquee-track { animation: none; }
-        }
-        @media (min-width: 992px) {
-          .btn:hover .btn-arrow-bottom { transform: translateX(-9.7rem) rotate(90deg); }
-          .btn:hover .btn-arrow-top { transform: translateX(9.7rem) rotate(90deg); }
-        }
-        .btn-arrow-top, .btn-arrow-bottom { transition: transform 0.45s ease; }
-        .btn:hover .btn-label:first-child { transform: translateY(-100%); }
-        .btn:hover .btn-label:last-child { transform: translateY(-100%); }
-      `}</style>
-
-      {/* ============================================================
-          NAV
-          ============================================================ */}
-      {/* Source `.willen-nav` carries position:fixed, z-index AND
-          mix-blend-mode on ONE element. Splitting them (fixed+z on a wrapper,
-          blend on a child) makes the wrapper a stacking context that isolates
-          the child's blend from the page backdrop — the nav then blends only
-          against its own group and opaque fills render flat. Keep all three
-          together here. */}
-      <header
-        /* `mix-blend-mode: difference` MUST sit on this element, not on a
-           child: `position: fixed` always creates a stacking context, so a
-           blended child would composite against the header's own (transparent)
-           group instead of the page behind it.
-
-           Hide/show animates `transform`, not `top`. The source animates `top`,
-           but on a blended fixed element that forces layout + a full re-blend
-           every frame of the transition; a transform stays on the compositor.
-           This is the one optimisation available that does not cost the
-           negative-space effect. */
-        className="fixed inset-x-0 top-4 z-[99999] mix-blend-difference transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-        style={{ transform: navHidden ? "translateY(-116px)" : "translateY(0)" }}
-      >
-        <nav className="relative mx-auto flex h-14 max-w-[1440px] items-center justify-between px-4 md:px-8">
-          {/* Full logo lockup, inlined as OUTLINED paths — mark, rule,
-              "Epic Digital Hub" wordmark and the "CREATIVE STUDIO" tagline.
-
-              The supplied edh-logo.svg carries the wordmark as a live <text>
-              in Unbounded and the tagline in Space Grotesk. An SVG only NAMES
-              a font, it does not embed it, so that file renders correctly only
-              on machines with both fonts installed and falls back to a serif
-              everywhere else. The text is converted to paths here from the same
-              TTFs (verified against a font-rendered reference), so it is
-              correct on every device with no webfont to load.
-
-              `fill="currentColor"` is load-bearing: it is what lets the
-              header's `mix-blend-mode: difference` treat the logo as a
-              silhouette, exactly as it treated the text it replaced. An <img>
-              would blend as an opaque rectangle and kill the effect.
-
-              The crop is set by the divider rule (y 45..255), which is taller
-              than both the mark and the tagline — so the tagline costs no extra
-              height. Editable master: public/brand/edh-logo-editable.svg. */}
-          <a
-            href="#top"
-            aria-label={copy.nav.home}
-            className="flex items-center text-white intro-fade"
-            style={{ "--intro-delay": "0.1s" } as React.CSSProperties}
-          >
-            <LogoLockup className="h-9 w-auto shrink-0 lg:h-11" />
-          </a>
-          <ul
-            className="intro-fade absolute top-0 left-1/2 hidden h-full -translate-x-1/2 items-center gap-10 text-white lg:flex"
-            style={{ "--intro-delay": "0.3s" } as React.CSSProperties}
-          >
-            {copy.nav.links.map((n) => (
-              <li key={n.label}>
-                <NavLink label={n.label} href={n.href} />
-              </li>
-            ))}
-          </ul>
-          <div
-            className="intro-fade flex items-center gap-3"
-            style={{ "--intro-delay": "0.5s" } as React.CSSProperties}
-          >
-            {/* `lg:mr-7` on top of the row's own gap-3 puts 40px between the
-                toggle and the Apply button — the same rhythm as the nav links
-                beside it. At the bare 12px gap the toggle read as part of the
-                button rather than as a peer of the nav. Margin rather than a
-                bigger row gap, so the mobile hamburger spacing is untouched. */}
-            <LocaleToggle className="hidden text-xs text-white lg:mr-7 lg:flex" />
-            <div className="hidden lg:block">
-              <TrickButton href="#contact" variant="base" className="h-11 md:h-14">
-                {copy.nav.apply}
-              </TrickButton>
-            </div>
-            <button
-              type="button"
-              aria-label={mobileNavOpen ? copy.nav.closeMenu : copy.nav.openMenu}
-              onClick={() => setMobileNavOpen((v) => !v)}
-              className="relative z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 text-white lg:hidden"
-            >
-              <span
-                className={`h-px w-6 bg-current transition-transform duration-300 ${mobileNavOpen ? "translate-y-[3.5px] rotate-45" : ""}`}
-              />
-              <span
-                className={`h-px w-6 bg-current transition-transform duration-300 ${mobileNavOpen ? "-translate-y-[3.5px] -rotate-45" : ""}`}
-              />
-            </button>
-          </div>
-        </nav>
-      </header>
-
-      {/* Mobile hamburger overlay — off-canvas panel; source green #1B372E retuned to brand emerald #10412F */}
-      <AnimatePresence>
-        {mobileNavOpen && (
-          <motion.div
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
-            className="fixed inset-0 z-50 flex flex-col justify-center gap-8 bg-[#10412F] px-8 text-[#F5F2F2] lg:hidden"
-          >
-            {copy.nav.links.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={() => setMobileNavOpen(false)}
-                className="text-4xl font-medium uppercase tracking-[-0.02em]"
-              >
-                {n.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={() => setMobileNavOpen(false)}
-              className="mt-4 text-4xl font-medium uppercase tracking-[-0.02em] text-[#1FDB93]"
-            >
-              {copy.eyebrow.letsTalk}
-            </a>
-            {/* The header toggle is hidden below lg — at 390px the logo lockup
-                is 234px wide and left only 4px before it, with "Hub" touching
-                "RO". The menu is where it belongs on a phone anyway. */}
-            <LocaleToggle className="mt-8 gap-3 text-2xl text-[#F5F2F2]" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <SiteHeader navHidden={navHidden} home />
 
       {/* ============================================================
           HERO
@@ -2204,7 +1288,7 @@ export default function Site({ locale }: { locale: Locale }) {
             <ShowreelSmall scalingRef={scalingRef} videoRef={videoRef} />
           </div>
           <div className="flex flex-wrap gap-3 self-end md:col-span-5 md:col-start-4">
-            <TrickButton href="#contact" variant="orange">
+            <TrickButton href={localePath(locale, APPLY_PATH)} variant="orange">
               {copy.about.ctaPrimary}
             </TrickButton>
             <TrickButton href="#work" variant="base">
@@ -2221,25 +1305,7 @@ export default function Site({ locale }: { locale: Locale }) {
           MARQUEE — stats strip. The showreel video is z-55 and absolutely
           positioned, so as it expands it passes OVER this strip.
           ============================================================ */}
-      <section className="overflow-hidden border-y border-[#1F1F1F]/10 bg-[#F5F2F2] py-6">
-        {/* The full A+B sequence is repeated TWICE. MARQUEE_A and MARQUEE_B
-            genuinely differ on the source (117+ vs 50+), so using them as the
-            two halves of a -50% loop meant the halves were not identical and
-            the seam jumped. Spacing is a per-item margin, not a flex gap, for
-            the same reason as the eyebrow marquee. */}
-        <div className="marquee-track flex w-max items-center">
-          {[0, 1].map((dup) => (
-            <div key={dup} aria-hidden={dup === 1} className="flex shrink-0 items-center">
-              {copy.marquee.map((m, i) => (
-                <span key={`${m}-${i}`} className="flex shrink-0 items-center text-sm">
-                  <span className="whitespace-nowrap">{m}</span>
-                  <LogoGlyph className="mx-8 h-3.5 w-auto" />
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+      <StatsMarquee />
 
       {/* ============================================================
           SHOWREEL — big box; the Flip target
@@ -2289,86 +1355,8 @@ export default function Site({ locale }: { locale: Locale }) {
         <ProcessCards reduceMotion={reduceMotion} />
       </section>
 
-      {/* ============================================================
-          CONTACT + FOOTER
-          ============================================================ */}
-      <section id="contact" data-nav-bg="dark" className="bg-[#0F0F0F] pt-16 pb-10 text-[#F1F1F1]">
-        <div className="mx-auto max-w-[1440px] px-4">
-          <ContactSpotlightEyebrow />
-
-          {/* Plain flowing heading. The previous version forced the line
-              breaks with `flex-wrap` + `w-full` spans and carried an inline
-              image borrowed from the source's layout — the image had no reason
-              to exist here, and the forced breaks plus 6.5vw made four lines
-              that overwhelmed the section. 4.6vw with a `ch`-based measure lets
-              it set naturally. */}
-          <Parallax reduceMotion={reduceMotion} distance={56}>
-            <h2 className="mt-16 max-w-[24ch] text-[8vw] font-medium leading-[1.02] tracking-[-0.02em] uppercase md:text-[4.6vw]">
-              {copy.contact.headingLead}{" "}
-              <span className="text-[#1FDB93]">{copy.contact.headingAccent}</span>
-            </h2>
-          </Parallax>
-
-          <form onSubmit={handleSubmit} className="mt-16 flex flex-col gap-3 md:flex-row">
-            <input
-              type="text"
-              placeholder={copy.contact.namePlaceholder}
-              className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
-            />
-            <input
-              type="email"
-              placeholder={copy.contact.emailPlaceholder}
-              className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="flex h-16 items-center justify-between gap-4 bg-[#F5F2F2] px-6 text-sm font-medium text-[#1F1F1F] md:w-56"
-            >
-              {submitted ? copy.contact.submitted : copy.contact.submit}
-              <span aria-hidden>↵</span>
-            </button>
-          </form>
-
-          <div className="mt-24 grid grid-cols-1 gap-10 border-t border-white/10 pt-12 md:grid-cols-2">
-            <div>
-              <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.follow}</p>
-              <div className="mt-4 flex gap-3">
-                {[
-                  { src: "/icons/social-webflow.svg", w: 19, h: 12 },
-                  { src: "/icons/social-instagram.svg", w: 16, h: 16 },
-                  { src: "/icons/social-linkedin.svg", w: 16, h: 16 },
-                ].map((icon) => (
-                  <a
-                    key={icon.src}
-                    href="#"
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-                  >
-                    <Image src={icon.src} alt="" width={icon.w} height={icon.h} className="invert" />
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.write}</p>
-              <a href="mailto:hello.epicdigitalhub@gmail.com" className="footer-email relative mt-3 inline-block text-[28px] tracking-[-0.01em] md:text-[36px]">
-                hello.epicdigitalhub@gmail.com
-                <span className="footer-email-underline absolute left-0 -bottom-1 h-1 w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out" />
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-16 flex flex-col gap-2 text-xs text-[#5F5F5F] md:flex-row md:items-center md:justify-between">
-            <span>{copy.contact.footerLine}</span>
-            <span>{copy.contact.footerBased}</span>
-          </div>
-        </div>
-      </section>
-
-      <style>{`
-        a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-origin: 0% 50%; }
-      `}</style>
+      <ContactFooter reduceMotion={reduceMotion} />
     </main>
-    </LocaleContext.Provider>
-    </CopyContext.Provider>
+    </SiteProviders>
   );
 }

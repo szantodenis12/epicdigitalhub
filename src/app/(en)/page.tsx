@@ -1,4 +1,4 @@
-import Site from "../../site";
+import Site from "../site";
 
 export default function Page() {
   return <Site locale="en" />;

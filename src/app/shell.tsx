@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { COPY, LOCALES, type Locale, localeHref } from "./content";
+import { COPY, LOCALES, type Locale, localeHref, localePath } from "./content";
 import { SITE_URL } from "./robots";
 
 /* ---------------------------------------------------------------------------
@@ -30,11 +30,34 @@ const grotesk = localFont({
 });
 
 /** Absolute URL for a locale's page. */
-export const localeUrl = (locale: Locale) =>
-  locale === "ro" ? SITE_URL : `${SITE_URL}${localeHref(locale)}`;
+export const localeUrl = (locale: Locale, path = "") =>
+  path || locale !== "en" ? `${SITE_URL}${localePath(locale, path)}` : SITE_URL;
 
-export function buildMetadata(locale: Locale): Metadata {
+/** What a subpage overrides. `title` is either a plain title that the root
+    template suffixes ("%s | Epic Digital Hub"), or `{ absolute }` for copy that
+    already carries the brand - the service pages' meta titles do. */
+export type PageMeta = {
+  path: string;
+  title: string | { absolute: string };
+  description: string;
+};
+
+/**
+ * Metadata for the home page (no `page`) or a subpage.
+ *
+ * Subpages must go through here rather than returning a partial object:
+ * Next.js merges metadata SHALLOWLY per top-level key, so a page that set only
+ * `openGraph.title` would drop the layout's OG image, locale and site name.
+ */
+export function buildMetadata(locale: Locale, page?: PageMeta): Metadata {
   const m = COPY[locale].meta;
+  const path = page?.path ?? "";
+  const plainTitle = page
+    ? typeof page.title === "string"
+      ? page.title
+      : page.title.absolute
+    : m.title;
+  const description = page?.description ?? m.description;
   return {
     // makes every relative URL below (canonical, OG image) absolute
     metadataBase: new URL(SITE_URL),
@@ -45,25 +68,25 @@ export function buildMetadata(locale: Locale): Metadata {
        description below, the hero's entity paragraph and the Organization
        schema's postal address, but not by the title itself. See
        .tasks/clone-nbnzia/seo-geo.md. */
-    title: { default: m.title, template: m.template },
-    description: m.description,
+    title: page ? page.title : { default: m.title, template: m.template },
+    description,
     alternates: {
-      canonical: localeHref(locale),
+      canonical: localePath(locale, path),
       /* hreflang. Without these the two locales look like duplicate content
          and Google picks one; with them it serves the right language per
-         user. `x-default` points at Romanian, which is the default here. */
+         user. `x-default` points at English, which is the default here. */
       languages: {
-        ro: "/",
-        en: "/en",
-        "x-default": "/",
+        en: localePath("en", path),
+        ro: localePath("ro", path),
+        "x-default": localePath("en", path),
       },
     },
     openGraph: {
       type: "website",
-      url: localeUrl(locale),
+      url: localeUrl(locale, path),
       siteName: "Epic Digital Hub",
-      title: m.title,
-      description: m.ogDescription,
+      title: plainTitle,
+      description: page ? description : m.ogDescription,
       locale: m.ogLocale,
       alternateLocale: LOCALES.filter((l) => l !== locale).map((l) => COPY[l].meta.ogLocale),
       // Cut to 1200x630 from the hero loop's first frame, so the share card is
@@ -72,8 +95,8 @@ export function buildMetadata(locale: Locale): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: m.title,
-      description: m.twitterDescription,
+      title: plainTitle,
+      description: page ? description : m.twitterDescription,
       images: ["/images/og-hero.webp"],
     },
     robots: { index: true, follow: true },
@@ -155,16 +178,22 @@ export function Shell({
             after paint and the loader would flash on every repeat view.
 
             Testing hatch: `?intro=1` replays the intro on every load, `?intro=0`
-            skips it. Neither overrides prefers-reduced-motion. */}
+            skips it. Neither overrides prefers-reduced-motion.
+
+            Home pages only. Subpages have no preloader, and landing on one
+            first must not mark the intro as played - otherwise a visitor who
+            arrives on /services from search never sees it on the home page. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var p=new URLSearchParams(location.search);" +
+              `try{var h=${JSON.stringify(LOCALES.map((l) => localeHref(l)))};` +
+              "if(h.indexOf(location.pathname.replace(/\\/+$/,'')||'/')>-1){" +
+              "var p=new URLSearchParams(location.search);" +
               "var m=matchMedia('(prefers-reduced-motion: reduce)').matches;" +
               "var seen=sessionStorage.getItem('edh:intro-played');" +
               "var forced=p.get('intro')==='1',skipped=p.get('intro')==='0';" +
               "if(!m&&!skipped&&(forced||!seen)){document.documentElement.dataset.intro='play'}" +
-              "sessionStorage.setItem('edh:intro-played','1')}catch(e){}",
+              "sessionStorage.setItem('edh:intro-played','1')}}catch(e){}",
           }}
         />
       </head>
