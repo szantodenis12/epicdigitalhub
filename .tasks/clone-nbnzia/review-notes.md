@@ -1263,3 +1263,98 @@ is not requested until the visitor reaches it, on both desktop and mobile.
 The picture is only 1080px wide, so at the grown state it is upscaled on a
 1440px+ viewport and will look slightly soft. That is the resolution the source
 has; a landscape master at 1920+ would be sharper.
+
+## Work section rebuilt — two offset columns (2026-09-30)
+
+User: the run of full-screen vertical cards ate too much scroll; wanted the
+domains as pictures with parallax, "un fel de carusel", offset rather than in a
+straight line, vertically.
+
+### What went
+
+Six `position: sticky` slides of `100svh`, each scrubbing the source's 3D
+recede (scale 1 -> 0.7, rotateX 40deg, rotateZ 2deg) over 150% of its own
+height, plus a `100svh` tail for the last card to dissolve into. Seven
+viewports for six cards.
+
+The recede could not be kept: it needs a full viewport per card to read, which
+IS the scroll being cut. Everything else was kept — brand colour per vertical,
+the full copy, and the clip-path entrance.
+
+### What replaced it
+
+Two columns in normal flow. The right one starts at `md:mt-[20vh]`, cards carry
+uneven widths (88-100%) and horizontal nudges (-20..+34px), and each picture
+drifts +/-44px inside its frame on `useScroll`. No pin anywhere.
+
+| | before | after |
+|--|--------|-------|
+| section height @1440x900 | 6300px (7 x 100svh) | **2655px** |
+| section height @390x844 | 5908px | **3511px** |
+| ScrollTriggers on the page | 5 from this section | **0** |
+| horizontal page scroll | none | none |
+
+First attempt was a pinned horizontal carousel (the answer to the first
+question asked); it built and measured fine at ~2 viewports but read wrong, and
+the user redirected to a vertical arrangement. Only the second is in the tree.
+
+### THE BUG WORTH REMEMBERING — clip-path blinds IntersectionObserver
+
+Both motion attempts at the entrance reveal failed with the pictures never
+appearing, first as `whileInView={{ clipPath }}`, then as a CSS transition
+gated by `useInView`. The tween was never the problem.
+
+Chromium counts a target's OWN clip-path when it computes intersection. An
+element hidden by `inset(0% 0% 100%)` therefore reports `isIntersecting: false,
+ratio: 0` while sitting whole in the middle of the viewport — measured with a
+bare observer in the page: rect top 148, height 440, viewport 900, ratio 0. The
+reveal waits to see an element that the clip is hiding, so it never fires.
+
+This is why the effect worked under GSAP and broke on the way to motion:
+ScrollTrigger reads scroll offsets, `whileInView`/`useInView` read an observer.
+
+Fix: the observed element is an outer wrapper that is never clipped; the clip
+lives on a layer inside it. `useScroll` can share the outer ref — it measures
+rects, not visibility.
+
+### Reduced motion, again
+
+`{ initial: false }` alone left TWELVE elements across the six cards at opacity
+0 for reduced-motion visitors — measured, not theorised. The server snapshot
+has `reduceMotion` false, so the hidden state ships inline, and a motion
+element handed no target keeps the inline style it already has. It needs
+`initial: false` AND an explicit resting `animate`, which is the same lesson
+already recorded for the hero headline and the nav.
+
+Verified after the fix: 0 hidden elements, all six pictures decoded, no
+clip-path left on any frame.
+
+### Verified
+`npx tsc --noEmit` clean, `npx eslint src --max-warnings=0` clean,
+`npm run build` compiles. Checked at 1440x900 and 390x844, plus a
+`reducedMotion: "reduce"` context.
+
+## Curved divider 2 removed (2026-09-30)
+
+User's call, pointing at "THE ORDER MATTERS" on screen. The divider between the
+testimonials and Process is gone; the one before Work stays.
+
+It cost 4320px of pinned scroll on its own — 1080px of pinned section plus
+3240px of scrub — to carry one sentence, and the page had two of them.
+
+| | before | after |
+|--|--------|-------|
+| page height @1440x900 | 17715px | **13575px** |
+| curved textPaths on the page | 2 | **1** |
+
+Combined with the Work rebuild earlier today the home page went from roughly
+21400px to 13575px, about 36% shorter, with no section's content dropped.
+
+`copy.dividers.beforeProcess` stays in content.ts in both locales, and
+`CurvedDivider` is still imported for divider 1, so restoring it is one JSX
+block. The `idSuffix="b"` it used to pass is what kept the two SVG path ids
+unique — a restored copy needs it back.
+
+Verified: testimonials hand straight over to the cream Process section with its
+`{ PROCESS }` eyebrow and the fanned cards, no gap and no leftover pin-spacer;
+tsc, eslint and build clean.

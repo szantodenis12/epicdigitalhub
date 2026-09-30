@@ -21,7 +21,7 @@ import Image from "next/image";
 import { LogoMark, LogoWordmark } from "./logo";
 import { COPY, type Locale, localePath } from "./content";
 import { APPLY_PATH, servicePath } from "./routes";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { gsap, ScrollTrigger } from "./_components/gsap";
 import { Flip } from "gsap/Flip";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
@@ -350,289 +350,290 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
 }
 
 /* ============================================================================
-   WORK — stacked case slides
+   WORK — two offset columns, parallax pictures
 
-   Source mechanism (measured live on nbnzia.com):
-   `.section-case` (overflow hidden, 5 x 100vh) holds five `.case-slide`s. Each
-   slide's `.case-content-wrapper` is GSAP-pinned for exactly one viewport
-   height (its pin-spacer is 2160 = 2 x 1080), and while pinned the inner
-   `.case-content` is scrubbed DOWN in scale so the card recedes into the
-   background as the next slide rides over it:
+   REPLACED the stacked case slides (2026-09-30). Those followed the source
+   exactly: six `position: sticky` slides of `100svh`, each scrubbing a 3D
+   recede (scale 1 -> 0.7, rotateX 40deg) over 150% of its own height, plus a
+   100svh tail so the last card could dissolve in place. Faithful, and it cost
+   SEVEN viewports — around 7500px at 1080, the longest stretch on the page,
+   for six cards.
 
-       progress 0.00 -> scale 1.0     (holds through ~0.25)
-       progress 0.48 -> scale 0.9979
-       progress 0.72 -> scale 0.9888
-       progress 1.00 -> scale 0.9667   (at unpin)
+   Now the cards sit in two columns that scroll normally. The right column
+   starts a fifth of a viewport lower than the left, the cards carry uneven
+   widths and small horizontal nudges, and each picture drifts inside its own
+   frame as the card passes. Nothing pins, so the section costs a little over
+   two viewports.
 
-   That hold-then-accelerate shape is ~`power3.in`.
+   Kept, because it is the section's identity: the per-vertical brand colour,
+   the whole of the copy (name, number, tag, body, link), and the clip-path
+   entrance where the frame unclips downward while the picture counter-moves
+   into place.
 
-   Reproduced here with native `position: sticky` for the pinning (smoother
-   and cheaper than a GSAP pin, and it avoids adding five more pinned
-   ScrollTriggers to a page that already contends over GSAP's shared update
-   state) plus one scrubbed tween per card for the scale.
+   Dropped: the 3D recede. It needed a full viewport per card to read at all,
+   which is precisely the scroll this section was spending.
+
+   No GSAP here on purpose. This section sits immediately after a PINNED
+   curved divider, and ScrollTrigger positions cached around pinned sections on
+   this page have gone stale before — the testimonials reveal had to be moved
+   off ScrollTrigger for exactly that reason. motion's `whileInView` and
+   `useScroll` are IntersectionObserver-based and do not have that failure
+   mode. It also takes five ScrollTriggers off a page that has already had one
+   velocity-contention bug.
    ========================================================================= */
 
-function WorkStack({ reduceMotion }: { reduceMotion: boolean }) {
-  const copy = useCopy();
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+/* Per-card irregularity, applied from `md` up: a horizontal nudge in px plus a
+   width. Six equal cards in two columns read as a grid however far apart they
+   sit, and the point of this arrangement is that they do not. */
+const WORK_CARD_SHAPE = [
+  { nudge: 0, width: "md:w-full" },
+  { nudge: 26, width: "md:w-[92%]" },
+  { nudge: -20, width: "md:w-[97%]" },
+  { nudge: 34, width: "md:w-[88%]" },
+  { nudge: -14, width: "md:w-[95%]" },
+  { nudge: 18, width: "md:w-full" },
+];
 
-  useEffect(() => {
-    if (reduceMotion) return;
-    const tweens: gsap.core.Tween[] = [];
-    const revealTls: gsap.core.Timeline[] = [];
-    // Everything the reveal writes inline, so cleanup can hand the DOM back
-    // untouched — otherwise a re-run reads the hidden state as the resting one.
-    const revealEls: HTMLElement[] = [];
-    const lastIndex = cardRefs.current.length - 1;
+/* Which card goes in which column. Left takes 1, 3, 5 and right takes 2, 4, 6,
+   so reading order down the left column and then the right still follows the
+   numbering on the cards. */
+const WORK_COLUMNS = [
+  [0, 2, 4],
+  [1, 3, 5],
+];
 
-    cardRefs.current.forEach((inner, i) => {
-      if (!inner) return;
-      const slide = inner.parentElement;
-      if (!slide) return;
-      const isLast = i === lastIndex;
+/* How far a picture drifts inside its frame across its whole pass, px each
+   way. The frame scales its image to 1.18, so it holds (0.18 / 2) * height of
+   hidden overhang — about 46px on a 380px-tall frame. Raise this past that and
+   the drift pulls the frame's edge into view. */
+const WORK_PARALLAX_Y = 44;
 
-      // The card does NOT merely scale — it tilts away in 3D. Decomposing the
-      // source's matrix3d at rest gives a uniform scale of ~0.70 combined with
-      // rotateX ~40deg (its rendered height collapses 1080 -> 634) and a slight
-      // rotateZ ~2deg. Perspective (4762.5px = 250vw) sits on the wrapper and
-      // the pivot is `center 10%`, near the card's top edge, so it hinges
-      // backwards rather than shrinking toward its middle.
-      tweens.push(
-        gsap.fromTo(
-          inner,
-          { scale: 1, rotateX: 0, rotateZ: 0 },
-          {
-            scale: 0.7,
-            rotateX: 40,
-            rotateZ: 2,
-            ease: "power2.in",
-            scrollTrigger: {
-              trigger: slide,
-              start: "top top",
-              end: isLast ? "+=200%" : "+=150%",
-              scrub: true,
-              invalidateOnRefresh: true,
-              // promote only while this card is actually being scrubbed
-              onToggle: (self) => {
-                inner.style.willChange = self.isActive ? "transform" : "auto";
-              },
-            },
-          }
-        )
-      );
+/* The frame: unclips on entry, and its picture drifts as the card travels.
 
-      /* Entrance reveal, measured off the source's `.case-content`:
+   Three nested layers, each with one job, because they animate on different
+   clocks: the frame's clip-path plays once on entry, the drift tracks scroll
+   continuously, and the counter-move belongs to the entrance. Collapsing any
+   two of them puts two animations on one transform, which is the fight the
+   showreel already lost once against `Flip.fit`. */
+function WorkCardMedia({
+  src,
+  alt,
+  reduceMotion,
+}: {
+  src: string;
+  alt: string;
+  reduceMotion: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [-WORK_PARALLAX_Y, WORK_PARALLAX_Y]
+  );
 
-           .case-content_image-warpper  clip-path: inset(0% 0% 100%) -> inset(0%)
-           .case-content_image          translateY(-72.075px) -> 0
-                                        (-72.075 / 601 tall = -12%)
-           .case-text / copy / link     translateY(50px), opacity 0 -> 0, 1
+  const picture = (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes="(min-width: 768px) 44vw, 100vw"
+      className="scale-[1.18] object-cover"
+    />
+  );
 
-         The image is NOT a fade or a slide: the wrapper unclips downward while
-         the picture itself counter-moves down into place, so the frame opens
-         top-to-bottom and the image settles rather than travelling. The
-         counter-move is what stops it reading as a slide.
-
-         The counter-move can never expose a gap at the bottom edge: at
-         progress p the frame is open to p*H while the image covers to
-         H*(1 - 0.12*(1-p)), and 1 - 0.12 + 0.12p >= p holds for all p <= 1.
-
-         Timings from the source's own run (~1.06s end to end): elements settle
-         at 9511 / 9657 / 9803 / 9949ms - an even ~145ms stagger - with the
-         image finishing alongside the last of the text.
-
-         One-shot, not scrubbed: the recording shows it playing out on its own
-         timeline while the scroll position sat still. */
-      const texts = inner.querySelectorAll<HTMLElement>("[data-reveal-text]");
-      const imgWrap = inner.querySelector<HTMLElement>("[data-reveal-image]");
-      const img = imgWrap?.querySelector("img") ?? null;
-
-      /* Resting opacity is DECLARED per element (`data-reveal-opacity`), not
-         read back from computed style.
-
-         The tag and body carry Tailwind `opacity-60` / `opacity-90`, so a
-         blanket tween to opacity 1 would animate those muted paragraphs up to
-         full strength and quietly change the design. Reading the value live
-         looks like the fix and is not: React double-invokes effects in dev, so
-         the second pass reads the ALREADY-HIDDEN element and gets "0" - and
-         `parseFloat("0") || 1` is 1, because 0 is falsy. Both paragraphs
-         silently ended up fully opaque. An attribute cannot drift out from
-         under the animation like that. */
-      const items = Array.from(texts).map((el) => {
-        const raw = el.dataset.revealOpacity;
-        return { el, to: raw == null ? 1 : Number(raw) };
-      });
-      items.forEach(({ el }) => gsap.set(el, { y: 50, opacity: 0 }));
-      revealEls.push(...items.map((it) => it.el));
-      if (imgWrap) revealEls.push(imgWrap);
-      if (img) revealEls.push(img);
-
-      if (imgWrap) {
-        gsap.set(imgWrap, { clipPath: "inset(0% 0% 100% 0%)" });
-        if (img) gsap.set(img, { yPercent: -12 });
-      }
-
-      const revealTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: slide,
-          // as the card climbs into view, before it pins at the top
-          start: "top 75%",
-          once: true,
-          invalidateOnRefresh: true,
-        },
-      });
-      items.forEach(({ el, to }, k) => {
-        revealTl.to(
-          el,
-          { y: 0, opacity: to, duration: 0.9, ease: "power3.out" },
-          0.145 * k
-        );
-      });
-      if (imgWrap) {
-        revealTl.to(
-          imgWrap,
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.05, ease: "power3.out" },
-          0.15
-        );
-        if (img) {
-          revealTl.to(img, { yPercent: 0, duration: 1.05, ease: "power3.out" }, 0.15);
-        }
-      }
-      revealTls.push(revealTl);
-
-      // The last card is never covered by another, so on the source it also
-      // fades out (opacity 1 -> ~0.2 while scaling to ~0.77) and dissolves
-      // into the cream page background before the next section arrives.
-      if (isLast) {
-        tweens.push(
-          gsap.fromTo(
-            inner,
-            { opacity: 1 },
-            {
-              // Nothing covers the last card, so it has to leave on its own —
-              // fade it out completely rather than leaving a ghost behind.
-              opacity: 0,
-              ease: "power1.in",
-              scrollTrigger: {
-                trigger: slide,
-                start: "top top",
-                end: "+=200%",
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            }
-          )
-        );
-      }
-    });
-
-    return () => {
-      tweens.forEach((t) => {
-        t.scrollTrigger?.kill();
-        t.kill();
-      });
-      revealTls.forEach((tl) => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-      });
-      if (revealEls.length) gsap.set(revealEls, { clearProps: "all" });
-    };
-  }, [reduceMotion]);
+  if (reduceMotion) {
+    return (
+      <div ref={ref} className="relative aspect-[4/3] w-full overflow-hidden">
+        {picture}
+      </div>
+    );
+  }
 
   return (
-    <section id="work" className="relative">
-      {copy.work.items.map((w, i) => {
-        const v = WORK_VISUALS[i];
-        return (
-        <div
-          key={w.name}
-          /* Source `.case-content-wrapper`: #F5F2F3 (what shows through as the
-             card recedes) and `perspective: 4762.5px` on a 1905px viewport —
-             i.e. 250vw. Overflow stays visible so the tilted card isn't
-             clipped. */
-          data-nav-bg={v.fg === "#1F1F1F" ? "light" : "dark"}
-          className="sticky top-0 h-[100svh] w-full bg-[#F5F2F3] [perspective:250vw]"
-        >
+    /* CLIP-PATH AND INTERSECTIONOBSERVER DO NOT MIX ON THE SAME ELEMENT.
+       Chromium counts a target's own clip-path when it computes intersection,
+       so an element hidden by `inset(0% 0% 100%)` reports `isIntersecting:
+       false, ratio: 0` while sitting whole in the middle of the viewport.
+       Measured with a bare observer in the page: rect top 148, height 440,
+       viewport 900 — ratio 0. The entrance can then never fire, because the
+       thing that would reveal it is waiting to see it.
+
+       That is also why this worked under the old GSAP build and broke on the
+       way to motion: ScrollTrigger reads scroll offsets, `whileInView` and
+       `useInView` read an observer. Both motion attempts failed for one
+       reason, and it was never the tween.
+
+       So the observed element is this outer one, which is never clipped, and
+       the clip lives on the layer inside it. `useScroll` can stay on the same
+       outer ref — it measures rects, not visibility. */
+    <div ref={ref} className="relative aspect-[4/3] w-full">
+      {/* Source `.case-content_image-warpper`: clip-path inset(0% 0% 100%) ->
+          inset(0%), i.e. the frame opens top to bottom. A CSS transition, so
+          nothing has to interpolate an inset() in JS. */}
+      <div
+        style={{
+          clipPath: inView ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
+          transition: "clip-path 1050ms cubic-bezier(0.22,1,0.36,1) 150ms",
+        }}
+        className="absolute inset-0 overflow-hidden"
+      >
+        <motion.div style={{ y }} className="absolute inset-0">
+          {/* Source `.case-content_image`: translateY(-72.075px) on a
+              601px-tall picture = -12%, counter-moving down as the frame
+              opens. Without it the image visibly travels and the whole thing
+              reads as a slide. It can never expose the bottom edge: at
+              progress p the frame is open to p*H while the picture covers to
+              H*(1 - 0.12*(1-p)), and 1 - 0.12 + 0.12p >= p for all p <= 1.
+
+              Its own element, so the entrance and the scroll drift never write
+              the same transform. */}
           <div
-            ref={(el) => {
-              cardRefs.current[i] = el;
+            style={{
+              transform: inView ? "translateY(0%)" : "translateY(-12%)",
+              transition: "transform 1050ms cubic-bezier(0.22,1,0.36,1) 150ms",
             }}
-            /* Source pivot is `952.5px 108px` on a 1905x1080 card = center 10%,
-               so the card hinges from near its top edge. */
-            /* No permanent `will-change` — it is set by the tilt's own
-               ScrollTrigger while that card is being scrubbed (see onToggle in
-               the effect above). Six full-screen 3D layers held promoted for
-               the whole page is ~1170x2532px of compositor memory each at
-               DPR 3, which is what made mobile stutter. */
-            className="grid h-full w-full grid-cols-1 items-center gap-10 px-4 py-16 [transform-origin:center_10%] [transform-style:preserve-3d] md:grid-cols-2 md:px-10"
-            style={{ backgroundColor: v.bg, color: v.fg }}
+            className="absolute inset-0"
           >
-            <div className="flex h-full flex-col justify-between py-8">
-              <div className="flex items-start justify-between">
-                <h3
-                  data-reveal-text
-                  className="text-[40px] font-medium tracking-[-0.02em] uppercase md:text-[48px]"
-                >
-                  {w.name}
-                </h3>
-                <span data-reveal-text className="text-2xl md:text-[32px]">
-                  ({nn(i)})
-                </span>
-              </div>
-              <p
-                data-reveal-text
-                data-reveal-opacity="0.6"
-                className="mt-3 text-xs tracking-[0.15em] uppercase opacity-60"
-              >
-                {w.tag}
-              </p>
-              <p
-                data-reveal-text
-                data-reveal-opacity="0.9"
-                className="max-w-[420px] text-sm leading-relaxed whitespace-pre-line opacity-90"
-              >
-                {w.body}
-              </p>
-              <a
-                href="#"
-                data-reveal-text
-                className="group inline-flex w-fit items-center gap-2 text-sm tracking-[0.05em] uppercase"
-              >
-                {copy.work.visit}
-                <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
-                  ↗
-                </span>
-              </a>
-            </div>
-            <div
-              data-reveal-image
-              className="relative aspect-[4/3] w-full overflow-hidden md:w-[90%] md:justify-self-end"
-            >
-              {/* NO parallax here. These cards are `position: sticky`, so once
-                  a card pins, nothing inside it moves relative to the viewport
-                  and scroll progress freezes — measured -15px then 0, 0. Sticky
-                  and parallax cannot coexist. The cards already have the 3D
-                  recede, which is the depth cue for this section. */}
-              <Image
-                src={v.img}
-                alt={`${w.name} project preview`}
-                fill
-                sizes="(min-width: 768px) 45vw, 100vw"
-                className="object-cover"
-              />
-            </div>
+            {picture}
           </div>
-        </div>
-        );
-      })}
-      {/* Extra scroll room so the last card can recede and fade out IN PLACE
-          against the cream background, instead of just scrolling away — the
-          source keeps animating it well past the end of `.section-case`. */}
-      <div className="h-[100svh] w-full bg-[#F5F2F3]" aria-hidden />
-    </section>
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
+function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
+  const copy = useCopy();
+
+  /* Text entrance, from the source's own run: y 50 -> 0 with opacity, on a
+     ~145ms stagger, ~1.06s end to end.
+
+     `initial: false` under reduced motion, never `whileInView: undefined`. A
+     motion element handed no target keeps whatever inline style it already
+     has, and `usePrefersReducedMotion` returns false in the server snapshot —
+     so the first client render applies the hidden state and then nothing ever
+     clears it. That left the hero headline and the entire nav invisible for
+     reduced-motion users once already. Reduced motion has to mean "no
+     animation", not "no content".
+
+     `opacity` is passed in per element rather than assumed to be 1: the tag
+     and body rest at 0.6 and 0.9, and animating them to full strength would
+     quietly redesign the card. */
+  const reveal = (order: number, opacity = 1) =>
+    reduceMotion
+      ? /* `initial: false` AND an explicit resting target. Not one or the
+           other: the server snapshot has `reduceMotion` false, so the markup
+           ships with the hidden state inline, and a motion element given no
+           target keeps whatever inline style it already carries. Measured on
+           this very section before the `animate` was added — twelve elements
+           across the six cards sat at opacity 0 for reduced-motion visitors,
+           which is the same failure the hero headline and the nav had. */
+        { initial: false as const, animate: { y: 0, opacity } }
+      : {
+          initial: { y: 50, opacity: 0 },
+          whileInView: { y: 0, opacity },
+          viewport: { once: true, amount: 0.4 },
+          transition: {
+            duration: 0.9,
+            delay: 0.145 * order,
+            ease: [0.22, 1, 0.36, 1] as const,
+          },
+        };
+
+  return (
+    /* Cream (#F5F2F3) is the same resting canvas the sticky stack used to show
+       through as a card receded: the cards keep their own brand colour, the
+       gaps between them show the page. */
+    <section id="work" data-nav-bg="light" className="bg-[#F5F2F3] py-20 md:py-28">
+      <div className="mx-auto flex max-w-[1440px] flex-col gap-12 px-4 md:flex-row md:items-start md:gap-[clamp(24px,3vw,56px)] md:px-10">
+        {WORK_COLUMNS.map((column, col) => (
+          <div
+            key={col}
+            /* The right column starts a fifth of a viewport lower. This is the
+               whole trick: with both columns flush at the top, three pairs of
+               cards line up into three rows and the eye reads rows, not a
+               stagger. */
+            className={`flex flex-1 flex-col gap-12 md:gap-[clamp(48px,6vw,104px)] ${
+              col === 1 ? "md:mt-[20vh]" : ""
+            }`}
+          >
+            {column.map((i) => {
+              const w = copy.work.items[i];
+              const v = WORK_VISUALS[i];
+              const shape = WORK_CARD_SHAPE[i];
+              return (
+                <article
+                  key={w.name}
+                  style={{
+                    backgroundColor: v.bg,
+                    color: v.fg,
+                    ["--work-nudge" as string]: `${shape.nudge}px`,
+                  }}
+                  /* The nudge rides on a custom property so it can apply from
+                     `md` up only — an inline transform cannot carry a media
+                     query, and on a phone the cards are one column where a
+                     sideways nudge just eats the gutter. */
+                  className={`flex w-full flex-col gap-7 self-start p-7 md:gap-8 md:p-9 md:[transform:translateX(var(--work-nudge))] ${shape.width}`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <motion.h3
+                        {...reveal(0)}
+                        className="text-[30px] leading-[1.05] font-medium tracking-[-0.02em] uppercase md:text-[38px]"
+                      >
+                        {w.name}
+                      </motion.h3>
+                      <motion.span {...reveal(0)} className="text-xl md:text-2xl">
+                        ({nn(i)})
+                      </motion.span>
+                    </div>
+                    <motion.p
+                      {...reveal(1, 0.6)}
+                      className="mt-3 text-xs tracking-[0.15em] uppercase opacity-60"
+                    >
+                      {w.tag}
+                    </motion.p>
+                  </div>
+
+                  <WorkCardMedia
+                    src={v.img}
+                    alt={`${w.name} project preview`}
+                    reduceMotion={reduceMotion}
+                  />
+
+                  <div>
+                    <motion.p
+                      {...reveal(2, 0.9)}
+                      className="text-sm leading-relaxed whitespace-pre-line opacity-90"
+                    >
+                      {w.body}
+                    </motion.p>
+                    <motion.div {...reveal(3)} className="mt-5">
+                      <a
+                        href="#"
+                        className="group inline-flex w-fit items-center gap-2 text-sm tracking-[0.05em] uppercase"
+                      >
+                        {copy.work.visit}
+                        <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
+                          ↗
+                        </span>
+                      </a>
+                    </motion.div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 /* ============================================================================
    SERVICES — hover accordion, one row open at a time (_components/hover-accordion)
    ========================================================================= */
@@ -1329,21 +1330,20 @@ export default function Site({ locale }: { locale: Locale }) {
       {/* ============================================================
           WORK
           ============================================================ */}
-      <WorkStack reduceMotion={reduceMotion} />
+      <WorkGrid reduceMotion={reduceMotion} />
 
       {/* ============================================================
           TESTIMONIALS
           ============================================================ */}
       <Testimonials reduceMotion={reduceMotion} />
 
-      {/* ============================================================
-          CURVED DIVIDER 2 — sits before Process
-          ============================================================ */}
-      <CurvedDivider
-        text={copy.dividers.beforeProcess}
-        reduceMotion={reduceMotion}
-        idSuffix="b"
-      />
+      {/* CURVED DIVIDER 2 — REMOVED (2026-09-30, user's call). It carried
+          "The order matters." between the testimonials and Process, and cost
+          4320px of pinned scroll: 1080 for the pinned section plus 3240 of
+          scrub distance. Divider 1, before Work, is still in place — one of
+          these is a signature, two in a row on a page this long is a toll.
+          `copy.dividers.beforeProcess` is deliberately left in content.ts in
+          both locales, so putting it back is one JSX block. */}
 
       {/* ============================================================
           PROCESS — fanned playing cards
