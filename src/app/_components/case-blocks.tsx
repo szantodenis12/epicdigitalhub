@@ -424,7 +424,7 @@ export function ReelGrid({
        the one block on the page whose whole point is being watched. The posts
        in the gallery stay two-up, because a still reads fine at that size. */
     <ul
-      className={`grid gap-5 md:gap-8 ${items.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "max-w-[260px] grid-cols-1"}`}
+      className={`grid gap-5 md:gap-8 ${items.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:max-w-[320px]"}`}
     >
       {items.map((item, i) => (
         /* Every second one rides lower, the same offset idea the work cards on

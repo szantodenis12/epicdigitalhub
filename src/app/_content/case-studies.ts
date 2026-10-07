@@ -835,19 +835,19 @@ export const caseVideos: Record<string, CaseVideo[]> = {
     {
       src: "/videos/cases/hotel-maxim-1.mp4",
       poster: "/videos/cases/hotel-maxim-1.jpg",
-      title: { ro: "Reel — camere și piscină", en: "Reel — rooms and pool" },
+      title: { ro: "Prezentare — camere și restaurant", en: "Tour — rooms and restaurant" },
     },
     {
       src: "/videos/cases/hotel-maxim-2.mp4",
       poster: "/videos/cases/hotel-maxim-2.jpg",
-      title: { ro: "Reel — giveaway 8 Martie", en: "Reel — March 8 giveaway" },
+      title: { ro: "Reel — bucătăria restaurantului", en: "Reel — the restaurant kitchen" },
     },
   ],
   dentalnet: [
     {
       src: "/videos/cases/dentalnet-1.mp4",
       poster: "/videos/cases/dentalnet-1.jpg",
-      title: { ro: "Spot DentalNet Kids", en: "DentalNet Kids commercial" },
+      title: { ro: "Prezentare video — clinica DentalNet", en: "Video tour — the DentalNet clinic" },
     },
   ],
   "agro-salso": [
@@ -871,7 +871,18 @@ export const caseVideos: Record<string, CaseVideo[]> = {
     {
       src: "/videos/cases/kgm-chery-oradea-2.mp4",
       poster: "/videos/cases/kgm-chery-oradea-2.jpg",
-      title: { ro: "Reel Chery — Tiggo 9", en: "Chery reel — Tiggo 9" },
+      /* The clip is a consultant answering the "chinezească?" objection in
+         the showroom, with burned-in subtitles — not a Tiggo 9 walkaround,
+         which is what this slot used to hold. */
+      title: {
+        ro: "Reel Chery — întrebarea despre mașinile chinezești",
+        en: "Chery reel — the Chinese-car question",
+      },
+    },
+    {
+      src: "/videos/cases/kgm-chery-oradea-3.mp4",
+      poster: "/videos/cases/kgm-chery-oradea-3.jpg",
+      title: { ro: "Reel Chery — caravană pe șosea", en: "Chery reel — convoy on the road" },
     },
   ],
   "harmony-garden": [

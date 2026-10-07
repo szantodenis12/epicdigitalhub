@@ -203,3 +203,65 @@ The page and the schema read the same `caseFaqs`, which is what keeps them from
 drifting — a FAQPage claiming answers the page does not show is cloaking.
 
 tsc, eslint and build clean.
+
+## Client reels replaced (2026-10-07)
+
+Six new clips from `Downloads/Video-uri epic`, 1080x1920 at 24fps and 8-11
+Mbps — 50 to 146 MB each, 460 MB in total, so nothing that could ship as
+delivered.
+
+| source | slot | duration | shipped |
+|---|---|---|---|
+| Hotel Maxim.mp4 | hotel-maxim-1 | 58s | 4.8 MB |
+| Maxim Food 01.mp4 | hotel-maxim-2 | 38s | 3.5 MB |
+| DentalNet vertical.mp4 | dentalnet-1 | 145s | 7.5 MB |
+| Rexton.mp4 | kgm-chery-oradea-1 | 35s | 3.8 MB |
+| Tiggo 01.mp4 | kgm-chery-oradea-2 | 57s | 5.4 MB |
+| Cherry Waves vertical 2.mp4 | kgm-chery-oradea-3 (new) | 38s | 5.9 MB |
+
+The other four clients' reels are untouched. public/videos is 79.6 MB now,
+about 19 MB more than before.
+
+### No ffmpeg on this machine
+
+Playwright ships one at `%LOCALAPPDATA%/ms-playwright/ffmpeg-1011`, but it is
+a VP8-only build — no libx264, so it cannot produce what the rest of the reels
+are. Used `ffmpeg-static` (6.1.1) installed with `--no-save` into the
+scratchpad, so neither the project's package.json nor its node_modules
+changed.
+
+### CRF 30, not the README's 27
+
+The card renders a reel at 423x752 on desktop and 358px wide on a phone, so a
+720p file is already about double what is displayed. Compared CRF 27 against
+CRF 30 by extracting the same frame from both, scaling to the real 430px
+display width and looking at them side by side: indistinguishable, including
+the burned-in subtitles and the billboard lettering in the drone shot. CRF 30
+is 30% lighter — 8.7 MB to 6.1 MB on the heaviest clip. The README recipe was
+updated with the reasoning so the next person does not add the 30% back.
+
+### Titles came from watching the frames, not the filenames
+
+- `Tiggo 01.mp4` is NOT a Tiggo 9 walkaround, which is what that slot's title
+  claimed. It is a consultant answering the "chinezească?" objection in the
+  showroom, with burned-in Romanian subtitles. Retitled accordingly.
+- `Hotel Maxim.mp4` runs from rooms through to plated food, so it is a tour of
+  the rooms and the restaurant rather than "camere și piscină".
+- `Maxim Food 01.mp4` is the kitchen, with the chef cooking.
+- `DentalNet vertical.mp4` is a 2:25 walk through the clinic, not the Kids
+  spot the old title described.
+- `Cherry Waves vertical 2.mp4` is a drone shot of a Chery convoy on a country
+  road.
+
+The Romanian subtitles are burned into the picture, so the English locale shows
+them too. Nothing to do about that short of a second edit per clip.
+
+### Verified in the browser
+
+All three pages at 1440x900: right files and posters, `preload="none"` and no
+mp4 requested before interaction, then one request on click and playback
+unmuted at 720x1280, durations 58 / 145 / 35s. KGM now shows three reels in the
+offset grid.
+
+A single reel also now sits in a 320px frame rather than 260px — DentalNet's is
+the only one-reel case and it is a 2:25 presentation, which was cramped.
