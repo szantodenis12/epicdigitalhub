@@ -24,7 +24,6 @@ import { APPLY_PATH, caseStudyPath, servicePath } from "./routes";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { gsap, ScrollTrigger } from "./_components/gsap";
 import { Flip } from "gsap/Flip";
-import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { SiteProviders, useCopy, useLocale, usePrefersReducedMotion } from "./_components/context";
 import { EyebrowMarquee, GradientWaveText, Parallax, StatsMarquee, TrickButton } from "./_components/ui";
 import { nn } from "./_components/format";
@@ -34,7 +33,7 @@ import { CurvedDivider } from "./_components/curved-divider";
 
 if (typeof window !== "undefined") {
   // ScrollTrigger itself is registered (and configured) in _components/gsap.
-  gsap.registerPlugin(Flip, InertiaPlugin);
+  gsap.registerPlugin(Flip);
 }
 
 /* ============================================================================
@@ -745,99 +744,101 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
   const copy = useCopy();
   const rootRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const lastPoint = useRef<Record<number, { x: number; y: number; t: number }>>({});
 
   useEffect(() => {
     const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
     if (!cards.length) return;
 
-    cards.forEach((el, i) => {
-      gsap.set(el, restPose(i));
+    /* THE FAN IS DESKTOP-ONLY, and the whole effect lives inside matchMedia
+       because of it.
+
+       `restPose` spreads the cards 300px either side of centre. Applying it on
+       a phone, where the deck is a `flex-col` of full-width cards, pushed card
+       one to x -306 and card three to x 294 — i.e. one off the left edge and
+       one 306px past the right, both rotated 5deg, overlapping each other and
+       the section around them. (The overflow did not even register as
+       horizontal page scroll, which is why it survived earlier passes: the
+       cards were clipped, not scrollable.) The source fans them only in its
+       `min-width: 992px` branch; below md here, they are three plain stacked
+       cards with no transform at all.
+
+       Nothing touch-driven is attached either: the tilt is a pointer effect,
+       and `onMouseMove` on a React prop would ship to a phone that can never
+       fire it. */
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      cards.forEach((el, i) => gsap.set(el, restPose(i)));
+      if (reduceMotion) return;
+
+      const entrance = gsap.from(cards, {
+        rotation: 40,
+        stagger: 0.07,
+        ease: "elastic.out(1, 0.75)",
+        duration: 1.5,
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      /* The tilt FOLLOWS the pointer; it is no longer an inertia flick.
+
+         The flick was the reported chaos, and it had two causes. The bounds
+         were enormous — plus or minus 320px of travel and 55 degrees — so a
+         quick movement threw a card across its neighbours and elastically
+         snapped it back. Worse, every `mousemove` started a FRESH inertia
+         tween whose onComplete queued its own return tween, so a second of
+         movement left dozens of competing tweens on one card, each with a
+         different idea of where it should end up.
+
+         `gsap.quickTo` writes to one property per card through a single
+         reused tween, so there is nothing to stack. The pose is bounded by
+         construction: 4 degrees and 10px around the resting fan, plus a 10px
+         lift. It reads as a card leaning toward the cursor instead of being
+         thrown by it. */
+      const to = cards.map((el) => ({
+        rotation: gsap.quickTo(el, "rotation", { duration: 0.5, ease: "power3.out" }),
+        x: gsap.quickTo(el, "x", { duration: 0.5, ease: "power3.out" }),
+        y: gsap.quickTo(el, "y", { duration: 0.5, ease: "power3.out" }),
+      }));
+
+      const cleanups = cards.map((el, i) => {
+        const rest = restPose(i);
+        const onMove = (e: MouseEvent) => {
+          const r = el.getBoundingClientRect();
+          // -1 at one edge, 0 at the centre, +1 at the other
+          const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+          const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+          to[i].rotation(rest.rotation + nx * 4);
+          to[i].x(rest.x + nx * 10);
+          to[i].y(rest.y + ny * 10 - 10);
+        };
+        const onLeave = () => {
+          to[i].rotation(rest.rotation);
+          to[i].x(rest.x);
+          to[i].y(rest.y);
+        };
+        el.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseleave", onLeave);
+        return () => {
+          el.removeEventListener("mousemove", onMove);
+          el.removeEventListener("mouseleave", onLeave);
+        };
+      });
+
+      return () => {
+        entrance.scrollTrigger?.kill();
+        entrance.kill();
+        cleanups.forEach((fn) => fn());
+        // Below md the cards must carry no transform at all.
+        gsap.set(cards, { clearProps: "transform,rotate,translate,scale" });
+      };
     });
 
-    if (reduceMotion) return;
-
-    const tween = gsap.from(cards, {
-      rotation: 40,
-      stagger: 0.07,
-      ease: "elastic.out(1, 0.75)",
-      duration: 1.5,
-      scrollTrigger: {
-        trigger: rootRef.current,
-        start: "top 80%",
-        toggleActions: "play none none none",
-      },
-    });
-
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    return () => mm.revert();
   }, [reduceMotion]);
-
-  const handleMove = useCallback(
-    (i: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-      if (reduceMotion) return;
-      const el = cardRefs.current[i];
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const offsetX = e.clientX - (rect.left + rect.width / 2);
-      const offsetY = e.clientY - (rect.top + rect.height / 2);
-      const now = performance.now();
-      const prev = lastPoint.current[i];
-      let velX = 0;
-      let velY = 0;
-      if (prev) {
-        const dt = Math.max((now - prev.t) / 1000, 1 / 120);
-        velX = (e.clientX - prev.x) / dt;
-        velY = (e.clientY - prev.y) / dt;
-      }
-      lastPoint.current[i] = { x: e.clientX, y: e.clientY, t: now };
-
-      const rest = restPose(i);
-      const torque = (offsetX * velY - offsetY * velX) / 6000;
-
-      gsap.to(el, {
-        inertia: {
-          resistance: 130,
-          rotation: {
-            velocity: torque,
-            min: rest.rotation - 55,
-            max: rest.rotation + 55,
-          },
-          x: {
-            velocity: velX / 8,
-            min: rest.x - 320,
-            max: rest.x + 320,
-          },
-          y: {
-            velocity: velY / 8,
-            min: rest.y - 320,
-            max: rest.y + 320,
-          },
-        },
-        onComplete: () => {
-          gsap.to(el, { ...rest, duration: 0.8, ease: "power3.out" });
-        },
-      });
-    },
-    [reduceMotion]
-  );
-
-  const handleLeave = useCallback(
-    (i: number) => () => {
-      lastPoint.current[i] = undefined as unknown as { x: number; y: number; t: number };
-      if (reduceMotion) return;
-      const el = cardRefs.current[i];
-      if (!el) return;
-      gsap.to(el, {
-        ...restPose(i),
-        duration: 1,
-        ease: "elastic.out(1, 0.6)",
-      });
-    },
-    [reduceMotion]
-  );
 
   return (
     <Parallax
@@ -852,12 +853,24 @@ function ProcessCards({ reduceMotion }: { reduceMotion: boolean }) {
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
-          onMouseMove={handleMove(i)}
-          onMouseLeave={handleLeave(i)}
           /* `will-change` only under hover: the tilt is pointer-driven, so on
              touch it would be a permanently promoted layer for an effect that
              can never fire. */
-          className="relative flex h-[520px] w-full max-w-[380px] shrink-0 flex-col justify-between rounded-2xl bg-white p-8 text-[#1F1F1F] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)] hover:[will-change:transform] md:w-[340px]"
+          /* `md:-mx-[170px]` — half the card's own width, so the three
+             occupy no width in the flex row and sit on one shared centre.
+             The fan is what spreads them.
+
+             Without it the row laid them out side by side at 340px centres
+             AND the fan then pushed them another 300px apart, so the centres
+             ended up 640px apart: the outer cards ran off both edges of a
+             1440 viewport (measured left -112 and right 1508) and the
+             overlapping hand-of-cards look was gone. */
+          /* The 520px height is what makes three fanned cards the same size
+             on desktop. On a phone they are stacked, nothing has to match,
+             and the fixed height left between 50 and 220px of empty card
+             under the copy depending on the locale — so there it hugs its
+             content instead. */
+          className="relative flex w-full max-w-[380px] shrink-0 flex-col justify-between gap-10 rounded-2xl bg-white p-8 text-[#1F1F1F] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)] hover:[will-change:transform] md:-mx-[170px] md:h-[520px] md:w-[340px] md:gap-0"
         >
           <div>
             <span className="text-xs font-medium tracking-[0.05em] text-[#1FDB93]">

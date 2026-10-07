@@ -1429,3 +1429,66 @@ Verified: tsc, eslint, build clean; no horizontal scroll at 390px.
 A `{/* ... */}` comment placed directly inside `return (` is two sibling
 expressions and a parse error. Hit it again in chrome.tsx. Above the `return`,
 as a `//` line, or inside the element.
+
+## Process cards — the section the mobile/hover report was actually about (2026-10-07)
+
+The previous entry fixed the reviews, which is not what the user meant. The
+screenshot that followed was the PROCESS deck: one card off the left edge, one
+running past the right, both rotated, overlapping each other.
+
+### Mobile: the fan was applied at every width
+
+`restPose` spreads the cards 300px either side of centre, and it ran in a plain
+effect. On a phone, where the deck is a `flex-col` of full-width cards, that
+put card one at x -306 and card three at x 294 — one off the left edge, one
+306px past the right. It never showed up as horizontal page scroll because the
+cards were clipped rather than scrollable, which is why earlier passes missed
+it. The source fans them only in its `min-width: 992px` branch.
+
+Everything now lives in `gsap.matchMedia("(min-width: 768px)")`: the fan, the
+elastic entrance and the pointer handlers. Below md the cards carry no
+transform at all, and cleanup clears the transform so crossing the breakpoint
+cannot leave one behind. Measured at 390px: all three at left 16 / right 374,
+transform `none`, no overlap.
+
+The pointer handlers also moved from React props to listeners inside that
+media context — `onMouseMove` as a prop ships to a phone that can never fire
+it.
+
+### Desktop: the hover was an inertia flick, and it stacked
+
+Two causes, both real:
+
+- the bounds were plus or minus 320px of travel and 55 degrees, so a quick
+  movement threw a card across its neighbours and elastically snapped it back;
+- every `mousemove` started a FRESH inertia tween whose `onComplete` queued its
+  own return tween. A second of movement left dozens of competing tweens on one
+  card, each with a different destination. That is the chaos.
+
+Replaced with `gsap.quickTo`, which reuses one tween per property, so nothing
+can stack. The pose is bounded by construction: 4 degrees and 10px around the
+resting fan plus a 10px lift — a card leaning toward the cursor rather than
+being thrown by it. Verified with a fast zig-zag sweep: the card lands at x 9,
+y -12, rot 3.5 and returns to exactly x 0, y 0, rot 0 on leave.
+
+`InertiaPlugin` was used nowhere else, so its import and registration are gone.
+
+### Also found: the fan was double-spaced on desktop
+
+The cards sat side by side in the flex row at 340px centres AND the fan pushed
+them another 300px apart, so the centres ended up 640px apart: the outer cards
+ran off both edges of a 1440 viewport (measured left -112, right 1508) and the
+overlapping hand-of-cards look was gone entirely.
+
+`md:-mx-[170px]` — half a card's width — makes the three occupy no width in
+the row and share one centre, so the fan alone does the spreading. Now 228 /
+550 / 828 at 1440, overlapping as intended.
+
+### Mobile card height
+
+`h-[520px]` is what keeps three fanned cards identical on desktop. Stacked on a
+phone nothing has to match, and the fixed height left 50-220px of empty card
+under the copy depending on locale. Now `md:h-[520px]` with the height auto
+below that, plus `gap-10` so the checklist does not sit against the body copy.
+Measured: every card 40px taller than its content, nothing clipped, at 390 and
+360px in both locales.
