@@ -468,7 +468,11 @@ function WorkCardMedia({
       src={src}
       alt={alt}
       fill
-      sizes="(min-width: 768px) 44vw, 100vw"
+      /* The container caps at 1440, so from there up a card stops growing at
+         about 660px and a `vw` hint would keep asking for wider files on a
+         bigger screen. The 1.18 scale the parallax drifts inside is part of
+         the width the browser actually needs. */
+      sizes="(min-width: 1440px) 780px, (min-width: 768px) 46vw, 100vw"
       className="scale-[1.18] object-cover"
     />
   );

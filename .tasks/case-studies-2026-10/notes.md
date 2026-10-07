@@ -52,13 +52,34 @@ changes — the `Locale` import and the asset path prefixes.
 
 ## Decisions worth keeping
 
-**The work images were NOT replaced.** The handoff ships the same seven
-filenames at 1448x1086 landscape, 175-422KB; this project's are 900x1206
-portrait, 42-106KB — a different crop, not just a different encode. Swapping
-them would have changed every card on the home page and the hero of every
-study, which is the one thing the user ruled out. Only the new one was added,
-re-encoded to match the set: centre-cropped to 900x1206, webp q70, 105KB,
-against work-hotel's 109KB.
+**The work images WERE replaced, on a second pass.** First pass kept the
+project's own 900x1206 portrait set and only added a portrait crop of the new
+café photo, on the reading that replacing them would change how the home page
+looks. The user then asked for them changed — correctly: the frames they sit in
+are landscape (`aspect-[4/3]` on the cards and the index, `21/9` on a study
+hero), so a portrait source was being cropped to about half its picture. All
+seven are now the handoff's 1448x1086, and the photos are the clients' own —
+the Chery in its showroom, the DentalNet surgery with the logo on the glass,
+the Origins menu board — instead of a hard crop of a portrait frame.
+
+Copied as delivered, 175-422KB, NOT re-encoded: every one of these is served
+through `next/image`, which generates the delivered widths itself, so the
+source weight is a git concern only (~2MB for the seven) and a second lossy
+pass would cost quality for nothing.
+
+`sizes` on the home cards was wrong for the new shape and is now
+`(min-width: 1440px) 780px, (min-width: 768px) 46vw, 100vw`: the container
+caps at 1440, so past that a card stops growing at about 660px and a bare `vw`
+hint kept asking for wider files on wider screens. The 1.18 scale the parallax
+drifts inside is part of the width the browser really needs.
+
+**Next's dev image cache does not notice a changed source file.** After
+overwriting the seven files, every card still served the old picture —
+`naturalWidth` 780x1045, i.e. the portrait source resized. The optimizer keys
+on the request URL, which did not change. `.next/dev/cache/images` has to be
+deleted (`.next/cache/images` in a production build); a page reload will not do
+it. Worth remembering the next time an image is replaced in place and the site
+seems to ignore it.
 
 **Three of six home cards have no client site.** DentalNet's public asset is
 the ZEN booklet, and KGM and Harmony Garden have no site of their own. Those
