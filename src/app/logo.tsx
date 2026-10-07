@@ -16,7 +16,9 @@
 
 /** The E-D-H mark. Drawn in the source's own 740x284 space, then placed. */
 const MARK_TRANSFORM = "translate(0,70.2) scale(0.5618)";
-const MARK_PATHS = [
+/* Exported for the hero, which needs the paths twice — once as a mask and once
+   as a rim — in its own coordinate frame rather than in a cropped viewBox. */
+export const MARK_PATHS_HERO = [
   "M0,0H209L237,64H28Z",
   "M28,110H208L139,174H28Z",
   "M28,220H237L209,284H0Z",
@@ -24,7 +26,9 @@ const MARK_PATHS = [
   "M388,110H552V174H388Z",
   "M552,0H616V284H552Z",
   "M634,77L740,142L634,207Z",
-];
+] as const;
+
+const MARK_PATHS = MARK_PATHS_HERO;
 
 /** "Epic Digital Hub" in Unbounded 400, outlined. Occupies x 569..1358. */
 const WORDMARK_D =

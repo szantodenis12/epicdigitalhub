@@ -1560,3 +1560,86 @@ Verified by hovering every row at 1440x900: each serves its own file, the
 image reports 16:9 against a 350x196 box, and there are no 4xx. Note for next
 time: Next's image optimiser caches by request URL, so `.next/dev/cache/images`
 has to go when a file is replaced in place — the same trap the work photos hit.
+
+## Hero: the mark over the loop, and an Apply that migrates (2026-10-07)
+
+User's brief, with a reference board: the EDH mark as an overlay with the clip
+running behind it, the header's Apply moved under the headline while you are at
+the top and back to the header on scroll, an arrival animation and something
+subtle afterwards.
+
+### The mark is a HOLE, not a silhouette
+
+First attempt followed the board literally: the mark drawn as a near-black
+shape over the clip. On the board that works because the photo behind it is
+bright. This loop is dark, so a dark shape on it had nothing to read against —
+rendered, all you saw was the thin emerald rim, a wireframe.
+
+Inverted instead. One dark rect covers the hero and the mark is cut out of it
+with an SVG mask, so the footage plays at full brightness inside the shape and
+dimmed outside. A brightness step alone still read weakly on the darkest
+frames, so a second masked rect washes the inside with #1FDB93 at 16%: the
+footage is visibly GREEN inside the mark and plain outside it, which is what
+the board actually does. The cut edge carries an emerald rim, because without
+it the boundary is only a brightness change.
+
+### Two framings, not one
+
+A single 1440x900 viewBox with `preserveAspectRatio="slice"` crops hard on a
+portrait screen: at 390x844 it showed only the middle bars of the E, which read
+as green stripes. The phone gets its own viewBox and placement, with the whole
+mark visible and sat below the copy.
+
+### The headline needed its band back
+
+With the mark lit, the brightest pixel inside the headline's own box measured
+rgb(59,181,134) — white on that is 2.58:1, under AA's 3.0 for large text.
+Measured properly, too: the first pass sampled anti-aliased glyph edges as
+"background" and reported a nonsense 1.31, so the copy is hidden before
+sampling now.
+
+Fixed with the left vignette the board also has — over the mark, under the copy,
+desktop only, since on a phone the mark is below the text. Plus the mark pushed
+right (x 508 -> 600, scale 1.52 -> 1.5). Now 4.49:1 at worst across six moments
+of the loop, against the 4.27-8.91 the hero measured before any of this.
+
+### The Apply swap is a class, not state
+
+`past-hero` on <html>, toggled by a passive scroll listener at 140px — past the
+nav's own 120px guard so the two do not fight over the same pixels. Both buttons
+are in the markup and CSS decides which is live; flipping React state here would
+re-render the whole page component, which this project has already measured
+dropped frames from.
+
+Two specificity traps on the way, both from `:root.intro-done .intro-fade`
+(0,3,0), which the hero button carries for its arrival:
+
+- `html.past-hero .hero-apply` is (0,2,1) and lost, so the button never faded
+  out — measured opacity 1 with pointer-events none, i.e. an invisible button
+  sitting over the page. Now `:root.past-hero`.
+- the same rule's 1.35s transition was what the fade ran on, which reads as lag
+  against a scroll. Overridden to 450ms at equal specificity.
+
+On screens below lg the header has a hamburger and no Apply at all, so there is
+nothing to migrate to: the hero's own button stays put there.
+
+### Motion
+
+Arrival on `:root.intro-done` (opacity + 1.07 scale, 1.8s, 500ms after the
+intro hands over), then a 26s breathe of 2.5% scale and a few pixels, with the
+rim pulsing on its own 19s so the two never peak together. The mark also
+parallaxes -70px against the video's +160, so the layers separate as you leave
+the hero. All of it off under `prefers-reduced-motion`, mark still visible.
+
+### Verified
+
+tsc, eslint, build clean. At 1440x900 and 390x844: the swap works both
+directions (hero 1/header 0 at top, hero 0/header 1 past 140px, and back), the
+breathe measurably moves (scale 1.003 -> 1.0097 over 5s), the headline is the
+topmost element at its own coordinates, no console errors, no horizontal
+scroll.
+
+Note: the user suggested driving this with the Playwright MCP server. It is
+registered for this project but not loaded into this session, so the same
+engine was driven directly through `playwright-core` from the scratchpad —
+screenshots, computed styles and pixel sampling all the same.

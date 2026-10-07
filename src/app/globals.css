@@ -280,3 +280,92 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
+
+/* ---------------------------------------------------------------------------
+   HERO — the EDH mark over the loop, and the Apply that migrates
+
+   The mark is a graphic, not a logo here: huge, cropped by the right edge of
+   the screen, filled near-black with an emerald rim so the footage reads
+   around and through its counters. It sits above the scrims and below the
+   headline, so the copy is never competing with it.
+
+   Three pieces of motion, all transform/opacity only:
+     1. the arrival, once the intro has handed over (`html.intro-done`);
+     2. a 26s breathe, which is the "subtle afterwards" part — 2.5% of scale
+        and a few pixels, enough to feel alive and not enough to read as
+        movement while you are looking at the headline;
+     3. the rim's own slow pulse, offset from the breathe so the two never
+        peak together.
+   ------------------------------------------------------------------------ */
+.hero-mark {
+  opacity: 0;
+}
+:root.intro-done .hero-mark {
+  animation: hero-mark-in 1800ms cubic-bezier(0.22, 1, 0.36, 1) 500ms both;
+}
+.hero-mark-inner {
+  animation: hero-mark-breathe 26s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+.hero-mark-rim {
+  animation: hero-mark-rim 19s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+
+@keyframes hero-mark-in {
+  from { opacity: 0; scale: 1.07; }
+  to   { opacity: 1; scale: 1; }
+}
+@keyframes hero-mark-breathe {
+  from { scale: 1; translate: 0 0; }
+  to   { scale: 1.025; translate: -1.2% 0.8%; }
+}
+@keyframes hero-mark-rim {
+  from { opacity: 0.25; }
+  to   { opacity: 0.6; }
+}
+
+/* The Apply swap. Both buttons exist in the markup; which one is live depends
+   on a single class on <html>, so crossing the threshold costs no render. */
+/* Same specificity problem as below, other direction: `.intro-fade`'s own
+   1.35s transition is what the hero button would otherwise fade on, and 1.35s
+   reads as lag when it is reacting to a scroll. */
+:root.intro-done .hero-apply,
+:root .header-apply {
+  transition:
+    opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* `:root`, not `html`, and it matters: `:root.intro-done .intro-fade` is
+   (0,3,0) and the hero button carries `intro-fade` for its arrival, so an
+   `html.past-hero` selector at (0,2,1) lost to it and the button never faded
+   out on scroll. Measured: opacity stayed 1 with pointer-events off, which is
+   an invisible button you cannot click sitting on top of the page. */
+:root:not(.past-hero) .header-apply {
+  opacity: 0;
+  translate: 0 -0.5rem;
+  pointer-events: none;
+}
+
+:root.past-hero .hero-apply {
+  opacity: 0;
+  translate: 0 0.75rem;
+  pointer-events: none;
+}
+
+/* On a phone the header has a hamburger instead of an Apply button, so there
+   is nothing to migrate to: the hero's own stays put. */
+@media (max-width: 1023px) {
+  :root.past-hero .hero-apply {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root.intro-done .hero-mark { animation: none; opacity: 1; }
+  .hero-mark-inner,
+  .hero-mark-rim { animation: none; }
+  .hero-mark-rim { opacity: 0.4; }
+  :root.intro-done .hero-apply,
+  :root .header-apply { transition: none; }
+}

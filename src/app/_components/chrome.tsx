@@ -138,7 +138,20 @@ export function useSmoothScrollNav(reduceMotion: boolean) {
    HEADER
    ========================================================================= */
 
-export function SiteHeader({ navHidden, home }: { navHidden: boolean; home: boolean }) {
+export function SiteHeader({
+  navHidden,
+  home,
+  /* The home page shows its own Apply under the hero headline while you are at
+     the top, and this one takes over on scroll. The swap is CSS, keyed off
+     `html.past-hero` (see globals.css and the effect in site.tsx) rather than
+     React state: flipping state here re-renders the whole page component, and
+     this project has already measured dropped frames from doing that. */
+  applySwap = false,
+}: {
+  navHidden: boolean;
+  home: boolean;
+  applySwap?: boolean;
+}) {
   const copy = useCopy();
   const locale = useLocale();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -228,7 +241,7 @@ export function SiteHeader({ navHidden, home }: { navHidden: boolean; home: bool
                 button rather than as a peer of the nav. Margin rather than a
                 bigger row gap, so the mobile hamburger spacing is untouched. */}
             <LocaleToggle className="hidden text-xs text-white lg:mr-7 lg:flex" />
-            <div className="hidden lg:block">
+            <div className={`hidden lg:block ${applySwap ? "header-apply" : ""}`}>
               <TrickButton href={localePath(locale, APPLY_PATH)} variant="base" className="h-11 md:h-14">
                 {copy.nav.apply}
               </TrickButton>
