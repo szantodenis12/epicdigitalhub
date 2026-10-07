@@ -158,3 +158,48 @@ tsc, eslint and `npm run build` clean. In the browser (Edge, 1440x900 and
 - `public/videos/cases/README.md` still points at
   `src/app/case-studies/content.ts` for the `caseVideos` table; the real path
   here is `src/app/_content/case-studies.ts`.
+
+## FAQ set replaced from the PDF handoff (2026-10-07)
+
+`FAQ_CASE_STUDIES_2026-10.pdf`, 14 pages: seven clients x seven questions, RO
+on pages 1-7 and EN on 8-14, headed "Textele finale publicate pe paginile
+/case-studies". So it supersedes rather than extends — `caseFaqs` went from 3
+per study to 7, 42 strings to 98.
+
+Only 14 of the old 42 questions survived verbatim (the exclusivity one, in both
+locales); the rest were rephrased, e.g. "Ce face Epic Digital Hub pentru Hotel
+Maxim?" became "Ce servicii de marketing gestionează Epic Digital Hub pentru
+Hotel Maxim?".
+
+### Extracting it
+
+No poppler on this machine, so `pypdf` text extraction, parsed by the shape of
+the page: a client heading from the known set, then questions as the lines
+ending in `?` and each answer as the lines after it. Footer and running-head
+lines were dropped by prefix.
+
+Two classes of artifact had to be repaired, and both are worth knowing about
+for the next PDF handoff:
+
+- **Ligatures.** The PDF carries `U+FB01`/`U+FB02` glyphs, so extraction yields
+  "proﬁl", "ﬁecare", "conﬁrmat" — single characters that are not `fi`/`fl` and
+  would not match a search, a diff or a crawler's index. Mapped back.
+- **Line-break hyphenation.** "spray-\napplied" extracts as "spray- applied".
+  Two occurrences, both real ("patient-facing", "spray-applied"), fixed by
+  hand rather than by a blanket regex, since `\w- \w` also matches legitimate
+  constructions.
+
+Checked after import: 0 ligature characters, 0 double spaces, 0 hyphen-space
+pairs, 0 answers under 40 characters, 98 questions and 98 answers.
+
+### Verified in the browser
+
+All fourteen pages (7 slugs x 2 locales): 7 questions rendered, 7 in the
+FAQPage schema, same strings in the same order, every answer present, correct
+`<html lang>`. The accordion opens the seventh item (110px panel), so nothing
+about the longer list breaks it.
+
+The page and the schema read the same `caseFaqs`, which is what keeps them from
+drifting — a FAQPage claiming answers the page does not show is cloaking.
+
+tsc, eslint and build clean.

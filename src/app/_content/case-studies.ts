@@ -1040,58 +1040,130 @@ export const caseFaqTitle: Record<Locale, string> = {
   en: "Frequently asked questions",
 };
 
+/* Seven per study, both locales, from FAQ_CASE_STUDIES_2026-10.pdf (07.10.2026)
+   — the final published set, replacing the three per study the first handoff
+   carried. The last question in every set is the exclusivity one, which is the
+   whole pitch and belongs at the end of the page rather than buried.
+
+   These same strings feed the FAQPage JSON-LD in _pages/case-studies.tsx. One
+   source for both, so the markup can never claim an answer the page does not
+   show. */
 export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
   ro: {
     "hotel-maxim": [
       {
-        q: "Ce face Epic Digital Hub pentru Hotel Maxim?",
-        a: "Gestionăm ecosistemul digital al hotelului: website și copy, SEO, social media, profilul Google, comunicarea cu oaspeții și campaniile pentru cazare, restaurant, evenimente și segmentul corporate.",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Hotel Maxim?",
+        a: "Gestionăm ecosistemul digital al Hotel Maxim: website și copy, SEO, social media, Google Business Profile, comunicarea cu oaspeții și campaniile pentru cazare, restaurant, evenimente și segmentul corporate.",
+      },
+      {
+        q: "Cum se construiește strategia de marketing pentru un hotel din Oradea?",
+        a: "Strategia trebuie să conecteze principalele puncte de contact ale unui potențial oaspete: Google, website, social media și comunicarea ofertelor. În cazul Hotel Maxim, acestea sunt coordonate ca parte a aceluiași sistem digital.",
+      },
+      {
+        q: "Ce rol are SEO în promovarea unui hotel?",
+        a: "SEO ajută website-ul să răspundă mai bine căutărilor relevante pentru serviciile hotelului și completează prezența din Google Business Profile și celelalte canale digitale.",
+      },
+      {
+        q: "De ce este important Google Business Profile pentru un hotel?",
+        a: "Profilul Google este unul dintre punctele principale în care un potențial client găsește informații despre hotel, servicii și prezența locală. De aceea îl tratăm ca parte a ecosistemului digital, nu ca pe un canal separat.",
+      },
+      {
+        q: "Marketingul hotelului include doar promovarea camerelor?",
+        a: "Nu. Comunicarea Hotel Maxim acoperă cazarea, restaurantul, evenimentele și segmentul corporate, fiecare cu propriile mesaje și obiective.",
+      },
+      {
+        q: "Ce rezultat public a avut colaborarea cu Hotel Maxim?",
+        a: "Rezultatul confirmat public este o creștere de 20% a rezervărilor în primele șase luni.",
       },
       {
         q: "Lucrați și cu alte hoteluri din Oradea?",
-        a: "Nu. Lucrăm cu un singur brand din aceeași categorie, în același oraș. Cât timp colaborăm cu Hotel Maxim, nu lucrăm cu un hotel concurent din Oradea.",
-      },
-      {
-        q: "Ce rezultat public poate fi atribuit colaborării?",
-        a: "Rezultatul confirmat public este o creștere de 20% a rezervărilor în primele șase luni.",
+        a: "Nu. Lucrăm cu un singur brand din aceeași categorie, în același oraș. Cât timp colaborarea cu Hotel Maxim este activă, nu lucrăm cu un hotel concurent din Oradea.",
       },
     ],
     dentalnet: [
       {
-        q: "Ce face Epic Digital Hub pentru DentalNet?",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru DentalNet?",
         a: "Am construit sistemele de comunicare și regulile de brand pentru cele două clinici DentalNet, de la social media și prezentarea medicilor până la materiale tipărite și optimizarea profilurilor Google.",
+      },
+      {
+        q: "Cum se construiește comunicarea pentru o clinică stomatologică?",
+        a: "Comunicarea trebuie să fie clară, consecventă și adaptată contextului medical. Serviciile, medicii și informațiile adresate pacienților trebuie prezentate într-un limbaj ușor de înțeles, fără să piardă rigoarea profesională.",
+      },
+      {
+        q: "Cum poate fi prezentată echipa medicală în comunicarea unei clinici?",
+        a: "Prin formate coerente care explică specializarea, rolul și activitatea fiecărui medic. Pentru DentalNet, prezentarea medicilor face parte din sistemul general de comunicare al clinicii.",
+      },
+      {
+        q: "De ce sunt importante profilurile Google pentru o clinică stomatologică din Oradea?",
+        a: "Ele fac parte din prezența digitală locală a clinicii și trebuie să fie corelate cu identitatea, informațiile și comunicarea utilizată în celelalte canale.",
+      },
+      {
+        q: "Ce trebuie urmărit în publicitatea medicală?",
+        a: "Materialele trebuie construite în limitele cadrului legal și profesional aplicabil. În cazul fotografiilor sau filmărilor cu pacienți, folosirea imaginii se face numai pe baza documentației corespunzătoare.",
+      },
+      {
+        q: "Marketingul unei clinici înseamnă doar social media?",
+        a: "Nu. În cazul DentalNet, sistemul include social media, prezentarea medicilor, materiale tipărite, reguli de brand și optimizarea profilurilor Google.",
       },
       {
         q: "Lucrați și cu alte clinici stomatologice din Oradea?",
         a: "Nu. În Oradea, categoria este rezervată DentalNet pe durata colaborării.",
       },
-      {
-        q: "Cum abordați regulile de publicitate medicală?",
-        a: "Fiecare material este construit în limitele cadrului legal și profesional aplicabil. Filmările și fotografiile cu pacienți sunt realizate numai în baza documentației corespunzătoare privind utilizarea imaginii.",
-      },
     ],
     "agro-salso": [
       {
-        q: "Ce face Epic Digital Hub pentru Agro Salso?",
-        a: "Am restructurat campaniile Google și Meta, am configurat măsurarea conversiilor și am reconstruit comunicarea produselor pe baza specificațiilor oficiale. Sistemul include website, materiale comerciale și suport pentru procesul de gestionare a cererilor.",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Agro Salso?",
+        a: "Am restructurat campaniile Google și Meta, am configurat măsurarea conversiilor și am reconstruit comunicarea produselor pe baza specificațiilor oficiale. Sistemul include website-ul, materialele comerciale și suportul pentru gestionarea cererilor.",
+      },
+      {
+        q: "Cum se promovează online utilajele agricole?",
+        a: "Comunicarea trebuie să combine informația tehnică cu informația comercială relevantă pentru cumpărător. Website-ul, campaniile și materialele de produs trebuie să folosească aceleași date și aceeași structură de comunicare.",
+      },
+      {
+        q: "Cum comunicați un produs cu multe specificații tehnice?",
+        a: "Pornim de la documentația oficială și selectăm informațiile relevante pentru fiecare format, fără să modificăm sensul specificațiilor tehnice.",
+      },
+      {
+        q: "De unde provin specificațiile utilajelor prezentate?",
+        a: "Din documentația oficială a producătorilor din portofoliu. Specificațiile, compatibilitățile și prețurile sunt verificate înainte de publicare.",
+      },
+      {
+        q: "Ce rol au Google Ads și Meta Ads în promovarea utilajelor agricole?",
+        a: "În proiectul Agro Salso, cele două platforme sunt integrate într-un sistem care urmărește generarea și măsurarea cererilor, nu doar distribuirea de reclame.",
+      },
+      {
+        q: "Website-ul face parte din strategia de marketing?",
+        a: "Da. Pentru Agro Salso, website-ul și prezentarea produselor sunt conectate cu materialele comerciale, campaniile și procesul de gestionare a cererilor.",
       },
       {
         q: "Lucrați și cu alți dealeri de utilaje agricole?",
-        a: "Nu lucrăm simultan cu dealeri concurenți din aceeași categorie și aceeași piață.",
-      },
-      {
-        q: "De unde provin specificațiile tehnice publicate?",
-        a: "Din documentația oficială a producătorilor din portofoliu. Specificațiile, compatibilitățile și prețurile sunt verificate înainte de publicare.",
+        a: "Nu lucrăm simultan cu dealeri concurenți direcți din aceeași categorie și aceeași piață.",
       },
     ],
     "kgm-chery-oradea": [
       {
-        q: "Ce face Epic Digital Hub pentru KGM Oradea și Chery Oradea?",
-        a: "Construim și coordonăm sistemele lunare de comunicare pentru cele două mărci: lansări, carusele, conținut comercial, stories și scripturi video.",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru KGM Oradea și Chery Oradea?",
+        a: "Construim și coordonăm sistemele lunare de comunicare pentru cele două mărci: lansări de modele, carusele, conținut comercial, stories și scenarii video.",
       },
       {
-        q: "De unde provin prețurile și specificațiile publicate?",
-        a: "Din documentația și listele comerciale oficiale curente ale importatorilor. Promoțiile sunt publicate numai împreună cu perioada de valabilitate confirmată.",
+        q: "Cum se promovează online un model auto nou?",
+        a: "Comunicarea pornește de la poziționarea modelului și informațiile oficiale disponibile, apoi este adaptată pentru lansare, social media, video și comunicare comercială.",
+      },
+      {
+        q: "Cum sunt folosite specificațiile tehnice în conținutul auto?",
+        a: "Specificațiile sunt preluate din documentația oficială curentă a importatorilor și sunt adaptate formatului de comunicare fără a modifica informația tehnică.",
+      },
+      {
+        q: "De unde provin prețurile și ofertele publicate?",
+        a: "Din listele comerciale oficiale curente ale importatorilor. Promoțiile sunt publicate numai împreună cu perioada de valabilitate confirmată.",
+      },
+      {
+        q: "Ce tipuri de conținut funcționează într-un sistem de comunicare auto?",
+        a: "Pentru KGM Oradea și Chery Oradea folosim o combinație de lansări, carusele, conținut comercial, stories și video, în funcție de model și mesaj.",
+      },
+      {
+        q: "Realizați și scenarii pentru reels și video auto?",
+        a: "Da. Scenariile video fac parte din sistemul lunar de comunicare și sunt construite pornind de la informațiile relevante despre fiecare model.",
       },
       {
         q: "Lucrați și cu alți dealeri auto din Oradea?",
@@ -1100,26 +1172,58 @@ export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
     ],
     "harmony-garden": [
       {
-        q: "Ce face Epic Digital Hub pentru Harmony Garden?",
+        q: "Ce gestionează Epic Digital Hub pentru Harmony Garden?",
         a: "Construim comunicarea sezonului: masterplan, identitatea evenimentelor, materiale grafice, reels, teasere și mecanici comerciale.",
       },
       {
-        q: "În ce limbă este creat conținutul?",
+        q: "Cum se construiește comunicarea pentru un eveniment?",
+        a: "Pornim de la concept, public și obiectivul evenimentului. Acestea sunt apoi transpuse într-o identitate și într-un sistem coerent de materiale și conținut.",
+      },
+      {
+        q: "De ce are nevoie fiecare eveniment de o identitate proprie?",
+        a: "Pentru ca publicul să poată diferenția rapid evenimentele din același sezon, fără ca acestea să piardă legătura cu brandul principal.",
+      },
+      {
+        q: "Ce tipuri de conținut sunt folosite pentru promovarea evenimentelor?",
+        a: "În cazul Harmony Garden, sistemul include materiale grafice, reels, teasere și mecanici comerciale, integrate într-un plan de comunicare al sezonului.",
+      },
+      {
+        q: "În ce limbă este creat conținutul Harmony Garden?",
         a: "În principal în maghiară. Conținutul este scris direct pentru publicul Harmony Garden, nu tradus mecanic din română.",
       },
       {
-        q: "Lucrați și cu alte cluburi din aceeași zonă?",
+        q: "De ce este important ca un text multilingv să fie adaptat, nu doar tradus?",
+        a: "Pentru că tonul, formulările și modul în care reacționează publicul diferă de la o limbă la alta. De aceea, comunicarea trebuie scrisă pentru publicul căruia îi este adresată.",
+      },
+      {
+        q: "Lucrați și cu alte cluburi concurente din aceeași zonă?",
         a: "Nu lucrăm simultan cu un brand concurent direct din aceeași categorie și aceeași piață.",
       },
     ],
     "origins-cafe": [
       {
-        q: "Ce face Epic Digital Hub pentru Origins Coffee & Drinks?",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Origins Coffee & Drinks?",
         a: "Am construit sistemul de fidelizare și lucrăm la ecosistemul de comunicare al brandului: profiluri Google, materiale pentru locații, meniuri și social media.",
       },
       {
-        q: "Cum funcționează cardul de fidelitate?",
-        a: "Clientul are cardul direct în telefon, iar interacțiunile sunt înregistrate digital la fiecare vizită eligibilă. Clienții recurenți pot ajunge la nivelul Gold.",
+        q: "Cum funcționează sistemul de fidelizare Origins?",
+        a: "Clientul păstrează cardul direct în telefon, iar interacțiunile eligibile sunt înregistrate digital la fiecare vizită. Clienții recurenți pot ajunge la nivelul Gold.",
+      },
+      {
+        q: "De ce este important un program de fidelizare pentru o cafenea?",
+        a: "Pentru un business bazat pe vizite recurente, fidelizarea creează o legătură directă între experiența din locație și relația digitală cu clientul.",
+      },
+      {
+        q: "Ce rol au profilurile Google pentru o cafenea cu mai multe locații?",
+        a: "Ele fac parte din prezența locală a brandului și trebuie gestionate împreună cu informațiile, materialele și comunicarea celorlalte puncte de contact.",
+      },
+      {
+        q: "Marketingul unei cafenele înseamnă doar social media?",
+        a: "Nu. Pentru Origins, sistemul include social media, profiluri Google, meniuri, materiale pentru locații și programul de fidelizare.",
+      },
+      {
+        q: "Cum se păstrează aceeași identitate în online și în locație?",
+        a: "Prin folosirea unui sistem comun de comunicare pentru social media, meniuri, materiale fizice și celelalte puncte de contact ale brandului.",
       },
       {
         q: "Lucrați și cu alte cafenele din Oradea?",
@@ -1128,70 +1232,150 @@ export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
     ],
     thermx: [
       {
+        q: "Ce este ThermX?",
+        a: "ThermX este o membrană nanoceramică termoizolantă produsă de Nano Revolution și aplicată prin pulverizare într-un strat de ordinul milimetrilor, destinată izolării termice a clădirilor.",
+      },
+      {
+        q: "Cum se aplică ThermX?",
+        a: "Conform informațiilor utilizate în proiect, ThermX este aplicat prin pulverizare, într-un strat de ordinul milimetrilor.",
+      },
+      {
+        q: "Pentru ce este utilizat ThermX?",
+        a: "Produsul este destinat izolării termice a clădirilor și este poziționat ca o soluție tehnică bazată pe o membrană nanoceramică termoizolantă.",
+      },
+      {
+        q: "Cum se construiește comunicarea pentru un produs tehnic?",
+        a: "Procesul trebuie să înceapă de la o bază de informații verificată. Abia apoi aceleași date pot fi adaptate pentru website, SEO, materiale comerciale și campanii.",
+      },
+      {
+        q: "Cum verificați afirmațiile tehnice înainte de publicare?",
+        a: "În proiectul ThermX lucrăm pornind de la o singură sursă de date. Nicio informație tehnică nu intră în comunicare înainte să fie verificată și documentată.",
+      },
+      {
+        q: "De ce este importantă o sursă unică de informații pentru un produs tehnic?",
+        a: "Pentru ca website-ul, materialele comerciale și comunicarea de marketing să utilizeze aceleași informații și să nu apară diferențe între canale.",
+      },
+      {
         q: "Ce a construit Epic Digital Hub pentru ThermX?",
         a: "Am consolidat baza de date tehnice și am construit poziționarea, strategia de marketing, strategia SEO, website-ul și sistemul complet de lansare al produsului.",
-      },
-      {
-        q: "Ce este ThermX?",
-        a: "ThermX este o membrană nanoceramică termoizolantă produsă de Nano Revolution și aplicată prin pulverizare în strat de ordinul milimetrilor, destinată izolării termice a clădirilor.",
-      },
-      {
-        q: "Cum comunicați un produs atât de tehnic?",
-        a: "Pornind de la o singură sursă de date. Nicio informație tehnică nu intră în comunicare înainte să fie verificată și documentată.",
       },
     ],
   },
   en: {
     "hotel-maxim": [
       {
-        q: "What does Epic Digital Hub do for Hotel Maxim?",
-        a: "We manage the hotel's digital ecosystem: website copy, SEO, social media, Google Business Profile, guest-facing communication and campaigns for rooms, restaurant, events and the corporate segment.",
+        q: "What marketing services does Epic Digital Hub manage for Hotel Maxim?",
+        a: "We manage Hotel Maxim's digital ecosystem: website copy, SEO, social media, Google Business Profile, guest-facing communication and campaigns for rooms, restaurant, events and the corporate segment.",
+      },
+      {
+        q: "How is a marketing strategy built for a hotel in Oradea?",
+        a: "The strategy has to connect the main touchpoints of a potential guest: Google, the website, social media and offer communication. For Hotel Maxim, these are coordinated as part of a single digital system.",
+      },
+      {
+        q: "What role does SEO play in hotel marketing?",
+        a: "SEO helps the website answer the searches relevant to the hotel's services and complements the presence built through the Google Business Profile and the other digital channels.",
+      },
+      {
+        q: "Why does the Google Business Profile matter for a hotel?",
+        a: "The Google profile is one of the main places where a potential guest finds information about the hotel, its services and its local presence. That is why we treat it as part of the digital ecosystem, not as a separate channel.",
+      },
+      {
+        q: "Does hotel marketing only mean promoting the rooms?",
+        a: "No. Hotel Maxim's communication covers accommodation, the restaurant, events and the corporate segment, each with its own messages and objectives.",
+      },
+      {
+        q: "What public result has the collaboration with Hotel Maxim produced?",
+        a: "The confirmed public result is a 20% increase in bookings within the first six months.",
       },
       {
         q: "Do you work with other hotels in Oradea?",
-        a: "No. We work with one brand per category, per city. While Hotel Maxim is an active client, we do not work with a competing hotel in Oradea.",
-      },
-      {
-        q: "What public result can be attributed to the collaboration?",
-        a: "The confirmed public result is a 20% increase in bookings within the first six months.",
+        a: "No. We work with one brand per category, per city. While the collaboration with Hotel Maxim is active, we do not work with a competing hotel in Oradea.",
       },
     ],
     dentalnet: [
       {
-        q: "What does Epic Digital Hub do for DentalNet?",
+        q: "What marketing services does Epic Digital Hub manage for DentalNet?",
         a: "We built the communication systems and brand rules for both DentalNet clinics, from social media and doctor presentation formats to printed materials and Google profile optimisation.",
+      },
+      {
+        q: "How is communication built for a dental clinic?",
+        a: "It has to be clear, consistent and adapted to the medical context. Services, doctors and patient-facing information must be presented in language that is easy to understand without losing professional rigour.",
+      },
+      {
+        q: "How can a clinic present its medical team?",
+        a: "Through coherent formats that explain each doctor's specialisation, role and activity. For DentalNet, doctor presentation is part of the clinic's overall communication system.",
+      },
+      {
+        q: "Why do Google profiles matter for a dental clinic in Oradea?",
+        a: "They are part of the clinic's local digital presence and must stay consistent with the identity, information and communication used across the other channels.",
+      },
+      {
+        q: "What needs to be considered in medical advertising?",
+        a: "Every piece must be created within the applicable legal and professional framework. Patient photography and filming are used only with the appropriate image-consent documentation.",
+      },
+      {
+        q: "Is clinic marketing just social media?",
+        a: "No. For DentalNet, the system includes social media, doctor presentation, printed materials, brand rules and Google profile optimisation.",
       },
       {
         q: "Do you work with other dental clinics in Oradea?",
         a: "No. In Oradea, the category is reserved for DentalNet for the duration of the engagement.",
       },
-      {
-        q: "How do you approach medical advertising rules?",
-        a: "Every piece is created within the applicable legal and professional framework. Patient photography and filming are produced only with the appropriate image-consent documentation.",
-      },
     ],
     "agro-salso": [
       {
-        q: "What does Epic Digital Hub do for Agro Salso?",
+        q: "What marketing services does Epic Digital Hub manage for Agro Salso?",
         a: "We restructured the Google and Meta campaigns, implemented conversion measurement and rebuilt product communication around official manufacturer specifications. The system includes the website, commercial materials and support for enquiry management.",
+      },
+      {
+        q: "How is agricultural machinery promoted online?",
+        a: "The communication has to combine technical information with the commercial information a buyer actually needs. The website, the campaigns and the product materials must use the same data and the same communication structure.",
+      },
+      {
+        q: "How do you communicate a product with many technical specifications?",
+        a: "We start from the official documentation and select the information relevant to each format, without changing the meaning of the technical specifications.",
+      },
+      {
+        q: "Where do the published machinery specifications come from?",
+        a: "From the official documentation of the manufacturers in the portfolio. Specifications, compatibility and pricing are verified before publication.",
+      },
+      {
+        q: "What role do Google Ads and Meta Ads play in promoting agricultural machinery?",
+        a: "In the Agro Salso project, the two platforms are integrated into one system built to generate and measure enquiries, not just to distribute ads.",
+      },
+      {
+        q: "Is the website part of the marketing strategy?",
+        a: "Yes. For Agro Salso, the website and product presentation are connected to the commercial materials, the campaigns and the enquiry-management process.",
       },
       {
         q: "Do you work with other agricultural machinery dealers?",
         a: "We do not work simultaneously with direct competitors in the same category and market.",
       },
-      {
-        q: "Where do the published technical specifications come from?",
-        a: "From the official documentation of the manufacturers in the portfolio. Specifications, compatibility and pricing are verified before publication.",
-      },
     ],
     "kgm-chery-oradea": [
       {
-        q: "What does Epic Digital Hub do for KGM Oradea and Chery Oradea?",
-        a: "We build and operate the monthly communication systems for both brands: launches, carousels, commercial content, stories and video scripts.",
+        q: "What marketing services does Epic Digital Hub manage for KGM Oradea and Chery Oradea?",
+        a: "We build and coordinate the monthly communication systems for both brands: model launches, carousels, commercial content, stories and video scripts.",
       },
       {
-        q: "Where do the published prices and specifications come from?",
-        a: "From current official importer documentation and commercial lists. Promotions are published only with a confirmed validity period.",
+        q: "How is a new car model promoted online?",
+        a: "Communication starts from the model's positioning and the official information available, then it is adapted for the launch, social media, video and commercial communication.",
+      },
+      {
+        q: "How are technical specifications used in automotive content?",
+        a: "Specifications are taken from the importers' current official documentation and adapted to each format without altering the technical information.",
+      },
+      {
+        q: "Where do the published prices and offers come from?",
+        a: "From the importers' current official commercial lists. Promotions are published only with a confirmed validity period.",
+      },
+      {
+        q: "What types of content work in an automotive communication system?",
+        a: "For KGM Oradea and Chery Oradea we use a mix of launches, carousels, commercial content, stories and video, depending on the model and the message.",
+      },
+      {
+        q: "Do you also write scripts for automotive reels and video?",
+        a: "Yes. Video scripts are part of the monthly communication system and are built from the relevant information about each model.",
       },
       {
         q: "Do you work with other car dealers in Oradea?",
@@ -1200,26 +1384,58 @@ export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
     ],
     "harmony-garden": [
       {
-        q: "What does Epic Digital Hub do for Harmony Garden?",
-        a: "We build the season's communication system: masterplan, event identities, graphic materials, reels, teasers and commercial mechanics.",
+        q: "What does Epic Digital Hub manage for Harmony Garden?",
+        a: "We build the season's communication: masterplan, event identities, graphic materials, reels, teasers and commercial mechanics.",
       },
       {
-        q: "What language is the content created in?",
+        q: "How is communication built for an event?",
+        a: "We start from the concept, the audience and the event's objective. These are then translated into an identity and a coherent system of materials and content.",
+      },
+      {
+        q: "Why does each event need its own identity?",
+        a: "So the audience can quickly tell the events of the same season apart, without losing the connection to the main brand.",
+      },
+      {
+        q: "What types of content are used to promote events?",
+        a: "For Harmony Garden, the system includes graphic materials, reels, teasers and commercial mechanics, integrated into the season's communication plan.",
+      },
+      {
+        q: "What language is Harmony Garden content created in?",
         a: "Primarily Hungarian. The copy is written directly for the Harmony Garden audience rather than mechanically translated from Romanian.",
       },
       {
-        q: "Do you work with other clubs in the same area?",
+        q: "Why does multilingual copy need to be adapted rather than just translated?",
+        a: "Because tone, phrasing and the way an audience responds differ from one language to another. Communication has to be written for the audience it addresses.",
+      },
+      {
+        q: "Do you work with competing clubs in the same area?",
         a: "We do not work simultaneously with a direct competitor in the same category and market.",
       },
     ],
     "origins-cafe": [
       {
-        q: "What does Epic Digital Hub do for Origins Coffee & Drinks?",
+        q: "What marketing services does Epic Digital Hub manage for Origins Coffee & Drinks?",
         a: "We built the loyalty system and work across the brand's communication ecosystem: Google profiles, in-store materials, menus and social media.",
       },
       {
-        q: "How does the loyalty card work?",
+        q: "How does the Origins loyalty system work?",
         a: "The customer keeps the card on their phone, and eligible interactions are recorded digitally with each visit. Returning customers can progress to the Gold tier.",
+      },
+      {
+        q: "Why does a loyalty programme matter for a coffee shop?",
+        a: "For a business built on repeat visits, loyalty creates a direct link between the in-store experience and the digital relationship with the customer.",
+      },
+      {
+        q: "What role do Google profiles play for a coffee shop with several locations?",
+        a: "They are part of the brand's local presence and must be managed together with the information, materials and communication of the other touchpoints.",
+      },
+      {
+        q: "Is coffee shop marketing just social media?",
+        a: "No. For Origins, the system includes social media, Google profiles, menus, in-store materials and the loyalty programme.",
+      },
+      {
+        q: "How do you keep the same identity online and in the locations?",
+        a: "By using one shared communication system for social media, menus, physical materials and the brand's other touchpoints.",
       },
       {
         q: "Do you work with other coffee shops in Oradea?",
@@ -1228,16 +1444,32 @@ export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
     ],
     thermx: [
       {
-        q: "What did Epic Digital Hub build for ThermX?",
-        a: "We consolidated the technical data and built the positioning, marketing strategy, SEO strategy, website and full product-launch system.",
-      },
-      {
         q: "What is ThermX?",
         a: "ThermX is a nanoceramic thermal-insulation membrane produced by Nano Revolution and spray-applied in a millimetre-scale layer for the thermal insulation of buildings.",
       },
       {
-        q: "How do you communicate such a technical product?",
-        a: "By starting from one source of truth. No technical claim enters communication before it has been verified and documented.",
+        q: "How is ThermX applied?",
+        a: "Based on the information used in the project, ThermX is spray-applied in a millimetre-scale layer.",
+      },
+      {
+        q: "What is ThermX used for?",
+        a: "The product is intended for the thermal insulation of buildings and is positioned as a technical solution based on a nanoceramic thermal-insulation membrane.",
+      },
+      {
+        q: "How is communication built for a technical product?",
+        a: "The process has to start from a verified information base. Only then can the same data be adapted for the website, SEO, commercial materials and campaigns.",
+      },
+      {
+        q: "How do you verify technical claims before publication?",
+        a: "In the ThermX project we work from a single source of data. No technical claim enters communication before it has been verified and documented.",
+      },
+      {
+        q: "Why does a technical product need a single source of information?",
+        a: "So the website, the commercial materials and the marketing communication use the same information, with no differences between channels.",
+      },
+      {
+        q: "What did Epic Digital Hub build for ThermX?",
+        a: "We consolidated the technical data and built the positioning, the marketing strategy, the SEO strategy, the website and the full product-launch system.",
       },
     ],
   },
