@@ -97,38 +97,38 @@ const en = {
     featured: {
       // No quotation marks inside the strings - the markup adds them.
       quote:
-        "We run two clinics, with different audiences, in a field where you can't just claim anything. They understood the rules from day one, and since then the content ships consistently without us chasing it.",
+        "We run two clinics with very different audiences, and communication in healthcare needs to be handled carefully. They understood that from the start. Since then, the content has been consistent, accurate and easy for us to manage. We appreciate the care they put into representing us and knowing we can trust them.",
       name: "DentalNet, Oradea",
     },
     items: [
       {
         quote:
-          "They filmed our cars in the showroom and made ads that bring people in for a test drive, not just likes.",
+          "They understand how to make cars look good without overdoing it. The videos feel natural, the social media stays consistent, and each model gets its own identity. We're grateful for their commitment and the care they put into every shoot.",
         name: "AutoSiena, Oradea",
       },
       {
         quote:
-          "We had campaigns burning money for nothing. They looked at the numbers seriously and cut what wasn't working. Now I know where every leu goes.",
+          "They built us a new website that presents our machinery clearly and makes information easy to find. They also handled our print materials and online campaigns. It all helps us present our range better, both online and when talking to customers. We're glad to have a team alongside us that gets involved and understands the work behind our business.",
         name: "Agro Salso, Bihor",
       },
       {
         quote:
-          "The reels they made for the hotel look like the big places abroad. Guests message us saying that's where they found us.",
+          "They built us a new website that shows the hotel at its best and gives guests the information they need. They also manage our Google campaigns, which bring us customers. That's what matters to us: being found by people looking for a place to stay in Oradea. We're grateful for their commitment. It's reassuring to know this part of the business is in good hands.",
         name: "Hotel Maxim, Oradea",
       },
       {
         quote:
-          "The loyalty card now lives in our customers' phones, and at the till it takes two seconds. And nothing shows up online that isn't actually on the menu.",
+          "They helped us make the whole experience more consistent, from social media to the loyalty card our customers now keep on their phones. Everything is simpler for both our team and our customers. We're grateful for the heart they put into the project and for understanding what Origins means to us.",
         name: "Origins Coffee & Drinks, Oradea",
       },
       {
         quote:
-          "They took complicated technical material and made it clear even for a client outside the field.",
+          "thermX is a product with a lot of technical detail. They made that information clear and accessible to customers without oversimplifying it. We appreciate the time and care they took to understand the product before presenting it to customers.",
         name: "ThermX",
       },
       {
         quote:
-          "The event posters and clips gave us a look nobody around here has.",
+          "They gave the event a visual identity that feels like us. The posters, videos and social media all work together instead of looking like separate pieces. Seeing them capture exactly the energy we wanted meant a lot to us. Thank you for all the work behind the scenes.",
         name: "Harmony Garden",
       },
     ],
@@ -327,38 +327,38 @@ const ro: typeof en = {
     featured: {
       // No quotation marks inside the strings - the markup adds them.
       quote:
-        "Avem două clinici, publicuri diferite și un domeniu în care nu ai voie să afirmi orice. Au înțeles regulile din prima, iar de atunci conținutul iese constant, fără să alergăm noi după el.",
+        "Avem două clinici cu publicuri foarte diferite, iar în domeniul medical contează mult cum comunici. Au înțeles asta de la început. De atunci, avem un conținut consecvent, cu informații corecte, iar pentru noi tot procesul este mai simplu. Apreciem grija cu care ne reprezintă și faptul că putem avea încredere în ei.",
       name: "DentalNet, Oradea",
     },
     items: [
       {
         quote:
-          "Ne-au filmat mașinile în showroom și au scos reclame care aduc oameni la test drive, nu doar like-uri.",
+          "Știu să pună în valoare mașinile fără să exagereze. Videoclipurile sunt naturale, postările sunt constante, iar fiecare model este prezentat în felul lui. Le mulțumim pentru implicare și pentru atenția acordată fiecărei filmări.",
         name: "AutoSiena, Oradea",
       },
       {
         quote:
-          "Aveam campanii care ardeau bani degeaba. S-au uitat serios la cifre și au oprit ce nu funcționa. Acum știu pe ce se duce fiecare leu.",
+          "Ne-au făcut un site nou, în care utilajele sunt bine prezentate și informațiile sunt ușor de găsit. S-au ocupat și de materialele printate și de campaniile online. Ne ajută să ne prezentăm mai bine oferta, atât pe internet, cât și în discuțiile cu clienții. Ne bucurăm că avem alături o echipă care se implică și înțelege munca din spatele afacerii noastre.",
         name: "Agro Salso, Bihor",
       },
       {
         quote:
-          "Reels-urile făcute pentru hotel arată ca la locațiile mari din afară. Ne scriu clienți că de acolo ne-au găsit.",
+          "Ne-au făcut un site nou, care pune mai bine în valoare hotelul și le oferă oaspeților informațiile de care au nevoie. Se ocupă și de campaniile Google, care ne aduc clienți. Pentru noi, asta contează: să fim găsiți de cei care caută cazare în Oradea. Le mulțumim pentru implicare. E o liniște să știm că partea aceasta este pe mâini bune.",
         name: "Hotel Maxim, Oradea",
       },
       {
         quote:
-          "Cardul de fidelitate e acum în telefonul clienților, iar la casă totul durează două secunde. Și nu apare nimic în online ce nu există în meniu.",
+          "Ne-au ajutat să legăm mai bine tot ce facem, de la social media până la cardul de fidelitate pe care clienții îl au acum pe telefon. Lucrurile sunt mai simple atât pentru echipă, cât și pentru clienți. Ne bucurăm că au pus suflet în proiect și că au înțeles ce înseamnă Origins pentru noi.",
         name: "Origins Coffee & Drinks, Oradea",
       },
       {
         quote:
-          "Au luat un material tehnic complicat și l-au făcut clar și pentru un client din afara domeniului.",
+          "thermX este un produs cu multe detalii tehnice. Au reușit să le explice pe înțelesul clienților, fără să piardă informațiile care contează. Apreciem răbdarea de a înțelege produsul înainte de a vorbi despre el.",
         name: "ThermX",
       },
       {
         quote:
-          "Afișele și clipurile de eveniment ne-au dat un look pe care nu îl are nimeni în zonă.",
+          "Au creat o identitate vizuală care ne reprezintă. Afișele, videoclipurile și postările se potrivesc între ele și transmit aceeași atmosferă. Ne-a bucurat să vedem că au prins exact energia pe care ne-o doream. Mulțumim pentru tot efortul din culise.",
         name: "Harmony Garden",
       },
     ],

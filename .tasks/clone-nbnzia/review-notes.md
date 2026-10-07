@@ -1492,3 +1492,38 @@ under the copy depending on locale. Now `md:h-[520px]` with the height auto
 below that, plus `gap-10` so the checklist does not sit against the body copy.
 Measured: every card 40px taller than its content, nothing clipped, at 390 and
 360px in both locales.
+
+## Client reviews replaced (2026-10-07)
+
+`EPIC_Digital_Hub_Reviewuri_RO_EN.pdf`, two pages: seven clients, each with a
+Romanian and an English version. Replaces the whole testimonials block in
+content.ts, both locales — the featured DentalNet quote and all six rows.
+
+The attributions are unchanged (DentalNet, AutoSiena, Agro Salso, Hotel Maxim,
+Origins Coffee & Drinks, ThermX, Harmony Garden), so the section's shape is the
+same; only the words are new. They run roughly twice as long as the old ones:
+210-362 characters against 100-200.
+
+Extracted with pypdf and repaired for the same two artifacts the FAQ PDF had —
+fi/fl ligature characters and a curly apostrophe, both normalised.
+
+### What the longer featured quote does to the wave
+
+Worth checking, because the mobile end point of `GradientWaveText` was
+calibrated against a seven-line block: the Romanian featured quote is now 316
+characters, 267 of them in the wave. Measured on a 390x844 phone — faint at
+-200, fully settled (267/267) by the time the section reaches the top of the
+viewport, with the quote at 255..671, i.e. completely visible. Desktop still
+scrubs mid-sweep as it should.
+
+### Flagged
+
+The PDF's own footer says these are proposals awaiting each client's approval
+before publication: "Propuneri de formulare pentru validare de către clienți
+înainte de publicare." They are live on the site now because the user asked
+for them, but they are quotes attributed to named businesses, so they need that
+sign-off.
+
+Verified at 1440x900 and 390x844, both locales: six rows plus the featured
+quote, correct names and order, no horizontal scroll. tsc, eslint and build
+clean.
