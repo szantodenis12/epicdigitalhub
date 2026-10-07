@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carnetul de Sănătate Dentară ZEN — DentalNet Kids</title>
+<meta name="description" content="Carnetul de Sănătate Dentară ZEN — carnetul pacientului DentalNet Kids, proiectat de Epic Digital Hub.">
+<style>
+
+
+:root{
+  --verde:#5C7B5E; --verde-ink:#3e5740; --auriu:#C9DABE;
+  --ink:#14181a; --gri:#4a5257; --linie:#e6e9e6;
+  --fundal:#171a17; --fundal-2:#22261f; --panou:#1e211d;
+  --alb:#fff;
+  --bara:60px; --picior:56px;
+  --pw:420px; --ph:594px;   /* lățimea/înălțimea unei pagini, puse din JS */
+  --durata:750ms;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:#e8eae6; background:var(--fundal);
+  background-image:radial-gradient(120% 90% at 50% -10%, #2b3128 0%, var(--fundal) 62%);
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ------------------------------------------------------------ bara de sus */
+.bara{
+  position:fixed; inset:0 0 auto 0; height:var(--bara); z-index:60;
+  display:flex; align-items:center; gap:14px; padding:0 16px;
+  background:rgba(18,20,17,.82); backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.marca{display:flex;align-items:baseline;gap:8px;font-weight:900;letter-spacing:.06em;font-size:15px}
+.marca em{font-style:normal;color:var(--auriu)}
+.marca span{font-weight:500;font-size:11px;letter-spacing:.16em;color:#9aa396;text-transform:uppercase}
+.bara .spatiu{flex:1}
+.buton{
+  display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:8px;
+  font-size:12.5px;font-weight:600;letter-spacing:.02em;color:#d7dbd3;
+  border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
+  transition:background .15s,border-color .15s,color .15s;
+}
+.buton:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);color:#fff}
+.buton.activ{background:var(--verde);border-color:var(--verde);color:#fff}
+.buton svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.doar-lat{display:inline-flex}
+@media (max-width:760px){.doar-lat{display:none}.marca span{display:none}}
+
+/* ------------------------------------------------------------------ scena */
+.scena{
+  position:fixed; inset:var(--bara) 0 var(--picior) 0; z-index:10;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  display:grid; place-items:center; overflow:auto; padding:18px 18px 34px;
+}
+.lupa{transform:scale(var(--zoom,1));transform-origin:center center;transition:transform .2s}
+.carte{
+  position:relative; width:calc(var(--pw)*2); height:var(--ph);
+  perspective:2600px; perspective-origin:50% 50%;
+  transition:transform var(--durata) cubic-bezier(.36,.06,.15,1);
+}
+/* umbra de sub carte */
+.carte::after{
+  content:""; position:absolute; left:6%; right:6%; bottom:-26px; height:34px;
+  background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.55), transparent 70%);
+  filter:blur(3px); pointer-events:none;
+}
+.carte.inchisa{transform:translateX(-25%)}
+.carte.deschisa-final{transform:translateX(25%)}
+.carte.fara-tranzitie,.carte.fara-tranzitie .foaie{transition:none!important}
+
+.foaie{
+  position:absolute; top:0; left:50%; width:var(--pw); height:var(--ph);
+  transform-style:preserve-3d; transform-origin:left center;
+  transition:transform var(--durata) cubic-bezier(.36,.06,.15,1);
+  /* fiecare foaie stă la adâncimea ei: două foi în același plan se bat pe
+     pixeli la randarea 3D și se vede o dungă albă peste pagina de dedesubt */
+  transform:rotateY(0deg) translateZ(var(--adanc,0px));
+}
+.foaie.intoarsa{transform:rotateY(-180deg) translateZ(var(--adanc,0px))}
+.fata{
+  position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  background:var(--alb); overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.32);
+}
+.fata.verso{transform:rotateY(180deg)}
+.fata svg{display:block;width:100%;height:100%}
+/* cotorul: pagina se închide ușor spre mijloc */
+.fata::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to right, rgba(0,0,0,.10), rgba(0,0,0,.02) 3%, transparent 9%);
+}
+.fata.verso::after{
+  background:linear-gradient(to left, rgba(0,0,0,.10), rgba(0,0,0,.02) 3%, transparent 9%);
+}
+/* lumina care trece peste pagină în timpul întoarcerii */
+.luciu{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(to right,rgba(255,255,255,.5),rgba(255,255,255,0) 60%)}
+.foaie.se-intoarce .luciu{animation:luciu var(--durata) ease-in-out}
+@keyframes luciu{0%{opacity:0}35%{opacity:.55}100%{opacity:0}}
+
+.goala{position:absolute;inset:0;background:#fbfbf9;
+  background-image:radial-gradient(60% 50% at 50% 40%, #fff, #f2f2ee)}
+
+/* zonele de clic stânga/dreapta */
+/* marginea filelor rămase — grosimea cărții, fără să ținem 42 de foi în DOM */
+.teanc{position:absolute;top:5px;bottom:5px;width:0;pointer-events:none;border-radius:2px;
+  transition:width .35s ease;
+  background:repeating-linear-gradient(to right,#fdfdfb 0 1px,#dcdcd4 1px 2px);
+  box-shadow:0 12px 26px rgba(0,0,0,.3)}
+.teanc.st{left:0;transform:translateX(-100%);border-radius:2px 0 0 2px}
+.teanc.dr{right:0;transform:translateX(100%);border-radius:0 2px 2px 0}
+.zona{position:absolute;top:0;bottom:0;width:50%;z-index:500;cursor:pointer}
+.zona.st{left:0}.zona.dr{right:0}
+
+/* --------------------------------------------------------- o singură pagină */
+.solo{position:relative;width:var(--pw);height:var(--ph);background:var(--alb);
+  box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden}
+.solo svg{display:block;width:100%;height:100%}
+.solo.intra{animation:intra .35s ease-out}
+@keyframes intra{from{opacity:0;transform:translateX(var(--dir,24px))}to{opacity:1;transform:none}}
+
+/* --------------------------------------------------------------- piciorul */
+.picior{
+  position:fixed;inset:auto 0 0 0;height:var(--picior);z-index:60;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  background:rgba(18,20,17,.82);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.sageata{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);transition:.15s}
+.sageata:hover:not(:disabled){background:var(--verde);border-color:var(--verde)}
+.sageata:disabled{opacity:.28;cursor:default}
+.sageata svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.numar{font-size:12.5px;font-weight:600;color:#c3c9be;min-width:132px;text-align:center;letter-spacing:.03em}
+.numar b{color:#fff;font-weight:800}
+.bara-progres{position:absolute;left:0;right:0;top:-1px;height:2px;background:rgba(255,255,255,.08)}
+.bara-progres i{display:block;height:100%;background:var(--auriu);transition:width var(--durata) ease}
+
+/* ---------------------------------------------------------------- cuprins */
+.panou{
+  position:fixed;top:var(--bara);right:0;bottom:0;width:390px;max-width:88vw;z-index:70;
+  background:var(--panou);border-left:1px solid rgba(255,255,255,.08);
+  transform:translateX(102%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;box-shadow:-24px 0 60px rgba(0,0,0,.45);
+}
+.panou.deschis{transform:none}
+.cauta{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:8px;align-items:center}
+.cauta input{
+  flex:1;height:38px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);color:#fff;font:inherit;font-size:13.5px;outline:none;
+}
+.cauta input::placeholder{color:#8d9488}
+.cauta input:focus{border-color:var(--verde);background:rgba(27,113,60,.14)}
+.lista{flex:1;overflow-y:auto;padding:8px 8px 26px}
+.lista::-webkit-scrollbar{width:9px}
+.lista::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:9px}
+.cap{
+  padding:16px 10px 7px;font-size:10.5px;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--auriu);
+}
+.rand{
+  display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;
+  padding:9px 10px;border-radius:8px;transition:background .12s;
+}
+.rand:hover{background:rgba(255,255,255,.07)}
+.rand.curenta{background:rgba(27,113,60,.3);box-shadow:inset 2px 0 0 var(--auriu)}
+.rand .t{flex:1;font-size:13px;font-weight:600;color:#e9ece7;line-height:1.35}
+.rand .m{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8f9789;margin-top:2px}
+.rand .p{font-size:12px;font-weight:800;color:#8fd4a5;white-space:nowrap}
+.rand .p.cerere{color:#8f9789;font-weight:600}
+.rand .n{font-size:11px;font-weight:700;color:#767d71;min-width:22px;text-align:right}
+.nimic{padding:26px 12px;text-align:center;color:#8f9789;font-size:13px}
+
+@media (min-width:1180px){ body.cu-panou .scena{right:390px} }
+.umbra{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
+.umbra.vizibila{opacity:1;pointer-events:auto}
+
+/* ------------------------------------------------------------------ ajutor */
+.ajutor{
+  position:fixed;left:16px;bottom:11px;z-index:61;display:flex;gap:16px;padding:8px 16px;border-radius:99px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  font-size:11.5px;color:#9aa396;letter-spacing:.03em;
+  transition:opacity .4s;
+}
+.ajutor kbd{font:inherit;font-weight:700;color:#d7dbd3;background:rgba(255,255,255,.09);
+  border-radius:4px;padding:1px 6px;margin:0 1px}
+.ajutor.ascuns{opacity:0;pointer-events:none}
+@media (max-width:760px){.ajutor{display:none}}
+</style>
+</head>
+<body>
+
+<header class="bara">
+  <div class="marca">DENTALNET <em>KIDS</em> <span id="subtitlu">Carnetul ZEN</span></div>
+  <div class="spatiu"></div>
+  <button class="buton doar-lat" id="b-minus" title="Micșorează (−)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+  <button class="buton doar-lat" id="b-plus" title="Mărește (+)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="buton doar-lat" id="b-ecran" title="Tot ecranul (F)"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M16 21h3a2 2 0 0 0 2-2v-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span class="doar-lat">Tot ecranul</span></button>
+  <button class="buton" id="b-cuprins"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Cuprins</button>
+</header>
+
+<main class="scena" id="scena">
+  <div class="lupa" id="lupa">
+    <div class="carte" id="carte"></div>
+    <div class="solo" id="solo" hidden></div>
+  </div>
+</main>
+
+<div class="ajutor" id="ajutor">
+  <span><kbd>←</kbd><kbd>→</kbd> răsfoiește</span>
+  <span><kbd>C</kbd> cuprins</span>
+  <span>clic pe pagină</span>
+</div>
+
+<footer class="picior">
+  <div class="bara-progres"><i id="progres"></i></div>
+  <button class="sageata" id="b-inapoi" title="Pagina anterioară"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <div class="numar" id="numar"></div>
+  <button class="sageata" id="b-inainte" title="Pagina următoare"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+</footer>
+
+<div class="umbra" id="umbra"></div>
+<aside class="panou" id="panou">
+  <div class="cauta">
+    <input id="q" type="search" placeholder="Caută un capitol…" autocomplete="off">
+  </div>
+  <div class="lista" id="lista"></div>
+</aside>
+
+<script>
+const PAGINI  = ["<img src=\"pg/01.jpg\" alt=\"Copertă\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/02.jpg\" alt=\"GDPR / Confidențialitate\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/03.jpg\" alt=\"Date pacient\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/04.jpg\" alt=\"Harta dentară\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/05.jpg\" alt=\"Vizitele 1–2\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/06.jpg\" alt=\"Vizitele 3–4\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/07.jpg\" alt=\"Vizitele 5–6\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/08.jpg\" alt=\"Bravo!\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/09.jpg\" alt=\"Diplomă de curaj\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/10.jpg\" alt=\"Ghid de periaj\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/11.jpg\" alt=\"Ghid de alimentație\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/12.jpg\" alt=\"Urgențe dentare\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/13.jpg\" alt=\"Jurnalul erupțiilor\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/14.jpg\" alt=\"Progresul meu\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/15.jpg\" alt=\"Abonamentul ZEN\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">", "<img src=\"pg/16.jpg\" alt=\"Coperta spate\" loading=\"lazy\" style=\"display:block;width:100%;height:100%;object-fit:cover\">"];
+const CUPRINS = [{"titlu": "Copertă", "categorie": "Carnetul ZEN"}, {"titlu": "GDPR / Confidențialitate", "categorie": "Carnetul ZEN"}, {"titlu": "Date pacient", "categorie": "Carnetul ZEN"}, {"titlu": "Harta dentară", "categorie": "Carnetul ZEN"}, {"titlu": "Vizitele 1–2", "categorie": "Carnetul ZEN"}, {"titlu": "Vizitele 3–4", "categorie": "Carnetul ZEN"}, {"titlu": "Vizitele 5–6", "categorie": "Carnetul ZEN"}, {"titlu": "Bravo!", "categorie": "Carnetul ZEN"}, {"titlu": "Diplomă de curaj", "categorie": "Carnetul ZEN"}, {"titlu": "Ghid de periaj", "categorie": "Carnetul ZEN"}, {"titlu": "Ghid de alimentație", "categorie": "Carnetul ZEN"}, {"titlu": "Urgențe dentare", "categorie": "Carnetul ZEN"}, {"titlu": "Jurnalul erupțiilor", "categorie": "Carnetul ZEN"}, {"titlu": "Progresul meu", "categorie": "Carnetul ZEN"}, {"titlu": "Abonamentul ZEN", "categorie": "Carnetul ZEN"}, {"titlu": "Coperta spate", "categorie": "Carnetul ZEN"}];
+const CONTACT = {"firma": "DentalNet Kids", "telefon": "0758 818 861", "an": 2026};
+
+const N = PAGINI.length;                 // 83 de pagini
+const NFOI = Math.ceil(N / 2);           // o foaie = două pagini (față/verso)
+// ultima întoarcere permisă: dacă numărul de pagini e impar, versoul ultimei
+// foi e gol și n-are rost să ajungem la el
+const MAXFOI = Math.ceil((N - 1) / 2);
+const DURATA = 750;                      // trebuie să fie egal cu --durata din CSS
+
+const carte = document.getElementById('carte');
+const solo  = document.getElementById('solo');
+const scena = document.getElementById('scena');
+const lista = document.getElementById('lista');
+const panou = document.getElementById('panou');
+const umbra = document.getElementById('umbra');
+
+// pagina cerută în adresă (#pag-12) — se citește înainte ca noi să rescriem hash-ul
+const START = +((location.hash.match(/pag-(\d+)/) || [])[1] || 0);
+
+let intoarse = 0;        // câte foi s-au întors
+let paginaSolo = 0;      // pagina afișată în modul o-singură-pagină (telefon)
+let animatie = false;
+let modSolo = false;
+let zoom = 1;
+
+const faraDiacritice = s => (s || '').toLowerCase()
+  .normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+/* ------------------------------------------------------------- construcția */
+const foi = [];
+for (let s = 0; s < NFOI; s++) {
+  const f = document.createElement('div');
+  f.className = 'foaie';
+  f.style.setProperty('--adanc', ((NFOI - s) * 0.1).toFixed(2) + 'px');
+  f.innerHTML = '<div class="fata recto"></div><div class="fata verso"></div>';
+  carte.appendChild(f);
+  foi.push(f);
+}
+const teancuri = {};
+for (const lat of ['st', 'dr']) {
+  const t = document.createElement('div');
+  t.className = 'teanc ' + lat;
+  carte.appendChild(t);
+  teancuri[lat] = t;
+}
+for (const lat of ['st', 'dr']) {
+  const z = document.createElement('div');
+  z.className = 'zona ' + lat;
+  z.addEventListener('click', () => rasfoieste(lat === 'dr' ? 1 : -1));
+  carte.appendChild(z);
+}
+
+/** Pune conținutul pe o foaie. Se face la cerere: 83 de pagini SVG deodată
+ *  în DOM ar îngenunchea browserul. */
+function randeaza(s) {
+  if (s < 0 || s >= NFOI) return;
+  const f = foi[s];
+  if (f.dataset.gata) return;
+  f.dataset.gata = '1';
+  f.querySelectorAll('.fata').forEach((fata, i) => {
+    const p = 2 * s + i;
+    fata.innerHTML = (p < N ? PAGINI[p] : '<div class="goala"></div>')
+      + '<div class="luciu"></div>';
+  });
+}
+
+function fereastra() {                 // ține randate doar foile din jur
+  for (let s = intoarse - 2; s <= intoarse + 2; s++) randeaza(s);
+}
+
+/* ----------------------------------------------------------------- răsfoit */
+function rasfoieste(dir) {
+  if (modSolo) { mergiLa(paginaSolo + dir, dir); return; }
+  if (animatie) return;
+  if (dir > 0 && intoarse >= MAXFOI) return;
+  if (dir < 0 && intoarse <= 0) return;
+  const s = dir > 0 ? intoarse : intoarse - 1;
+
+  animatie = true;
+  randeaza(s); randeaza(s + dir); randeaza(s + 2 * dir);
+  const f = foi[s];
+  intoarse += dir;
+  straturi(s);
+  f.style.zIndex = 1000;
+  f.style.display = '';
+  f.classList.add('se-intoarce');
+  pozitie();
+  actualizeaza();
+  requestAnimationFrame(() => f.classList.toggle('intoarsa', dir > 0));
+  setTimeout(() => {
+    f.classList.remove('se-intoarce');
+    animatie = false;
+    straturi();
+    fereastra();
+  }, DURATA + 30);
+}
+
+function straturi(inAer = -1) {
+  // Doar foile din jurul cotorului rămân în scenă. Ținute toate, umbrele lor se
+  // adună într-o dungă neagră la mijloc, iar marginile se văd în trepte.
+  foi.forEach((f, s) => {
+    f.style.zIndex = s < intoarse ? s + 1 : NFOI - s;
+    f.style.display = (s >= intoarse - 1 && s <= intoarse + 1) || s === inAer ? '' : 'none';
+  });
+  const gros = n => (n <= 0 ? 0 : Math.min(13, 2 + n * 0.34)).toFixed(1) + 'px';
+  teancuri.st.style.width = gros(intoarse - 1);
+  teancuri.dr.style.width = gros(MAXFOI - intoarse);
+}
+
+function pozitie() {    // cartea închisă stă centrată pe copertă, nu pe cotor
+  carte.classList.toggle('inchisa', intoarse === 0);
+  carte.classList.toggle('deschisa-final', intoarse === MAXFOI);
+}
+
+function paginiVizibile() {
+  if (modSolo) return [paginaSolo];
+  if (intoarse === 0) return [0];
+  return [2 * intoarse - 1, 2 * intoarse].filter(p => p < N);
+}
+
+function actualizeaza() {
+  const v = paginiVizibile();
+  const numar = document.getElementById('numar');
+  const et = v.map(p => p + 1);
+  numar.innerHTML = intoarse === 0 && !modSolo
+    ? `<b>1</b> / ${N} · copertă`
+    : `<b>${et.join('–')}</b> / ${N}`;
+  document.getElementById('progres').style.width =
+    ((et[et.length - 1]) / N * 100).toFixed(1) + '%';
+  document.getElementById('b-inapoi').disabled = modSolo ? paginaSolo === 0 : intoarse === 0;
+  document.getElementById('b-inainte').disabled = modSolo ? paginaSolo === N - 1 : intoarse >= MAXFOI;
+  marcheazaCuprins();
+  history.replaceState(null, '', '#pag-' + (v[v.length - 1] + 1));
+}
+
+/* -------------------------------------------------- salt direct la o pagină */
+function mergiLa(p, dir = 1) {
+  p = Math.max(0, Math.min(N - 1, p));
+  if (modSolo) {
+    paginaSolo = p;
+    solo.style.setProperty('--dir', (dir >= 0 ? 28 : -28) + 'px');
+    solo.innerHTML = PAGINI[p];
+    solo.classList.remove('intra'); void solo.offsetWidth; solo.classList.add('intra');
+    actualizeaza();
+    return;
+  }
+  const nou = Math.min(MAXFOI, p === 0 ? 0 : (p % 2 ? (p + 1) / 2 : p / 2));
+  if (nou !== intoarse) {
+    carte.classList.add('fara-tranzitie');   // saltul e instantaneu, nu 40 de foi întoarse
+    intoarse = nou;
+    foi.forEach((f, s) => f.classList.toggle('intoarsa', s < intoarse));
+    fereastra();
+    straturi();
+    pozitie();
+    void carte.offsetWidth;
+    carte.classList.remove('fara-tranzitie');
+  } else {
+    fereastra();
+  }
+  actualizeaza();
+}
+
+/* ------------------------------------------------------------------ cuprins */
+function construiesteCuprins(filtru = '') {
+  const f = faraDiacritice(filtru).trim();
+  const potrivit = x => !f || faraDiacritice(
+    [x.titlu, x.marca, x.categorie, x.pret].filter(Boolean).join(' ')).includes(f);
+  let html = '', cat = null, gasite = 0;
+  CUPRINS.forEach((x, i) => {
+    if (!potrivit(x)) return;
+    gasite++;
+    const c = x.categorie || 'Broșura';
+    if (c !== cat) { cat = c; html += `<div class="cap">${c}</div>`; }
+    const pret = x.pret
+      ? `<span class="p${x.pret.toLowerCase().includes('cerere') ? ' cerere' : ''}">${x.pret}</span>` : '';
+    html += `<button class="rand" data-p="${i}">` +
+      `<span class="t">${x.titlu}${x.marca ? `<span class="m">${x.marca}</span>` : ''}</span>` +
+      `${pret}<span class="n">${i + 1}</span></button>`;
+  });
+  lista.innerHTML = gasite ? html :
+    `<div class="nimic">Nu găsim nimic cu „${filtru}".<br>Sunați-ne: <b>${CONTACT.telefon}</b></div>`;
+  lista.querySelectorAll('.rand').forEach(b => b.addEventListener('click', () => {
+    mergiLa(+b.dataset.p);
+    if (window.innerWidth < 1180) inchidePanou();
+  }));
+  marcheazaCuprins();
+}
+
+function marcheazaCuprins() {
+  const v = paginiVizibile();
+  lista.querySelectorAll('.rand').forEach(b =>
+    b.classList.toggle('curenta', v.includes(+b.dataset.p)));
+}
+
+function deschidePanou() {
+  panou.classList.add('deschis');
+  document.body.classList.add('cu-panou');
+  setTimeout(dimensiuni, 320);
+  umbra.classList.toggle('vizibila', window.innerWidth < 1180);
+  document.getElementById('b-cuprins').classList.add('activ');
+  lista.querySelector('.rand.curenta')?.scrollIntoView({ block: 'center' });
+  setTimeout(() => document.getElementById('q').focus(), 260);
+}
+function inchidePanou() {
+  panou.classList.remove('deschis');
+  document.body.classList.remove('cu-panou');
+  setTimeout(dimensiuni, 320);
+  umbra.classList.remove('vizibila');
+  document.getElementById('b-cuprins').classList.remove('activ');
+}
+document.getElementById('b-cuprins').addEventListener('click', () =>
+  panou.classList.contains('deschis') ? inchidePanou() : deschidePanou());
+umbra.addEventListener('click', inchidePanou);
+document.getElementById('q').addEventListener('input', e => construiesteCuprins(e.target.value));
+document.getElementById('q').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const b = lista.querySelector('.rand'); if (b) mergiLa(+b.dataset.p); }
+  if (e.key === 'Escape') { e.target.value = ''; construiesteCuprins(); inchidePanou(); }
+});
+
+/* -------------------------------------------------------------- dimensiuni */
+function dimensiuni() {
+  const eraSolo = modSolo;
+  modSolo = window.innerWidth < 900;
+  const nr = modSolo ? 1 : 2;
+  const pw = Math.max(180, Math.min((scena.clientWidth - 36) / nr,
+                                    (scena.clientHeight - 36) * 148 / 210));
+  document.documentElement.style.setProperty('--pw', pw + 'px');
+  document.documentElement.style.setProperty('--ph', (pw * 210 / 148) + 'px');
+  carte.hidden = modSolo;
+  solo.hidden = !modSolo;
+  if (modSolo && eraSolo !== modSolo) mergiLa(paginiVizibile()[0]);
+  if (!modSolo && eraSolo) { solo.innerHTML = ''; mergiLa(paginaSolo); }
+  actualizeaza();
+}
+window.addEventListener('resize', dimensiuni);
+
+/* -------------------------------------------------------------------- zoom */
+function seteazaZoom(z) {
+  zoom = Math.max(1, Math.min(2.6, Math.round(z * 100) / 100));
+  document.getElementById('lupa').style.setProperty('--zoom', zoom);
+  scena.style.alignItems = zoom > 1 ? 'start' : 'center';
+}
+document.getElementById('b-plus').addEventListener('click', () => seteazaZoom(zoom + .25));
+document.getElementById('b-minus').addEventListener('click', () => seteazaZoom(zoom - .25));
+document.getElementById('b-ecran').addEventListener('click', () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen?.();
+});
+
+/* ----------------------------------------------------------------- tastele */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase();
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); rasfoieste(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); rasfoieste(-1); }
+  else if (e.key === 'Home') mergiLa(0, -1);
+  else if (e.key === 'End') mergiLa(N - 1, 1);
+  else if (k === 'c') panou.classList.contains('deschis') ? inchidePanou() : deschidePanou();
+  else if (k === 'f') document.getElementById('b-ecran').click();
+  else if (k === '+' || k === '=') seteazaZoom(zoom + .25);
+  else if (k === '-') seteazaZoom(zoom - .25);
+  else if (e.key === 'Escape') inchidePanou();
+});
+
+/* ------------------------------------------------------- glisat pe telefon */
+let x0 = null;
+scena.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+scena.addEventListener('touchend', e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 45) rasfoieste(dx < 0 ? 1 : -1);
+  x0 = null;
+}, { passive: true });
+
+document.getElementById('b-inainte').addEventListener('click', () => rasfoieste(1));
+document.getElementById('b-inapoi').addEventListener('click', () => rasfoieste(-1));
+setTimeout(() => document.getElementById('ajutor').classList.add('ascuns'), 6500);
+
+document.getElementById('subtitlu').textContent = 'Carnetul de Sănătate Dentară';
+document.title = `Carnetul ZEN — ${CONTACT.firma}`;
+
+dimensiuni();
+construiesteCuprins();
+straturi();
+pozitie();
+fereastra();
+if (START) mergiLa(START - 1); else actualizeaza();
+
+</script>
+</body>
+</html>

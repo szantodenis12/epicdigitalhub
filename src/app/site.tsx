@@ -20,7 +20,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { LogoMark, LogoWordmark } from "./logo";
 import { COPY, type Locale, localePath } from "./content";
-import { APPLY_PATH, servicePath } from "./routes";
+import { APPLY_PATH, caseStudyPath, servicePath } from "./routes";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { gsap, ScrollTrigger } from "./_components/gsap";
 import { Flip } from "gsap/Flip";
@@ -46,14 +46,41 @@ if (typeof window !== "undefined") {
    copy by index at render time. Keeping them separate means a translation can
    never accidentally change a brand colour or drop an image. */
 
+/* `case` is the study this card opens, and `site` the client's own address
+   where there is a public one to send people to. Three of the six have none:
+   DentalNet's public asset is the ZEN booklet rather than a site, and KGM and
+   Harmony Garden have no site of their own — so those cards link to the study
+   instead of pointing at a dead `#`. Both labels live in content.ts.
+
+   Card six was "Construction systems" (ThermX). Origins took its slot on the
+   user's call, so the home page still shows six verticals; ThermX keeps its
+   case study at /case-studies/thermx. */
 const WORK_VISUALS = [
-  { bg: "#1FDB93", fg: "#1F1F1F", img: "/images/work-auto.webp" },
-  { bg: "#1F1F1F", fg: "#F5F2F2", img: "/images/work-dental.webp" },
-  { bg: "#D2F9EA", fg: "#1F1F1F", img: "/images/work-agro.webp" },
-  { bg: "#DB641F", fg: "#1F1F1F", img: "/images/work-hotel.webp" },
-  { bg: "#E2B736", fg: "#1F1F1F", img: "/images/work-events.webp" },
-  { bg: "#21976A", fg: "#F5F2F2", img: "/images/work-industrial.webp" },
-];
+  { bg: "#1FDB93", fg: "#1F1F1F", img: "/images/work-auto.webp", case: "kgm-chery-oradea" },
+  { bg: "#1F1F1F", fg: "#F5F2F2", img: "/images/work-dental.webp", case: "dentalnet" },
+  {
+    bg: "#D2F9EA",
+    fg: "#1F1F1F",
+    img: "/images/work-agro.webp",
+    case: "agro-salso",
+    site: "https://agrosalso.ro",
+  },
+  {
+    bg: "#DB641F",
+    fg: "#1F1F1F",
+    img: "/images/work-hotel.webp",
+    case: "hotel-maxim",
+    site: "https://www.hotel-maxim.ro",
+  },
+  { bg: "#E2B736", fg: "#1F1F1F", img: "/images/work-events.webp", case: "harmony-garden" },
+  {
+    bg: "#21976A",
+    fg: "#F5F2F2",
+    img: "/images/work-cafe.webp",
+    case: "origins-cafe",
+    site: "https://app.originscafe.ro",
+  },
+] satisfies { bg: string; fg: string; img: string; case: string; site?: string }[];
 
 const SERVICE_IMAGES = [
   "/images/about-strategy.webp",
@@ -509,6 +536,7 @@ function WorkCardMedia({
 
 function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
   const copy = useCopy();
+  const locale = useLocale();
 
   /* Text entrance, from the source's own run: y 50 -> 0 with opacity, on a
      ~145ms stagger, ~1.06s end to end.
@@ -566,6 +594,10 @@ function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
               const w = copy.work.items[i];
               const v = WORK_VISUALS[i];
               const shape = WORK_CARD_SHAPE[i];
+              // The client's own site where there is one, our study where
+              // there is not. Never a `#`.
+              const site = "site" in v ? v.site : undefined;
+              const href = site ?? localePath(locale, caseStudyPath(v.case));
               return (
                 <article
                   key={w.name}
@@ -615,10 +647,11 @@ function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
                     </motion.p>
                     <motion.div {...reveal(3)} className="mt-5">
                       <a
-                        href="#"
+                        href={href}
+                        {...(site ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                         className="group inline-flex w-fit items-center gap-2 text-sm tracking-[0.05em] uppercase"
                       >
-                        {copy.work.visit}
+                        {site ? copy.work.visit : copy.work.caseStudy}
                         <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
                           ↗
                         </span>

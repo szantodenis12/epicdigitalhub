@@ -94,8 +94,9 @@ const en = {
   testimonials: {
     title: "In their words.",
     featured: {
+      // No quotation marks inside the strings - the markup adds them.
       quote:
-        "Before, I had three different people for posts, ads and the website. Now it's one team that knows everything going on, and things move much faster.",
+        "We run two clinics, with different audiences, in a field where you can't just claim anything. They understood the rules from day one, and since then the content ships consistently without us chasing it.",
       name: "DentalNet, Oradea",
     },
     items: [
@@ -106,13 +107,18 @@ const en = {
       },
       {
         quote:
-          "We had campaigns burning budget without producing results. They put the whole system in order, from the website and CRM through to the marketing and the automations. Now we know exactly where every leu goes and what it brings back.",
+          "We had campaigns burning money for nothing. They looked at the numbers seriously and cut what wasn't working. Now I know where every leu goes.",
         name: "Agro Salso, Bihor",
       },
       {
         quote:
-          "The videos they made for the hotel have the look and the atmosphere of the big places abroad. Guests tell us that is how they found us, and the new website and booking system make everything far easier to manage.",
+          "The reels they made for the hotel look like the big places abroad. Guests message us saying that's where they found us.",
         name: "Hotel Maxim, Oradea",
+      },
+      {
+        quote:
+          "The loyalty card now lives in our customers' phones, and at the till it takes two seconds. And nothing shows up online that isn't actually on the menu.",
+        name: "Origins Coffee & Drinks, Oradea",
       },
       {
         quote:
@@ -120,14 +126,18 @@ const en = {
         name: "ThermX",
       },
       {
-        quote: "The event posters and clips gave us a look nobody around here has.",
+        quote:
+          "The event posters and clips gave us a look nobody around here has.",
         name: "HarmonyGarden",
       },
     ],
   },
 
   work: {
+    /** external, for the cards whose client has a public site */
     visit: "Visit website",
+    /** internal, for the cards whose story is the case study itself */
+    caseStudy: "See the case study",
     items: [
       {
         name: "Automotive retail",
@@ -155,9 +165,9 @@ const en = {
         body: "Event identities, posters, video teasers, full-season promotion.",
       },
       {
-        name: "Construction systems",
-        tag: "Industrial / RO",
-        body: "Technical positioning, presentation site, field video production.",
+        name: "Origins Coffee & Drinks",
+        tag: "HoReCa / Oradea",
+        body: "One brand system across several locations, local presence per venue, and a loyalty platform with digital cards that live in the customer's phone.",
       },
     ],
   },
@@ -311,44 +321,50 @@ const ro: typeof en = {
   },
 
   testimonials: {
-    title: "În cuvintele lor",
+    title: "În cuvintele lor.",
     featured: {
       // No quotation marks inside the strings - the markup adds them.
       quote:
-        "Înainte, colaboram cu trei oameni diferiți pentru conținut, reclame și website. Acum avem o singură echipă care cunoaște imaginea de ansamblu și poate pune lucrurile în mișcare mult mai repede.",
-      name: "DentalNet · Oradea",
+        "Avem două clinici, publicuri diferite și un domeniu în care nu ai voie să afirmi orice. Au înțeles regulile din prima, iar de atunci conținutul iese constant, fără să alergăm noi după el.",
+      name: "DentalNet, Oradea",
     },
     items: [
       {
         quote:
-          "Au filmat mașinile direct în showroom și au creat reclame care aduc oameni la test-drive, nu doar aprecieri în social media.",
-        name: "AutoSiena · Oradea",
+          "Ne-au filmat mașinile în showroom și au scos reclame care aduc oameni la test drive, nu doar like-uri.",
+        name: "AutoSiena, Oradea",
       },
       {
         quote:
-          "Aveam campanii care consumau buget fără să producă rezultate. Au pus ordine în tot sistemul, de la site și CRM până la marketing și automatizări. Acum știm exact unde se duce fiecare leu și ce rezultate produce.",
-        name: "Agro Salso · Bihor",
+          "Aveam campanii care ardeau bani degeaba. S-au uitat serios la cifre și au oprit ce nu funcționa. Acum știu pe ce se duce fiecare leu.",
+        name: "Agro Salso, Bihor",
       },
       {
         quote:
-          "Materialele video realizate pentru hotel au imaginea și atmosfera pe care le vezi la locațiile mari din străinătate. Clienții ne spun că ne-au descoperit datorită lor, iar noul site și sistemul de rezervări ne ajută să gestionăm totul mult mai ușor.",
-        name: "Hotel Maxim · Oradea",
+          "Reels-urile făcute pentru hotel arată ca la locațiile mari din afară. Ne scriu clienți că de acolo ne-au găsit.",
+        name: "Hotel Maxim, Oradea",
       },
       {
         quote:
-          "Au transformat un produs tehnic și dificil de explicat într-un mesaj clar, ușor de înțeles chiar și pentru cineva din afara domeniului.",
+          "Cardul de fidelitate e acum în telefonul clienților, iar la casă totul durează două secunde. Și nu apare nimic în online ce nu există în meniu.",
+        name: "Origins Coffee & Drinks, Oradea",
+      },
+      {
+        quote:
+          "Au luat un material tehnic complicat și l-au făcut clar și pentru un client din afara domeniului.",
         name: "ThermX",
       },
       {
         quote:
-          "Afișele și materialele video au construit pentru evenimentele noastre o identitate pe care nu o mai are nimeni în zonă.",
-        name: "Harmony Garden",
+          "Afișele și clipurile de eveniment ne-au dat un look pe care nu îl are nimeni în zonă.",
+        name: "HarmonyGarden",
       },
     ],
   },
 
   work: {
-    visit: "Vezi proiectul",
+    visit: "Vezi site-ul",
+    caseStudy: "Vezi studiul de caz",
     items: [
       {
         name: "Retail auto",
@@ -376,9 +392,9 @@ const ro: typeof en = {
         body: "Identități vizuale de eveniment, afișe, teasere video și campanii de promovare pentru întregul sezon.",
       },
       {
-        name: "Sisteme pentru construcții",
-        tag: "Industrial · România",
-        body: "Poziționare tehnică, website de prezentare și producție video realizată direct pe teren.",
+        name: "Origins Coffee & Drinks",
+        tag: "HoReCa · Oradea",
+        body: "Un singur sistem de brand pentru mai multe locații, prezență locală pentru fiecare dintre ele și o platformă de fidelizare cu carduri digitale direct în telefonul clientului.",
       },
     ],
   },

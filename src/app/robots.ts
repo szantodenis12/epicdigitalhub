@@ -23,7 +23,16 @@ const AI_CRAWLERS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  const disallow = ["/api/", "/admin"];
+  /* The two flipbooks are assets a visitor opens FROM a case study, not pages:
+     the Agro catalogue is a single self-contained 17MB HTML file and the ZEN
+     booklet is sixteen JPEGs behind a viewer. Neither has a title, a
+     description, canonical or hreflang, and either one indexed would spend
+     crawl budget that belongs to the case studies that link to them. They stay
+     reachable by anyone with the link — this only keeps them out of the index.
+
+     They are also absent from the sitemap, which lists routes built from
+     routes.ts, and these are static files under /public. */
+  const disallow = ["/api/", "/admin", "/carnet-zen/", "/brosura-agro/"];
 
   return {
     rules: [
