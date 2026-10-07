@@ -312,39 +312,64 @@ export function GradientWaveText({
     const chars = root.querySelectorAll<HTMLElement>("[data-wave-char]");
     if (!chars.length) return;
 
-    const tween = gsap.fromTo(
-      chars,
-      { color: "rgba(255,255,255,0.2)" },
-      {
-        keyframes: [
-          { color: "rgb(31,219,147)" },
-          { color: dark ? "rgb(245,242,242)" : "rgb(31,31,31)" },
-        ],
-        ease: "power1.inOut",
-        // The source is a broad GRADIENT, not a moving edge. Sampling it
-        // mid-scroll shows the start of the block near-solid, the middle
-        // part-way through, and the end untouched — i.e. most of the text is
-        // in transition at once. duration 60 against a 0.5 stagger keeps
-        // ~120 characters in flight simultaneously, which reads as a soft
-        // sweep rather than the hard boundary a short duration produced.
-        duration: 60,
-        stagger: { each: 0.5 },
-        scrollTrigger: {
-          trigger: root,
-          start: "top 90%",
-          end: "bottom 40%",
-          // numeric scrub adds inertia so the wave glides instead of snapping
-          // frame-to-frame with the wheel
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-        },
-      }
-    );
+    /* The scrub has to finish while the block is still ON SCREEN, and where
+       that happens depends on how tall the block is — which is a breakpoint
+       question, not a constant.
 
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
+       `end: "bottom 40%"` was measured against a desktop block of three or
+       four lines. The same copy on a phone runs seven lines, so the end point
+       only arrives once the block's bottom has climbed to 40% of the viewport
+       — by then its top is above the fold, and the quote spends its whole
+       visible life half swept: the top half settled, the bottom half still on
+       the emerald crest. That is the "broken colours" on mobile.
+
+       `bottom 85%` below md finishes the sweep while the block sits mid-screen.
+       gsap.matchMedia re-runs this on a breakpoint change and reverts what it
+       wrote on the way out. */
+    const mm = gsap.matchMedia();
+    const build = (end: string) => () => {
+      const tween = gsap.fromTo(
+        chars,
+        { color: "rgba(255,255,255,0.2)" },
+        {
+          keyframes: [
+            { color: "rgb(31,219,147)" },
+            { color: dark ? "rgb(245,242,242)" : "rgb(31,31,31)" },
+          ],
+          ease: "power1.inOut",
+          // The source is a broad GRADIENT, not a moving edge. Sampling it
+          // mid-scroll shows the start of the block near-solid, the middle
+          // part-way through, and the end untouched — i.e. most of the text is
+          // in transition at once. duration 60 against a 0.5 stagger keeps
+          // ~120 characters in flight simultaneously, which reads as a soft
+          // sweep rather than the hard boundary a short duration produced.
+          duration: 60,
+          stagger: { each: 0.5 },
+          scrollTrigger: {
+            trigger: root,
+            start: "top 90%",
+            end,
+            // numeric scrub adds inertia so the wave glides instead of
+            // snapping frame-to-frame with the wheel
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        // Hand the characters back to the colour their section gives them, so
+        // a breakpoint change can never leave the block mid-sweep.
+        gsap.set(chars, { clearProps: "color" });
+      };
     };
+
+    mm.add("(min-width: 768px)", build("bottom 40%"));
+    mm.add("(max-width: 767px)", build("bottom 85%"));
+
+    return () => mm.revert();
   }, [paragraphs, reduceMotion, dark]);
 
   return (

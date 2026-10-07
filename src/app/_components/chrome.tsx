@@ -368,8 +368,16 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
           ? copy.contact.failed
           : copy.contact.submit;
 
+  // `pb-24` on a phone: the floating back-to-top badge sits at the bottom
+  // left, and at `pb-10` it covered the "Based in Oradea" line. (A {/* */}
+  // comment cannot go directly inside `return (` — that is two sibling
+  // expressions and a parse error, which this file has hit before.)
   return (
-      <section id="contact" data-nav-bg="dark" className="bg-[#0F0F0F] pt-16 pb-10 text-[#F1F1F1]">
+      <section
+        id="contact"
+        data-nav-bg="dark"
+        className="bg-[#0F0F0F] pt-16 pb-24 text-[#F1F1F1] md:pb-10"
+      >
         <div className="mx-auto max-w-[1440px] px-4">
           <ContactSpotlightEyebrow />
 
@@ -386,7 +394,13 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
             </h2>
           </Parallax>
 
-          <form onSubmit={handleSubmit} className="mt-16 flex flex-col gap-3 md:flex-row">
+          {/* `md:flex-1`, NOT `flex-1`. On a phone this form is `flex-col`, and
+              in a column `flex: 1 1 0%` sets the HEIGHT basis — it beat `h-16`
+              and collapsed both inputs to their content height, about 18px,
+              while the button kept its 64px. That is what made the mobile
+              footer look broken: two hairline fields under one tall white
+              block. Flex-1 only belongs in the row direction. */}
+          <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-3 md:mt-16 md:flex-row">
             <input
               type="text"
               name="name"
@@ -394,7 +408,7 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
               autoComplete="name"
               aria-label={copy.contact.namePlaceholder}
               placeholder={copy.contact.namePlaceholder}
-              className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
+              className="h-16 w-full border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none md:flex-1"
             />
             <input
               type="email"
@@ -403,19 +417,19 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
               autoComplete="email"
               aria-label={copy.contact.emailPlaceholder}
               placeholder={copy.contact.emailPlaceholder}
-              className="h-16 flex-1 border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none"
+              className="h-16 w-full border-0 bg-white/5 px-5 text-sm placeholder:text-white/40 focus:bg-white/10 focus:outline-none md:flex-1"
             />
             <button
               type="submit"
               disabled={phase === "sending"}
-              className="flex h-16 items-center justify-between gap-4 bg-[#F5F2F2] px-6 text-sm font-medium text-[#1F1F1F] disabled:cursor-wait disabled:opacity-60 md:w-56"
+              className="flex h-16 w-full shrink-0 items-center justify-between gap-4 bg-[#F5F2F2] px-6 text-sm font-medium text-[#1F1F1F] disabled:cursor-wait disabled:opacity-60 md:w-56"
             >
               <span aria-live="polite">{label}</span>
               <span aria-hidden>↵</span>
             </button>
           </form>
 
-          <div className="mt-24 grid grid-cols-1 gap-10 border-t border-white/10 pt-12 md:grid-cols-2">
+          <div className="mt-16 grid grid-cols-1 gap-10 border-t border-white/10 pt-12 md:mt-24 md:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.follow}</p>
               <div className="mt-4 flex gap-3">
@@ -436,8 +450,15 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.write}</p>
-              <a href="mailto:hello.epicdigitalhub@gmail.com" className="footer-email relative mt-3 inline-block text-[28px] tracking-[-0.01em] md:text-[36px]">
-                hello.epicdigitalhub@gmail.com
+              {/* 22px below `sm`. The old address ran 18px past the right edge
+                  of a 390px screen at 28px; this one is five characters
+                  shorter, but a 360px phone would still clip it, and an email
+                  that cannot be read is worse than a smaller one. */}
+              <a
+                href="mailto:contact@epicdigitalhub.ro"
+                className="footer-email relative mt-3 inline-block text-[22px] tracking-[-0.01em] sm:text-[28px] md:text-[36px]"
+              >
+                contact@epicdigitalhub.ro
                 <span className="footer-email-underline absolute left-0 -bottom-1 h-1 w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out" />
               </a>
             </div>

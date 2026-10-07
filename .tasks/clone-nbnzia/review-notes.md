@@ -1358,3 +1358,74 @@ unique — a restored copy needs it back.
 Verified: testimonials hand straight over to the cream Process section with its
 `{ PROCESS }` eyebrow and the fanned cards, no gap and no leftover pin-spacer;
 tsc, eslint and build clean.
+
+## Reviews section + footer, mobile and hover (2026-10-07)
+
+User: the reviews "pe mobil nici nu apar cum trebuie, pe desktop cand dai hover
+se comporta haotic", the footer email should be contact@epicdigitalhub.ro, and
+the mobile footer "e horror".
+
+### The hover chaos was a reflow, not an animation
+
+The row carried `transition-[padding] md:hover:pl-6`. Padding narrows the
+row's content box, so for the whole 500ms the quote re-wrapped while it moved —
+on the longer quotes a line jumped to the next row and back, and because the
+row's own height changed under the pointer the hover could drop and re-fire.
+
+The indent is now `md:group-hover:translate-x-1.5` on the two columns. A
+transform moves pixels and touches no layout. Measured before, mid-transition
+(250ms, where the old one re-wrapped) and after: row heights, quote widths and
+line counts all identical, and the row returns to rest when the pointer leaves.
+
+Measuring note, again: Tailwind v4 emits the independent `translate` property,
+so `getComputedStyle(el).transform` reads `none` on a `translate-x-*` utility
+and looks like the hover is dead. Read `.translate` — it is `6px` on hover.
+This is the second time this file records that trap.
+
+### Mobile reviews: the wave never finished on screen
+
+The featured quote sat half white, half emerald for its entire visible life,
+which is what "nici nu apar cum trebuie" was.
+
+`GradientWaveText` ended its scrub at `bottom 40%` — measured against a
+desktop block of three or four lines. The same Romanian quote runs SEVEN lines
+on a 390px phone, so the end point only arrived once the block's bottom had
+climbed to 40% of the viewport, by which time its top was above the fold. The
+sweep was always mid-flight while the quote was readable.
+
+Now breakpoint-dependent through `gsap.matchMedia`: `bottom 40%` from md up,
+`bottom 85%` below it. Traced on a 390x844 phone — faint through -900/-700/-500,
+sweeping at -300 (18 faint / 82 settled / 57 mid-crest), fully settled at -100
+with the quote at 355..598 in the viewport. The effect is intact, it just
+completes while you can still see it. Cleanup clears the inline colour so a
+breakpoint change cannot leave a block stranded mid-sweep.
+
+### Footer on mobile: `flex-1` in a column
+
+The two inputs were `flex-1 h-16` inside a `flex-col` form. In a column,
+`flex: 1 1 0%` sets the HEIGHT basis and beat `h-16`, collapsing both fields to
+their content height — about 18px — while the submit button kept its 64px. Two
+hairlines under one tall white block. Now `w-full md:flex-1`, so the flex
+behaviour only applies in the row direction: all three measure 64x358 on a
+phone.
+
+Also: `mt-24` -> `mt-16 md:mt-24` on the follow/write grid, and the section
+`pb-10` -> `pb-24 md:pb-10` because the floating back-to-top badge was sitting
+on top of the "Oradea, România" line.
+
+### Email
+
+`hello.epicdigitalhub@gmail.com` -> `contact@epicdigitalhub.ro`, in the footer,
+the Organization JSON-LD in shell.tsx and public/llms.txt — one address
+everywhere, since a schema that disagrees with the page is a signal nobody
+wants to send. It also no longer overflows: the old address ran 18px past the
+right edge of a 390px screen at 28px, and the new one is set at 22px below
+`sm` so a 360px phone holds it too. Measured right edge 281px of 390.
+
+Verified: tsc, eslint, build clean; no horizontal scroll at 390px.
+
+### Reminder that cost a build
+
+A `{/* ... */}` comment placed directly inside `return (` is two sibling
+expressions and a parse error. Hit it again in chrome.tsx. Above the `return`,
+as a `//` line, or inside the element.

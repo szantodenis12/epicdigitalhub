@@ -126,7 +126,7 @@ function organizationSchema(locale: Locale) {
     name: "Epic Digital Hub",
     url: SITE_URL,
     description: COPY[locale].meta.schemaDescription,
-    email: "hello.epicdigitalhub@gmail.com",
+    email: "contact@epicdigitalhub.ro",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Oradea",

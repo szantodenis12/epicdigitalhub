@@ -353,7 +353,14 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
             <motion.li
               key={t.name}
               {...reveal(i)}
-              className="group relative grid cursor-default gap-4 border-b border-white/15 py-8 transition-[padding] duration-500 ease-out md:grid-cols-8 md:gap-8 md:hover:pl-6"
+              /* The indent is a TRANSFORM on the two columns, not padding on
+                 the row. `hover:pl-6` narrowed the row's content box for the
+                 whole 500ms, so the quote re-wrapped while it moved — on the
+                 longer quotes a line would jump to the next row and back, and
+                 with the row height changing under the pointer the hover could
+                 drop and re-fire. That is the chaos. A transform moves pixels
+                 and touches no layout. */
+              className="group relative grid cursor-default gap-4 border-b border-white/15 py-8 md:grid-cols-8 md:gap-8"
             >
               {/* Emerald sweep along the row's bottom edge — the same
                   origin-left scaleX idiom as the footer email underline, so the
@@ -362,10 +369,10 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
                 aria-hidden
                 className="pointer-events-none absolute -bottom-px left-0 h-0.5 w-full origin-left scale-x-0 bg-[#1FDB93] transition-transform duration-500 ease-out group-hover:scale-x-100"
               />
-              <p className="text-xs tracking-[0.15em] text-[#1FDB93] uppercase opacity-70 transition-opacity duration-300 ease-out group-hover:opacity-100 md:col-span-3">
+              <p className="text-xs tracking-[0.15em] text-[#1FDB93] uppercase opacity-70 transition-[opacity,transform] duration-300 ease-out group-hover:opacity-100 md:col-span-3 md:group-hover:translate-x-1.5">
                 {t.name}
               </p>
-              <p className="text-sm leading-relaxed text-white/60 transition-colors duration-300 ease-out group-hover:text-white/95 md:col-span-5">
+              <p className="text-sm leading-relaxed text-white/60 transition-[color,transform] duration-300 ease-out group-hover:text-white/95 md:col-span-5 md:group-hover:translate-x-1.5">
                 “{t.quote}”
               </p>
             </motion.li>
