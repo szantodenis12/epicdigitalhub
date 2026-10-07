@@ -128,7 +128,7 @@ const en = {
       {
         quote:
           "The event posters and clips gave us a look nobody around here has.",
-        name: "HarmonyGarden",
+        name: "Harmony Garden",
       },
     ],
   },
@@ -357,7 +357,7 @@ const ro: typeof en = {
       {
         quote:
           "Afișele și clipurile de eveniment ne-au dat un look pe care nu îl are nimeni în zonă.",
-        name: "HarmonyGarden",
+        name: "Harmony Garden",
       },
     ],
   },
