@@ -284,18 +284,22 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 /* ---------------------------------------------------------------------------
    HERO — the EDH mark over the loop, and the Apply that migrates
 
-   The mark is a graphic, not a logo here: huge, cropped by the right edge of
-   the screen, filled near-black with an emerald rim so the footage reads
-   around and through its counters. It sits above the scrims and below the
-   headline, so the copy is never competing with it.
+   Two masked layers over the video, no strokes:
 
-   Three pieces of motion, all transform/opacity only:
-     1. the arrival, once the intro has handed over (`html.intro-done`);
-     2. a 26s breathe, which is the "subtle afterwards" part — 2.5% of scale
-        and a few pixels, enough to feel alive and not enough to read as
-        movement while you are looking at the headline;
-     3. the rim's own slow pulse, offset from the breathe so the two never
-        peak together.
+     .hero-mark-dim   near-black everywhere EXCEPT the mark, via two mask
+                      images composited with `exclude` — a full-bleed one and
+                      the mark itself.
+     .hero-mark-tint  the accent inside the mark only, on `screen`, which
+                      lightens the footage toward emerald rather than glazing
+                      it. This is what makes the shape crisp on a dark frame.
+
+   Placement is in `vw` so the mark scales with the viewport and keeps the
+   board's crop: it starts a sixth of the way across and runs off the right
+   edge, with the play device cut by the screen.
+
+   Three pieces of motion, all transform/opacity: the arrival once the intro
+   hands over, a 26s breathe (2.5% of scale), and the parallax from site.tsx.
+   `prefers-reduced-motion` stops all of it with the mark still in place.
    ------------------------------------------------------------------------ */
 .hero-mark {
   opacity: 0;
@@ -305,9 +309,53 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 }
 .hero-mark-inner {
   animation: hero-mark-breathe 26s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+
+  /* Desktop placement. 80vw from 15vw across means the mark ENDS at 95vw:
+     the H bar and the play device stay on screen, which is what the user
+     asked for after the 116vw version cut them off. */
+  --mark-size: 80vw auto;
+  --mark-pos: 15vw center;
 }
-.hero-mark-rim {
-  animation: hero-mark-rim 19s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+
+.hero-mark-dim {
+  background: #03100c;
+  opacity: 0.88;
+  mask-image: linear-gradient(#000, #000), var(--mark-mask);
+  mask-size: 100% 100%, var(--mark-size);
+  mask-position: 0 0, var(--mark-pos);
+  mask-repeat: no-repeat, no-repeat;
+  mask-composite: exclude;
+  -webkit-mask-image: linear-gradient(#000, #000), var(--mark-mask);
+  -webkit-mask-size: 100% 100%, var(--mark-size);
+  -webkit-mask-position: 0 0, var(--mark-pos);
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  -webkit-mask-composite: xor;
+}
+
+.hero-mark-tint {
+  background: #1fdb93;
+  /* 0.22, not 0.32: at a third the shape went flat and the footage inside
+     stopped reading. The board shows architecture and a figure THROUGH the
+     mark — brighter and greener than the surround, not a solid fill. */
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  mask-image: var(--mark-mask);
+  mask-size: var(--mark-size);
+  mask-position: var(--mark-pos);
+  mask-repeat: no-repeat;
+  -webkit-mask-image: var(--mark-mask);
+  -webkit-mask-size: var(--mark-size);
+  -webkit-mask-position: var(--mark-pos);
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* A phone is portrait: the same crop would show only the middle bars of the
+   E. The whole mark instead, sat below the copy. */
+@media (max-width: 767px) {
+  .hero-mark-inner {
+    --mark-size: 92vw auto;
+    --mark-pos: center 84%;
+  }
 }
 
 @keyframes hero-mark-in {
@@ -317,10 +365,6 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 @keyframes hero-mark-breathe {
   from { scale: 1; translate: 0 0; }
   to   { scale: 1.025; translate: -1.2% 0.8%; }
-}
-@keyframes hero-mark-rim {
-  from { opacity: 0.25; }
-  to   { opacity: 0.6; }
 }
 
 /* The Apply swap. Both buttons exist in the markup; which one is live depends
@@ -363,9 +407,7 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 
 @media (prefers-reduced-motion: reduce) {
   :root.intro-done .hero-mark { animation: none; opacity: 1; }
-  .hero-mark-inner,
-  .hero-mark-rim { animation: none; }
-  .hero-mark-rim { opacity: 0.4; }
+  .hero-mark-inner { animation: none; }
   :root.intro-done .hero-apply,
   :root .header-apply { transition: none; }
 }

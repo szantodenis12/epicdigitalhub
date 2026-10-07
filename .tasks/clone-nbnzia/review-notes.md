@@ -1643,3 +1643,52 @@ Note: the user suggested driving this with the Playwright MCP server. It is
 registered for this project but not loaded into this session, so the same
 engine was driven directly through `playwright-core` from the scratchpad —
 screenshots, computed styles and pixel sampling all the same.
+
+### Hero, second pass — what the first commit got wrong (2026-10-07)
+
+The commit above shipped a version the user rejected on sight, and the
+rejection was specific: "mi-ai impins tot logo-ul mai la dreapta, apar liniile
+alea desenate, nu e crisp". All three were fair.
+
+**The emerald rim was the "drawn lines".** Stroking the cut edge turned the
+shape into a wireframe drawing. Gone entirely — there is no stroke anywhere in
+the hero now.
+
+**Crispness came from moving the layers OUT of the SVG.** The knockout was an
+`<svg>` with masked rects; a `mix-blend-mode: screen` rect inside it does
+nothing, because an SVG root isolates its own group and there is no video in
+that group to blend with. So the mark is now two plain divs above the video
+with CSS masks built from the mark's own path data as a data URI:
+
+  .hero-mark-dim   near-black over the hero with the mark excluded
+                   (two mask images, `mask-composite: exclude`)
+  .hero-mark-tint  the accent at 22% inside the mark on `screen`, which
+                   LIGHTENS the footage rather than glazing it
+
+That is what makes it read on a dark frame: in the reference the inside is
+brighter AND greener than the outside, not just greener. 0.32 was too much —
+the shape went flat and the footage inside stopped showing through.
+
+**Size and position.** 116vw starting at 16vw cut off the H bar and the play
+device. Now 80vw from 15vw, so the mark ends at 95vw and the whole thing is on
+screen, which is what the user asked for.
+
+**Headline, on the user's instruction.** One line per written line with
+`whitespace-nowrap` and a `vw` size, so the longest line — Romanian's "nu pot
+lucra cu noi." at 20 characters — never breaks into three. The first word of
+the second line takes the accent: "CAN'T" in English, "NU" in Romanian. Tied
+to the first word rather than a character index, because the negation is the
+point of the sentence in both languages. Weight 400 -> 500, which is a real
+BDO Grotesk cut (all five weights ship as files, verified with
+`document.fonts.check` so the browser is not synthesising it).
+
+**The entity paragraph moved up** from the bottom of the hero to the row beside
+Apply, behind a hairline rule, as on the board. It is deliberately NOT inside
+the `hero-apply` wrapper: that wrapper animates to `opacity: 0` on scroll, and
+this is the SEO/GEO brief's entity paragraph — copy that fades to nothing on
+scroll is the pattern that reads as hidden text. Measured after the change:
+button 0, paragraph 1.
+
+**Contrast, re-measured on the final treatment:** 4.1:1 worst case across six
+moments of the loop at 1440x900, 17.5:1 at 390x844. AA wants 3.0 for large
+text.

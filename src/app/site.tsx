@@ -16,7 +16,7 @@
    backgrounds intentionally left neutral.
    ========================================================================= */
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { LogoMark, LogoWordmark, MARK_PATHS_HERO } from "./logo";
 import { COPY, type Locale, localePath } from "./content";
@@ -1102,98 +1102,59 @@ function Preloader({ onDone }: { onDone: () => void }) {
 /* ============================================================================
    HERO MARK — the loop, seen through the E-D-H mark
 
-   FIRST ATTEMPT, and why it is not this. The mark was drawn as a near-black
-   silhouette over the clip, like the reference board. On a board that works,
-   because the photo behind it is bright; this loop is dark, so a dark shape on
-   it had nothing to read against — rendered, all you saw was the thin emerald
-   rim, a wireframe.
+   THREE PASSES, and what each one got wrong.
 
-   So it is inverted: the mark is a HOLE. One dark rect covers the hero and the
-   mark is cut out of it, which means the footage plays at full brightness
-   inside the shape and everything around it is dimmed. The clip reads through
-   the logo, the copy keeps a dark band to sit on, and the shape is unmistakable
-   — all from the geometry the header already uses.
+   1. The mark as a near-black silhouette over the clip, which is literally
+      what the reference board shows. The board works because its photo is
+      bright; this loop is dark, so a dark shape on it had nothing to read
+      against and only its outline showed.
+   2. An SVG knockout with a 16% wash inside and an emerald rim on the cut.
+      The rim was the problem: the user called it "liniile alea desenate", and
+      they were right — it read as a wireframe drawing rather than a shape, and
+      the whole thing looked soft.
+   3. This. No strokes anywhere, and the shape is made of TWO CSS-masked
+      layers over the video:
 
-   The hole gets an emerald rim: without it the cut edge is just a brightness
-   step, and the brand colour is what makes it ours rather than a stencil.
+        - the dim: near-black across the whole hero with the mark excluded, so
+          the footage only plays at full strength inside the shape;
+        - the tint: the accent at 32% inside the mark on `mix-blend-mode:
+          screen`, which LIGHTENS the footage toward emerald instead of
+          glazing it. That is what makes the shape crisp on a dark frame — the
+          board's inside is brighter than its outside, not just greener.
+
+   CSS masks rather than an inline <svg> mask, because `mix-blend-mode` has to
+   blend against the VIDEO, and an <svg> root isolates its own content: a
+   blended rect inside the SVG would composite against the SVG's transparent
+   group and do nothing. Out here the layers are ordinary divs above the video
+   in the same stacking context, so screen blending reaches it.
+
+   The mask is the mark's own path data from logo.tsx, inlined as a data URI,
+   so there is no extra request and the geometry cannot drift from the header's.
    ========================================================================= */
+
+/** The mark as an alpha mask: opaque inside the shape, transparent outside. */
+const MARK_MASK = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 284"><g fill="#fff">${MARK_PATHS_HERO.map(
+    (d) => `<path d="${d}"/>`
+  ).join("")}</g></svg>`
+)}")`;
 
 function HeroMark({ reduceMotion, y }: { reduceMotion: boolean; y: MotionValue<number> }) {
   return (
     <div aria-hidden className="hero-mark pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="hero-mark-inner h-full w-full"
-        style={reduceMotion ? undefined : { y }}
+        className="hero-mark-inner absolute inset-0"
+        style={
+          {
+            ...(reduceMotion ? {} : { y }),
+            "--mark-mask": MARK_MASK,
+          } as React.CSSProperties
+        }
       >
-        {/* TWO framings, not one scaled frame. A single 1440x900 viewBox with
-            `slice` crops hard on a portrait screen: at 390x844 it showed only
-            the middle bars of the E, which read as green stripes rather than
-            as the mark. The phone gets its own viewBox and its own placement,
-            with the whole mark visible and sat below the copy. */}
-        <div className="hidden h-full w-full md:block">
-          <MarkFrame viewBox="0 0 1440 900" place="translate(600 236) scale(1.5)" />
-        </div>
-        <div className="h-full w-full md:hidden">
-          <MarkFrame viewBox="0 0 390 844" place="translate(3 596) scale(0.52)" />
-        </div>
+        <div className="hero-mark-dim absolute inset-0" />
+        <div className="hero-mark-tint absolute inset-0" />
       </motion.div>
     </div>
-  );
-}
-
-/** One framing of the knockout: the dim, the hole, the wash and the rim. */
-function MarkFrame({ viewBox, place: PLACE }: { viewBox: string; place: string }) {
-  const maskId = useId();
-  const [, , vbW, vbH] = viewBox.split(" ");
-
-  return (
-    <>
-      {/* `slice` so the frame behaves like object-fit: cover — the dim has to
-          reach every corner of the hero, whatever the aspect ratio. */}
-      <svg className="h-full w-full" viewBox={viewBox} preserveAspectRatio="xMidYMid slice">
-          <defs>
-            {/* Outside the mark: white keeps the dimming, black punches the
-                hole the footage plays through. */}
-            <mask id={maskId}>
-              <rect width={vbW} height={vbH} fill="white" />
-              <g transform={PLACE} fill="black">
-                {MARK_PATHS_HERO.map((d) => (
-                  <path key={d.slice(0, 12)} d={d} />
-                ))}
-              </g>
-            </mask>
-            {/* Inside the mark, the same shape the other way round. */}
-            <mask id={`${maskId}-in`}>
-              <rect width={vbW} height={vbH} fill="black" />
-              <g transform={PLACE} fill="white">
-                {MARK_PATHS_HERO.map((d) => (
-                  <path key={d.slice(0, 12)} d={d} />
-                ))}
-              </g>
-            </mask>
-          </defs>
-
-          <rect width={vbW} height={vbH} fill="#05100C" fillOpacity="0.8" mask={`url(#${maskId})`} />
-
-          {/* The brand wash, inside the shape only. A brightness step alone was
-              not enough to read on a dark frame of the loop — the footage has
-              to be visibly GREEN inside the mark and plain outside it, which is
-              what the reference board does. */}
-          <rect
-            width={vbW}
-            height={vbH}
-            fill="#1FDB93"
-            fillOpacity="0.16"
-            mask={`url(#${maskId}-in)`}
-          />
-
-          <g transform={PLACE} className="hero-mark-rim" fill="none" stroke="#1FDB93" strokeWidth="1.6">
-            {MARK_PATHS_HERO.map((d) => (
-              <path key={d.slice(0, 12)} d={d} />
-            ))}
-          </g>
-      </svg>
-    </>
   );
 }
 
@@ -1432,7 +1393,7 @@ export default function Site({ locale }: { locale: Locale }) {
             the copy and there is nothing to cover. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,rgba(3,10,8,0.9)_0%,rgba(3,10,8,0.8)_42%,rgba(3,10,8,0)_76%)] md:block"
+          className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,rgba(3,10,8,0.93)_0%,rgba(3,10,8,0.88)_38%,rgba(3,10,8,0.45)_64%,rgba(3,10,8,0)_86%)] md:block"
         />
 
         {/* Headline centred in the viewport, each line rising out of its own
@@ -1456,42 +1417,71 @@ export default function Site({ locale }: { locale: Locale }) {
             Max 15 characters of measure: the two lines break where they are
             written, not wherever 1080px happens to fall. */}
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-[1440px] -translate-y-1/2 px-4 md:px-10">
-          <h1 className="max-w-[15ch] text-center text-[10.5vw] font-normal leading-[1.02] uppercase tracking-[-0.03em] text-white md:text-left md:text-[88px] md:leading-[0.98] lg:text-[96px]">
-            {[copy.hero.line1, copy.hero.line2].map((line, i) => (
-              <span key={line} className="block overflow-hidden">
-                <span
-                  className="intro-rise block"
-                  style={{ "--intro-delay": `${0.08 + i * 0.2}s` } as React.CSSProperties}
-                >
-                  {line}
+          {/* One line per written line, never re-wrapped: `nowrap` plus a
+              `vw` size from md up, so "NU POT LUCRA CU NOI." — the longest of
+              the two locales at 20 characters — always fits the container
+              instead of breaking into three ragged lines.
+
+              The first word of the second line carries the accent. In English
+              that is "CAN'T" and in Romanian "NU": the negation is the whole
+              point of the sentence, so it is the word that should be in the
+              brand colour rather than a fixed index into the string. */}
+          <h1 className="text-center text-[10.5vw] font-medium leading-[1.02] uppercase tracking-[-0.03em] text-white md:text-left md:text-[5.9vw] md:leading-[0.98] md:whitespace-nowrap lg:text-[5.6vw] xl:text-[82px]">
+            {[copy.hero.line1, copy.hero.line2].map((line, i) => {
+              const [first, ...rest] = line.split(" ");
+              return (
+                <span key={line} className="block overflow-hidden">
+                  <span
+                    className="intro-rise block"
+                    style={{ "--intro-delay": `${0.08 + i * 0.2}s` } as React.CSSProperties}
+                  >
+                    {i === 1 ? (
+                      <>
+                        <span className="text-[#1FDB93]">{first}</span>
+                        {rest.length ? ` ${rest.join(" ")}` : null}
+                      </>
+                    ) : (
+                      line
+                    )}
+                  </span>
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </h1>
 
-          {/* Apply, while you are at the top of the page. It hands over to the
-              header's own button once you scroll past the hero band — see the
-              `past-hero` effect below and the swap in globals.css. Centred on a
-              phone, where the headline is centred and narrow, and left-aligned
-              from md up so it sits under the start of the line rather than
-              floating in the middle of it. */}
-          <div
-            className="hero-apply intro-fade mt-9 flex justify-center md:mt-11 md:justify-start"
-            style={{ "--intro-delay": "0.62s" } as React.CSSProperties}
-          >
-            <TrickButton href={localePath(locale, APPLY_PATH)} variant="base" className="h-12 md:h-14">
-              {copy.nav.apply}
-            </TrickButton>
+          {/* The row under the headline: Apply, then the entity paragraph
+              beside it behind a hairline rule, which is how the reference
+              board sets it.
+
+              The button and the paragraph are SEPARATE elements on purpose.
+              Apply carries `hero-apply`, so it fades out when you scroll past
+              the hero and the header's own button takes over; the paragraph
+              must not fade with it. It is the SEO/GEO brief's entity
+              paragraph — the first indexable sentence stating what the company
+              is and where — and copy that animates to `opacity: 0` on scroll
+              is exactly the pattern that reads as hidden text.
+
+              Column on a phone (the headline is centred there and there is no
+              room for two), row from md up: button, rule, paragraph, all on
+              the same baseline. */}
+          <div className="mt-9 flex flex-col items-center gap-6 md:mt-11 md:flex-row md:items-center md:gap-7">
+            <div
+              className="hero-apply intro-fade shrink-0"
+              style={{ "--intro-delay": "0.62s" } as React.CSSProperties}
+            >
+              <TrickButton href={localePath(locale, APPLY_PATH)} variant="base" className="h-12 md:h-14">
+                {copy.nav.apply}
+              </TrickButton>
+            </div>
+
+            <p
+              className="intro-fade max-w-[42ch] text-center text-[11px] leading-relaxed tracking-[0.02em] text-white/60 md:border-l md:border-white/20 md:pl-7 md:text-left md:text-xs"
+              style={{ "--intro-delay": "0.74s" } as React.CSSProperties}
+            >
+              {copy.hero.entity}
+            </p>
           </div>
         </div>
-
-        {/* Entity paragraph, required by the SEO/GEO brief: the first indexable
-            paragraph must state plainly what the company is and where. Kept
-            visible (not sr-only — hidden keyword text is a cloaking risk) and
-            sat low in the hero so the centred headline is unaffected. */}
-        <p className="absolute inset-x-0 bottom-6 mx-auto max-w-[46ch] px-6 text-center text-[11px] leading-relaxed tracking-[0.02em] text-white/55 md:bottom-8 md:text-xs">
-          {copy.hero.entity}
-        </p>
       </section>
 
       {/* ============================================================
