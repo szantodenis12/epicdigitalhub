@@ -81,12 +81,20 @@ const WORK_VISUALS = [
   },
 ] satisfies { bg: string; fg: string; img: string; case: string; site?: string }[];
 
+/* One per services row, in row order: strategy, brand, web, ads, photo-video.
+
+   Delivered 1400x784, which is 16:9 — the same ratio as the accordion's
+   350x196 media box, so they fill it with no crop. The set they replaced was
+   3:2 (1600x1067) and was being cut on both sides. The masters that came with
+   them (`-full.png`, 1916x821, about 9MB for the five) are not in the repo:
+   `next/image` never serves them, so they would be weight in git for nothing.
+   They are in the handoff folder if a different crop is ever needed. */
 const SERVICE_IMAGES = [
-  "/images/about-strategy.webp",
-  "/images/about-design.webp",
-  "/images/hero-laptop.webp",
-  "/images/exclusivity-door.webp",
-  "/images/about-production.webp",
+  "/images/service-strategy.webp",
+  "/images/service-brand.webp",
+  "/images/service-web.webp",
+  "/images/service-ads.webp",
+  "/images/service-video.webp",
 ];
 
 /* The dedicated page each home services row links to, by index. The home page

@@ -1527,3 +1527,36 @@ sign-off.
 Verified at 1440x900 and 390x844, both locales: six rows plus the featured
 quote, correct names and order, no horizontal scroll. tsc, eslint and build
 clean.
+
+## Services accordion images replaced (2026-10-07)
+
+`poze servicii EDH/EDH_SITE_SERVICES_2026-10`: five images, one per row, each
+with a web `.webp` and a `-full.png` master.
+
+| row | file |
+|---|---|
+| Marketing strategy | service-strategy.webp |
+| Brand & design | service-brand.webp |
+| Premium websites | service-web.webp |
+| Paid ads | service-ads.webp |
+| Photo-video | service-video.webp |
+
+The delivered webps are **1400x784, i.e. 16:9 — the accordion's media box is
+350x196, the same ratio**, so they fill it with no crop at all. The set they
+replace was 3:2 (1600x1067) borrowed from the About section, which the box was
+cutting on both sides; that is why the old photo-video frame read as a dark
+silhouette.
+
+The five `-full.png` masters (1916x821, about 9MB together) were left out of
+the repo: `next/image` never serves them, so they would be pure git weight.
+They stay in the handoff folder if a different crop is ever needed.
+
+The five images this replaced — about-strategy, about-design, hero-laptop,
+exclusivity-door, about-production — were referenced from nothing else in the
+tree (checked across src and public, not only the obvious files), so they are
+deleted rather than left behind. Git history still has them.
+
+Verified by hovering every row at 1440x900: each serves its own file, the
+image reports 16:9 against a 350x196 box, and there are no 4xx. Note for next
+time: Next's image optimiser caches by request URL, so `.next/dev/cache/images`
+has to go when a file is replaced in place — the same trap the work photos hit.
