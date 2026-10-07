@@ -24,4 +24,7 @@ export const APPLY_PATH = "/apply";
 export const applyPath = (serviceSlug?: string) =>
   serviceSlug ? `${APPLY_PATH}?service=${serviceSlug}` : APPLY_PATH;
 
+/* The niche map: industry vs. niche, and which positions are open per city. */
+export const NICHES_PATH = "/niches";
+
 export const AUDIT_PATH = "/audit";

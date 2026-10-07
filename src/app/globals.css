@@ -256,3 +256,27 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 .rise-word > span {
   display: inline-block;
 }
+
+/* ---------------------------------------------------------------------------
+   /niches — the rule device and the availability bar.
+
+   CSS keyframes rather than GSAP: these replay every time the device cycles
+   to the next example and every time the city changes, which is a `key`
+   change in React, and a keyframe restarts on its own when the element is
+   replaced. A tween would have to be rebuilt and killed on each pass.
+
+   Every one of them is applied from the component only when reduced motion is
+   off, so there is nothing to disable here.
+   ------------------------------------------------------------------------ */
+@keyframes niche-strike {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes niche-row {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes niche-bar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}

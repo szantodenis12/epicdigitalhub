@@ -45,6 +45,7 @@ const en = {
     links: [
       { label: "Services", href: "/services" },
       { label: "Work", href: "/case-studies" },
+      { label: "Niches", href: "/niches" },
       { label: "Articles", href: "/articles" },
       { label: "About", href: "#about" },
     ],
@@ -265,6 +266,7 @@ const ro: typeof en = {
     links: [
       { label: "Servicii", href: "/services" },
       { label: "Proiecte", href: "/case-studies" },
+      { label: "Nișe", href: "/niches" },
       { label: "Articole", href: "/articles" },
       { label: "Despre noi", href: "#about" },
     ],

@@ -6,6 +6,7 @@ import {
   ARTICLES_PATH,
   AUDIT_PATH,
   CASE_STUDIES_PATH,
+  NICHES_PATH,
   SERVICES_PATH,
   articlePath,
   caseStudyPath,
@@ -34,6 +35,7 @@ const PAGES: [path: string, priority: number][] = [
   ...caseStudyParams().map(({ slug }) => [caseStudyPath(slug), 0.6] as [string, number]),
   [ARTICLES_PATH, 0.6],
   ...articleParams().map(({ slug }) => [articlePath(slug), 0.5] as [string, number]),
+  [NICHES_PATH, 0.7],
   [AUDIT_PATH, 0.7],
   [APPLY_PATH, 0.6],
 ];
