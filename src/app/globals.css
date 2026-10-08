@@ -301,25 +301,46 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
    hands over, a 26s breathe (2.5% of scale), and the parallax from site.tsx.
    `prefers-reduced-motion` stops all of it with the mark still in place.
    ------------------------------------------------------------------------ */
-.hero-mark {
+/* ARRIVAL, written to CONTINUE the preloader rather than repeat it.
+
+   The intro already does one big gesture: the lockup's seam opens and the
+   poster grows to fill the screen. A second "thing appears and scales in"
+   right after it reads as two openings in a row, which is what the user
+   flagged. So the hero does something the intro cannot: it switches the brand
+   ON.
+
+   The dark frame settles first (the dim fades up), and then the accent lights
+   the inside of the mark left to right, like current reaching the end of a
+   sign. The mark's geometry is already in place while that happens, so the
+   two gestures chain instead of competing.
+   ------------------------------------------------------------------------ */
+.hero-mark-dim,
+.hero-mark-tint {
   opacity: 0;
 }
-:root.intro-done .hero-mark {
-  animation: hero-mark-in 1800ms cubic-bezier(0.22, 1, 0.36, 1) 500ms both;
+:root.intro-done .hero-mark-dim {
+  animation: hero-dim-in 900ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+}
+:root.intro-done .hero-mark-tint {
+  animation: hero-tint-sweep 1500ms cubic-bezier(0.22, 1, 0.36, 1) 620ms both;
 }
 .hero-mark-inner {
   animation: hero-mark-breathe 26s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 
-  /* Desktop placement. 80vw from 15vw across means the mark ENDS at 95vw:
-     the H bar and the play device stay on screen, which is what the user
-     asked for after the 116vw version cut them off. */
-  --mark-size: 80vw auto;
-  --mark-pos: 15vw center;
+  /* Desktop placement. Bigger than it was: at 80vw the headline sat BESIDE
+     the mark, and the brief is for the copy to sit inside it. 96vw from 4vw
+     keeps the H bar and the play device on screen while the E and the D take
+     the width the text sits across. */
+  --mark-size: 96vw auto;
+  --mark-pos: 4vw center;
 }
 
+/* THE MASKS. These were lost once in a rewrite of the arrival block above,
+   and the failure mode is worth knowing: without them both layers are plain
+   coloured rectangles, so the dim covers the whole hero and the tint washes
+   it green — no shape anywhere, which is exactly what it looked like. */
 .hero-mark-dim {
   background: #03100c;
-  opacity: 0.88;
   mask-image: linear-gradient(#000, #000), var(--mark-mask);
   mask-size: 100% 100%, var(--mark-size);
   mask-position: 0 0, var(--mark-pos);
@@ -334,10 +355,6 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 
 .hero-mark-tint {
   background: #1fdb93;
-  /* 0.22, not 0.32: at a third the shape went flat and the footage inside
-     stopped reading. The board shows architecture and a figure THROUGH the
-     mark — brighter and greener than the surround, not a solid fill. */
-  opacity: 0.22;
   mix-blend-mode: screen;
   mask-image: var(--mark-mask);
   mask-size: var(--mark-size);
@@ -349,19 +366,43 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
   -webkit-mask-repeat: no-repeat;
 }
 
-/* A phone is portrait: the same crop would show only the middle bars of the
-   E. The whole mark instead, sat below the copy. */
+@keyframes hero-dim-in {
+  from { opacity: 0; }
+  to   { opacity: 0.88; }
+}
+@keyframes hero-tint-sweep {
+  from { opacity: 0.22; clip-path: inset(0 100% 0 0); }
+  to   { opacity: 0.22; clip-path: inset(0 0 0 0); }
+}
+
+/* The accent word lights up after it has landed, on the same clock as the
+   tint sweeping the mark: the sentence and the logo switch on together. */
+.hero-accent-wipe {
+  clip-path: inset(0 100% 0 0);
+}
+:root.intro-done .hero-accent-wipe {
+  animation: hero-accent-wipe 900ms cubic-bezier(0.22, 1, 0.36, 1) 1250ms both;
+}
+@keyframes hero-accent-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* A phone is where most of the traffic is, so the mark is not a small badge
+   under the copy: 112vw across the lower third, the whole E-D-H with only the
+   outer edges clipped.
+
+   It has to stay the WHOLE mark. Tried at 128vw bled off the left edge and
+   the only thing on screen was the inside of the D — the viewport went green
+   with no shape in it, the same failure as an earlier full-bleed crop that
+   showed just the E's bars. */
 @media (max-width: 767px) {
   .hero-mark-inner {
-    --mark-size: 92vw auto;
+    --mark-size: 112vw auto;
     --mark-pos: center 84%;
   }
 }
 
-@keyframes hero-mark-in {
-  from { opacity: 0; scale: 1.07; }
-  to   { opacity: 1; scale: 1; }
-}
 @keyframes hero-mark-breathe {
   from { scale: 1; translate: 0 0; }
   to   { scale: 1.025; translate: -1.2% 0.8%; }
@@ -406,8 +447,10 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root.intro-done .hero-mark { animation: none; opacity: 1; }
+  :root.intro-done .hero-mark-dim { animation: none; opacity: 0.88; }
+  :root.intro-done .hero-mark-tint { animation: none; opacity: 0.22; }
   .hero-mark-inner { animation: none; }
+  :root.intro-done .hero-accent-wipe { animation: none; clip-path: inset(0 0 0 0); }
   :root.intro-done .hero-apply,
   :root .header-apply { transition: none; }
 }

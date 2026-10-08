@@ -1395,6 +1395,14 @@ export default function Site({ locale }: { locale: Locale }) {
           aria-hidden
           className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,rgba(3,10,8,0.93)_0%,rgba(3,10,8,0.88)_38%,rgba(3,10,8,0.45)_64%,rgba(3,10,8,0)_86%)] md:block"
         />
+        {/* The phone's equivalent. The mark runs across the lower third there,
+            so the copy needs its band top-down rather than left-right: the
+            entity paragraph measured 2.27:1 over the lit mark, against AA's
+            4.5 for body text. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(3,10,8,0.8)_0%,rgba(3,10,8,0.86)_52%,rgba(3,10,8,0.6)_72%,rgba(3,10,8,0)_92%)] md:hidden"
+        />
 
         {/* Headline centred in the viewport, each line rising out of its own
             clipping mask on load.
@@ -1426,24 +1434,43 @@ export default function Site({ locale }: { locale: Locale }) {
               that is "CAN'T" and in Romanian "NU": the negation is the whole
               point of the sentence, so it is the word that should be in the
               brand colour rather than a fixed index into the string. */}
-          <h1 className="text-center text-[10.5vw] font-medium leading-[1.02] uppercase tracking-[-0.03em] text-white md:text-left md:text-[5.9vw] md:leading-[0.98] md:whitespace-nowrap lg:text-[5.6vw] xl:text-[82px]">
-            {[copy.hero.line1, copy.hero.line2].map((line, i) => {
-              const [first, ...rest] = line.split(" ");
+          <h1 className="text-[12.5vw] font-medium leading-[1.02] tracking-[-0.03em] text-white uppercase md:text-[5.9vw] md:leading-[0.98] md:whitespace-nowrap lg:text-[5.6vw] xl:text-[88px]">
+            {[copy.hero.line1, copy.hero.line2].map((line, li) => {
+              const words = line.split(" ");
               return (
                 <span key={line} className="block overflow-hidden">
-                  <span
-                    className="intro-rise block"
-                    style={{ "--intro-delay": `${0.08 + i * 0.2}s` } as React.CSSProperties}
-                  >
-                    {i === 1 ? (
-                      <>
-                        <span className="text-[#1FDB93]">{first}</span>
-                        {rest.length ? ` ${rest.join(" ")}` : null}
-                      </>
-                    ) : (
-                      line
-                    )}
-                  </span>
+                  {words.map((word, wi) => {
+                    /* Per WORD, not per line. A whole line rising as one block
+                       is the move every site makes; the words arriving in
+                       sequence reads as the sentence being spoken, and it
+                       gives the accent word somewhere to land. */
+                    const accent = li === 1 && wi === 0;
+                    const delay = 0.08 + li * 0.26 + wi * 0.055;
+                    return (
+                      <span
+                        key={`${word}-${wi}`}
+                        className="intro-rise inline-block"
+                        style={{ "--intro-delay": `${delay}s` } as React.CSSProperties}
+                      >
+                        {accent ? (
+                          /* The brand colour arrives AFTER the word does: a
+                             white word rises, then the accent wipes across it
+                             left to right, in step with the tint lighting the
+                             mark. Two stacked copies, because a colour cannot
+                             be clipped on its own. */
+                          <span className="relative inline-block">
+                            <span aria-hidden className="hero-accent-wipe absolute inset-0 text-[#1FDB93]">
+                              {word}
+                            </span>
+                            {word}
+                          </span>
+                        ) : (
+                          word
+                        )}
+                        {wi < words.length - 1 ? " " : null}
+                      </span>
+                    );
+                  })}
                 </span>
               );
             })}
@@ -1464,7 +1491,7 @@ export default function Site({ locale }: { locale: Locale }) {
               Column on a phone (the headline is centred there and there is no
               room for two), row from md up: button, rule, paragraph, all on
               the same baseline. */}
-          <div className="mt-9 flex flex-col items-center gap-6 md:mt-11 md:flex-row md:items-center md:gap-7">
+          <div className="mt-8 flex flex-col items-start gap-5 md:mt-11 md:flex-row md:items-center md:gap-7">
             <div
               className="hero-apply intro-fade shrink-0"
               style={{ "--intro-delay": "0.62s" } as React.CSSProperties}
@@ -1475,7 +1502,7 @@ export default function Site({ locale }: { locale: Locale }) {
             </div>
 
             <p
-              className="intro-fade max-w-[42ch] text-center text-[11px] leading-relaxed tracking-[0.02em] text-white/60 md:border-l md:border-white/20 md:pl-7 md:text-left md:text-xs"
+              className="intro-fade max-w-[38ch] text-left text-xs leading-relaxed tracking-[0.02em] text-white/80 md:max-w-[42ch] md:text-white/60 md:border-l md:border-white/20 md:pl-7"
               style={{ "--intro-delay": "0.74s" } as React.CSSProperties}
             >
               {copy.hero.entity}

@@ -1692,3 +1692,51 @@ button 0, paragraph 1.
 **Contrast, re-measured on the final treatment:** 4.1:1 worst case across six
 moments of the loop at 1440x900, 17.5:1 at 390x844. AA wants 3.0 for large
 text.
+
+### Hero, third pass: bigger mark, an arrival that follows the intro, mobile first (2026-10-08)
+
+Four notes from the user: the mark should be bigger so the copy sits inside it;
+the arrival clashed with the preloader ("avem si animatia aia de loading la
+prima vizita, si trebuie sa dam cumva un alt efect care sa se completeze cu
+asta"); the text animation could be more interesting; and mobile needed to be
+the stronger version, since that is where the traffic is.
+
+**Arrival, rewritten to chain instead of repeat.** The intro already does one
+big gesture — the lockup's seam opens and the poster grows to fill the screen.
+The hero was then fading and scaling the mark in, which is a second opening in
+a row. Now the hero does what the intro cannot: it switches the brand on. The
+dim settles first (900ms), then the accent sweeps the inside of the mark left
+to right (1.5s), like current reaching the end of a sign. Traced on the real
+page: words in place by 2.2s, dim 2.2-2.6s, tint 2.6-4.2s.
+
+**Text.** Per WORD now rather than per line, each word rising out of its own
+mask on a 55ms stagger — a line rising as one block is the move every site
+makes. The accent word then lights up: a white word rises, and the emerald
+wipes across it from 3.4s to 4.2s, in step with the tint on the mark, so the
+sentence and the logo switch on together. Two stacked copies of the word,
+because a colour cannot be clipped on its own.
+
+**Mark.** 80vw -> 96vw from 4vw across, so the headline sits inside the E and
+the D instead of beside them, with the H bar and the play device still on
+screen.
+
+**Mobile.** Headline left-aligned at 12.5vw (48.75px at 390), the row under it
+left-aligned too, and the mark at 112vw across the lower third instead of a
+small badge under the copy.
+
+Two measurements drove the mobile numbers:
+- at 128vw bled off the left edge, the only thing on screen was the inside of
+  the D — the whole viewport went green with no shape in it. 112vw keeps the
+  whole E-D-H.
+- with the mark that big, the entity paragraph measured 2.27:1 over it, against
+  AA's 4.5 for body text. Fixed with a top-down scrim (the phone's equivalent
+  of the desktop's left vignette), the mark dropped to 84%, and the paragraph
+  at white/80 on mobile instead of white/60. Now 7.83:1, with the headline at
+  19.5:1 and desktop at 4.11:1.
+
+**A mistake worth recording.** Rewriting the arrival block by text replacement
+also deleted the two layers' `mask-image`/`mask-size`/`mask-composite`
+declarations. The failure mode is quiet: both layers become plain coloured
+rectangles, so the dim covers the whole hero and the tint washes it green —
+there is no error, no console warning, just a flat green screen with no shape
+anywhere. `getComputedStyle(...).maskImage === "none"` is what identified it.
