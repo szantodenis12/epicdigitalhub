@@ -219,7 +219,7 @@ export function CaseStudyPage({ locale, slug }: { locale: Locale; slug: string }
               alt={study.title}
               fill
               priority
-              sizes="(min-width: 1440px) 1408px, 100vw"
+              sizes="(min-width: 1680px) 1648px, 100vw"
               className="object-cover"
             />
           </div>

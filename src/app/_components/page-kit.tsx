@@ -4,7 +4,7 @@
    Nothing here is a new pattern. Each block is a type treatment the home page
    already uses, lifted as-is so a subpage reads as the same site:
 
-     - the container      `max-w-[1440px] px-4`, as every home section
+     - the container      `max-w-[var(--site-max)] px-4`, as every home section
      - the 8-column grid  the About section's: label in columns 1-3, text in
                           columns 4-8
      - page titles        the Contact heading (uppercase, medium, -0.02em)
@@ -21,7 +21,13 @@ import { nn } from "./format";
 import { GradientWaveText } from "./ui";
 import { Reveal } from "./blocks";
 
-export const CONTAINER = "mx-auto w-full max-w-[1440px] px-4";
+export const CONTAINER = "mx-auto w-full max-w-[var(--site-max)] px-4";
+/* Reading measure. The container is wider than the text wants to be: at
+   --site-max the reading column is ~1030px, which runs a paragraph out to ~99
+   characters a line. These `max-w-[Nem]` caps hold body copy at the ~880px /
+   ~80 characters it reads at today, so the frame widens and the paragraphs
+   don't. In em, not px, so they scale with the step down to 18px on a phone
+   (where they're wider than the screen and do nothing). */
 export const GRID = "grid grid-cols-1 gap-x-1 gap-y-10 md:grid-cols-8";
 /** Columns 4-8 of the grid, where the reading text sits. */
 export const TEXT_COLS = "md:col-span-5 md:col-start-4";
@@ -90,6 +96,7 @@ export function PageHero({
   intro = [],
   back,
   aside,
+  asideRight = false,
   children,
 }: {
   label: React.ReactNode;
@@ -97,6 +104,19 @@ export function PageHero({
   intro?: string[];
   back?: { href: string; label: string };
   aside?: React.ReactNode;
+  /** Put the aside in columns 6-8 and the copy in 1-5, instead of the other
+      way round, and only from `xl` up - under that the aside stacks below the
+      copy at full width. Opt-in, and only /niches uses it: there the aside is
+      a card that demonstrates the page's argument, and reading copy ->
+      example works left to right in a way example -> copy does not. Every
+      other page's aside is a small companion to the text and stays put.
+
+      `xl`, not `md`: three of eight columns is 615px at 1920 and 525px at
+      1440, which the card wants, but 369px at 1024 and 293px at 820 - and
+      measured there, the niche names wrapped onto three lines and the status
+      labels ran into the right edge. Same failure the board hit when it was
+      put in the reading column. */
+  asideRight?: boolean;
   /** CTAs, rendered under the intro */
   children?: React.ReactNode;
 }) {
@@ -115,16 +135,33 @@ export function PageHero({
         />
         {(intro.length > 0 || children || aside) && (
           <div className={`mt-16 ${GRID}`}>
-            {/* after the copy on a phone, beside it from md up */}
-            {aside && <div className="order-last md:order-none md:col-span-3 md:self-end">{aside}</div>}
+            {/* After the copy on a phone, beside it from md up.
+                `asideRight` places both explicitly - with the aside first in
+                the DOM, auto-placement would otherwise push the copy onto a
+                second row once the aside no longer starts the grid. */}
+            {aside && (
+              <div
+                className={
+                  asideRight
+                    ? "order-last md:col-span-8 xl:col-span-3 xl:col-start-6 xl:row-start-1 xl:self-end"
+                    : "order-last md:order-none md:col-span-3 md:self-end"
+                }
+              >
+                {aside}
+              </div>
+            )}
             <div
-              className={`intro-fade ${TEXT_COLS}`}
+              className={`intro-fade ${
+                asideRight
+                  ? "md:col-span-8 xl:col-span-5 xl:col-start-1 xl:row-start-1"
+                  : TEXT_COLS
+              }`}
               style={{ "--intro-delay": "0.45s" } as React.CSSProperties}
             >
               {intro.map((p, i) => (
                 <p
                   key={i}
-                  className={`text-lg leading-[1.5] text-[#1F1F1F]/85 md:text-[22px] ${i > 0 ? "mt-6" : ""}`}
+                  className={`max-w-[40em] text-lg leading-[1.5] text-[#1F1F1F]/85 md:text-[22px] ${i > 0 ? "mt-6" : ""}`}
                 >
                   {p}
                 </p>
@@ -214,7 +251,7 @@ export function TextSection({
               {paragraphs.map((p, i) => (
                 <p
                   key={i}
-                  className={`text-lg leading-[1.5] md:text-xl ${dark ? "text-white/70" : "text-[#1F1F1F]/80"} ${i > 0 ? "mt-6" : ""}`}
+                  className={`max-w-[44em] text-lg leading-[1.5] md:text-xl ${dark ? "text-white/70" : "text-[#1F1F1F]/80"} ${i > 0 ? "mt-6" : ""}`}
                 >
                   {p}
                 </p>

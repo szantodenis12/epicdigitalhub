@@ -119,6 +119,15 @@ body {
    softer than the expo-out used before - that one covered most of its distance
    in the first third and read as fast no matter how long the duration was. */
 :root {
+  /* THE SITE'S WIDTH, in one place. Every container — the nav, the home
+     sections, the subpage grids, the footer — reads this, so widening the
+     layout is one number rather than fourteen literals.
+
+     1680 rather than 1440: at 1920 the old cap left 240px of dead margin each
+     side and pushed the hero copy 280px in from the edge. Reading measures are
+     capped per block instead (see page-kit), so the columns breathe wider
+     without the paragraphs turning into 95-character lines. */
+  --site-max: 1680px;
   --intro-rise-duration: 1.9s;
   --intro-fade-duration: 1.35s;
   --intro-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -184,6 +193,42 @@ body {
 @media (min-width: 1516px) {
   .curved-textpath-size {
     font-size: 9vw;
+  }
+}
+
+/* Source CSS is translate(0, -100%) scale(1.1), but the source's container is
+   not vertically centred the way this one is, so a literal -100% lands the
+   text ~200px too high. -30% puts the arc at the same on-screen y (~280px) as
+   the original. */
+.curved-arc {
+  transform: translate(0, -30%) scale(1.1);
+}
+
+/* PHONES. The SVG is `w-[1516px] max-w-full`, so on a 390px screen the whole
+   1516-unit viewBox is squeezed into the width - a uniform 0.257 scale, which
+   rendered the 136px type at 38px. Against a full-height pinned section that
+   left one thin line of text in the middle of an otherwise empty screen: the
+   same divider that fills 15% of the viewport's height on a desktop filled
+   4.5% here.
+
+   340 user units lands it back at ~96px rendered, which is that same 15%. It
+   is a deliberate trade: fewer characters are on screen at once (~6 instead of
+   ~14), and the sentence reads as it sweeps rather than all at once. The sweep
+   also gets faster for free - the travel is derived from the string's measured
+   length, so longer text covers more ground over the same 3240px pin, which
+   takes dead scroll out of the section rather than adding it.
+
+   The transform is the other half of the empty-space problem: -30% of the
+   element's own 300px box lifted the arc 90px, so the ink sat at y~350 on an
+   844px screen with everything below it blank. -10% centres the INK (not the
+   box - the glyphs sit above the path, so the two are not the same thing) at
+   y~411 against a centre of 422. */
+@media (max-width: 767px) {
+  .curved-textpath-size {
+    font-size: 340px;
+  }
+  .curved-arc {
+    transform: translate(0, -10%) scale(1.1);
   }
 }
 
@@ -409,30 +454,48 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 }
 
 /* The Apply swap. Both buttons exist in the markup; which one is live depends
-   on a single class on <html>, so crossing the threshold costs no render. */
-/* Same specificity problem as below, other direction: `.intro-fade`'s own
-   1.35s transition is what the hero button would otherwise fade on, and 1.35s
-   reads as lag when it is reacting to a scroll. */
-:root.intro-done .hero-apply,
+   on a single class on <html>, so crossing the threshold costs no render.
+
+   The whole point is the DIRECTION. The hero's button leaves upward and the
+   header's arrives from below, both along the line the button is travelling,
+   on a stagger - the leaving one goes first, the arriving one follows it in.
+   That is what makes the pair read as one button changing place. An earlier
+   version moved them in opposite directions and read as two separate buttons
+   blinking; a version after that flew the hero's copy the full 1400px into the
+   header, which was far more motion than this site's vocabulary of short,
+   quiet, eased moves can carry.
+
+   Short durations on purpose: this is reacting to a scroll, and `.intro-fade`'s
+   own 1.35s - which is what the hero button would otherwise inherit for its
+   arrival - reads as lag the moment it is used for anything else. */
+:root.intro-done .hero-apply {
+  transition:
+    opacity 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    translate 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    scale 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 :root .header-apply {
   transition:
-    opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
-    translate 450ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 260ms var(--intro-ease) 90ms,
+    translate 260ms var(--intro-ease) 90ms;
 }
+
 /* `:root`, not `html`, and it matters: `:root.intro-done .intro-fade` is
    (0,3,0) and the hero button carries `intro-fade` for its arrival, so an
-   `html.past-hero` selector at (0,2,1) lost to it and the button never faded
-   out on scroll. Measured: opacity stayed 1 with pointer-events off, which is
-   an invisible button you cannot click sitting on top of the page. */
+   `html.past-hero` selector at (0,2,1) lost to it and the button never left on
+   scroll. Measured: opacity stayed 1 with pointer-events off, which is an
+   invisible button you cannot click sitting on top of the page. */
 :root:not(.past-hero) .header-apply {
   opacity: 0;
-  translate: 0 -0.5rem;
+  translate: 0 0.5rem;
   pointer-events: none;
 }
 
+/* Up and slightly back, not down: it is going to the header. */
 :root.past-hero .hero-apply {
   opacity: 0;
-  translate: 0 0.75rem;
+  translate: 0 -0.6rem;
+  scale: 0.97;
   pointer-events: none;
 }
 
@@ -442,6 +505,10 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
   :root.past-hero .hero-apply {
     opacity: 1;
     translate: 0 0;
+    /* `scale` too, or the button sits at 97% for the rest of the visit - the
+       leaving state sets three properties and an override has to answer all
+       three. */
+    scale: 1;
     pointer-events: auto;
   }
 }

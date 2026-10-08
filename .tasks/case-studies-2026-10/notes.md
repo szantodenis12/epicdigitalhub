@@ -265,3 +265,47 @@ offset grid.
 
 A single reel also now sits in a 320px frame rather than 260px — DentalNet's is
 the only one-reel case and it is a 2:25 presentation, which was cramped.
+
+## The reels stopped a second after you tapped them (8 Oct 2026)
+
+Reported on a phone: tap a client reel, it runs for about a second and stops by
+itself. One line caused it, in `ReelCard`'s `toggle`:
+
+```
+v.muted = false;        // then
+v.play();
+```
+
+Unmuting BEFORE play is the whole bug. Measured in a mobile context, that
+sequence leaves the play promise unsettled with `readyState` 0, `networkState`
+1 and `paused` true - nothing playing, and no error to catch either, so the
+`.catch(() => {})` had nothing to report. The autoplay policy will not grant
+audio to an element that holds no data yet (`preload="none"` here, which is
+deliberate - these files are 4-8MB each), and by the time the first bytes
+arrive the tap that would have authorised it is spent.
+
+Four variants, same page, same mobile context, tapped through a real gesture:
+
+| | result |
+|---|---|
+| `muted = false` then `play()` (what shipped) | never left t=0, promise unsettled |
+| `muted = true` then `play()` | reached 1.36s, kept going |
+| muted play, unmute in `.then()` | reached 1.78s, kept going |
+| unmuted play, fall back to muted | played |
+
+So: start muted, unmute in the `then`. Unmuting an element that is already
+playing is not a new playback request, so nothing revokes it. Verified across
+every case study in both locales - **16/16 reels** start, carry sound and are
+still advancing three seconds later, and a second tap still pauses. Desktop is
+untouched: hover still previews muted, the click still unmutes.
+
+**A measurement trap worth recording.** My first sweep said the FIRST reel on
+every page never played, which looked like a different bug entirely. It was the
+test: scrolling the whole page in 20ms steps outruns the IntersectionObserver
+behind `ClipReveal`, which reports the state at DELIVERY time, so the card was
+already gone and the reveal stayed closed - and a closed `ClipReveal` is
+`clip-path: inset(0% 0% 100%)`, which clips hit-testing too, so the tap landed
+on the outer div instead of the button. `elementFromPoint` at the tap
+coordinate is what showed it. Checked the real-world version of that: flick
+past the reels and back, and the observer fires on the way back, so the cards
+do recover. With a human-paced scroll everything behaves.

@@ -258,7 +258,7 @@ export function AuditForm({ copy: d }: { copy: AuditCopy }) {
   return (
     <>
       <section data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
-        <div className="mx-auto max-w-[1440px] px-4">
+        <div className="mx-auto max-w-[var(--site-max)] px-4">
           <EyebrowMarquee label={d.form.kicker} />
           <form onSubmit={submit} className="mt-16 flex flex-col gap-3">
             <div className="grid gap-3 md:grid-cols-2">
@@ -320,7 +320,7 @@ export function AuditForm({ copy: d }: { copy: AuditCopy }) {
 
       {(parsed || busy) && (
         <section aria-live="polite" className="bg-[#F5F2F2] py-24 text-[#1F1F1F]">
-          <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-x-1 gap-y-10 px-4 md:grid-cols-8">
+          <div className="mx-auto grid max-w-[var(--site-max)] grid-cols-1 gap-x-1 gap-y-10 px-4 md:grid-cols-8">
             <p className="text-[11px] tracking-[0.02em] text-[#1F1F1F]/70 uppercase md:col-span-3">
               {d.report.kicker}
             </p>

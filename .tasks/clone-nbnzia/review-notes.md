@@ -1740,3 +1740,191 @@ declarations. The failure mode is quiet: both layers become plain coloured
 rectangles, so the dim covers the whole hero and the tint washes it green —
 there is no error, no console warning, just a flat green screen with no shape
 anywhere. `getComputedStyle(...).maskImage === "none"` is what identified it.
+
+## The layout's width — one token (8 Oct 2026)
+
+Brief: less dead space left and right, the menu bar included, the hero copy
+further left, "fara sa stricam cum arata site-ul".
+
+The site had `max-w-[1440px]` written out 14 times across five files — the nav,
+the footer, the home sections, the subpage container, the audit form, the
+service device. All 14 now read `max-w-[var(--site-max)]`, declared once in
+globals.css at **1680px**. Widening the site is one number from here.
+
+At 1440 and below nothing moved at all: the cap only binds above it. At 1920
+the gutters drop from 240px to 120px a side, and the hero headline starts at
+160px instead of 280 — which is the "mai la stanga" in the brief, without
+touching the hero's own padding.
+
+**The paragraphs had to be held back.** The reading column is columns 4-8 of
+the 8-column grid, so it widened with the container: 879px -> 1029px, which ran
+body copy out to 99 characters a line. The frame should widen; the measure
+should not. Body copy now carries `max-w-[40em]` (the 22px intro) and
+`max-w-[44em]` (the 20px body), and the home testimonial quote `max-w-[62em]` —
+each one the em equivalent of the 880px it already read at, so every paragraph
+measures exactly what it did before. In em rather than px so they follow the
+step down to 18px on a phone, where they are wider than the screen and do
+nothing. Measured after: 77-85 characters everywhere, unchanged.
+
+**The showreel's big box was the one thing that broke.** `max-w-[1408px]` —
+the old container's inner width, hard-coded from the source site — left the
+reel 240px short of the container's right edge once the layout widened. Now
+plain `w-full` at 16:9. `Flip.fit` reads live rects, so the morph needed no
+other change; the big box is simply bigger, and the scale factor rides along.
+
+Also retuned: the two `sizes` hints that named 1440px breakpoints, so the
+optimizer still serves an image big enough for the wider boxes.
+
+**A dev-server trap.** `max-w-[62em]` was in the markup and absent from the
+emitted CSS — `getComputedStyle(...).maxWidth` read `none` while the class sat
+right there on the element. The same utility added to page-kit.tsx in the same
+minute did apply. Turbopack had not re-run the Tailwind scan for site.tsx;
+touching globals.css rebuilt it. Worth knowing before hunting for a specificity
+bug that isn't there: check the stylesheet actually contains the utility.
+
+## The Apply handoff, and two versions that were wrong (8 Oct 2026)
+
+Three attempts, and the third is the one in the code. Recording all three
+because the two rejected ones were both built correctly and still wrong, which
+is the useful part.
+
+**1. The cross-fade (rejected).** The hero's button dropped 12px and faded out;
+the header's faded in from 8px ABOVE. The two halves moved in opposite
+directions, so nothing tied them together - it read as two unrelated buttons
+blinking at each other across 1400px. It was also a handoff nobody could see:
+the threshold was 140px and the nav hides past 120px, so the arriving button
+faded in behind a header already on its way out.
+
+**2. The flight (built, verified, rejected).** The hero's button physically
+travelled into the header's slot, scrubbed over the first 120px of scroll: live
+rects every frame, a bent arc from staggered per-axis easing, a 5% scale dip at
+mid-flight, a single-frame handoff with no overlap (two white pills under
+`mix-blend-mode: difference` composite to black, so a cross-fade at the end
+flashes dark). Measured path at 1920: 160,580 -> 387,364 -> 1057,126 ->
+1590,16 against a slot at 1596,16, landing within 6px before the final snap.
+
+It worked exactly as designed and was the wrong thing to build. Denis: "nu imi
+place animatia, e aiurea, nu se potriveste." He is right - every other move on
+this site is short, quiet and eased, and a 1400px sweep across the hero belongs
+to a louder site than this one. Deleted rather than toned down: the scrub, the
+rAF loop and the inline styles were all in service of a gesture that should not
+be there.
+
+**3. What is in the code.** The small version of the same idea. The swap fires
+at **70px**, while both slots are still on screen and the nav is still shown -
+that threshold is the single most important number here. The leaving button
+exits UPWARD (-0.6rem, scale 0.97, 220ms) and the arriving one enters FROM
+BELOW (+0.5rem -> 0, 260ms after a 90ms beat). Same direction, short, eased,
+staggered: the eye joins them up without anything having to travel. Measured:
+past-hero flips at y=73 with the nav still shown, and the exchange is finished
+by y=110.
+
+One trap on the way out: the leaving state sets three properties now
+(`opacity`, `translate`, `scale`), and the `max-width: 1023px` override that
+keeps the hero's button in place on a phone answered only two - which left the
+button sitting at 97% for the rest of the visit. An override has to answer
+every property the state it is overriding sets.
+
+## The curved divider on a phone (8 Oct 2026)
+
+The SVG is `w-[1516px] max-w-full`, so on a 390px screen the whole 1516-unit
+viewBox is squeezed into the width - a uniform 0.257 scale, which rendered the
+136px type at 38px. Against a full-height pinned section that left one thin
+line of text in the middle of an otherwise empty screen: the divider that fills
+15% of the viewport's height on a desktop filled 4.5% here.
+
+Two numbers fixed it, both in globals.css behind `max-width: 767px`:
+
+- **font-size 340** (from 136), which lands at ~96px rendered - the same 15% of
+  viewport height the desktop gets. The trade is fewer characters on screen at
+  once, ~6 instead of ~14, so the sentence reads as it sweeps. The sweep also
+  gets faster for free: the travel is derived from the string's measured length,
+  so longer text covers more ground over the same 3240px pin, which takes dead
+  scroll out of the section rather than adding it.
+- **translate(0, -10%)** instead of -30%. The lift is a percentage of the
+  element's own 300px box, so -30% raised the arc 90px and left the ink at
+  y~350 on an 844px screen with everything under it blank. Note this centres
+  the INK, not the box - the glyphs sit above the path, so the two are
+  different things by about 40px. Measured after: ink centre 409 against a
+  viewport centre of 422 at 390x844, and 355/370 at 360x740.
+
+The transform had to move out of the element's `style` prop to get here: an
+inline style cannot be put behind a media query. Same reason the font size was
+already in CSS.
+
+Desktop is untouched - verified at 768 and 1440 that the font is still 136 and
+the ink still lands where it did.
+
+### The pin's length is now derived, not fixed
+
+Bigger type made the next problem obvious: the sentence crawled, and the
+section ran out of scroll with it still mid-screen. 3240px of pin was a
+constant copied from the source, but the thing it has to cover is not - the
+travel is the sentence's length in the current font size at the current render
+scale. On a 1440 desktop that is 7271px of text movement; on a phone at 340px
+against a 0.26 render scale it is 3879px. Same pin, so the phone moved the text
+at half the desktop's speed.
+
+So the pin is derived from one constant that actually describes the feel:
+**2.24 CSS px of text per px of scroll**, which is the source's own ratio
+(7271 / 3240). Measured results:
+
+| | pin distance | before |
+|---|---|---|
+| desktop 1440 | 3244px | 3240px |
+| phone, EN copy | 1732px | 3240px |
+| phone, RO copy | 1482px | 3240px |
+
+Desktop comes out at the number it was hardcoded to, which is the check that
+the formula describes the existing design rather than replacing it. The phone
+gets the desktop's speed and gives back ~1500px of scroll. RO is shorter than
+EN because the sentence is shorter - which is the point of deriving it.
+
+Two supporting fixes:
+
+- **Measure after the webfont, but build before it.** `getComputedTextLength`
+  against a fallback face returns a different advance, and at 340px that error
+  is hundreds of user units - enough on its own to strand the sentence
+  mid-screen. But waiting for the font before the first build means the
+  pin-spacer appears late, which is what broke scrolling (below). So it builds
+  immediately on whatever metrics exist and rebuilds once on `fonts.ready`.
+- **A width-only resize key.** The pin length is now a measured value, so a
+  rotation has to rebuild it. Width only, because a phone fires `resize`
+  continuously as its address bar hides.
+
+### `getComputedTextLength` lies about where the glyphs are
+
+Worth recording because it cost a wrong fix. Checking whether the sentence
+fully leaves the screen, `getBoundingClientRect()` on the `<textPath>`
+reported the identical box (`-63..26`) at both ends of the sweep - it does not
+track the glyphs along the path. That read as "26px of the last letter is still
+on screen", and I added a tail clearance to push it off. The clearance was
+unnecessary: counting dark pixels in the arc's band shows the screen is empty
+from ~97% of the pin on a phone and ~95% on a desktop, with or without it. The
+clearance came back out. For this kind of question, count pixels.
+
+### The wheel stopped partway down the page
+
+Reported mid-session: natural scrolling stopped before the bottom, while
+dragging the native scrollbar still worked. That asymmetry is the whole
+diagnosis - only the wheel goes through Lenis, and Lenis caches the scroll
+limit.
+
+Nothing linked a ScrollTrigger refresh back to `lenis.resize()`. GSAP changes
+the document's height behind Lenis's back: a pinned trigger inserts its
+pin-spacer the moment it is CREATED, and this page creates them late - Lenis is
+a dynamic import, the divider now waits on a webfont, the showreel's Flip
+re-fits on resize. Whichever lands after Lenis's first measurement leaves its
+limit short by however much height appeared, and the wheel refuses to go past
+it.
+
+Fixed where it belongs, in the Lenis setup: `ScrollTrigger.addEventListener
+("refresh", () => lenis.resize())`, plus one `lenis.resize()` at startup. That
+covers every late layout change on the page, not just this one. The divider
+also now builds its pin on the first frame rather than on `fonts.ready`, so the
+height is there from the start.
+
+Not reproduced locally: wheel-scrolling to the bottom in Edge through Playwright
+reached the limit exactly, in all three of cold-intro, scroll-immediately and
+`?intro=0`. The mechanism is certain from the code and the symptom, but the
+confirmation has to come from the machine that showed it.

@@ -194,6 +194,9 @@ function useShowreelFlip(
     // Source geometry (measured live off nbnzia.com):
     //   .scaling-element__small-box  320 x 180   (16:9)
     //   .scaling-element__big-box   1408 x 792   (16:9)
+    // The big box now takes the site container's full width (--site-max), so
+    // the scale factor rides along with it; Flip.fit reads live rects, so
+    // nothing here is tied to those numbers.
     // Both are 16:9, so this is a pure ~4.4x scale — no aspect change.
     // Flip.fit animates a transform on .scaling-video toward the big box's
     // rect; the wrapper stays 320x180 in normal flow, nothing is pinned.
@@ -268,8 +271,10 @@ function ShowreelSmall({
   );
 }
 
-/* Big box 1408x792 (16:9), anchored to the container's LEFT edge (x=241, same
-   as the small box). Section pb 96px.
+/* Big box: the site container's full width at 16:9, anchored to the
+   container's LEFT edge, same as the small box. Section pb 96px.
+   (The source's was 1408x792 — a hard cap at that width is what left the
+   reel short of the container's right edge once the layout widened.)
    The source's `.scaling-element__big-box { margin-top: 384px }` is the TOTAL
    gap from the small box's bottom to the big box's top — the marquee sits
    inside that span, not on top of it. This is also the Flip's scrub distance
@@ -283,13 +288,13 @@ function ShowreelSmall({
 function ShowreelBig({ bigRef }: Pick<ShowreelRefs, "bigRef">) {
   return (
     <section className="bg-[#F5F2F2] pb-24">
-      <div className="mx-auto w-full max-w-[1440px] px-4">
+      <div className="mx-auto w-full max-w-[var(--site-max)] px-4">
         <div
           ref={bigRef}
           /* 218px is the desktop figure derived from the source. On mobile
              that reserved ~550px of mostly-empty scroll, so the gap is much
              tighter there while the morph itself is preserved. */
-          className="mt-24 aspect-video w-full max-w-[1408px] md:mt-[218px]"
+          className="mt-24 aspect-video w-full md:mt-[218px]"
         />
       </div>
     </section>
@@ -330,7 +335,7 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
 
   return (
     <section id="clients" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
-      <div className="mx-auto max-w-[1440px] px-4">
+      <div className="mx-auto max-w-[var(--site-max)] px-4">
         <EyebrowMarquee label={copy.eyebrow.clients} />
 
         <div className="mt-16 grid gap-x-1 gap-y-16 md:grid-cols-8">
@@ -379,7 +384,7 @@ function Testimonials({ reduceMotion }: { reduceMotion: boolean }) {
               <p className="text-xs tracking-[0.15em] text-[#1FDB93] uppercase opacity-70 transition-[opacity,transform] duration-300 ease-out group-hover:opacity-100 md:col-span-3 md:group-hover:translate-x-1.5">
                 {t.name}
               </p>
-              <p className="text-sm leading-relaxed text-white/60 transition-[color,transform] duration-300 ease-out group-hover:text-white/95 md:col-span-5 md:group-hover:translate-x-1.5">
+              <p className="max-w-[62em] text-sm leading-relaxed text-white/60 transition-[color,transform] duration-300 ease-out group-hover:text-white/95 md:col-span-5 md:group-hover:translate-x-1.5">
                 “{t.quote}”
               </p>
             </motion.li>
@@ -486,7 +491,7 @@ function WorkCardMedia({
          about 660px and a `vw` hint would keep asking for wider files on a
          bigger screen. The 1.18 scale the parallax drifts inside is part of
          the width the browser actually needs. */
-      sizes="(min-width: 1440px) 780px, (min-width: 768px) 46vw, 100vw"
+      sizes="(min-width: 1680px) 900px, (min-width: 768px) 46vw, 100vw"
       className="scale-[1.18] object-cover"
     />
   );
@@ -596,7 +601,7 @@ function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
        through as a card receded: the cards keep their own brand colour, the
        gaps between them show the page. */
     <section id="work" data-nav-bg="light" className="bg-[#F5F2F3] py-20 md:py-28">
-      <div className="mx-auto flex max-w-[1440px] flex-col gap-12 px-4 md:flex-row md:items-start md:gap-[clamp(24px,3vw,56px)] md:px-10">
+      <div className="mx-auto flex max-w-[var(--site-max)] flex-col gap-12 px-4 md:flex-row md:items-start md:gap-[clamp(24px,3vw,56px)] md:px-10">
         {WORK_COLUMNS.map((column, col) => (
           <div
             key={col}
@@ -695,7 +700,7 @@ function Services() {
 
   return (
     <section id="services" data-nav-bg="dark" className="bg-[#0F0F0F] py-24 text-[#F5F2F2]">
-      <div className="mx-auto max-w-[1440px] px-4">
+      <div className="mx-auto max-w-[var(--site-max)] px-4">
         <EyebrowMarquee label={copy.eyebrow.whatWeDo} />
         <HoverAccordion
           items={copy.services.map((s, i) => ({
@@ -1159,6 +1164,50 @@ function HeroMark({ reduceMotion, y }: { reduceMotion: boolean; y: MotionValue<n
 }
 
 /* ============================================================================
+   THE APPLY BUTTON'S HANDOFF
+   ========================================================================= */
+
+/* The button under the headline and the one in the header are the same
+   `TrickButton` at the same size; which of the two is live is a single class on
+   <html>, so crossing the threshold costs no render (state here re-renders the
+   whole page, mid-scroll, which is the thing the class exists to avoid).
+
+   Two earlier versions of this are worth not repeating:
+
+   - A scrubbed flight, where the hero's button physically travelled 1400px
+     into the header's slot. It worked exactly as built and was wrong for the
+     site: far too much motion for a page whose whole vocabulary is short,
+     quiet, eased moves.
+   - A cross-fade whose two halves moved in OPPOSITE directions - the hero's
+     button dropped 12px while the header's came down from above. Nothing tied
+     them together, so it read as two buttons blinking at each other rather
+     than as one changing place.
+
+   What is left is the small version of the right idea: the pair swaps while
+   both slots are still on screen, the leaving button exits UPWARD and the
+   arriving one enters FROM BELOW - both in the direction of travel - on a
+   stagger, so the eye joins them up on its own. All of that is in globals.css.
+
+   The threshold is 70px rather than 140: the nav hides past 120px, and a
+   handoff that happens after the nav has gone is a handoff nobody sees. */
+const APPLY_SWAP_PX = 70;
+
+function useApplySwap() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const apply = () => {
+      root.classList.toggle("past-hero", window.scrollY > APPLY_SWAP_PX);
+    };
+    apply();
+    window.addEventListener("scroll", apply, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", apply);
+      root.classList.remove("past-hero");
+    };
+  }, []);
+}
+
+/* ============================================================================
    PAGE
    ========================================================================= */
 
@@ -1248,25 +1297,8 @@ export default function Site({ locale }: { locale: Locale }) {
      leave the hero instead of travelling together. */
   const heroMarkY = useTransform(heroProgress, [0, 1], [0, -70]);
 
-  /* `past-hero` on <html> is what swaps the Apply button from under the
-     headline to the header.
-
-     A class rather than state, for the reason recorded above the intro
-     handoff: state here re-renders the whole page component, and the crossing
-     happens while the visitor is mid-scroll. The threshold is 140px — past the
-     nav's own 120px guard, so the two do not fight over the same few pixels. */
-  useEffect(() => {
-    const root = document.documentElement;
-    const apply = () => {
-      root.classList.toggle("past-hero", window.scrollY > 140);
-    };
-    apply();
-    window.addEventListener("scroll", apply, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", apply);
-      root.classList.remove("past-hero");
-    };
-  }, []);
+  /* Which Apply button is live - under the headline, or in the header. */
+  useApplySwap();
 
   /* NOTE: sections still carry `data-nav-bg="light|dark"`. Nothing reads them
      right now — the header went back to `mix-blend-difference`, which derives
@@ -1424,7 +1456,7 @@ export default function Site({ locale }: { locale: Locale }) {
 
             Max 15 characters of measure: the two lines break where they are
             written, not wherever 1080px happens to fall. */}
-        <div className="absolute inset-x-0 top-1/2 mx-auto max-w-[1440px] -translate-y-1/2 px-4 md:px-10">
+        <div className="absolute inset-x-0 top-1/2 mx-auto max-w-[var(--site-max)] -translate-y-1/2 px-4 md:px-10">
           {/* One line per written line, never re-wrapped: `nowrap` plus a
               `vw` size from md up, so "NU POT LUCRA CU NOI." — the longest of
               the two locales at 20 characters — always fits the container
@@ -1518,7 +1550,7 @@ export default function Site({ locale }: { locale: Locale }) {
         {/* Source `.article-wrapper` is an 8-column grid (172.5px cols, 4px
             gap) with the statement sitting at `grid-column: 4 / 9` — the right
             five columns — and the eyebrow list in the first three. */}
-        <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-x-1 gap-y-10 px-4 md:grid-cols-8">
+        <div className="mx-auto grid max-w-[var(--site-max)] grid-cols-1 gap-x-1 gap-y-10 px-4 md:grid-cols-8">
           <ul className="flex flex-col gap-1 self-start text-[11px] uppercase tracking-[0.02em] text-[#1F1F1F]/70 md:col-span-3">
             {copy.about.list.map((item) => (
               <li key={item}>{item}</li>
@@ -1612,7 +1644,7 @@ export default function Site({ locale }: { locale: Locale }) {
           PROCESS — fanned playing cards
           ============================================================ */}
       <section id="process" className="bg-[#F5F2F2] pt-24">
-        <div className="mx-auto max-w-[1440px] px-4">
+        <div className="mx-auto max-w-[var(--site-max)] px-4">
           <EyebrowMarquee label={copy.eyebrow.process} />
         </div>
         <ProcessCards reduceMotion={reduceMotion} />

@@ -97,3 +97,57 @@ Two findings worth keeping for whenever this comes back:
   normally and tinted it pink (240,207,218 — the source colour at 16%) instead
   of the intended mint. The blend has to sit on an outer element and the blur
   on an inner one. Same rule the header's CTA hit earlier in this project.
+
+## Less empty page (8 Oct 2026)
+
+The top of /niches had two holes feeding each other: the hero's left column
+held nothing but a four-line summary of the section immediately below it, and
+the rule demonstration sat in a `max-w-[640px]` block on its own full-width
+section, leaving the entire right half of the page blank.
+
+Both are gone in one move. The `NicheRule` card is now the hero's `aside`:
+it measures ~640px and columns 1-3 of the grid are ~619px at the current
+container width, so it drops into that slot almost exactly, and the section it
+used to own - plus its padding - comes out of the page.
+
+The summary went with it. It was a `KeyList` of `d.how.blocks` titles, and the
+same four titles are spelled out in full, with their bodies, in the
+`FeatureRows` section directly below: it was filling space by saying the same
+thing twice.
+
+Phones are unchanged in substance - the card is still `hidden md:block` there,
+because the board renders the same device inline further down and two of them
+stacked was never the intent.
+
+What is left, and deliberately not touched: the "01 / HOW IT WORKS" section
+still has a wide, near-empty left column. That is `TextSection`'s standing
+idiom - label in columns 1-3, content in 4-8 - and it is the same on
+/services, /case-studies, /audit and every article. Tightening it (say 2+6
+instead of 3+5 above some width) is a site-wide type decision, not a fix for
+this page, so it should be made deliberately rather than smuggled in here.
+
+### Copy left, card right (and the band between the sections)
+
+The swap is an opt-in prop on `PageHero` - `asideRight` - not a change to the
+component's default, because every other subpage's hero uses the same
+component and the aside there is a small companion to the text. Measured after:
+/services, /case-studies, /articles, /audit and the detail pages all still put
+their copy at 756..1636 and their aside at 136..752. Only /niches moved.
+
+It takes effect at **xl, not md**, and that is the interesting part. Three of
+eight columns is 615px at 1920 and 525px at 1440, which the card wants, but
+369px at 1024 and 293px at 820 - and measured at 820, the niche names wrapped
+onto three lines and "TAKEN - HOTEL MAXIM" ran into the right edge. Exactly the
+failure the board hit when it was first put in the reading column. So under
+1280 the card stacks below the copy at full width, capped at its own 640px so
+it does not stretch.
+
+The empty band between the feature rows and the board section was two
+sections' paddings stacked: `TextSection`'s `pb-28` plus the board section's
+`py-28`, 224px of nothing with an empty left column beside it. The board
+section now takes `pt-0`, so one section's worth separates them - the junction
+went from ~300px to 189px, of which the visible empty band is 112px.
+
+Worth noting for later: that doubling is site-wide, not specific to this page -
+any two stacked sections have it, and it only reads as a hole here because the
+left column has nothing in it down that whole band.

@@ -64,7 +64,7 @@ function ClosingStatement({
         <div className={`${heading ? "mt-16" : ""} ${GRID}`}>
           <Reveal className={TEXT_COLS}>
             {line && (
-              <p className="text-lg leading-[1.5] text-[#1F1F1F]/85 md:text-[22px]">{line}</p>
+              <p className="max-w-[40em] text-lg leading-[1.5] text-[#1F1F1F]/85 md:text-[22px]">{line}</p>
             )}
             <div className={line ? "mt-10" : ""}>
               <TrickButton href={href} variant="orange">
@@ -259,7 +259,7 @@ export function ServicePage({ locale, slug }: { locale: Locale; slug: string }) 
           <div className={`mt-16 ${GRID}`}>
             <Reveal className={TEXT_COLS}>
               {d.exclusivity.paragraphs.map((p, i) => (
-                <p key={i} className={`text-lg leading-[1.5] md:text-xl ${i > 0 ? "mt-6" : ""}`}>
+                <p key={i} className={`max-w-[44em] text-lg leading-[1.5] md:text-xl ${i > 0 ? "mt-6" : ""}`}>
                   {p}
                 </p>
               ))}

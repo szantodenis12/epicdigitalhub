@@ -317,9 +317,31 @@ function ReelCard({
     const v = video.current;
     if (!v) return;
     if (!engaged || v.paused) {
-      v.muted = false;
       setEngaged(true);
-      v.play().catch(() => {});
+      /* Start MUTED, unmute once playback is actually running.
+
+         Unmuting first is what broke these on a phone: tap, a frame or two,
+         then it stopped on its own. Measured in a mobile context -
+         `v.muted = false; v.play()` leaves the promise unsettled with
+         `readyState` 0 and `paused` true, nothing playing and no error to
+         catch. The autoplay policy will not grant audio to an element that
+         holds no data yet (`preload="none"` here, deliberately), and the
+         gesture that would have authorised it is spent by the time the first
+         bytes land.
+
+         Muted playback is always permitted, and unmuting an element that is
+         already playing is not a new playback request, so it survives. Same
+         four trials in the same context: muted-then-unmute reached 1.8s and
+         kept going, unmuted-first never left 0.
+
+         `.catch()` keeps a refused play from becoming an unhandled rejection -
+         it can still happen, e.g. in a background tab. */
+      v.muted = true;
+      v.play()
+        .then(() => {
+          v.muted = false;
+        })
+        .catch(() => {});
     } else {
       v.pause();
     }

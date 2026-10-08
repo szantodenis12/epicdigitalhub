@@ -80,6 +80,7 @@ export function useSmoothScrollNav(reduceMotion: boolean) {
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
     let lenisInstance: import("lenis").default | null = null;
     let tickerFn: ((time: number) => void) | null = null;
+    let onRefresh: (() => void) | null = null;
     let cancelled = false;
 
     import("lenis").then(({ default: Lenis }) => {
@@ -95,6 +96,25 @@ export function useSmoothScrollNav(reduceMotion: boolean) {
       // which makes this correct in both orders.
       if (document.documentElement.classList.contains("intro-lock")) lenis.stop();
       lenis.on("scroll", ScrollTrigger.update);
+
+      /* ...and the other direction: every ScrollTrigger refresh re-measures
+         Lenis's scroll limit.
+
+         Lenis caches that limit, and GSAP changes the document's height behind
+         its back - a pinned trigger inserts a pin-spacer the moment it is
+         CREATED, and this page creates them late: Lenis is a dynamic import,
+         the curved divider waits for the webfont before it can measure its own
+         text, and the showreel's Flip re-fits on resize. Any of those landing
+         after Lenis's first measurement leaves the limit thousands of pixels
+         short of the real page.
+
+         The symptom is unmistakable once you know it: the wheel stops partway
+         down the page and refuses to go further, while dragging the native
+         scrollbar still reaches the bottom - because only the wheel goes
+         through Lenis. */
+      onRefresh = () => lenis.resize();
+      ScrollTrigger.addEventListener("refresh", onRefresh);
+      lenis.resize();
 
       // Nav hide/show. Lenis coalesces native `scroll` events down to roughly
       // one per gesture, so a window scroll listener cannot read direction.
@@ -126,6 +146,7 @@ export function useSmoothScrollNav(reduceMotion: boolean) {
     return () => {
       cancelled = true;
       if (tickerFn) gsap.ticker.remove(tickerFn);
+      if (onRefresh) ScrollTrigger.removeEventListener("refresh", onRefresh);
 
       lenisInstance?.destroy();
     };
@@ -193,7 +214,7 @@ export function SiteHeader({
         className="fixed inset-x-0 top-4 z-[99999] mix-blend-difference transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
         style={{ transform: navHidden ? "translateY(-116px)" : "translateY(0)" }}
       >
-        <nav className="relative mx-auto flex h-14 max-w-[1440px] items-center justify-between px-4 md:px-8">
+        <nav className="relative mx-auto flex h-14 max-w-[var(--site-max)] items-center justify-between px-4 md:px-8">
           {/* Full logo lockup, inlined as OUTLINED paths — mark, rule,
               "Epic Digital Hub" wordmark and the "CREATIVE STUDIO" tagline.
 
@@ -391,7 +412,7 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
         data-nav-bg="dark"
         className="bg-[#0F0F0F] pt-16 pb-24 text-[#F1F1F1] md:pb-10"
       >
-        <div className="mx-auto max-w-[1440px] px-4">
+        <div className="mx-auto max-w-[var(--site-max)] px-4">
           <ContactSpotlightEyebrow />
 
           {/* Plain flowing heading. The previous version forced the line
@@ -445,15 +466,49 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
           <div className="mt-16 grid grid-cols-1 gap-10 border-t border-white/10 pt-12 md:mt-24 md:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.follow}</p>
+              {/* The real accounts. Not in content.ts: these are the same in
+                  both locales, like the email address below them.
+
+                  Sizes are the glyphs' own aspect ratios at a shared 18px
+                  height, so the three read as one weight - the Facebook `f`
+                  is simply a narrower letter than a square mark. They used to
+                  be rendered at 16px out of a 64x64 viewBox, which drew them
+                  at about 4px inside a 44px button; the viewBoxes are cropped
+                  to the artwork now (see the icons themselves).
+
+                  `aria-label` on the link, `alt=""` on the image: the mark is
+                  decorative, the link is what needs a name, and "Facebook"
+                  said twice is what a screen reader would otherwise read. */}
               <div className="mt-4 flex gap-3">
                 {[
-                  { src: "/icons/social-webflow.svg", w: 19, h: 12 },
-                  { src: "/icons/social-instagram.svg", w: 16, h: 16 },
-                  { src: "/icons/social-linkedin.svg", w: 16, h: 16 },
+                  {
+                    href: "https://www.facebook.com/epicdigitalhub.ro",
+                    label: "Facebook",
+                    src: "/icons/social-facebook.svg",
+                    w: 10,
+                    h: 18,
+                  },
+                  {
+                    href: "https://www.instagram.com/epicdigitalhub.ro",
+                    label: "Instagram",
+                    src: "/icons/social-instagram.svg",
+                    w: 18,
+                    h: 18,
+                  },
+                  {
+                    href: "https://www.linkedin.com/company/epicdigitalhub",
+                    label: "LinkedIn",
+                    src: "/icons/social-linkedin.svg",
+                    w: 18,
+                    h: 18,
+                  },
                 ].map((icon) => (
                   <a
-                    key={icon.src}
-                    href="#"
+                    key={icon.href}
+                    href={icon.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={icon.label}
                     className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
                   >
                     <Image src={icon.src} alt="" width={icon.w} height={icon.h} className="invert" />
