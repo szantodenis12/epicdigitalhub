@@ -924,15 +924,15 @@ export const caseGalleries: Record<string, CaseGalleryItem[]> = {
     {
       src: "/images/cases/harmony-garden-1.webp",
       alt: {
-        ro: "Flyer Harmony Garden — Season Closing, închiderea sezonului",
-        en: "Harmony Garden flyer — Season Closing event",
+        ro: "Flyer Harmony Garden — Koosz Milán, 6 iunie, alături de Acca, Chris și Peetlook",
+        en: "Harmony Garden flyer — Koosz Milán, 6 June, with Acca, Chris and Peetlook",
       },
     },
     {
       src: "/images/cases/harmony-garden-2.webp",
       alt: {
-        ro: "Flyer Harmony Garden — Tinder Party, identitatea vizuală a grădinii",
-        en: "Harmony Garden flyer — Tinder Party, the garden's visual identity",
+        ro: "Flyer Harmony Garden — Breda Bia, 4 iulie, alături de Acca și Chris",
+        en: "Harmony Garden flyer — Breda Bia, 4 July, with Acca and Chris",
       },
     },
   ],
@@ -1110,9 +1110,14 @@ export const caseVideos: Record<string, CaseVideo[]> = {
       title: { ro: "Aftermovie — Colour Garden", en: "Video: Aftermovie — Colour Garden" },
     },
     {
+      /* Replaced at the client's request with the venue reel. It carries no
+         event name on screen - it runs from the bar opening to the crowd
+         under the lights - so the title describes what it shows rather than
+         keeping the deck's "Future Disco" label, which no longer matches the
+         file. */
       src: "/videos/cases/harmony-garden-2.mp4",
       poster: "/videos/cases/harmony-garden-2.jpg",
-      title: { ro: "Reel — Future Disco", en: "Video: Reel — Future Disco" },
+      title: { ro: "Reel — o seară în Harmony Garden", en: "Video: Reel — a night at Harmony Garden" },
     },
   ],
   "origins-cafe": [
