@@ -441,11 +441,64 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
    the only thing on screen was the inside of the D — the viewport went green
    with no shape in it, the same failure as an earlier full-bleed crop that
    showed just the E's bars. */
+/* PHONES.
+
+   The mark used to sit at 84% and 112vw, which put it UNDER the copy block —
+   the paragraph ran across the D and the bottom third of the screen was empty.
+   The copy is anchored at 23% from the top on a phone (see site.tsx) and the
+   mark takes the band below it: full viewport width, so the whole E-D-H and
+   the play device are on screen, centred in what is left.
+
+   It also reads harder here than on a desktop. The hero loop is a dark
+   corridor, so a knockout of it is a dim shape; on a phone, where the mark is
+   the whole composition rather than a backdrop to a headline, the surround
+   goes darker and the accent inside the mark comes up. That contrast is what
+   makes the shape read as a window rather than a watermark. */
 @media (max-width: 767px) {
   .hero-mark-inner {
-    --mark-size: 112vw auto;
-    --mark-pos: center 84%;
+    --mark-size: 100vw auto;
+    /* Anchored to the BOTTOM EDGE, not to a percentage of the height. A
+       percentage moves the mark with the viewport: `center 86%` sat below the
+       copy on a 844px screen and ran across the paragraph on a 667px one,
+       because the copy block is a fixed ~330px tall while 86% is not. An edge
+       offset keeps the same 40px of air under the mark on every phone and
+       lets the gap above it absorb the difference.
+
+       Written as `calc(100% - 40px)`, and the percentage is doing more work
+       than it looks: in a mask/background position a percentage resolves
+       against (container - image), not against the container, so 100% already
+       means "bottom edge to bottom edge" and the 40px lifts it from there.
+       Subtracting the mark's own height as well - the obvious reading - puts
+       it a whole mark too high, which is exactly what it did.
+
+       The four-value `center bottom 40px` form would say this directly, but it
+       is rejected inside this comma-separated layer list and takes the whole
+       `mask-position` down with it, parking the mark behind the headline. */
+    --mark-pos: center calc(100% - 40px);
   }
+  /* Short screens have ~595px between the nav and the bottom for a 330px copy
+     block and a 144px mark. Starting the copy at 23% leaves them touching, so
+     it starts higher and the whole composition shifts up together. */
+  @media (max-height: 720px) {
+    .hero-copy {
+      top: 16%;
+    }
+  }
+  :root.intro-done .hero-mark-dim {
+    animation-name: hero-dim-in-mobile;
+  }
+  :root.intro-done .hero-mark-tint {
+    animation-name: hero-tint-sweep-mobile;
+  }
+}
+
+@keyframes hero-dim-in-mobile {
+  from { opacity: 0; }
+  to { opacity: 0.94; }
+}
+@keyframes hero-tint-sweep-mobile {
+  from { opacity: 0.34; clip-path: inset(0 100% 0 0); }
+  to { opacity: 0.34; clip-path: inset(0 0 0 0); }
 }
 
 @keyframes hero-mark-breathe {
@@ -516,6 +569,10 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 @media (prefers-reduced-motion: reduce) {
   :root.intro-done .hero-mark-dim { animation: none; opacity: 0.88; }
   :root.intro-done .hero-mark-tint { animation: none; opacity: 0.22; }
+  @media (max-width: 767px) {
+    :root.intro-done .hero-mark-dim { opacity: 0.94; }
+    :root.intro-done .hero-mark-tint { opacity: 0.34; }
+  }
   .hero-mark-inner { animation: none; }
   :root.intro-done .hero-accent-wipe { animation: none; clip-path: inset(0 0 0 0); }
   :root.intro-done .hero-apply,

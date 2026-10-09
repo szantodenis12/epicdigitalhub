@@ -1456,7 +1456,7 @@ export default function Site({ locale }: { locale: Locale }) {
 
             Max 15 characters of measure: the two lines break where they are
             written, not wherever 1080px happens to fall. */}
-        <div className="absolute inset-x-0 top-1/2 mx-auto max-w-[var(--site-max)] -translate-y-1/2 px-4 md:px-10">
+        <div className="hero-copy absolute inset-x-0 top-[23%] mx-auto max-w-[var(--site-max)] translate-y-0 px-4 md:top-1/2 md:-translate-y-1/2 md:px-10">
           {/* One line per written line, never re-wrapped: `nowrap` plus a
               `vw` size from md up, so "NU POT LUCRA CU NOI." — the longest of
               the two locales at 20 characters — always fits the container

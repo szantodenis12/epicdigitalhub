@@ -1928,3 +1928,52 @@ Not reproduced locally: wheel-scrolling to the bottom in Edge through Playwright
 reached the limit exactly, in all three of cold-intro, scroll-immediately and
 `?intro=0`. The mechanism is certain from the code and the symptom, but the
 confirmation has to come from the machine that showed it.
+
+## The hero on a phone: the mark gets its own band (9 Oct 2026)
+
+Denis: the mark should sit higher, right under the hero text, and the whole
+thing should make someone say wow. It was at `center 84%` and 112vw, which put
+it UNDER the copy block — the paragraph ran across the D — with the bottom
+third of the screen empty.
+
+Three changes:
+
+- **The copy is anchored at 23% from the top on a phone** (16% under 720px of
+  height) instead of being vertically centred, so the mark has a band of its
+  own underneath rather than the two sharing the middle of the screen.
+- **The mark is 100vw and anchored to the bottom edge**, so the whole E-D-H and
+  the play device are on screen with 40px of air under them on every phone.
+- **It reads harder here than on a desktop**: the surround goes from 0.88 to
+  0.94 and the accent inside the mark from 0.22 to 0.34. The hero loop is a
+  dark corridor, so a knockout of it is a dim shape; on a phone, where the mark
+  IS the composition rather than a backdrop to a headline, that contrast is
+  what makes it read as a window instead of a watermark.
+
+**Two CSS traps, both of which put the mark in the wrong place and both worth
+knowing.**
+
+`mask-position: center bottom 40px` — the four-value form that says exactly
+what is wanted — is rejected inside this comma-separated layer list, and it
+takes the whole `mask-position` declaration down with it. The mark silently
+falls back to `0 0` and parks itself behind the headline.
+
+Then `calc(100% - 40px - 38.4vw)`, subtracting the mark's own height the way
+you would for an absolutely positioned element, put it a whole mark too high.
+In a mask or background position a PERCENTAGE RESOLVES AGAINST
+(container − image), not against the container: 100% already means "bottom
+edge to bottom edge". The right expression is `calc(100% - 40px)`.
+
+Measured after, by counting the mark's own ink rows rather than trusting the
+maths: 375x667 → rows 483..627, 390x844 → 654..804. 40px of air under the mark
+in both, the full 38.4vw height visible, and the copy clears it by 47px on the
+short screen and 125px on the tall one.
+
+Contrast improved as a side effect, because the paragraph no longer sits on the
+mark: white at 80% over rgb(6,14,12) is about 12:1, against the 7.83 it
+measured when it was over the mark. The headline band is 19.7:1 on a phone and
+4.03:1 on a desktop, which is unchanged.
+
+Desktop is untouched — verified at 1440x900, 1920x1030 and 1024x700 that the
+copy is still vertically centred and the mark is still 96vw at `4vw center`.
+The short-height rule is nested inside the phone media query, so a short
+desktop window does not trigger it.
