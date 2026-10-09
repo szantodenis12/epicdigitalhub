@@ -184,8 +184,10 @@ export function KeyList({ items, label }: { items: string[]; label?: string }) {
         <p className="mb-5 text-[11px] tracking-[0.1em] text-[#1F1F1F]/40 uppercase">{label}</p>
       )}
       <ul className="flex flex-col gap-1 text-[15px] leading-snug text-[#1F1F1F]/70">
-        {items.map((item) => (
-          <li key={item}>{item}</li>
+        {/* Keyed by position: these lists are static, and the same string can
+            legitimately appear twice (two case studies in one industry). */}
+        {items.map((item, i) => (
+          <li key={`${item}-${i}`}>{item}</li>
         ))}
       </ul>
     </div>

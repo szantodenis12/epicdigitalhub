@@ -7,6 +7,8 @@ export type CaseSection = {
 
 export type CaseStudy = {
   slug: string;
+  /** SEO title (already ends in the site suffix) + meta description, from the copy deck */
+  meta?: { title: string; description: string };
   /** rendered with .label-mono */
   vertical: string;
   title: string;
@@ -17,9 +19,13 @@ export type CaseStudy = {
   sections: CaseSection[];
   /** the single confirmed public number — hotel study only */
   result?: string;
+  /** not published yet: kept out of the listing and the sitemap, rendered noindex */
+  draft?: boolean;
 };
 
 export type CaseStudiesContent = {
+  /** SEO title (already ends in the site suffix) + meta description, from the copy deck */
+  meta?: { title: string; description: string };
   kicker: string;
   title: string;
   intro: string;
@@ -36,19 +42,29 @@ export const caseStudySlugs = [
   "hotel-maxim",
   "dentalnet",
   "agro-salso",
-  "kgm-chery-oradea",
+  "kgm-oradea",
+  "chery-oradea",
+  "jeep-oradea",
   "harmony-garden",
   "origins-cafe",
   "thermx",
 ] as const;
 
+/* Nothing is held back right now. The deck marks Jeep Oradea an internal draft
+   until its first materials are delivered; Denis asked for it published anyway,
+   so it sits in the list above. The machinery stays: put a slug in here and the
+   page keeps its route but drops out of the listing and the sitemap and renders
+   noindex. */
+export const draftCaseStudySlugs = [] as const;
+
 export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
   ro: {
+    meta: { title: "Studii de caz | Epic Digital Hub", description: "Proiecte de marketing, branding și digital dezvoltate de Epic Digital Hub. Lucrăm cu un singur brand din fiecare nișă, în fiecare oraș." },
     kicker: "Studii de caz",
-    title: "Ce am construit și ce s-a schimbat.",
+    title: "Proiectele noastre. Rezultatele lor.",
     intro:
-      "Lucrăm cu un singur brand pe nișă, pe oraș. Acestea sunt șapte dintre brandurile cu care construim.",
-    note: "Exclusivitatea funcționează în ambele direcții. Cât lucrăm cu un brand, nu lucrăm cu concurenții lui direcți.",
+      "Lucrăm cu un singur brand pe nișă, pe oraș. Acestea sunt opt dintre brandurile cu care construim.",
+    note: "Un singur brand din fiecare nișă, în fiecare oraș. Cât timp colaborăm, concurenții tăi direcți nu pot lucra cu noi.",
     detailKicker: "Studiu de caz",
     backLabel: "Toate studiile de caz",
     ctaTitle: "Dacă piața ta mai are loc pentru un brand care să conducă, avem ce discuta.",
@@ -57,270 +73,373 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
     studies: [
       {
         slug: "hotel-maxim",
+        meta: { title: "Hotel Maxim | Epic Digital Hub", description: "Website reconstruit integral, strategie digitală, SEO, social media și Google Ads pentru Hotel Maxim Oradea. Rezultat: cu 20% mai multe rezervări în șase luni." },
         vertical: "Ospitalitate / Oradea",
         title: "Hotel Maxim",
         summary:
-          "Un hotel cu reputație bună, dar cu o prezență digitală care nu o reflecta. Am reconstruit canalul direct: website, conținut, Google și campanii orientate spre rezervări.",
+          "Am reconstruit complet website-ul și am reorganizat comunicarea digitală a hotelului, de la social media și profilul Google până la campaniile de promovare. Rezultatul: cu 20% mai multe rezervări în șase luni.",
         img: "/images/work-hotel.webp",
         intro:
-          "Hotel Maxim este un hotel de familie situat la câteva minute de centrul istoric al Oradiei. Experiența oaspeților și recomandările construiseră deja reputația hotelului. Online, însă, brandul nu era reprezentat la același nivel.",
+          "Hotel Maxim este un hotel de familie, situat la câteva minute de centrul istoric al Oradiei. Avea deja o reputație bună, construită prin experiența oaspeților și recomandările acestora. Prezența online nu reflecta însă calitatea serviciilor oferite.",
         sections: [
           {
-            title: "Contextul",
+            title: "De unde am pornit",
             paragraphs: [
-              "O mare parte dintre rezervări veneau prin platforme externe, cu un cost asociat fiecărei rezervări.",
-              "În același timp, prezența digitală era fragmentată. Canalele de social media nu erau active, site-ul conținea linkuri nefuncționale, inclusiv în zona de rezervare, iar anumite informații despre facilități și datele de contact nu mai erau actuale.",
-              "Problema nu era lipsa unui produs bun. Era lipsa unui sistem digital care să îl susțină.",
+              "O parte importantă a rezervărilor venea prin platforme externe, care percepeau comisioane pentru fiecare rezervare.",
+              "În același timp, prezența digitală a hotelului avea mai multe probleme. Conturile de social media erau inactive, website-ul conținea linkuri nefuncționale, inclusiv în zona de rezervări, iar unele informații despre facilități și datele de contact nu mai erau actualizate.",
+              "Hotelul oferea servicii apreciate de oaspeți, dar canalele online nu îl reprezentau corespunzător și nu susțineau suficient rezervările directe.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am început cu poziționarea și regulile de comunicare ale brandului: cum vorbește Hotel Maxim, ce promite și cum trebuie să arate aceeași experiență în fiecare punct de contact.",
-              "Am rescris conținutul site-ului și am corectat informațiile neactualizate. În paralel, auditul tehnic a identificat paginile și funcționalitățile care necesitau intervenție, cu recomandări clare pentru dezvoltator.",
-              "Facebook și Instagram au fost reconstruite în jurul fotografiilor reale ale hotelului, printr-un sistem constant de postări, carusele și stories. Profilul Google a fost integrat în același sistem, împreună cu reguli clare pentru răspunsurile la recenzii.",
-              "Campaniile Google au fost reorganizate în jurul intențiilor reale de căutare: brand, cazare în Oradea, săli de conferințe și cerere provenită din Ungaria.",
-              "Pentru segmentul corporate și de evenimente am construit pagini dedicate și o direcție separată de comunicare către companii de training și agenții de turism.",
+              "Am început prin definirea poziționării și a regulilor de comunicare ale hotelului, astfel încât prezentarea acestuia să fie consecventă pe toate canalele.",
+              "Am reconstruit complet website-ul Hotel Maxim, de la structura paginilor și design până la conținut și experiența de navigare. Am reorganizat prezentarea camerelor, facilităților și serviciilor, am actualizat informațiile și am simplificat accesul la rezervări.",
+              "Am reluat comunicarea pe Facebook și Instagram, folosind fotografii reale ale hotelului și un calendar constant de postări, carusele și stories.",
+              "Am optimizat profilul Google Business, am actualizat informațiile și am stabilit reguli pentru administrarea recenziilor.",
+              "Campaniile Google Ads au fost reorganizate în funcție de căutările relevante pentru hotel: cazare în Oradea, restaurant, săli de conferințe și solicitări provenite din Ungaria.",
+              "Pentru segmentul corporate și organizarea de evenimente, am creat pagini dedicate și mesaje adaptate companiilor de training și agențiilor de turism.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "Hotel Maxim are acum un canal direct coerent, în care site-ul, Google, social media și campaniile funcționează ca un singur sistem.",
-              "Datele importante sunt consecvente în toate punctele de contact, rezervarea funcționează corect, iar campaniile pot fi evaluate prin acțiuni măsurabile, nu doar prin trafic.",
-              "Conținutul este planificat și publicat constant, în aceeași voce de brand.",
+              "Hotel Maxim are acum un website complet refăcut, cu informații actualizate, o structură mai clară și un proces de rezervare funcțional.",
+              "Social media, profilul Google și campaniile plătite sunt administrate în aceeași direcție, iar comunicarea hotelului este constantă pe toate canalele.",
+              "Campaniile pot fi evaluate în funcție de acțiunile utilizatorilor, nu doar de traficul generat.",
             ],
           },
         ],
-        result: "+20% rezervări în 6 luni.",
+        result: "În primele șase luni, Hotel Maxim a înregistrat o creștere de 20% a rezervărilor, rezultat confirmat de client.",
       },
       {
         slug: "dentalnet",
+        meta: { title: "DentalNet | Epic Digital Hub", description: "Strategie de brand, social media, identitate vizuală și optimizare Google pentru DentalNet și DentalNet Kids, două clinici stomatologice din Oradea." },
         vertical: "Medical / Oradea",
         title: "DentalNet",
         summary:
-          "Două clinici. Două categorii de pacienți. Două sisteme de comunicare construite separat, sub același standard de brand.",
+          "Două clinici stomatologice, două categorii de pacienți. Am dezvoltat direcții distincte de comunicare, identități vizuale adaptate și o prezență online care respectă rigorile domeniului medical.",
         img: "/images/work-dental.webp",
         intro:
-          "DentalNet are două clinici în Oradea: una dedicată adulților și una copiilor. Reputația fusese construită în timp prin recomandări, însă vizibilitatea digitală nu reflecta poziția clinicilor în piață.",
+          "DentalNet are două clinici stomatologice în Oradea: una dedicată adulților și una copiilor. Ambele și-au construit reputația în timp, în principal prin recomandările pacienților. Comunicarea digitală avea însă nevoie de o direcție mai clară, adaptată fiecărei categorii de pacienți.",
         sections: [
           {
-            title: "Contextul",
+            title: "De unde am pornit",
             paragraphs: [
-              "Profilul Google al clinicii pentru copii era încadrat într-o categorie greșită, iar brandul avea vizibilitate redusă pe căutările locale relevante. În același timp, competitori naționali licitau în Google Ads inclusiv pe numele clinicii.",
-              "Comunicarea medicală adăuga un al doilea nivel de complexitate: reguli stricte privind afirmațiile publicitare, utilizarea imaginilor pacienților și modul în care serviciile medicale pot fi prezentate.",
-              "Sistemul trebuia să fie eficient fără să compromită rigoarea profesională.",
+              "Cele două clinici se adresau unor publicuri diferite, dar comunicarea nu evidenția suficient această diferență.",
+              "În cazul clinicii pediatrice, profilul Google era încadrat într-o categorie incorectă, ceea ce limita vizibilitatea pentru căutările locale relevante.",
+              "În paralel, competitori naționali difuzau campanii Google Ads inclusiv pentru căutări după numele clinicii.",
+              "Domeniul medical impunea și cerințe specifice privind publicitatea, prezentarea serviciilor și utilizarea imaginilor pacienților.",
+              "Aveam nevoie de o comunicare adaptată fiecărei clinici, care să respecte atât identitatea brandului, cât și normele profesionale.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am separat comunicarea celor două clinici încă de la nivel de strategie.",
-              "Pentru clinica pediatrică am construit un registru bazat pe calm, prevenție și comunicare adresată părinților. Pentru clinica destinată adulților, un registru mai sobru și mai clinic.",
-              "Fiecare are propriile reguli vizuale și propriul sistem de conținut.",
-              "Pentru clinica de copii am dezvoltat inclusiv o mascotă și o direcție vizuală distinctă, aplicate în social media și în materialele utilizate direct în cabinet.",
-              "Profilurile Google au fost restructurate individual, cu categorii corecte, servicii complete și un sistem pentru dezvoltarea recenziilor.",
-              "Am construit și cadrul necesar pentru producția foto-video în clinică, inclusiv documentația privind acordul de imagine al pacientului.",
+              "Am construit două direcții de comunicare distincte, pornind de la profilul pacienților fiecărei clinici.",
+              "Pentru DentalNet Kids, am dezvoltat un stil vizual și editorial prietenos, cu accent pe prevenție, încredere și informații utile pentru părinți.",
+              "Pentru clinica destinată adulților, am ales un stil mai sobru, concentrat pe profesionalismul echipei, specializările medicilor și prezentarea clară a serviciilor.",
+              "Am stabilit reguli vizuale și editoriale separate, astfel încât fiecare clinică să aibă o identitate ușor de recunoscut.",
+              "Pentru DentalNet Kids, am creat și o mascotă originală, integrată în materialele de comunicare, în social media și în materialele utilizate în cabinet.",
+              "Am reorganizat profilurile Google ale ambelor clinici, corectând categoriile, completând lista serviciilor și stabilind un proces constant de administrare a recenziilor.",
+              "Am definit regulile pentru producția foto-video în clinică, inclusiv documentele necesare pentru obținerea acordului pacienților privind utilizarea imaginii.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "Cele două clinici comunică acum distinct, dar coerent.",
-              "Conținutul nu mai este construit de la o postare la alta, ci pornește dintr-un sistem clar de brand, cu reguli de voce, design și conformitate.",
-              "Profilurile Google sunt administrate constant, iar brandul este prezent pe căutări locale unde anterior avea vizibilitate redusă sau inexistentă.",
+              "DentalNet și DentalNet Kids comunică acum distinct, fiecare într-un stil adaptat pacienților săi.",
+              "Prezentările medicilor, materialele informative, postările și elementele vizuale respectă aceleași reguli în cadrul fiecărui brand.",
+              "Profilurile Google sunt administrate constant, iar clinicile au o vizibilitate mai bună în căutările locale relevante.",
+              "Comunicarea este mai consecventă, mai bine organizată și respectă cerințele specifice domeniului medical.",
             ],
           },
         ],
       },
       {
         slug: "agro-salso",
-        vertical: "Agro / România",
+        meta: { title: "Agro Salso | Epic Digital Hub", description: "Reconstrucție completă de website, catalog de utilaje agricole, Google Ads, Meta Ads și măsurarea conversiilor pentru Agro Salso, dealer cu acoperire națională." },
+        vertical: "Utilaje agricole / România",
         title: "Agro Salso",
         summary:
-          "Campanii fără măsurare, informații comerciale neuniforme și un site care nu susținea procesul de vânzare. Am reconstruit sistemul în jurul datelor verificabile și al cererilor reale de ofertă.",
+          "Am refăcut integral website-ul, am reorganizat catalogul de utilaje și am restructurat campaniile Google și Meta Ads. Am pus accent pe informații tehnice corecte și pe generarea cererilor de ofertă.",
         img: "/images/work-agro.webp",
         intro:
-          "Agro Salso este un dealer de utilaje agricole din Bihor, cu livrare la nivel național și un portofoliu tehnic extins. Produsul era competitiv. Sistemul digital din jurul lui avea nevoie de restructurare.",
+          "Agro Salso este un dealer de utilaje agricole din Bihor, cu livrări în toată România și un portofoliu extins de echipamente. Produsele erau competitive, dar website-ul, campaniile și materialele comerciale aveau nevoie de o reorganizare completă.",
         sections: [
           {
-            title: "Contextul",
+            title: "De unde am pornit",
             paragraphs: [
-              "Campaniile plătite generau trafic, dar nu exista o măsurare clară a conversiilor. Bugetul ajungea inclusiv în căutări nerelevante, iar diferența dintre un clic și o cerere reală de ofertă nu putea fi urmărită corect.",
-              "În paralel, informațiile din site nu erau complet uniforme: specificații, prețuri și chiar anumite asocieri de brand difereau între pagini.",
-              "Într-o categorie în care decizia de cumpărare se bazează pe date tehnice, consistența informației este esențială.",
+              "Campaniile plătite generau trafic, dar nu exista o măsurare suficient de clară a solicitărilor primite prin website.",
+              "O parte din buget era consumată de căutări fără relevanță comercială, iar performanța era dificil de evaluat dincolo de numărul de clicuri.",
+              "Website-ul avea nevoie de o structură nouă, capabilă să prezinte corect un portofoliu extins de utilaje și să faciliteze solicitarea ofertelor.",
+              "În plus, informațiile comerciale nu erau întotdeauna consecvente. Specificațiile, prețurile și unele asocieri de brand diferau între pagini și materiale.",
+              "Pentru un cumpărător de utilaje agricole, aceste detalii contează. O specificație incorectă sau o informație incompletă poate influența direct decizia de achiziție.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am început cu restructurarea campaniilor.",
-              "Am analizat termenii reali de căutare, am eliminat traficul nerelevant și am reconstruit campaniile în jurul produselor și categoriilor cu intenție comercială.",
-              "Conversiile au fost configurate pe acțiunile relevante din site, astfel încât performanța să fie evaluată în cereri de ofertă, nu doar în clicuri.",
-              "Paginile de produs au fost reconstruite după o regulă simplă: fiecare beneficiu trebuie să aibă în spate o specificație tehnică verificabilă.",
-              "Caracteristicile, compatibilitatea, prețurile și disponibilitatea pornesc din documentația oficială a producătorilor.",
-              "În același sistem au intrat catalogul, lista de prețuri, materialele pentru târguri și CRM-ul utilizat pentru gestionarea cererilor.",
+              "Am reconstruit complet website-ul Agro Salso, de la arhitectura paginilor și design până la catalogul de produse și formularele de solicitare a ofertelor.",
+              "Am reorganizat prezentarea utilajelor pe categorii și am refăcut paginile de produs pentru ca informațiile importante să fie ușor de găsit, înțeles și comparat.",
+              "Am rescris descrierile folosind documentația tehnică oficială a producătorilor. Caracteristicile, compatibilitățile și beneficiile comerciale sunt prezentate fără exagerări și fără afirmații care nu pot fi verificate.",
+              "Am corelat informațiile din website cu listele de prețuri și documentele furnizorilor, pentru a elimina diferențele dintre materialele comerciale.",
+              "În paralel, am restructurat campaniile Google și Meta Ads. Am analizat termenii de căutare, am exclus traficul nerelevant și am reorganizat promovarea în jurul produselor și categoriilor cu potențial comercial.",
+              "Am configurat măsurarea conversiilor pentru formularele și acțiunile relevante din website, astfel încât să putem evalua campaniile în funcție de cererile de ofertă generate.",
+              "Am aplicat aceleași reguli de prezentare în cataloage, liste de prețuri și materialele pregătite pentru târguri și expoziții.",
+              "Am inclus și CRM-ul în organizarea procesului comercial, pentru o gestionare mai clară a solicitărilor.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "Campaniile pot fi evaluate acum prin cereri reale de ofertă.",
-              "Informațiile comerciale sunt aliniate între website și materialele de vânzare, iar fiecare produs pornește din aceeași sursă tehnică verificată.",
-              "Marketingul și procesul comercial folosesc acum aceeași bază de informație.",
+              "Agro Salso are acum un website complet refăcut, cu un catalog de utilaje organizat, pagini de produs documentate și un proces mai clar de solicitare a ofertelor.",
+              "Campaniile Google și Meta Ads sunt structurate în jurul obiectivelor comerciale, iar conversiile pot fi urmărite prin acțiunile relevante ale utilizatorilor.",
+              "Informațiile tehnice și comerciale sunt consecvente între website, cataloage și materialele de vânzare.",
+              "Echipa comercială lucrează cu aceeași bază de informații utilizată în promovare, iar solicitările primite pot fi gestionate mai organizat.",
+              "Un website construit pentru vânzare, campanii care pot fi evaluate corect și informații comerciale pe care clienții se pot baza.",
             ],
           },
         ],
       },
       {
-        slug: "kgm-chery-oradea",
-        vertical: "Auto / Oradea",
-        title: "KGM & Chery Oradea",
+        slug: "kgm-oradea",
+        meta: { title: "KGM Oradea | Epic Digital Hub", description: "Strategie de comunicare și marketing automotive pentru KGM Oradea. Conținut social media, prezentări de modele, campanii comerciale și producție video." },
+        vertical: "Automotive / Oradea",
+        title: "KGM Oradea",
         summary:
-          "Două mărci reprezentate de același dealer. Două sisteme de comunicare complet distincte, construite pe informația oficială a importatorilor.",
-        img: "/images/work-auto.webp",
+          "Am construit comunicarea locală a brandului în perioada tranziției de la SsangYong la KGM. Prezentăm fiecare model prin conținut bazat pe specificațiile și informațiile oficiale ale importatorului.",
+        /* The Actyon itself, cut out of the trim carousel and padded back to 4:3
+           by stretching the studio backdrop's own edge rows. The shared
+           automotive photo is a Chery and cannot front a KGM page, and the
+           carousel as a whole is a social graphic, not a hero. */
+        img: "/images/work-kgm.webp",
         intro:
-          "KGM și Chery sunt două mărci internaționale aflate în etape diferite de dezvoltare pe piața din România. Sunt comercializate prin aceeași structură locală, dar au produse, poziționări și publicuri diferite. Rolul nostru este ca diferența dintre ele să rămână evidentă în fiecare punct de comunicare.",
+          "Pentru KGM Oradea, am construit o direcție de comunicare care pune în valoare modelele, tehnologia și dotările disponibile. Fiecare material este realizat pe baza informațiilor oficiale, cu accent pe ceea ce contează pentru un potențial cumpărător.",
         sections: [
           {
             title: "Contextul",
             paragraphs: [
-              "KGM traversa tranziția de la SsangYong către noua identitate de brand, în timp ce Chery intra într-o piață locală în care notorietatea era încă în construcție.",
-              "În automotive, comunicarea are o dificultate suplimentară: prețurile, echipările și promoțiile se actualizează frecvent.",
-              "În același timp, două mărci administrate din aceeași structură comercială pot ajunge ușor să comunice identic.",
-              "Asta am vrut să evităm.",
+              "Într-o piață auto în care cumpărătorii compară atent prețurile, echipările și caracteristicile tehnice, comunicarea trebuie să ofere informații clare și actualizate.",
+              "Gama KGM include modele cu caracteristici și utilizări diferite, de la SUV-uri pentru familie până la vehicule 4×4 și pick-up-uri.",
+              "Provocarea era să prezentăm fiecare model într-un mod relevant, fără mesaje generice și fără să pierdem din vedere diferențele tehnice și comerciale.",
             ],
           },
           {
             title: "Ce am construit",
             paragraphs: [
-              "Am definit două identități de comunicare distincte, fiecare cu propriul registru vizual, propriile formate și propria structură de conținut.",
-              "Pentru fiecare marcă există un sistem lunar care acoperă lansări de modele, carusele de gamă, conținut comercial, stories și video.",
-              "Regula este strictă: nicio cifră nu pleacă din memorie.",
-              "Prețurile, motorizările, dotările și condițiile promoționale sunt verificate în documentația oficială actuală înainte de publicare.",
-              "Scripturile video sunt construite pentru un consultant de vânzări, nu pentru un creator de entertainment: o idee clară, informație relevantă și aproximativ 40 de secunde de discurs.",
-              "Pentru KGM am construit și comunicarea tranziției de brand, inclusiv explicațiile referitoare la noua identitate și continuitatea produselor și garanțiilor.",
+              "Am dezvoltat o direcție vizuală și editorială proprie pentru KGM Oradea, cu formate recognoscibile și o comunicare centrată pe produs.",
+              "Am organizat producția lunară de conținut pentru lansări, prezentări de modele, carusele informative, oferte comerciale, stories și reels.",
+              "Scenariile video sunt concepute pentru consultanții de vânzări, cu un limbaj natural, explicații concise și informații utile. Fiecare clip tratează un subiect concret, într-un format de aproximativ 40 de secunde.",
+              "Pentru comunicarea comercială, verificăm prețurile, motorizările, echipările, dotările și condițiile promoționale în documentația oficială KGM România înainte de publicare.",
             ],
           },
           {
             title: "Ce s-a schimbat",
             paragraphs: [
-              "Ambele mărci comunică acum constant, fără să își piardă identitatea individuală.",
-              "Chiar dacă sunt reprezentate de aceeași companie locală, diferențele dintre KGM și Chery se păstrează în imagine, voce și structură de conținut.",
-              "Iar informația comercială este actualizată direct din sursele oficiale ale fiecărei mărci.",
+              "KGM Oradea are acum o comunicare constantă, cu o identitate vizuală coerentă și materiale adaptate fiecărui model.",
+              "Informațiile tehnice și comerciale sunt prezentate clar, iar conținutul îi ajută pe potențialii cumpărători să înțeleagă diferențele dintre modele și echipări înainte de a ajunge în showroom.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "chery-oradea",
+        meta: { title: "Chery Oradea | Epic Digital Hub", description: "Marketing și comunicare automotive pentru Chery Oradea. Lansări de modele, social media, reels și conținut comercial bazat pe specificații și oferte oficiale." },
+        vertical: "Automotive / Oradea",
+        title: "Chery Oradea",
+        summary:
+          "Am dezvoltat comunicarea locală a unui brand auto nou pe piață, cu prezentări de modele, materiale video și campanii construite în jurul informațiilor tehnice și ofertelor oficiale.",
+        img: "/images/work-auto.webp",
+        intro:
+          "Chery a intrat pe piața din Oradea cu o gamă de SUV-uri și tehnologii hibride încă puțin cunoscute publicului local. Am construit o comunicare care prezintă modelele, explică tehnologia și oferă cumpărătorilor informațiile necesare pentru a compara versiunile disponibile.",
+        sections: [
+          {
+            title: "Contextul",
+            paragraphs: [
+              "Pentru o marcă nouă pe piață, notorietatea nu este suficientă. Cumpărătorii vor să știe cât costă un model, ce dotări include, cum funcționează sistemul hibrid și ce avantaje oferă în utilizarea de zi cu zi.",
+              "Gama Tiggo include modelele 4, 7, 8 și 9, cu motorizări și echipări diferite.",
+              "Comunicarea trebuia să facă aceste diferențe ușor de înțeles, fără formulări generale sau promisiuni comerciale nejustificate.",
+            ],
+          },
+          {
+            title: "Ce am construit",
+            paragraphs: [
+              "Am dezvoltat o identitate de comunicare pentru Chery Oradea, cu un stil vizual consecvent și conținut construit în jurul produselor.",
+              "Fiecare material pornește de la un model, o motorizare și o echipare concretă. Prezentăm dotările, caracteristicile tehnice și avantajele relevante pentru cumpărător, fără să amestecăm specificațiile unor versiuni diferite.",
+              "Producția lunară include lansări, carusele informative, prezentări de gamă, conținut comercial, stories și reels.",
+              "Am dezvoltat și materiale video dedicate tehnologiilor hibride, explicând diferențele dintre motorizări și modul în care acestea funcționează.",
+              "Prețurile și ofertele sunt verificate în listele oficiale Chery România, iar condițiile promoționale sunt comunicate numai după confirmarea perioadei de valabilitate.",
+            ],
+          },
+          {
+            title: "Ce s-a schimbat",
+            paragraphs: [
+              "Chery Oradea are acum o prezență digitală constantă și o comunicare adaptată unei mărci aflate în proces de consolidare pe piața locală.",
+              "Fiecare material răspunde unei întrebări relevante pentru cumpărător: cât costă, ce dotări primește, care sunt diferențele dintre versiuni și ce tehnologie utilizează.",
+              "Modelele sunt prezentate prin informații concrete, într-un format accesibil și ușor de urmărit.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "jeep-oradea",
+        meta: { title: "Jeep Oradea | Epic Digital Hub", description: "Strategie de comunicare și marketing automotive pentru Jeep Oradea. Prezentări de modele, conținut social media, materiale comerciale și producție video." },
+        vertical: "Automotive / Oradea",
+        title: "Jeep Oradea",
+        summary:
+          "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
+        /* Placeholder: there is no Jeep imagery in the repo yet, and the
+           automotive photo is a Chery - the wrong brand on this page. The
+           brand mark stands in until the first materials arrive. */
+        img: "/images/og-hero.webp",
+        intro:
+          "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
+        sections: [
+          {
+            title: "Contextul",
+            paragraphs: [
+              "Pentru un brand deja cunoscut, interesul cumpărătorilor se concentrează asupra modelelor disponibile, motorizărilor, echipărilor și prețurilor.",
+              "Comunicarea trebuie să răspundă acestor întrebări, păstrând caracterul distinctiv al mărcii.",
+              "Fiecare model are propriile caracteristici și se adresează unor nevoi diferite, iar materialele trebuie să prezinte aceste diferențe clar și corect.",
+            ],
+          },
+          {
+            title: "Ce construim",
+            paragraphs: [
+              "Dezvoltăm o direcție vizuală și editorială proprie pentru Jeep Oradea, adaptată identității mărcii și publicului local.",
+              "Planificăm conținut pentru lansări, prezentări de modele, carusele informative, oferte comerciale, stories și materiale video.",
+              "Scenariile vor fi construite în jurul caracteristicilor relevante pentru cumpărători, cu explicații clare despre motorizări, echipări și dotări.",
+              "Prețurile și condițiile comerciale vor fi verificate în documentația oficială a importatorului înainte de publicare.",
+            ],
+          },
+          {
+            title: "Rezultatele proiectului",
+            paragraphs: [
+              "Secțiune de completat după livrarea și publicarea primelor materiale. Nu se comunică rezultate înainte ca acestea să poată fi documentate.",
             ],
           },
         ],
       },
       {
         slug: "harmony-garden",
+        meta: { title: "Harmony Garden | Epic Digital Hub", description: "Strategie de comunicare, branding de eveniment, design grafic și producție de conținut pentru Harmony Garden, un club de vară din Bihor." },
         vertical: "Evenimente / Bihor",
         title: "Harmony Garden",
         summary:
-          "Un sezon întreg de evenimente construit ca un singur sistem: identități distincte, producție săptămânală și comunicare scrisă direct pentru publicul local.",
+          "Am coordonat comunicarea unui sezon de evenimente, cu identități vizuale distincte, conținut produs săptămânal și mesaje adaptate publicului local.",
         img: "/images/work-events.webp",
         intro:
-          "Harmony Garden este un club de vară din Valea lui Mihai, aproape de granița cu Ungaria, adresat unui public predominant maghiar. Într-un business sezonier, fiecare weekend contează.",
+          "Harmony Garden este un club de vară din Valea lui Mihai, aproape de granița cu Ungaria, cu un public predominant maghiar. Am coordonat comunicarea întregului sezon, de la identitatea fiecărui eveniment până la materialele de promovare și conținutul publicat săptămânal.",
         sections: [
           {
             title: "Contextul",
             paragraphs: [
-              "Calendarul unui club de vară este comprimat. Evenimentele se succed rapid, iar fiecare are nevoie de propria campanie într-un interval foarte scurt.",
-              "În același timp, publicul este local și transfrontalier, iar limba principală de comunicare este maghiara.",
-              "O traducere literală din română nu era suficientă. Comunicarea trebuia scrisă direct pentru publicul care urma să o citească.",
+              "Pentru un club sezonier, timpul de promovare este limitat. Evenimentele se succed aproape în fiecare weekend, iar fiecare trebuie să atragă atenția fără să se confunde cu celelalte.",
+              "Publicul Harmony Garden este format în principal din vorbitori de maghiară, atât din zonă, cât și din localitățile apropiate de graniță.",
+              "Comunicarea trebuia să respecte limba, expresiile și particularitățile publicului, nu să reproducă traduceri din română.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am început cu masterplanul sezonului: ritm editorial, teme și momentele principale de comunicare.",
-              "Fiecare eveniment a primit propria identitate vizuală în interiorul sistemului Harmony Garden: flyer, poster, video teaser și formate pentru social media.",
-              "Textele sunt construite direct în maghiară, nu traduse ulterior.",
-              "Pe lângă promovare, am dezvoltat și o serie de elemente operaționale și comerciale ale sezonului: materiale pentru tombolă, bilete numerotate, abonamente și meniul barului.",
+              "Am început prin planificarea sezonului, stabilind calendarul evenimentelor, ritmul publicării și principalele momente de promovare.",
+              "Am creat identități vizuale distincte pentru fiecare eveniment, păstrând legătura cu brandul Harmony Garden. Producția a inclus afișe, flyere, teasere video și materiale adaptate pentru social media.",
+              "Textele au fost redactate direct în maghiară, cu formulări naturale și un ton potrivit publicului.",
+              "Pe lângă promovarea digitală, am realizat materiale pentru organizarea evenimentelor: bilete numerotate, abonamente, materiale pentru tombole și meniul barului.",
+              "Am coordonat producția săptămânală de conținut, astfel încât fiecare eveniment să aibă materialele necesare la timp.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "Harmony Garden a avut o prezență constantă pe durata sezonului, iar fiecare eveniment a intrat în calendar cu propriul set de materiale.",
-              "Sistemul este reutilizabil: formatele care funcționează rămân, cele care nu performează sunt eliminate, iar sezonul următor pornește de la o bază deja construită.",
+              "Harmony Garden a avut o comunicare constantă pe durata sezonului, cu o identitate clară pentru fiecare eveniment.",
+              "Planificarea a permis pregătirea materialelor în avans și adaptarea promovării în funcție de calendar.",
+              "Formatele vizuale și procesul de producție pot fi reutilizate și îmbunătățite pentru sezoanele următoare.",
             ],
           },
         ],
       },
       {
         slug: "origins-cafe",
+        meta: { title: "Origins Coffee & Drinks | Epic Digital Hub", description: "Marketing pentru cafenele, comunicare de brand și dezvoltarea unei platforme digitale de fidelizare pentru Origins Coffee & Drinks din Oradea." },
         vertical: "HoReCa / Oradea",
         title: "Origins Coffee & Drinks",
         summary:
-          "Mai multe locații, publicuri diferite și un singur sistem de brand. Am conectat conținutul, prezența locală și fidelizarea într-o experiență coerentă.",
+          "Am organizat comunicarea pentru mai multe locații, păstrând o identitate comună. Proiectul include conținutul digital, prezența locală și dezvoltarea programului de fidelizare.",
         img: "/images/work-cafe.webp",
         intro:
-          "Origins Coffee & Drinks are mai multe locații în Oradea, fiecare cu propriul context și propriul profil de client. Comunicarea trebuia să păstreze aceeași identitate, fără să transforme locațiile în copii una după alta.",
+          "Origins Coffee & Drinks are patru locații în Oradea, fiecare cu un public și un ritm propriu. Am construit o comunicare comună pentru întregul brand, adaptată fiecărei locații, și am dezvoltat o platformă digitală de fidelizare pentru clienți.",
         sections: [
           {
             title: "Contextul",
             paragraphs: [
-              "În HoReCa, frecvența contează la fel de mult ca prima vizită.",
-              "Cu mai multe locații și categorii diferite de clienți, comunicarea generică nu era suficientă. Fiecare mesaj trebuia să pornească de la un produs, o locație sau un moment real.",
-              "În paralel, programul de fidelizare avea nevoie de o experiență simplă atât pentru client, cât și pentru echipa din locație.",
+              "Pentru o cafenea, relația cu clientul nu se încheie după prima vizită. Contează cât de des revine și experiența pe care o are de fiecare dată.",
+              "Cu patru locații și categorii diferite de clienți, Origins avea nevoie de o comunicare recognoscibilă, dar suficient de flexibilă pentru specificul fiecărei cafenele.",
+              "În același timp, programul de fidelizare trebuia să fie ușor de folosit atât de clienți, cât și de personalul din locații.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am dezvoltat platforma de fidelizare, cu carduri digitale accesibile direct din telefon și un nivel Gold pentru clienții recurenți.",
-              "Pentru fiecare locație am structurat profilurile Google, conținutul și fotografia în jurul contextului local.",
-              "Am construit meniuri, materiale de bar, QR-uri și materiale pentru campanii sezoniere și activări locale.",
-              "Social media urmează aceeași regulă: conținut relaxat și recognoscibil, dar construit întotdeauna în jurul unui produs sau unei experiențe care există efectiv în locație.",
+              "Am dezvoltat platforma digitală de fidelizare Origins, prin care clienții își pot accesa cardurile direct de pe telefon.",
+              "Sistemul permite înregistrarea digitală a interacțiunilor eligibile și include un nivel Gold pentru clienții fideli.",
+              "Am organizat comunicarea online pentru toate cele patru locații, păstrând aceleași reguli vizuale și editoriale.",
+              "Am optimizat individual profilurile Google, cu informații relevante pentru fiecare cafenea.",
+              "Pentru social media, am construit o direcție bazată pe fotografii și filmări reale, realizate în locații. Conținutul prezintă produsele, oamenii și atmosfera Origins, fără imagini generice.",
+              "Am realizat și meniuri, materiale pentru bar, coduri QR și materiale grafice pentru campanii sezoniere și activări locale.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "Fidelizarea poate fi urmărită și administrată digital.",
-              "În același timp, fiecare locație poate comunica pentru publicul ei fără să iasă din identitatea Origins.",
-              "Aceleași reguli de brand. Aceeași calitate vizuală. Conținut adaptat fiecărei locații.",
+              "Origins are acum o comunicare consecventă în toate cele patru locații, fără să piardă particularitățile fiecăreia.",
+              "Platforma de fidelizare permite administrarea digitală a programului, iar clienții își pot folosi cardurile direct de pe telefon.",
+              "Profilurile Google, social media și materialele din locații respectă aceeași identitate vizuală.",
+              "Un brand recognoscibil în fiecare locație, cu o comunicare adaptată publicului și un program de fidelizare dezvoltat special pentru Origins.",
             ],
           },
         ],
       },
       {
         slug: "thermx",
+        meta: { title: "ThermX | Epic Digital Hub", description: "Strategie de brand, dezvoltare website, SEO și campanie de lansare pentru ThermX, o membrană nanoceramică destinată termoizolației clădirilor." },
         vertical: "Industrial / România",
         title: "ThermX",
         summary:
-          "Un produs tehnic nou are nevoie, înainte de promovare, de o singură versiune corectă a adevărului. Am construit-o, apoi am dezvoltat în jurul ei poziționarea, website-ul și lansarea.",
+          "Am construit poziționarea și comunicarea de lansare pentru un produs tehnic nou. Am pornit de la documentația produsului și am dezvoltat website-ul și materialele de prezentare.",
         img: "/images/work-industrial.webp",
         intro:
-          "ThermX este o membrană nanoceramică pentru termoizolație, adresată unei piețe în care încrederea depinde direct de claritatea informației tehnice. Înainte de comunicare, datele trebuiau standardizate.",
+          "ThermX este o membrană nanoceramică pentru termoizolația clădirilor, aplicată prin pulverizare. Am construit strategia de marketing și comunicarea de lansare pornind de la documentația tehnică, astfel încât informațiile despre produs să fie clare, corecte și consecvente.",
         sections: [
           {
             title: "Contextul",
             paragraphs: [
-              "Produsul introduce o categorie mai puțin familiară pieței locale: termoizolație aplicată prin pulverizare, în straturi de ordinul milimetrilor.",
-              "Publicul este eterogen, de la proprietari de locuințe până la arhitecți și proiectanți, iar nivelul de informație necesar diferă semnificativ.",
-              "În plus, datele tehnice existente circulau în mai multe variante și din surse diferite.",
-              "Pentru un produs tehnic, o singură neconcordanță poate compromite credibilitatea întregii comunicări.",
+              "ThermX introduce pe piața locală o tehnologie de termoizolație mai puțin familiară publicului, bazată pe aplicarea unei membrane nanoceramice în straturi de ordinul milimetrilor.",
+              "Produsul se adresează unor categorii diferite de clienți, de la proprietari de locuințe până la arhitecți și proiectanți. Fiecare are nevoie de un alt nivel de detaliu tehnic.",
+              "În plus, informațiile existente despre produs proveneau din mai multe surse și nu erau întotdeauna prezentate uniform.",
+              "Înainte de promovare, era necesară verificarea și organizarea datelor tehnice.",
             ],
           },
           {
-            title: "Ce am construit",
+            title: "Ce am făcut",
             paragraphs: [
-              "Am început prin consolidarea tuturor parametrilor tehnici într-un singur document de referință.",
-              "Fiecare cifră utilizată ulterior în comunicare pornește din această sursă.",
-              "Pe această bază am construit poziționarea, dosarul tehnic de brand, strategia de marketing pentru 12 luni, strategia SEO, cercetarea de piață și profilurile principalelor categorii de cumpărători.",
-              "Am dezvoltat separat și direcția adresată arhitecților și proiectanților.",
-              "Lansarea a fost construită integral: structură, prezentare, script și video.",
-              "Conținutul a fost adaptat pentru patru canale, de la comunicare educațională B2C până la conținut B2B pe LinkedIn, iar website-ul pornește din aceeași bază tehnică.",
+              "Am început prin centralizarea parametrilor tehnici într-un singur document de referință. Acesta stă la baza specificațiilor și afirmațiilor utilizate în materialele de comunicare.",
+              "Pornind de la această documentație, am definit poziționarea ThermX și am construit strategia de marketing pentru 12 luni.",
+              "Am realizat cercetarea de piață, am analizat principalele categorii de cumpărători și am stabilit direcții de comunicare adaptate fiecăreia.",
+              "Am dezvoltat strategia SEO și conținutul website-ului, organizând informațiile tehnice într-o structură accesibilă.",
+              "Pentru arhitecți și proiectanți, am pregătit o direcție separată de comunicare, cu accent pe informațiile necesare evaluării produsului.",
+              "Am coordonat realizarea materialelor de lansare, de la structură și prezentare până la scenariu și producție video.",
+              "Comunicarea a fost adaptată pentru Facebook, Instagram și LinkedIn, cu materiale educaționale pentru publicul larg și conținut tehnic destinat profesioniștilor.",
             ],
           },
           {
-            title: "Ce s-a schimbat",
+            title: "Rezultatul",
             paragraphs: [
-              "ThermX comunică acum aceeași informație în fiecare punct de contact.",
-              "Datele prezentate de echipa comercială, cele publicate pe website și cele utilizate în conținut provin din aceeași sursă verificată.",
-              "Poziționarea, materialele de lansare și comunicarea digitală funcționează ca un singur sistem.",
+              "ThermX are acum o poziționare definită, o strategie de marketing documentată și o comunicare adaptată principalelor categorii de cumpărători.",
+              "Website-ul, materialele comerciale și conținutul digital folosesc aceleași informații tehnice verificate.",
+              "Echipa comercială și canalele de promovare pot prezenta produsul consecvent, fără diferențe între specificațiile publicate.",
+              "O comunicare tehnică documentată, de la poziționare și website până la materialele de lansare.",
             ],
           },
         ],
@@ -328,12 +447,13 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
     ],
   },
   en: {
-    kicker: "Case studies",
-    title: "What we built and what changed.",
+    meta: { title: "Case Studies | Epic Digital Hub", description: "Selected work across hospitality, healthcare, automotive, agriculture and more. One marketing team. One brand per niche, per city." },
+    kicker: "Case Studies",
+    title: "The work speaks for itself.",
     intro:
-      "We work with one brand per niche, per city. These are seven of the brands we build with.",
-    note: "Exclusivity works both ways. While we work with a brand, we do not work with its direct competitors.",
-    detailKicker: "Case study",
+      "We work with one brand per niche, per city. These are eight of the brands we build with.",
+    note: "One industry. One city. One client. We don't represent competing brands in the same local market.",
+    detailKicker: "Case Study",
     backLabel: "All case studies",
     ctaTitle: "If your market still has room for a brand to lead, we should talk.",
     ctaApply: "Check if your niche is open",
@@ -341,270 +461,364 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
     studies: [
       {
         slug: "hotel-maxim",
+        meta: { title: "Hotel Maxim — Hospitality Marketing Case Study | Epic Digital Hub", description: "How Epic Digital Hub rebuilt Hotel Maxim's digital presence in Oradea, connecting its website, Google Ads, SEO and social media. Bookings increased by 20% in six months." },
         vertical: "Hospitality / Oradea",
         title: "Hotel Maxim",
         summary:
-          "A strong hotel with an online presence that did not reflect the guest experience. We rebuilt the direct channel: website, content, Google and campaigns designed around bookings.",
+          "A well-established hotel whose digital presence fell short of its reputation. We rebuilt its direct booking channels through website improvements, content, Google optimisation and targeted advertising.",
         img: "/images/work-hotel.webp",
         intro:
-          "Hotel Maxim is a family-run hotel a short walk from Oradea's historic centre. Guest experience and word of mouth had already built a strong reputation. Online, the brand did not reflect it.",
+          "Hotel Maxim is a family-run hotel within walking distance of Oradea's historic centre. Years of guest recommendations had earned it a strong reputation. Its online presence, however, told a different story.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "A large share of bookings came through third-party platforms, with a cost attached to every reservation.",
-              "At the same time, the digital presence was fragmented. Social channels were inactive, the website contained broken links, including in the booking journey, and some facility and contact information was outdated.",
-              "The issue was not the product. It was the lack of a direct digital system around it.",
+              "A significant share of reservations came through third-party booking platforms, each taking a commission.",
+              "Meanwhile, the hotel's own digital channels were underperforming. Social media activity had stalled. The website contained broken links, including within the booking process, while essential information about facilities and contact details was outdated.",
+              "The hotel had earned its reputation. Its digital presence needed to match it.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We started with positioning and voice rules: how Hotel Maxim speaks, what it promises and how that standard should carry across every touchpoint.",
-              "We rewrote the website and corrected outdated information. In parallel, a technical audit identified broken pages and functions, with clear implementation notes for the developer.",
-              "Facebook and Instagram were rebuilt around the hotel's real photography, using a repeatable system of posts, carousels and stories. The Google Business Profile was brought into the same system, together with clear rules for review responses.",
-              "Google campaigns were restructured around real search intent: brand searches, accommodation in Oradea, conference rooms and demand coming from Hungary.",
-              "For the corporate and events segment, we built dedicated landing pages and a separate outreach direction for training companies and travel agencies.",
+              "We began by defining Hotel Maxim's positioning, tone of voice and communication standards.",
+              "We rewrote the website copy, corrected outdated information and conducted a technical audit. Broken pages and booking functions were documented, with specific recommendations for the developer.",
+              "Facebook and Instagram were rebuilt around authentic hotel photography, supported by a consistent publishing schedule of posts, carousels and stories.",
+              "We optimised the Google Business Profile and established clear guidelines for responding to guest reviews.",
+              "Google Ads campaigns were restructured around searches with booking intent, including branded searches, accommodation in Oradea, conference facilities and demand from Hungarian travellers.",
+              "For corporate bookings and events, we developed dedicated landing pages and an outreach strategy targeting training companies and travel agencies.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "Hotel Maxim now has a coherent direct channel in which the website, Google, social media and paid campaigns work as one system.",
-              "Key information is consistent across touchpoints, the booking journey works as intended and campaigns can be judged on measurable actions rather than traffic alone.",
-              "Content is planned and published consistently, in one brand voice.",
+              "Hotel Maxim now has a coordinated digital presence, with its website, Google channels, social media and advertising working towards the same commercial objectives.",
+              "Information is accurate across platforms. The booking process is clearer. Campaign performance is measured through meaningful actions, not just website traffic.",
+              "Content is published consistently, with a recognisable brand voice.",
             ],
           },
         ],
-        result: "+20% bookings in 6 months.",
+        result: "Bookings increased by 20% in the first six months.",
       },
       {
         slug: "dentalnet",
-        vertical: "Medical / Oradea",
+        meta: { title: "DentalNet — Dental Clinic Branding & Marketing | Epic Digital Hub", description: "Branding and digital marketing for DentalNet's two clinics in Oradea. Distinct visual identities, social media, local SEO and compliant medical communication." },
+        vertical: "Healthcare / Oradea",
         title: "DentalNet",
         summary:
-          "Two clinics. Two patient groups. Two communication systems built separately, under one brand standard.",
+          "Two dental clinics. Different patients, different communication needs. We developed distinct visual identities and content systems, guided by the same professional standards.",
         img: "/images/work-dental.webp",
         intro:
-          "DentalNet operates two clinics in Oradea: one for adults and one for children. Its reputation had been built over years through referrals, but its digital visibility did not reflect its position in the local market.",
+          "DentalNet operates two dental clinics in Oradea: one serving adults and one dedicated to children. Years of patient referrals had established its reputation, but its digital visibility had yet to reflect its standing in the local market.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "The children's clinic was listed under the wrong Google category, and the brand had limited visibility for relevant local searches. At the same time, national competitors were bidding on the clinic's own name in Google Ads.",
-              "Medical communication added another layer of complexity: strict rules around advertising claims, patient imagery and the way services can be presented.",
-              "The system had to perform without compromising professional or legal standards.",
+              "DentalNet Kids was listed under an incorrect Google Business category, limiting its visibility in relevant local searches. National competitors were also advertising against the DentalNet brand name.",
+              "Marketing healthcare services requires particular attention to medical accuracy, professional regulations, patient privacy and consent.",
+              "For DentalNet and DentalNet Kids, we developed distinct visual and communication approaches suited to their respective audiences, while respecting the professional standards that apply to healthcare providers.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We separated the two clinics at strategy level from the start.",
-              "For the paediatric clinic, we built a communication register based on calm, prevention and parent-focused information. For the adult clinic, the tone is more restrained and clinical.",
-              "Each clinic has its own visual rules and its own content system.",
-              "For the children's clinic, we also developed a mascot and a distinct visual direction used across social media and in-clinic materials.",
-              "The Google profiles were rebuilt individually, with correct categories, complete services and a structured review plan.",
-              "We also created the framework for photo and video production inside the clinics, including patient image-consent documentation.",
+              "We treated the two clinics as distinct audiences from the outset.",
+              "For DentalNet Kids, we developed a reassuring, approachable communication style focused on prevention, education and the concerns of parents.",
+              "For the adult clinic, we established a more restrained visual and editorial direction, with clear, clinically appropriate information.",
+              "Each clinic received its own content structure and design guidelines.",
+              "For DentalNet Kids, we also created an original mascot and visual identity elements used across digital content and printed materials.",
+              "We rebuilt both Google Business Profiles independently, correcting categories, updating services and establishing a structured approach to patient reviews.",
+              "We also developed guidelines for in-clinic photography and video production, including the documentation required for patient image consent.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "The two clinics now communicate differently, but coherently.",
-              "Content no longer starts from an isolated post. It starts from a defined brand system with rules for voice, design and compliance.",
-              "The Google profiles are managed consistently, and the brand is now visible for local searches where it previously had little or no presence.",
+              "The two clinics now have distinct, consistent identities, each appropriate to its patients.",
+              "Content follows established editorial, visual and professional standards rather than being developed post by post.",
+              "Both Google Business Profiles are managed consistently, and DentalNet has gained visibility in local searches where it previously had limited or no presence.",
+              "Two audiences. Two identities. One consistent standard of care in communication.",
             ],
           },
         ],
       },
       {
         slug: "agro-salso",
-        vertical: "Agro / Romania",
+        meta: { title: "Agro Salso — Agricultural Machinery Marketing | Epic Digital Hub", description: "Website, product content, Google Ads and Meta Ads for Agro Salso. A measurable marketing system built around verified machinery specifications and quote requests." },
+        vertical: "Agricultural Machinery / Romania",
         title: "Agro Salso",
         summary:
-          "Unmeasured campaigns, inconsistent commercial information and a website that did not support the sales process. We rebuilt the system around verified data and real quote requests.",
+          "Advertising without reliable conversion tracking. Inconsistent product information. A website disconnected from sales. We rebuilt the marketing infrastructure around verified specifications, qualified enquiries and measurable actions.",
         img: "/images/work-agro.webp",
         intro:
-          "Agro Salso is an agricultural machinery dealer based in Bihor, delivering nationwide with an extensive technical portfolio. The product was competitive. The digital system around it needed restructuring.",
+          "Based in Bihor, Agro Salso supplies agricultural machinery across Romania. Its extensive product range was commercially competitive, but the website, advertising and sales materials lacked the consistency needed to support purchasing decisions.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "Paid campaigns were generating traffic, but conversion measurement was unclear. Budget was reaching irrelevant searches, and the difference between a click and a genuine quote request could not be tracked properly.",
-              "At the same time, information across the website was inconsistent: specifications, prices and even some brand associations varied from page to page.",
-              "In a category where purchase decisions rely on technical data, consistency is part of credibility.",
+              "Advertising campaigns were driving visitors to the website, but conversion tracking was insufficient. Irrelevant searches consumed budget, and genuine quote requests could not be reliably distinguished from ordinary clicks.",
+              "Product information was also inconsistent. Technical specifications, prices and manufacturer references varied between pages and sales materials.",
+              "For agricultural machinery buyers, those details are essential. A purchasing decision depends on accurate specifications, compatibility and price.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We started by restructuring the campaigns.",
-              "We analysed real search terms, removed irrelevant traffic and rebuilt the account around products and categories with commercial intent.",
-              "Conversions were configured around the actions that matter on the website, so performance could be judged on quote requests rather than clicks alone.",
-              "Product pages were rebuilt around one rule: every benefit must be backed by a verifiable technical specification.",
-              "Features, compatibility, pricing and availability are taken from official manufacturer documentation.",
-              "The same system now covers the catalogue, price materials, trade-fair assets and the CRM used to manage enquiries.",
+              "We began with the advertising accounts.",
+              "Search terms were reviewed, irrelevant traffic excluded and campaigns restructured around machinery categories and products with clear commercial intent.",
+              "We configured conversion tracking for actual website enquiries, giving the team a more reliable way to evaluate campaign performance.",
+              "Next, we rebuilt product communication around official manufacturer documentation.",
+              "Specifications, compatibility, prices and availability were checked against verified sources before publication. Product benefits were expressed through technical facts, without unsupported superlatives.",
+              "We extended the same standards across the machinery catalogue, price lists, trade-show materials and CRM enquiry management.",
+              "The result is a consistent information base shared by marketing and sales.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "Campaigns can now be evaluated through real quote requests.",
-              "Commercial information is aligned across the website and sales materials, and every product starts from the same verified technical source.",
-              "Marketing and sales now work from the same information base.",
+              "Campaigns can now be evaluated against genuine quote requests rather than clicks alone.",
+              "The website and commercial materials use consistent, verified product information.",
+              "Sales enquiries can be managed with clearer attribution and a more reliable product reference.",
+              "Marketing and sales now work from the same facts.",
             ],
           },
         ],
       },
       {
-        slug: "kgm-chery-oradea",
+        slug: "kgm-oradea",
+        meta: { title: "KGM Oradea — Automotive Marketing Case Study | Epic Digital Hub", description: "Automotive marketing for KGM Oradea. Brand communication, social media, model launches and video content built around verified specifications and official pricing." },
         vertical: "Automotive / Oradea",
-        title: "KGM & Chery Oradea",
+        title: "KGM Oradea",
         summary:
-          "Two brands represented by the same dealer. Two completely separate communication systems, built on official importer information.",
-        img: "/images/work-auto.webp",
+          "Managing the transition from SsangYong to KGM in the local market. Clear brand communication, consistent monthly content and product information sourced directly from the official importer.",
+        /* The Actyon itself, cut out of the trim carousel and padded back to 4:3
+           by stretching the studio backdrop's own edge rows. The shared
+           automotive photo is a Chery and cannot front a KGM page, and the
+           carousel as a whole is a social graphic, not a hero. */
+        img: "/images/work-kgm.webp",
         intro:
-          "KGM and Chery are two international automotive brands at different stages of development in the Romanian market. They are represented through the same local business, but they have different products, positioning and audiences. Our job is to keep that distinction clear in every piece of communication.",
+          "For KGM Oradea, we developed a consistent digital communication approach built around the vehicles themselves. Distinctive visuals, clear product explanations and commercial content that gives buyers the information they need.",
         sections: [
           {
-            title: "The context",
+            title: "The Context",
             paragraphs: [
-              "KGM was moving from SsangYong into its new brand identity, while Chery was entering a local market where awareness was still being built.",
-              "Automotive communication adds another constraint: prices, equipment and promotional terms change frequently.",
-              "At the same time, two brands managed by the same local operation can easily begin to look and sound alike.",
-              "That is exactly what the system was designed to prevent.",
+              "KGM's range covers different vehicle categories, engine options and equipment levels. Communicating these differences accurately is essential, particularly when customers are comparing models, features and prices.",
+              "Commercial information also changes frequently. Pricing, availability and promotional conditions need to remain current across every published format.",
+              "The objective was to establish a recognisable local presence while making the model range easier to understand and evaluate.",
             ],
           },
           {
-            title: "What we built",
+            title: "What We Built",
             paragraphs: [
-              "We defined two distinct communication identities, each with its own visual register, formats and content structure.",
-              "Each brand runs on a monthly content system covering model launches, range carousels, commercial posts, stories and video.",
-              "The rule is strict: no figure comes from memory.",
-              "Prices, powertrains, equipment and promotional conditions are checked against current official documentation before publication.",
-              "Video scripts are written for a sales consultant, not an entertainer: one clear idea, relevant information and around 40 seconds of spoken delivery.",
-              "For KGM, we also built the communication around the brand transition, including clear explanations of the new identity and continuity of products and warranties.",
+              "We developed a dedicated visual and editorial direction for KGM Oradea, with consistent layouts, recognisable content formats and a straightforward tone.",
+              "The monthly communication plan covers model launches, range presentations, vehicle comparisons, promotional posts, carousels, stories and video.",
+              "Video scripts are developed for sales consultants presenting directly to camera. Each video covers one topic, uses verified product information and runs for approximately 40 seconds.",
+              "Before publication, we check pricing, powertrain specifications, equipment details and promotional terms against the latest official documentation from KGM România.",
+              "This process helps the dealership maintain a consistent publishing schedule while ensuring that customers receive accurate, up-to-date information.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "Both brands now communicate consistently without losing their individual identities.",
-              "Even though they are represented by the same local company, KGM and Chery remain distinct in visual language, tone and content structure.",
-              "Commercial information is updated directly from each brand's official sources.",
+              "KGM Oradea now has a regular publishing schedule and a cohesive visual presence across its digital channels.",
+              "Vehicle information is presented by model and configuration, making it easier for prospective buyers to compare specifications, equipment and available offers.",
+              "Commercial content follows current official documentation, keeping published information aligned with the dealership's offers.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "chery-oradea",
+        meta: { title: "Chery Oradea — Automotive Marketing & Content Production | Epic Digital Hub", description: "Automotive marketing for Chery Oradea. Model launches, social media, hybrid technology videos and product-specific content based on verified specifications and official prices." },
+        vertical: "Automotive / Oradea",
+        title: "Chery Oradea",
+        summary:
+          "Introducing a new automotive brand to the local market. Model-specific content built around verified specifications, powertrains, equipment and official pricing.",
+        img: "/images/work-auto.webp",
+        intro:
+          "Introducing Chery to the local market meant making an unfamiliar automotive brand easier to understand. We developed content that answers practical buying questions, from hybrid technology and equipment to model differences and pricing.",
+        sections: [
+          {
+            title: "The Context",
+            paragraphs: [
+              "Chery entered Oradea with a range of Tiggo SUVs and limited brand recognition among local buyers.",
+              "Customers needed answers to straightforward questions. What does each model offer? How do the hybrid systems work? Which features are included? What does a particular configuration cost?",
+              "The Tiggo range includes four models, with different powertrains and equipment levels. Broad promotional messaging could not communicate these distinctions accurately.",
+              "The priority was to build familiarity through useful, specific product information.",
+            ],
+          },
+          {
+            title: "What We Built",
+            paragraphs: [
+              "We created a dedicated visual and editorial direction for Chery Oradea, combining clear product presentation with an accessible, informative tone.",
+              "Content is developed around exact vehicle configurations: Tiggo 4, Tiggo 7, Tiggo 8 and Tiggo 9, with the relevant petrol, hybrid or plug-in hybrid powertrains and equipment levels.",
+              "The monthly publishing plan includes model launches, vehicle comparisons, promotional posts, carousels, stories and reels.",
+              "Video content explains hybrid technology, vehicle features and practical differences between models without unnecessary jargon.",
+              "Prices, specifications and promotional offers are checked against current official Chery România documentation before publication. Every time-sensitive offer includes a confirmed validity period.",
+            ],
+          },
+          {
+            title: "The Outcome",
+            paragraphs: [
+              "Chery Oradea now has a consistent digital presence that introduces the brand while giving prospective buyers practical information about its vehicles.",
+              "Each piece of content addresses a specific model, feature, configuration or commercial offer.",
+              "Buyers can better understand the available range, compare equipment and identify the vehicles relevant to their needs before contacting the dealership.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "jeep-oradea",
+        meta: { title: "Jeep Oradea — Automotive Marketing Case Study | Epic Digital Hub", description: "Automotive marketing for Jeep Oradea. Dedicated brand communication, model-specific content, vehicle campaigns and video production based on official product information." },
+        vertical: "Automotive / Oradea",
+        title: "Jeep Oradea",
+        summary:
+          "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
+        /* Placeholder: there is no Jeep imagery in the repo yet, and the
+           automotive photo is a Chery - the wrong brand on this page. The
+           brand mark stands in until the first materials arrive. */
+        img: "/images/og-hero.webp",
+        intro:
+          "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
+        sections: [
+          {
+            title: "The Context",
+            paragraphs: [
+              "Jeep is a well-established automotive name, with strong brand recognition and clearly defined customer expectations.",
+              "For prospective buyers, the important questions concern the vehicles themselves: model differences, equipment, powertrains, practical capabilities and current prices.",
+              "The communication needs to preserve the brand's character while providing accurate information that supports real purchasing decisions.",
+            ],
+          },
+          {
+            title: "What We're Building",
+            paragraphs: [
+              "We are developing a dedicated visual and editorial approach for Jeep Oradea, aligned with the brand's identity and product positioning.",
+              "The planned monthly communication includes model launches, vehicle presentations, equipment comparisons, promotional posts, social media carousels, stories and video.",
+              "Each execution will focus on specific models and configurations, explaining their relevant features, capabilities and available equipment.",
+              "Prices, technical specifications and promotional conditions will be checked against current official importer documentation before publication.",
+              "The emphasis is on recognisable brand communication supported by accurate, useful product information.",
+            ],
+          },
+          {
+            title: "The Outcome",
+            paragraphs: [
+              "This section will be completed after the first content batch has been delivered. Results and completed work will be documented before publication.",
             ],
           },
         ],
       },
       {
         slug: "harmony-garden",
+        meta: { title: "Harmony Garden | Event Marketing & Creative Production | Epic Digital Hub", description: "A full season of event marketing for Harmony Garden. Creative direction, event identities, video production and Hungarian-language content." },
         vertical: "Events / Bihor",
         title: "Harmony Garden",
         summary:
-          "A full event season built as one system: distinct identities, weekly production and copy written directly for the local audience.",
+          "An entire event season, managed from concept to execution. Individual event identities, weekly creative production and communication tailored to the local audience.",
         img: "/images/work-events.webp",
         intro:
-          "Harmony Garden is a summer club in Valea lui Mihai, near the Hungarian border, with a predominantly Hungarian-speaking audience. In a seasonal business, every weekend matters.",
+          "Harmony Garden is a summer club in Valea lui Mihai, near the Hungarian border, serving a predominantly Hungarian-speaking audience. With a packed seasonal calendar, every weekend needs its own reason to attend.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "A summer club works on a compressed calendar. Events follow one another quickly, and each needs its own campaign within a very short window.",
-              "At the same time, the audience is local and cross-border, and Hungarian is the main language of communication.",
-              "Literal translation from Romanian was not enough. The content had to be written for the audience that would actually read it.",
+              "A summer club has little room for delays. Events follow one another quickly, leaving a narrow window to build interest and drive attendance.",
+              "Harmony Garden also speaks to a predominantly Hungarian audience, including visitors from across the border. Communication needed to feel local, not like Romanian copy translated into Hungarian.",
+              "Each event needed its own identity, while the season had to remain recognisably Harmony Garden.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We started with the season masterplan: editorial rhythm, themes and the key communication moments across the calendar.",
-              "Each event received its own visual identity within the Harmony Garden system: flyer, poster, video teaser and social formats.",
-              "Copy is written directly in Hungarian rather than translated afterwards.",
-              "Beyond promotion, we also developed operational and commercial assets for the season: raffle materials, numbered tickets, season passes and the bar menu.",
+              "We developed the season's communication plan, defining event themes, content schedules and key promotional moments.",
+              "Every event received a distinct visual direction, supported by flyers, posters, social media content, reels and video teasers.",
+              "All primary copy was written directly in Hungarian, with attention to local language and cultural context.",
+              "Our work extended beyond promotion to include raffle materials, numbered tickets, season passes and bar menus.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "Harmony Garden maintained a consistent presence throughout the season, with each event entering the calendar with its own set of materials.",
-              "The system is reusable: formats that perform remain, weak ones are removed and the next season starts from an existing framework rather than from zero.",
+              "Harmony Garden followed a structured communication schedule throughout the season, with dedicated promotional materials for each event.",
+              "We developed individual visual identities that reflected the character of each party while maintaining a consistent connection to Harmony Garden.",
+              "The creative assets and communication formats developed during the project can also be reused and adapted for future editions.",
             ],
           },
         ],
       },
       {
         slug: "origins-cafe",
-        vertical: "HoReCa / Oradea",
+        meta: { title: "Origins Coffee & Drinks | Hospitality Marketing & Loyalty | Epic Digital Hub", description: "Brand communication, local marketing and a custom digital loyalty platform for Origins Coffee & Drinks across four locations in Oradea." },
+        vertical: "Hospitality / Oradea",
         title: "Origins Coffee & Drinks",
         summary:
-          "Multiple locations, different audiences and one brand system. We connected content, local presence and loyalty into one coherent experience.",
+          "Multiple locations. Different customer groups. One recognisable brand. We aligned content, local visibility and customer loyalty across the brand's physical and digital presence.",
         img: "/images/work-cafe.webp",
         intro:
-          "Origins Coffee & Drinks operates several locations in Oradea, each with its own context and customer profile. Communication needed to remain recognisably Origins without turning every location into a copy of the others.",
+          "Four locations across Oradea, each with its own audience and daily rhythm. Our role was to keep Origins recognisable everywhere, while giving each location the communication it needed.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "In hospitality, frequency matters as much as the first visit.",
-              "With multiple locations and different customer groups, generic coffee-shop communication was not enough. Every message needed to start from a real product, place or moment.",
-              "At the same time, the loyalty programme needed to be simple for both the customer and the team behind the counter.",
+              "For a coffee shop, attracting a first-time visitor is only part of the job. Giving customers a reason to return matters just as much.",
+              "Origins operates across four locations with different audiences and surroundings. Each needed relevant content without fragmenting the brand.",
+              "The loyalty programme also needed to be straightforward: easy for customers to use and practical for staff to manage.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We developed the loyalty platform, with digital cards accessible directly from the customer's phone and a Gold tier for returning customers.",
-              "For each location, we structured Google profiles, content and photography around the local context.",
-              "We created menus, in-store materials, QR assets and campaign materials for seasonal promotions and local activations.",
-              "Social media follows the same rule: relaxed, recognisable content, always built around a product or experience that genuinely exists at that location.",
+              "We developed a dedicated digital loyalty platform, allowing customers to access their cards directly from their phones and progress to a Gold tier.",
+              "We organised Google Business Profiles and location-specific content, using original photography to represent the products, spaces and people behind Origins.",
+              "Our work also covered menus, in-store materials, QR codes and campaign assets for seasonal promotions and local activations.",
+              "On social media, we established a relaxed, recognisable voice, grounded in what customers can actually find and experience at each location.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "Loyalty can now be tracked and managed digitally.",
-              "At the same time, each location can communicate to its own audience without leaving the Origins brand system.",
-              "The same brand rules. The same visual standard. Content adapted to each location.",
+              "Origins now has a dedicated digital platform for managing customer loyalty.",
+              "All four locations follow the same brand standards, with content and communication adapted to their individual audiences.",
+              "From Google listings and social media to printed menus and in-store materials, customers encounter a consistent Origins identity.",
             ],
           },
         ],
       },
       {
         slug: "thermx",
+        meta: { title: "ThermX | Product Positioning, Website & Launch | Epic Digital Hub", description: "Technical brand positioning, market research, SEO, website development and a complete product launch strategy for ThermX by Nano Revolution." },
         vertical: "Industrial / Romania",
         title: "ThermX",
         summary:
-          "A new technical product needs one reliable version of the truth before it needs advertising. We built that foundation first, then the positioning, website and launch around it.",
+          "Bringing a technical product to market starts with getting the facts right. We established a reliable information base before developing the positioning, website and launch communication.",
         img: "/images/work-industrial.webp",
         intro:
-          "ThermX is a nanoceramic thermal-insulation membrane for a market where trust depends directly on the clarity of technical information. Before communication could scale, the data had to be standardised.",
+          "ThermX is a nanoceramic thermal-insulation membrane developed by Nano Revolution. Bringing a technical product to market required more than a convincing presentation. Every claim needed a reliable source, and every audience needed information it could understand.",
         sections: [
           {
-            title: "The context",
+            title: "The Challenge",
             paragraphs: [
-              "The product introduces a less familiar category to the local market: spray-applied thermal insulation in millimetre-scale layers.",
-              "The audience ranges from homeowners to architects and engineers, with very different levels of technical knowledge and different questions.",
-              "Technical information was also circulating in multiple versions and from different sources.",
-              "For a technical product, one inconsistency can undermine the credibility of the entire communication system.",
+              "ThermX introduces a less familiar approach to building insulation: a spray-applied nanoceramic membrane used in millimetre-scale layers.",
+              "Its potential audiences range from homeowners to architects and engineers, each with different expectations and levels of technical expertise.",
+              "Product specifications were also available from multiple sources, with inconsistencies between them.",
+              "Before developing the marketing, we needed to establish a reliable technical foundation. Unclear or conflicting specifications would undermine the credibility of the product itself.",
             ],
           },
           {
-            title: "What we built",
+            title: "Our Approach",
             paragraphs: [
-              "We began by consolidating the technical parameters into one reference document.",
-              "Every figure used later in communication starts from that source.",
-              "On that foundation, we built the positioning, technical brand dossier, 12-month marketing strategy, SEO strategy, market research and core buyer profiles.",
-              "We also developed a dedicated direction for architects and engineers.",
-              "The product launch was built end to end: structure, presentation, presenter script and video.",
-              "Launch content was adapted across four channels, from educational B2C communication to B2B content on LinkedIn, while the website was built from the same verified technical base.",
+              "We began by consolidating the technical specifications into a single reference document, establishing a consistent source for all subsequent communication.",
+              "We then developed the product positioning, technical brand dossier, market research, buyer profiles, 12-month marketing strategy and SEO strategy.",
+              "A separate communication direction was created for architects and engineers, addressing their specific technical requirements.",
+              "We planned and produced the product launch, including its structure, presentation, presenter script and video content.",
+              "The website and launch campaigns were developed using the same technical reference, with content adapted for Facebook, Instagram and LinkedIn.",
             ],
           },
           {
-            title: "What changed",
+            title: "The Outcome",
             paragraphs: [
-              "ThermX now communicates the same information at every touchpoint.",
-              "The data used by the sales team, the website and the content system all comes from the same verified source.",
-              "Positioning, launch materials and digital communication now operate as one system.",
+              "ThermX now has a consistent technical and marketing foundation across its website, sales materials and digital communication.",
+              "Product information is aligned, while messaging is adapted to the needs of homeowners and industry professionals.",
+              "The launch established a clear position for ThermX, supported by a structured marketing plan for the following 12 months.",
             ],
           },
         ],
@@ -674,33 +888,35 @@ export const caseGalleries: Record<string, CaseGalleryItem[]> = {
       },
     },
   ],
-  "kgm-chery-oradea": [
+  "kgm-oradea": [
     {
-      src: "/images/cases/kgm-chery-oradea-1.webp",
-      alt: {
-        ro: "Postare Chery Oradea — gama Tiggo pe dimensiuni, lungimi și ampatamente",
-        en: "Chery Oradea social post — the Tiggo range by size, lengths and wheelbases",
-      },
-    },
-    {
-      src: "/images/cases/kgm-chery-oradea-2.webp",
-      alt: {
-        ro: "Postare Chery Oradea — Tiggo 7 HEV, preț de listă septembrie",
-        en: "Chery Oradea social post — Tiggo 7 HEV, September list price",
-      },
-    },
-    {
-      src: "/images/cases/kgm-chery-oradea-3.webp",
+      src: "/images/cases/kgm-oradea-1.webp",
       alt: {
         ro: "Carusel KGM Oradea — istoria brandului, experiență în SUV-uri și 4×4",
         en: "KGM Oradea carousel — brand history, SUV and 4×4 heritage",
       },
     },
     {
-      src: "/images/cases/kgm-chery-oradea-4.webp",
+      src: "/images/cases/kgm-oradea-2.webp",
       alt: {
         ro: "Carusel KGM Oradea — Actyon, echipările Style și Executiv",
         en: "KGM Oradea carousel — Actyon, Style and Executiv trims",
+      },
+    },
+  ],
+  "chery-oradea": [
+    {
+      src: "/images/cases/chery-oradea-1.webp",
+      alt: {
+        ro: "Postare Chery Oradea — gama Tiggo pe dimensiuni, lungimi și ampatamente",
+        en: "Chery Oradea social post — the Tiggo range by size, lengths and wheelbases",
+      },
+    },
+    {
+      src: "/images/cases/chery-oradea-2.webp",
+      alt: {
+        ro: "Postare Chery Oradea — Tiggo 7 HEV, preț de listă septembrie",
+        en: "Chery Oradea social post — Tiggo 7 HEV, September list price",
       },
     },
   ],
@@ -764,8 +980,8 @@ export type CaseSite = {
 };
 
 export const caseSiteCta: Record<Locale, string> = {
-  ro: "Vezi site-ul live",
-  en: "Visit the live site",
+  ro: "Vezi site-ul",
+  en: "Visit the live website",
 };
 
 export const caseSites: Record<string, CaseSite[]> = {
@@ -780,7 +996,7 @@ export const caseSites: Record<string, CaseSite[]> = {
   dentalnet: [
     {
       url: "/carnet-zen/index.html",
-      domain: "Carnetul ZEN · DentalNet Kids",
+      domain: "Carnetul ZEN — DentalNet Kids",
       shot: "/images/cases/site-dentalnet.webp",
       cta: { ro: "Răsfoiește carnetul", en: "Flip through the booklet" },
     },
@@ -793,7 +1009,7 @@ export const caseSites: Record<string, CaseSite[]> = {
     },
     {
       url: "/brosura-agro/index.html",
-      domain: "Catalog utilaje & prețuri 2026",
+      domain: "Utilaje agricole și prețuri 2026",
       shot: "/images/cases/brosura-agro.webp",
       cta: { ro: "Răsfoiește catalogul", en: "Flip through the catalogue" },
     },
@@ -804,7 +1020,7 @@ export const caseSites: Record<string, CaseSite[]> = {
       url: "https://app.originscafe.ro",
       domain: "app.originscafe.ro",
       shot: "/images/cases/site-origins-cafe.webp",
-      cta: { ro: "Deschide platforma", en: "Open the platform" },
+      cta: { ro: "Deschide platforma", en: "Open the Origins loyalty platform" },
     },
   ],
   thermx: [
@@ -812,6 +1028,7 @@ export const caseSites: Record<string, CaseSite[]> = {
       url: "https://nanorevolution.ro",
       domain: "nanorevolution.ro",
       shot: "/images/cases/site-thermx.webp",
+      cta: { ro: "Vezi site-ul", en: "Visit Nano Revolution" },
     },
   ],
 };
@@ -835,66 +1052,67 @@ export const caseVideos: Record<string, CaseVideo[]> = {
     {
       src: "/videos/cases/hotel-maxim-1.mp4",
       poster: "/videos/cases/hotel-maxim-1.jpg",
-      title: { ro: "Prezentare — camere și restaurant", en: "Tour — rooms and restaurant" },
+      title: { ro: "Prezentare — Camere și restaurant", en: "Video tour: Rooms & Restaurant" },
     },
     {
       src: "/videos/cases/hotel-maxim-2.mp4",
       poster: "/videos/cases/hotel-maxim-2.jpg",
-      title: { ro: "Reel — bucătăria restaurantului", en: "Reel — the restaurant kitchen" },
+      title: { ro: "Reel — Bucătăria restaurantului", en: "Reel: Inside the Restaurant Kitchen" },
     },
   ],
   dentalnet: [
     {
       src: "/videos/cases/dentalnet-1.mp4",
       poster: "/videos/cases/dentalnet-1.jpg",
-      title: { ro: "Prezentare video — clinica DentalNet", en: "Video tour — the DentalNet clinic" },
+      title: { ro: "Prezentare video — Clinica DentalNet", en: "Video tour: Inside DentalNet" },
     },
   ],
   "agro-salso": [
     {
       src: "/videos/cases/agro-salso-1.mp4",
       poster: "/videos/cases/agro-salso-1.jpg",
-      title: { ro: "Reel — grubere în lucru", en: "Reel — cultivators at work" },
+      title: { ro: "Reel — Grubere în lucru", en: "Reel: Cultivators in Action" },
     },
     {
       src: "/videos/cases/agro-salso-2.mp4",
       poster: "/videos/cases/agro-salso-2.jpg",
-      title: { ro: "Reel — Dexwal KBO", en: "Reel — Dexwal KBO" },
+      title: { ro: "Reel — Dexwal KBO", en: "Reel: Dexwal KBO" },
     },
   ],
-  "kgm-chery-oradea": [
+  "kgm-oradea": [
     {
-      src: "/videos/cases/kgm-chery-oradea-1.mp4",
-      poster: "/videos/cases/kgm-chery-oradea-1.jpg",
-      title: { ro: "Reel KGM — Rexton", en: "KGM reel — Rexton" },
+      src: "/videos/cases/kgm-oradea-1.mp4",
+      poster: "/videos/cases/kgm-oradea-1.jpg",
+      title: { ro: "Reel: KGM Rexton", en: "Reel: KGM Rexton" },
     },
+  ],
+  "chery-oradea": [
     {
-      src: "/videos/cases/kgm-chery-oradea-2.mp4",
-      poster: "/videos/cases/kgm-chery-oradea-2.jpg",
       /* The clip is a consultant answering the "chinezească?" objection in
-         the showroom, with burned-in subtitles — not a Tiggo 9 walkaround,
-         which is what this slot used to hold. */
+         the showroom, with burned-in subtitles. */
+      src: "/videos/cases/chery-oradea-1.mp4",
+      poster: "/videos/cases/chery-oradea-1.jpg",
       title: {
-        ro: "Reel Chery — întrebarea despre mașinile chinezești",
-        en: "Chery reel — the Chinese-car question",
+        ro: "Reel: „Chinezească?”",
+        en: "Reel: Addressing the Question About Chinese Cars",
       },
     },
     {
-      src: "/videos/cases/kgm-chery-oradea-3.mp4",
-      poster: "/videos/cases/kgm-chery-oradea-3.jpg",
-      title: { ro: "Reel Chery — caravană pe șosea", en: "Chery reel — convoy on the road" },
+      src: "/videos/cases/chery-oradea-2.mp4",
+      poster: "/videos/cases/chery-oradea-2.jpg",
+      title: { ro: "Reel: Tiggo 8 CSH", en: "Reel: Chery Tiggo 8 CSH" },
     },
   ],
   "harmony-garden": [
     {
       src: "/videos/cases/harmony-garden-1.mp4",
       poster: "/videos/cases/harmony-garden-1.jpg",
-      title: { ro: "Aftermovie — Colour Garden", en: "Aftermovie — Colour Garden" },
+      title: { ro: "Aftermovie — Colour Garden", en: "Video: Aftermovie — Colour Garden" },
     },
     {
       src: "/videos/cases/harmony-garden-2.mp4",
       poster: "/videos/cases/harmony-garden-2.jpg",
-      title: { ro: "Reel — Future Disco", en: "Reel — Future Disco" },
+      title: { ro: "Reel — Future Disco", en: "Video: Reel — Future Disco" },
     },
   ],
   "origins-cafe": [
@@ -913,7 +1131,7 @@ export const caseVideos: Record<string, CaseVideo[]> = {
     {
       src: "/videos/cases/thermx-1.mp4",
       poster: "/videos/cases/thermx-1.jpg",
-      title: { ro: "Reel — vară / iarnă", en: "Reel — summer / winter" },
+      title: { ro: "Reel — Vară / Iarnă", en: "Video: Reel — Summer / Winter" },
     },
   ],
 };
@@ -925,13 +1143,13 @@ export const caseStats: Record<string, CaseStat[]> = {
   "hotel-maxim": [
     {
       value: "+20%",
-      label: { ro: "rezervări în 6 luni", en: "bookings in 6 months" },
-      source: { ro: "cifră confirmată de client", en: "figure confirmed by the client" },
+      label: { ro: "Rezervări în 6 luni", en: "Bookings in six months" },
+      source: { ro: "Creștere confirmată de client", en: "client-confirmed result" },
     },
     {
       value: "4",
-      label: { ro: "canale administrate lunar", en: "channels managed monthly" },
-      source: { ro: "site, social media, profil Google, Google Ads", en: "site, social media, Google profile, Google Ads" },
+      label: { ro: "Canale digitale", en: "Channels managed" },
+      source: { ro: "Website, social media, profil Google, Google Ads", en: "website, social media, Google Business Profile and Google Ads" },
     },
     {
       value: "100%",
@@ -942,18 +1160,18 @@ export const caseStats: Record<string, CaseStat[]> = {
   dentalnet: [
     {
       value: "2",
-      label: { ro: "clinici, două registre separate", en: "clinics, two separate registers" },
-      source: { ro: "Kids și clinica generală", en: "Kids and the general clinic" },
+      label: { ro: "clinici, două registre separate", en: "Distinct communication systems" },
+      source: { ro: "Kids și clinica generală", en: "DentalNet & DentalNet Kids" },
     },
     {
       value: "2",
-      label: { ro: "profiluri Google rescrise separat", en: "Google profiles rebuilt separately" },
+      label: { ro: "profiluri Google rescrise separat", en: "Google Business Profiles" },
       source: { ro: "categorii și servicii corectate", en: "categories and services corrected" },
     },
     {
       value: "1",
-      label: { ro: "mascotă și sistem vizual propriu", en: "mascot and its own visual system" },
-      source: { ro: "direcția vizuală a clinicii Kids", en: "the Kids clinic's visual direction" },
+      label: { ro: "mascotă și sistem vizual propriu", en: "Custom mascot" },
+      source: { ro: "direcția vizuală a clinicii Kids", en: "developed for DentalNet Kids" },
     },
   ],
   "agro-salso": [
@@ -973,12 +1191,19 @@ export const caseStats: Record<string, CaseStat[]> = {
       source: { ro: "regulă din ghidul de voce", en: "a brand-voice rule" },
     },
   ],
-  "kgm-chery-oradea": [
+  "kgm-oradea": [
     {
-      value: "2",
-      label: { ro: "mărci, zero reciclare între ele", en: "brands, zero recycling between them" },
-      source: { ro: "KGM și Chery, registre separate", en: "KGM and Chery, separate registers" },
+      value: "40s",
+      label: { ro: "un script, o idee, un monolog", en: "one script, one idea, spoken" },
+      source: { ro: "formatul fix al scripturilor video", en: "the fixed video script format" },
     },
+    {
+      value: "100%",
+      label: { ro: "prețuri verificate în lista importatorului", en: "prices verified against the importer list" },
+      source: { ro: "lista oficială curentă, înainte de publicare", en: "the current official list, before publishing" },
+    },
+  ],
+  "chery-oradea": [
     {
       value: "40s",
       label: { ro: "un script, o idee, un monolog", en: "one script, one idea, spoken" },
@@ -1010,13 +1235,13 @@ export const caseStats: Record<string, CaseStat[]> = {
   "origins-cafe": [
     {
       value: "4",
-      label: { ro: "locații pe un singur sistem", en: "locations on one system" },
-      source: { ro: "ERA, Rogerius, Orășelul și Palatul Copiilor", en: "ERA, Rogerius, Orășelul and Palatul Copiilor" },
+      label: { ro: "locații", en: "locations" },
+      source: { ro: "ERA, Rogerius, Orășelul Copiilor și Palatul Copiilor.", en: "ERA, Rogerius, Orășelul and Palatul Copiilor" },
     },
     {
       value: "1",
-      label: { ro: "platformă proprie de fidelizare", en: "loyalty platform of its own" },
-      source: { ro: "app.originscafe.ro, construită de noi", en: "app.originscafe.ro, built by us" },
+      label: { ro: "platformă proprie de fidelizare", en: "Custom loyalty platform" },
+      source: { ro: "Dezvoltată de Epic Digital Hub.", en: "Developed by Epic Digital Hub" },
     },
     {
       value: "0",
@@ -1027,18 +1252,18 @@ export const caseStats: Record<string, CaseStat[]> = {
   thermx: [
     {
       value: "1",
-      label: { ro: "sursă de adevăr pentru datele tehnice", en: "source of truth for technical data" },
-      source: { ro: "toate materialele pornesc din ea", en: "every asset starts from it" },
+      label: { ro: "document tehnic de referință", en: "technical reference" },
+      source: { ro: "Baza tuturor informațiilor publicate.", en: "Consistent product data across all materials" },
     },
     {
       value: "4",
-      label: { ro: "canale acoperite la lansare", en: "channels covered at launch" },
-      source: { ro: "Facebook, Instagram, LinkedIn și site", en: "Facebook, Instagram, LinkedIn and the site" },
+      label: { ro: "canale digitale", en: "communication channels" },
+      source: { ro: "Website, Facebook, Instagram și LinkedIn.", en: "Website, Facebook, Instagram and LinkedIn" },
     },
     {
       value: "12",
-      label: { ro: "luni de strategie de marketing", en: "months of marketing strategy" },
-      source: { ro: "strategie de marketing și SEO", en: "marketing and SEO strategy" },
+      label: { ro: "luni", en: "month strategy" },
+      source: { ro: "Strategie de marketing și direcție SEO.", en: "Marketing plan and SEO strategy" },
     },
   ],
 };
@@ -1048,7 +1273,7 @@ export type CaseFaq = { q: string; a: string };
 
 export const caseFaqTitle: Record<Locale, string> = {
   ro: "Întrebări frecvente",
-  en: "Frequently asked questions",
+  en: "Frequently Asked Questions",
 };
 
 /* Seven per study, both locales, from FAQ_CASE_STUDIES_2026-10.pdf (07.10.2026)
@@ -1064,423 +1289,451 @@ export const caseFaqs: Record<Locale, Record<string, CaseFaq[]>> = {
     "hotel-maxim": [
       {
         q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Hotel Maxim?",
-        a: "Gestionăm ecosistemul digital al Hotel Maxim: website și copy, SEO, social media, Google Business Profile, comunicarea cu oaspeții și campaniile pentru cazare, restaurant, evenimente și segmentul corporate.",
+        a: "Am reconstruit integral website-ul și gestionăm conținutul digital, SEO, social media, profilul Google Business și campaniile Google Ads. Comunicarea acoperă cazarea, restaurantul, evenimentele și serviciile corporate.",
       },
       {
-        q: "Cum se construiește strategia de marketing pentru un hotel din Oradea?",
-        a: "Strategia trebuie să conecteze principalele puncte de contact ale unui potențial oaspete: Google, website, social media și comunicarea ofertelor. În cazul Hotel Maxim, acestea sunt coordonate ca parte a aceluiași sistem digital.",
+        q: "Cum construiți strategia de marketing pentru un hotel din Oradea?",
+        a: "Analizăm modul în care potențialii oaspeți caută și aleg un hotel, apoi organizăm comunicarea în jurul acestor comportamente. Website-ul, Google, social media și campaniile sunt coordonate pentru a crește vizibilitatea și a facilita rezervările directe.",
       },
       {
-        q: "Ce rol are SEO în promovarea unui hotel?",
-        a: "SEO ajută website-ul să răspundă mai bine căutărilor relevante pentru serviciile hotelului și completează prezența din Google Business Profile și celelalte canale digitale.",
+        q: "De ce este important un website bine construit pentru un hotel?",
+        a: "Website-ul este principalul canal propriu prin care hotelul își prezintă camerele, serviciile și ofertele. O structură clară, informațiile actualizate și accesul simplu la rezervări pot reduce dependența de platformele externe.",
       },
       {
-        q: "De ce este important Google Business Profile pentru un hotel?",
-        a: "Profilul Google este unul dintre punctele principale în care un potențial client găsește informații despre hotel, servicii și prezența locală. De aceea îl tratăm ca parte a ecosistemului digital, nu ca pe un canal separat.",
+        q: "Ce rol are SEO în promovarea Hotel Maxim?",
+        a: "Optimizarea SEO ajută website-ul să fie mai ușor de găsit pentru căutări relevante, precum cazare în Oradea sau hotel cu sală de conferințe. SEO completează prezența în Google Business Profile și campaniile Google Ads.",
       },
       {
-        q: "Marketingul hotelului include doar promovarea camerelor?",
-        a: "Nu. Comunicarea Hotel Maxim acoperă cazarea, restaurantul, evenimentele și segmentul corporate, fiecare cu propriile mesaje și obiective.",
+        q: "De ce administrați și profilul Google Business al hotelului?",
+        a: "Pentru că este unul dintre primele locuri în care potențialii oaspeți verifică locația, fotografiile, facilitățile și recenziile. Informațiile trebuie să fie corecte și actualizate permanent.",
       },
       {
-        q: "Ce rezultat public a avut colaborarea cu Hotel Maxim?",
-        a: "Rezultatul confirmat public este o creștere de 20% a rezervărilor în primele șase luni.",
+        q: "Ce rezultate a obținut Hotel Maxim în urma colaborării?",
+        a: "Hotelul a înregistrat o creștere de 20% a rezervărilor în primele șase luni, potrivit datelor confirmate de client. În aceeași perioadă, website-ul a fost reconstruit integral, iar comunicarea și campaniile au fost reorganizate.",
       },
       {
-        q: "Lucrați și cu alte hoteluri din Oradea?",
-        a: "Nu. Lucrăm cu un singur brand din aceeași categorie, în același oraș. Cât timp colaborarea cu Hotel Maxim este activă, nu lucrăm cu un hotel concurent din Oradea.",
+        q: "Colaborați și cu alte hoteluri din Oradea?",
+        a: "Nu. Oferim exclusivitate în categoria hotelurilor din Oradea pe durata colaborării cu Hotel Maxim.",
       },
     ],
     dentalnet: [
       {
         q: "Ce servicii de marketing gestionează Epic Digital Hub pentru DentalNet?",
-        a: "Am construit sistemele de comunicare și regulile de brand pentru cele două clinici DentalNet, de la social media și prezentarea medicilor până la materiale tipărite și optimizarea profilurilor Google.",
+        a: "Gestionăm strategia de comunicare, identitatea vizuală, conținutul social media, prezentarea medicilor, materialele tipărite și optimizarea profilurilor Google pentru cele două clinici.",
       },
       {
-        q: "Cum se construiește comunicarea pentru o clinică stomatologică?",
-        a: "Comunicarea trebuie să fie clară, consecventă și adaptată contextului medical. Serviciile, medicii și informațiile adresate pacienților trebuie prezentate într-un limbaj ușor de înțeles, fără să piardă rigoarea profesională.",
+        q: "Cum abordați marketingul unei clinici stomatologice?",
+        a: "Pornim de la serviciile oferite, specializările echipei și nevoile pacienților. Construim o comunicare clară, profesionistă și adaptată publicului, respectând normele de publicitate medicală.",
       },
       {
-        q: "Cum poate fi prezentată echipa medicală în comunicarea unei clinici?",
-        a: "Prin formate coerente care explică specializarea, rolul și activitatea fiecărui medic. Pentru DentalNet, prezentarea medicilor face parte din sistemul general de comunicare al clinicii.",
+        q: "Cum prezentați medicii unei clinici stomatologice?",
+        a: "Prin fotografii și conținut care explică specializarea, experiența și activitatea fiecărui medic. Informațiile trebuie să fie utile pacienților și să reflecte corect pregătirea profesională a echipei.",
       },
       {
-        q: "De ce sunt importante profilurile Google pentru o clinică stomatologică din Oradea?",
-        a: "Ele fac parte din prezența digitală locală a clinicii și trebuie să fie corelate cu identitatea, informațiile și comunicarea utilizată în celelalte canale.",
+        q: "De ce este importantă optimizarea Google Business pentru o clinică stomatologică?",
+        a: "Un profil Google configurat corect ajută pacienții să găsească serviciile, locația, programul și datele de contact ale clinicii. Categoriile relevante și informațiile actualizate contribuie la vizibilitatea locală.",
       },
       {
-        q: "Ce trebuie urmărit în publicitatea medicală?",
-        a: "Materialele trebuie construite în limitele cadrului legal și profesional aplicabil. În cazul fotografiilor sau filmărilor cu pacienți, folosirea imaginii se face numai pe baza documentației corespunzătoare.",
+        q: "Ce reguli trebuie respectate în publicitatea medicală?",
+        a: "Materialele trebuie să respecte legislația și normele profesionale aplicabile. Afirmațiile despre tratamente trebuie să fie corecte, iar utilizarea fotografiilor sau filmărilor cu pacienți necesită acordurile corespunzătoare.",
       },
       {
-        q: "Marketingul unei clinici înseamnă doar social media?",
-        a: "Nu. În cazul DentalNet, sistemul include social media, prezentarea medicilor, materiale tipărite, reguli de brand și optimizarea profilurilor Google.",
+        q: "Marketingul unei clinici include și materialele utilizate în cabinet?",
+        a: "Da. Comunicarea nu se limitează la mediul online. Pentru DentalNet Kids am creat inclusiv materiale vizuale și educative utilizate în clinică, păstrând aceeași identitate de brand.",
       },
       {
-        q: "Lucrați și cu alte clinici stomatologice din Oradea?",
-        a: "Nu. În Oradea, categoria este rezervată DentalNet pe durata colaborării.",
+        q: "Colaborați și cu alte clinici stomatologice din Oradea?",
+        a: "Nu. Pe durata colaborării cu DentalNet, nu preluăm proiecte pentru clinici stomatologice concurente din Oradea.",
       },
     ],
     "agro-salso": [
       {
         q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Agro Salso?",
-        a: "Am restructurat campaniile Google și Meta, am configurat măsurarea conversiilor și am reconstruit comunicarea produselor pe baza specificațiilor oficiale. Sistemul include website-ul, materialele comerciale și suportul pentru gestionarea cererilor.",
+        a: "Am reconstruit integral website-ul și catalogul de produse, am reorganizat campaniile Google și Meta Ads și am configurat măsurarea conversiilor. Ne ocupăm și de conținutul tehnic, materialele comerciale și organizarea comunicării produselor.",
       },
       {
-        q: "Cum se promovează online utilajele agricole?",
-        a: "Comunicarea trebuie să combine informația tehnică cu informația comercială relevantă pentru cumpărător. Website-ul, campaniile și materialele de produs trebuie să folosească aceleași date și aceeași structură de comunicare.",
+        q: "De ce a fost necesară refacerea completă a website-ului Agro Salso?",
+        a: "Pentru că portofoliul extins de utilaje avea nevoie de o structură mai clară, informații tehnice consecvente și un proces simplu de solicitare a ofertelor. Noul website reunește prezentarea produselor și funcționalitățile comerciale într-o structură unitară.",
       },
       {
-        q: "Cum comunicați un produs cu multe specificații tehnice?",
-        a: "Pornim de la documentația oficială și selectăm informațiile relevante pentru fiecare format, fără să modificăm sensul specificațiilor tehnice.",
+        q: "Cum promovați online utilajele agricole?",
+        a: "Construim comunicarea în jurul specificațiilor tehnice, aplicațiilor practice și informațiilor comerciale relevante. Combinăm website-ul, Google Ads, Meta Ads și materialele de produs pentru a atrage potențiali cumpărători și a genera solicitări de ofertă.",
       },
       {
-        q: "De unde provin specificațiile utilajelor prezentate?",
-        a: "Din documentația oficială a producătorilor din portofoliu. Specificațiile, compatibilitățile și prețurile sunt verificate înainte de publicare.",
+        q: "Cum prezentați produsele cu multe specificații tehnice?",
+        a: "Pornim de la documentația oficială a producătorilor și selectăm informațiile importante pentru cumpărător. Organizăm specificațiile într-un format clar, fără să modificăm valorile sau sensul datelor tehnice.",
       },
       {
-        q: "Ce rol au Google Ads și Meta Ads în promovarea utilajelor agricole?",
-        a: "În proiectul Agro Salso, cele două platforme sunt integrate într-un sistem care urmărește generarea și măsurarea cererilor, nu doar distribuirea de reclame.",
+        q: "De unde provin specificațiile și prețurile utilajelor?",
+        a: "Din documentația și listele oficiale ale producătorilor și furnizorilor. Verificăm specificațiile, compatibilitățile și informațiile comerciale înainte de publicare.",
       },
       {
-        q: "Website-ul face parte din strategia de marketing?",
-        a: "Da. Pentru Agro Salso, website-ul și prezentarea produselor sunt conectate cu materialele comerciale, campaniile și procesul de gestionare a cererilor.",
+        q: "Cum măsurați rezultatele campaniilor Google și Meta Ads?",
+        a: "Configurăm conversii pentru acțiunile relevante din website, în special formularele de solicitare a ofertelor. Astfel, putem analiza nu doar traficul și clicurile, ci și cererile generate prin campanii.",
       },
       {
-        q: "Lucrați și cu alți dealeri de utilaje agricole?",
-        a: "Nu lucrăm simultan cu dealeri concurenți direcți din aceeași categorie și aceeași piață.",
+        q: "Colaborați și cu alți dealeri de utilaje agricole?",
+        a: "Nu lucrăm simultan cu dealeri care concurează direct în aceeași categorie de produse și pe aceeași piață. Exclusivitatea face parte din modul nostru de colaborare.",
       },
     ],
-    "kgm-chery-oradea": [
+    "kgm-oradea": [
       {
-        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru KGM Oradea și Chery Oradea?",
-        a: "Construim și coordonăm sistemele lunare de comunicare pentru cele două mărci: lansări de modele, carusele, conținut comercial, stories și scenarii video.",
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru KGM Oradea?",
+        a: "Ne ocupăm de strategia de comunicare, conținutul social media, prezentările de modele, materialele comerciale și scenariile video. Producția include postări, carusele, stories și reels, organizate într-un calendar lunar.",
       },
       {
-        q: "Cum se promovează online un model auto nou?",
-        a: "Comunicarea pornește de la poziționarea modelului și informațiile oficiale disponibile, apoi este adaptată pentru lansare, social media, video și comunicare comercială.",
+        q: "Cum construiți comunicarea unui dealer auto?",
+        a: "Pornim de la gama de modele, publicul căruia i se adresează și informațiile relevante pentru cumpărători. Fiecare material are un subiect clar și prezintă caracteristici, dotări sau avantaje care pot fi verificate.",
       },
       {
-        q: "Cum sunt folosite specificațiile tehnice în conținutul auto?",
-        a: "Specificațiile sunt preluate din documentația oficială curentă a importatorilor și sunt adaptate formatului de comunicare fără a modifica informația tehnică.",
+        q: "De unde provin prețurile și specificațiile publicate?",
+        a: "Folosim documentația și listele oficiale KGM România. Prețurile, motorizările, echipările și ofertele sunt verificate înainte de publicare, iar promoțiile sunt comunicate împreună cu perioada de valabilitate.",
       },
       {
-        q: "De unde provin prețurile și ofertele publicate?",
-        a: "Din listele comerciale oficiale curente ale importatorilor. Promoțiile sunt publicate numai împreună cu perioada de valabilitate confirmată.",
+        q: "Cum realizați scenariile video pentru KGM Oradea?",
+        a: "Scriem scenarii concise, adaptate consultanților de vânzări care prezintă modelele în fața camerei. Fiecare video explică un subiect concret, folosind informații tehnice și comerciale relevante, într-un limbaj firesc.",
       },
       {
-        q: "Ce tipuri de conținut funcționează într-un sistem de comunicare auto?",
-        a: "Pentru KGM Oradea și Chery Oradea folosim o combinație de lansări, carusele, conținut comercial, stories și video, în funcție de model și mesaj.",
+        q: "Lucrați și cu dealeri auto concurenți din Oradea?",
+        a: "Nu. Respectăm exclusivitatea comercială și nu colaborăm simultan cu dealeri care concurează direct pe aceeași piață.",
+      },
+    ],
+    "chery-oradea": [
+      {
+        q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Chery Oradea?",
+        a: "Gestionăm strategia de comunicare, conținutul social media, prezentările de modele, materialele comerciale și scenariile video. Producția lunară include postări, carusele, stories și reels.",
       },
       {
-        q: "Realizați și scenarii pentru reels și video auto?",
-        a: "Da. Scenariile video fac parte din sistemul lunar de comunicare și sunt construite pornind de la informațiile relevante despre fiecare model.",
+        q: "Cum promovați o marcă auto nouă pe piața locală?",
+        a: "Construim conținut care răspunde întrebărilor cumpărătorilor despre modele, prețuri, dotări și tehnologii. Explicăm informațiile esențiale într-un limbaj accesibil, fără să presupunem că publicul cunoaște deja marca.",
       },
       {
-        q: "Lucrați și cu alți dealeri auto din Oradea?",
-        a: "Nu lucrăm simultan cu un dealer concurent direct din aceeași categorie locală.",
+        q: "Cum verificați prețurile și specificațiile publicate?",
+        a: "Folosim documentația și listele oficiale Chery România. Verificăm fiecare model, motorizare, echipare și ofertă înainte de publicare, inclusiv condițiile și perioada de valabilitate a promoțiilor.",
+      },
+      {
+        q: "Ce înseamnă conținut construit pentru un model și o echipare exactă?",
+        a: "Fiecare material prezintă o versiune concretă, de exemplu Tiggo 7 HEV în echiparea Luxury, cu dotările și caracteristicile corespunzătoare. Astfel, cumpărătorii primesc informații utile pentru comparații, fără confuzii între versiuni.",
+      },
+      {
+        q: "Lucrați și cu dealeri auto concurenți din Oradea?",
+        a: "Nu colaborăm simultan cu dealeri auto care concurează direct pe aceeași piață. Exclusivitatea comercială face parte din modul nostru de lucru.",
       },
     ],
     "harmony-garden": [
       {
-        q: "Ce gestionează Epic Digital Hub pentru Harmony Garden?",
-        a: "Construim comunicarea sezonului: masterplan, identitatea evenimentelor, materiale grafice, reels, teasere și mecanici comerciale.",
+        q: "Ce servicii gestionează Epic Digital Hub pentru Harmony Garden?",
+        a: "Ne ocupăm de strategia de comunicare a sezonului, identitatea vizuală a evenimentelor, design grafic, texte publicitare, reels, teasere video și materiale comerciale.",
       },
       {
-        q: "Cum se construiește comunicarea pentru un eveniment?",
-        a: "Pornim de la concept, public și obiectivul evenimentului. Acestea sunt apoi transpuse într-o identitate și într-un sistem coerent de materiale și conținut.",
+        q: "Cum construiți comunicarea unui eveniment?",
+        a: "Pornim de la concept, public și obiective. Stabilim direcția vizuală, mesajele principale și calendarul de promovare, apoi adaptăm materialele pentru fiecare canal.",
       },
       {
-        q: "De ce are nevoie fiecare eveniment de o identitate proprie?",
-        a: "Pentru ca publicul să poată diferenția rapid evenimentele din același sezon, fără ca acestea să piardă legătura cu brandul principal.",
+        q: "De ce are fiecare eveniment o identitate vizuală proprie?",
+        a: "Pentru ca publicul să recunoască imediat evenimentul și să îl diferențieze de celelalte din calendar. Identitatea individuală trebuie să rămână compatibilă cu imaginea clubului.",
       },
       {
-        q: "Ce tipuri de conținut sunt folosite pentru promovarea evenimentelor?",
-        a: "În cazul Harmony Garden, sistemul include materiale grafice, reels, teasere și mecanici comerciale, integrate într-un plan de comunicare al sezonului.",
+        q: "Ce materiale realizați pentru promovarea evenimentelor?",
+        a: "Afișe, flyere, materiale pentru social media, reels, teasere și conținut comercial. În funcție de eveniment, pregătim și materiale tipărite, bilete sau elemente necesare organizării.",
       },
       {
-        q: "În ce limbă este creat conținutul Harmony Garden?",
-        a: "În principal în maghiară. Conținutul este scris direct pentru publicul Harmony Garden, nu tradus mecanic din română.",
+        q: "În ce limbă comunicați pentru Harmony Garden?",
+        a: "În principal în maghiară, limba publicului căruia i se adresează clubul. Textele sunt redactate direct în această limbă, nu traduse literal din română.",
       },
       {
-        q: "De ce este important ca un text multilingv să fie adaptat, nu doar tradus?",
-        a: "Pentru că tonul, formulările și modul în care reacționează publicul diferă de la o limbă la alta. De aceea, comunicarea trebuie scrisă pentru publicul căruia îi este adresată.",
+        q: "De ce este importantă adaptarea comunicării la limba publicului?",
+        a: "Pentru că o formulare naturală într-o limbă poate suna artificial în alta. Adaptăm vocabularul, tonul și mesajele pentru ca publicul să le înțeleagă și să le perceapă firesc.",
       },
       {
         q: "Lucrați și cu alte cluburi concurente din aceeași zonă?",
-        a: "Nu lucrăm simultan cu un brand concurent direct din aceeași categorie și aceeași piață.",
+        a: "Nu. Pe durata colaborării, nu preluăm proiecte pentru cluburi care concurează direct cu Harmony Garden pe aceeași piață.",
       },
     ],
     "origins-cafe": [
       {
         q: "Ce servicii de marketing gestionează Epic Digital Hub pentru Origins Coffee & Drinks?",
-        a: "Am construit sistemul de fidelizare și lucrăm la ecosistemul de comunicare al brandului: profiluri Google, materiale pentru locații, meniuri și social media.",
+        a: "Gestionăm strategia de comunicare, conținutul social media, profilurile Google, meniurile și materialele grafice pentru locații. Am dezvoltat și platforma digitală de fidelizare a brandului.",
       },
       {
-        q: "Cum funcționează sistemul de fidelizare Origins?",
-        a: "Clientul păstrează cardul direct în telefon, iar interacțiunile eligibile sunt înregistrate digital la fiecare vizită. Clienții recurenți pot ajunge la nivelul Gold.",
+        q: "Cum funcționează programul de fidelizare Origins?",
+        a: "Clienții își păstrează cardul digital pe telefon, iar interacțiunile eligibile sunt înregistrate în platformă. Programul include și un nivel Gold destinat clienților recurenți.",
       },
       {
         q: "De ce este important un program de fidelizare pentru o cafenea?",
-        a: "Pentru un business bazat pe vizite recurente, fidelizarea creează o legătură directă între experiența din locație și relația digitală cu clientul.",
+        a: "Pentru că încurajează vizitele repetate și permite dezvoltarea unei relații directe cu clienții. Un sistem digital simplifică administrarea programului și utilizarea beneficiilor.",
       },
       {
-        q: "Ce rol au profilurile Google pentru o cafenea cu mai multe locații?",
-        a: "Ele fac parte din prezența locală a brandului și trebuie gestionate împreună cu informațiile, materialele și comunicarea celorlalte puncte de contact.",
+        q: "Cum gestionați comunicarea unui brand cu mai multe locații?",
+        a: "Stabilim reguli comune de identitate vizuală și ton, apoi adaptăm conținutul la produsele, publicul și particularitățile fiecărei locații. Brandul rămâne recognoscibil, fără ca toate cafenelele să comunice identic.",
+      },
+      {
+        q: "De ce sunt importante profilurile Google pentru cafenele?",
+        a: "Pentru că ajută clienții să găsească locația, programul, datele de contact și recenziile. Fiecare cafenea are nevoie de informații corecte și actualizate în profilul propriu.",
       },
       {
         q: "Marketingul unei cafenele înseamnă doar social media?",
-        a: "Nu. Pentru Origins, sistemul include social media, profiluri Google, meniuri, materiale pentru locații și programul de fidelizare.",
+        a: "Nu. Pentru Origins, comunicarea include social media, profiluri Google, meniuri, materiale tipărite, identitate vizuală și platforma de fidelizare. Toate contribuie la experiența clientului.",
       },
       {
-        q: "Cum se păstrează aceeași identitate în online și în locație?",
-        a: "Prin folosirea unui sistem comun de comunicare pentru social media, meniuri, materiale fizice și celelalte puncte de contact ale brandului.",
-      },
-      {
-        q: "Lucrați și cu alte cafenele din Oradea?",
-        a: "Nu. Pe durata colaborării cu Origins, nu lucrăm cu o cafenea concurentă din Oradea.",
+        q: "Colaborați și cu alte cafenele din Oradea?",
+        a: "Nu. Pe durata colaborării cu Origins Coffee & Drinks, nu preluăm proiecte pentru cafenele concurente din Oradea.",
       },
     ],
     thermx: [
       {
         q: "Ce este ThermX?",
-        a: "ThermX este o membrană nanoceramică termoizolantă produsă de Nano Revolution și aplicată prin pulverizare într-un strat de ordinul milimetrilor, destinată izolării termice a clădirilor.",
+        a: "ThermX este o membrană nanoceramică termoizolantă produsă de Nano Revolution, destinată izolării termice a clădirilor. Produsul se aplică prin pulverizare, într-un strat de ordinul milimetrilor.",
       },
       {
         q: "Cum se aplică ThermX?",
-        a: "Conform informațiilor utilizate în proiect, ThermX este aplicat prin pulverizare, într-un strat de ordinul milimetrilor.",
+        a: "Conform documentației utilizate în proiect, ThermX se aplică prin pulverizare, formând un strat subțire de membrană nanoceramică.",
       },
       {
         q: "Pentru ce este utilizat ThermX?",
-        a: "Produsul este destinat izolării termice a clădirilor și este poziționat ca o soluție tehnică bazată pe o membrană nanoceramică termoizolantă.",
+        a: "ThermX este destinat termoizolației clădirilor și este prezentat ca o soluție tehnică bazată pe o membrană nanoceramică aplicată prin pulverizare.",
       },
       {
-        q: "Cum se construiește comunicarea pentru un produs tehnic?",
-        a: "Procesul trebuie să înceapă de la o bază de informații verificată. Abia apoi aceleași date pot fi adaptate pentru website, SEO, materiale comerciale și campanii.",
+        q: "Cum construiți strategia de marketing pentru un produs tehnic?",
+        a: "Începem cu verificarea documentației și înțelegerea produsului. Analizăm piața și categoriile de cumpărători, apoi definim poziționarea, mesajele, structura website-ului și canalele de promovare.",
       },
       {
-        q: "Cum verificați afirmațiile tehnice înainte de publicare?",
-        a: "În proiectul ThermX lucrăm pornind de la o singură sursă de date. Nicio informație tehnică nu intră în comunicare înainte să fie verificată și documentată.",
+        q: "Cum verificați informațiile tehnice înainte de publicare?",
+        a: "Folosim un document centralizat, construit pe baza datelor tehnice disponibile și verificate. Specificațiile și afirmațiile publicitare sunt confruntate cu această documentație înainte de a fi incluse în materiale.",
       },
       {
-        q: "De ce este importantă o sursă unică de informații pentru un produs tehnic?",
-        a: "Pentru ca website-ul, materialele comerciale și comunicarea de marketing să utilizeze aceleași informații și să nu apară diferențe între canale.",
+        q: "De ce este importantă consecvența informațiilor tehnice?",
+        a: "Pentru că diferențele dintre website, broșuri și prezentările comerciale pot crea confuzie și pot afecta încrederea cumpărătorilor. Toate materialele trebuie să pornească de la aceleași specificații verificate.",
       },
       {
-        q: "Ce a construit Epic Digital Hub pentru ThermX?",
-        a: "Am consolidat baza de date tehnice și am construit poziționarea, strategia de marketing, strategia SEO, website-ul și sistemul complet de lansare al produsului.",
+        q: "Ce servicii a oferit Epic Digital Hub pentru ThermX?",
+        a: "Am organizat documentația tehnică de referință și am dezvoltat poziționarea brandului, cercetarea de piață, strategia de marketing pentru 12 luni, strategia SEO, website-ul și materialele de lansare, inclusiv conținutul video și comunicarea pentru social media.",
       },
     ],
   },
   en: {
     "hotel-maxim": [
       {
-        q: "What marketing services does Epic Digital Hub manage for Hotel Maxim?",
-        a: "We manage Hotel Maxim's digital ecosystem: website copy, SEO, social media, Google Business Profile, guest-facing communication and campaigns for rooms, restaurant, events and the corporate segment.",
+        q: "What marketing services does Epic Digital Hub provide for Hotel Maxim?",
+        a: "We coordinate website copy, SEO, social media, Google Business Profile management and Google Ads. Our work covers accommodation, the restaurant, events, corporate bookings and guest communication.",
       },
       {
-        q: "How is a marketing strategy built for a hotel in Oradea?",
-        a: "The strategy has to connect the main touchpoints of a potential guest: Google, the website, social media and offer communication. For Hotel Maxim, these are coordinated as part of a single digital system.",
+        q: "How do you develop a hotel marketing strategy in Oradea?",
+        a: "We start with how guests find and evaluate accommodation. Search visibility, website experience, booking functionality and relevant offers need to work together. For Hotel Maxim, we manage these elements as a coordinated strategy.",
       },
       {
-        q: "What role does SEO play in hotel marketing?",
-        a: "SEO helps the website answer the searches relevant to the hotel's services and complements the presence built through the Google Business Profile and the other digital channels.",
+        q: "Why is SEO important for hotels?",
+        a: "Hotel SEO helps potential guests find relevant accommodation, facilities and services through organic search. It supports direct bookings by making the hotel's own website easier to find when travellers are comparing options.",
       },
       {
-        q: "Why does the Google Business Profile matter for a hotel?",
-        a: "The Google profile is one of the main places where a potential guest finds information about the hotel, its services and its local presence. That is why we treat it as part of the digital ecosystem, not as a separate channel.",
+        q: "Why is Google Business Profile important for a hotel?",
+        a: "Travellers use Google Search and Maps to check locations, facilities, contact details and guest reviews. An accurate, actively managed profile helps guests make informed booking decisions.",
       },
       {
-        q: "Does hotel marketing only mean promoting the rooms?",
-        a: "No. Hotel Maxim's communication covers accommodation, the restaurant, events and the corporate segment, each with its own messages and objectives.",
+        q: "Does hotel marketing extend beyond room bookings?",
+        a: "Yes. Hotel Maxim also promotes its restaurant, conference facilities, events and corporate services. Each audience requires relevant messages and offers.",
       },
       {
-        q: "What public result has the collaboration with Hotel Maxim produced?",
-        a: "The confirmed public result is a 20% increase in bookings within the first six months.",
+        q: "What measurable results has Hotel Maxim achieved?",
+        a: "Hotel Maxim recorded a 20% increase in bookings during the first six months of the collaboration, as confirmed by the client.",
       },
       {
-        q: "Do you work with other hotels in Oradea?",
-        a: "No. We work with one brand per category, per city. While the collaboration with Hotel Maxim is active, we do not work with a competing hotel in Oradea.",
+        q: "Does Epic Digital Hub work with other hotels in Oradea?",
+        a: "No. We represent one brand per niche, per city. While working with Hotel Maxim, we do not accept competing hotel clients in Oradea.",
       },
     ],
     dentalnet: [
       {
-        q: "What marketing services does Epic Digital Hub manage for DentalNet?",
-        a: "We built the communication systems and brand rules for both DentalNet clinics, from social media and doctor presentation formats to printed materials and Google profile optimisation.",
+        q: "What marketing services does Epic Digital Hub provide for DentalNet?",
+        a: "We developed separate branding and communication systems for DentalNet and DentalNet Kids. Our work includes social media content, doctor presentations, printed materials, Google Business Profile optimisation and visual identity guidelines.",
       },
       {
-        q: "How is communication built for a dental clinic?",
-        a: "It has to be clear, consistent and adapted to the medical context. Services, doctors and patient-facing information must be presented in language that is easy to understand without losing professional rigour.",
+        q: "What makes dental clinic marketing different?",
+        a: "Medical information must be accurate, understandable and compliant with professional regulations. Effective dental marketing communicates services and expertise clearly without exaggerated claims or misleading promises.",
       },
       {
-        q: "How can a clinic present its medical team?",
-        a: "Through coherent formats that explain each doctor's specialisation, role and activity. For DentalNet, doctor presentation is part of the clinic's overall communication system.",
+        q: "How should a dental clinic introduce its medical team?",
+        a: "Through consistent profiles that explain each dentist's qualifications, specialisation and clinical role. At DentalNet, these presentations follow shared editorial and visual guidelines.",
       },
       {
-        q: "Why do Google profiles matter for a dental clinic in Oradea?",
-        a: "They are part of the clinic's local digital presence and must stay consistent with the identity, information and communication used across the other channels.",
+        q: "Why is local SEO important for dental clinics in Oradea?",
+        a: "Patients often search for dental services by treatment and location. Accurate Google Business Profiles, relevant service information and consistent business details help clinics appear in appropriate local searches.",
       },
       {
-        q: "What needs to be considered in medical advertising?",
-        a: "Every piece must be created within the applicable legal and professional framework. Patient photography and filming are used only with the appropriate image-consent documentation.",
+        q: "What restrictions apply to medical advertising?",
+        a: "Healthcare advertising must comply with applicable legislation and professional standards. Claims must be accurate, and identifiable patient photography or video requires appropriate consent documentation.",
       },
       {
-        q: "Is clinic marketing just social media?",
-        a: "No. For DentalNet, the system includes social media, doctor presentation, printed materials, brand rules and Google profile optimisation.",
+        q: "Is social media enough for a dental clinic?",
+        a: "No. DentalNet's communication also includes visual identity, doctor profiles, patient information, printed materials and Google Business Profile optimisation. These elements need to remain consistent across every patient touchpoint.",
       },
       {
-        q: "Do you work with other dental clinics in Oradea?",
-        a: "No. In Oradea, the category is reserved for DentalNet for the duration of the engagement.",
+        q: "Does Epic Digital Hub work with other dental clinics in Oradea?",
+        a: "No. DentalNet holds category exclusivity in Oradea for the duration of our collaboration.",
       },
     ],
     "agro-salso": [
       {
-        q: "What marketing services does Epic Digital Hub manage for Agro Salso?",
-        a: "We restructured the Google and Meta campaigns, implemented conversion measurement and rebuilt product communication around official manufacturer specifications. The system includes the website, commercial materials and support for enquiry management.",
+        q: "What marketing services does Epic Digital Hub provide for Agro Salso?",
+        a: "We restructured Google Ads and Meta Ads campaigns, implemented conversion tracking and rebuilt product content using official manufacturer specifications. Our work also covers website communication, commercial materials and the enquiry-management process.",
       },
       {
-        q: "How is agricultural machinery promoted online?",
-        a: "The communication has to combine technical information with the commercial information a buyer actually needs. The website, the campaigns and the product materials must use the same data and the same communication structure.",
+        q: "How do you market agricultural machinery online?",
+        a: "By connecting buyers with the technical and commercial information they need. Search campaigns, product pages, specifications and sales materials must present accurate, consistent information and make enquiries straightforward.",
       },
       {
-        q: "How do you communicate a product with many technical specifications?",
-        a: "We start from the official documentation and select the information relevant to each format, without changing the meaning of the technical specifications.",
+        q: "How do you communicate complex machinery specifications?",
+        a: "We work from official technical documentation, prioritising the details relevant to each buyer and communication format. Specifications are simplified for clarity, never altered for promotional effect.",
       },
       {
-        q: "Where do the published machinery specifications come from?",
-        a: "From the official documentation of the manufacturers in the portfolio. Specifications, compatibility and pricing are verified before publication.",
+        q: "How do you verify agricultural machinery specifications?",
+        a: "We use official manufacturer documentation to check technical characteristics, compatibility and published commercial information. Product details are verified before publication.",
       },
       {
-        q: "What role do Google Ads and Meta Ads play in promoting agricultural machinery?",
-        a: "In the Agro Salso project, the two platforms are integrated into one system built to generate and measure enquiries, not just to distribute ads.",
+        q: "How do Google Ads and Meta Ads support agricultural machinery sales?",
+        a: "Google Ads can reach buyers actively searching for machinery and equipment. Meta Ads can introduce products to relevant audiences and generate enquiries. For Agro Salso, both platforms are managed with conversion measurement in place.",
       },
       {
-        q: "Is the website part of the marketing strategy?",
-        a: "Yes. For Agro Salso, the website and product presentation are connected to the commercial materials, the campaigns and the enquiry-management process.",
+        q: "Why is the website central to agricultural machinery marketing?",
+        a: "Buyers need to compare equipment, review specifications and request quotations. Agro Salso's website connects product information with advertising, commercial materials and the sales enquiry process.",
       },
       {
-        q: "Do you work with other agricultural machinery dealers?",
-        a: "We do not work simultaneously with direct competitors in the same category and market.",
+        q: "Does Epic Digital Hub work with competing agricultural machinery dealers?",
+        a: "No. We do not represent direct competitors within the same market during an active collaboration.",
       },
     ],
-    "kgm-chery-oradea": [
+    "kgm-oradea": [
       {
-        q: "What marketing services does Epic Digital Hub manage for KGM Oradea and Chery Oradea?",
-        a: "We build and coordinate the monthly communication systems for both brands: model launches, carousels, commercial content, stories and video scripts.",
+        q: "What marketing services does Epic Digital Hub provide for KGM Oradea?",
+        a: "We develop the dealership's monthly digital communication, including model launches, social media content, promotional campaigns, vehicle presentations, carousels, stories and video scripts.",
       },
       {
-        q: "How is a new car model promoted online?",
-        a: "Communication starts from the model's positioning and the official information available, then it is adapted for the launch, social media, video and commercial communication.",
+        q: "How do you approach automotive marketing for KGM Oradea?",
+        a: "We focus on the information buyers need when comparing vehicles: specifications, equipment, performance, pricing and available offers. This information is presented through consistent visual formats and clear, model-specific messaging.",
       },
       {
-        q: "How are technical specifications used in automotive content?",
-        a: "Specifications are taken from the importers' current official documentation and adapted to each format without altering the technical information.",
+        q: "How do you verify vehicle prices and specifications?",
+        a: "We use current official KGM România documentation. Prices, powertrains, equipment and promotional conditions are checked before publication, with confirmed validity dates for time-sensitive offers.",
       },
       {
-        q: "Where do the published prices and offers come from?",
-        a: "From the importers' current official commercial lists. Promotions are published only with a confirmed validity period.",
+        q: "How are KGM Oradea's videos developed?",
+        a: "Each video focuses on one model, feature or buying question. Scripts are written for dealership sales consultants, using straightforward language and verified information, with approximately 40 seconds of spoken content.",
       },
       {
-        q: "What types of content work in an automotive communication system?",
-        a: "For KGM Oradea and Chery Oradea we use a mix of launches, carousels, commercial content, stories and video, depending on the model and the message.",
+        q: "Does Epic Digital Hub work with competing dealerships in Oradea?",
+        a: "No. We do not represent direct competitors within the same local market during an active collaboration.",
+      },
+    ],
+    "chery-oradea": [
+      {
+        q: "What marketing services does Epic Digital Hub provide for Chery Oradea?",
+        a: "We develop monthly digital content for Chery Oradea, including model launches, social media campaigns, vehicle comparisons, promotional posts, stories and reels. Every execution is based on verified information for the featured model and configuration.",
       },
       {
-        q: "Do you also write scripts for automotive reels and video?",
-        a: "Yes. Video scripts are part of the monthly communication system and are built from the relevant information about each model.",
+        q: "How do you introduce a new automotive brand to the market?",
+        a: "We begin with the questions potential buyers are asking. Brand background, vehicle specifications, hybrid technology, equipment and pricing are explained through accessible, product-specific content.",
       },
       {
-        q: "Do you work with other car dealers in Oradea?",
-        a: "We do not work simultaneously with a direct local competitor in the same category.",
+        q: "Where do Chery Oradea's published prices and offers come from?",
+        a: "All prices and promotional conditions are verified against current official Chery România documentation. Technical specifications are checked for the exact model, powertrain and trim featured.",
+      },
+      {
+        q: "Why do you develop content for individual models and trim levels?",
+        a: "Because equipment, performance and prices differ between configurations. Presenting the exact version, such as a Tiggo 7 HEV Luxury, allows buyers to evaluate the features and pricing relevant to their purchase.",
+      },
+      {
+        q: "Does Epic Digital Hub work with competing dealerships in Oradea?",
+        a: "No. We maintain category exclusivity and do not work with direct competitors in the same local market during an active engagement.",
       },
     ],
     "harmony-garden": [
       {
         q: "What does Epic Digital Hub manage for Harmony Garden?",
-        a: "We build the season's communication: masterplan, event identities, graphic materials, reels, teasers and commercial mechanics.",
+        a: "We manage the season's marketing communication, from campaign planning and event identities to graphic design, social media content, reels, video teasers and promotional materials.",
       },
       {
-        q: "How is communication built for an event?",
-        a: "We start from the concept, the audience and the event's objective. These are then translated into an identity and a coherent system of materials and content.",
+        q: "How do you develop a marketing campaign for an event?",
+        a: "We start with the event concept, target audience and commercial objective. From there, we develop the visual identity, messaging and promotional assets needed for the campaign.",
       },
       {
-        q: "Why does each event need its own identity?",
-        a: "So the audience can quickly tell the events of the same season apart, without losing the connection to the main brand.",
+        q: "Why does each event need its own visual identity?",
+        a: "A distinct identity helps audiences recognise individual events and understand what makes each one different, while maintaining a clear connection to the venue.",
       },
       {
-        q: "What types of content are used to promote events?",
-        a: "For Harmony Garden, the system includes graphic materials, reels, teasers and commercial mechanics, integrated into the season's communication plan.",
+        q: "What content do you produce for event promotion?",
+        a: "For Harmony Garden, we produce posters, flyers, social media graphics, reels, video teasers and supporting promotional materials, coordinated around the event calendar.",
       },
       {
-        q: "What language is Harmony Garden content created in?",
-        a: "Primarily Hungarian. The copy is written directly for the Harmony Garden audience rather than mechanically translated from Romanian.",
+        q: "What language is Harmony Garden's content written in?",
+        a: "Primarily Hungarian. We write the copy directly for its local and cross-border audience rather than translating Romanian content word for word.",
       },
       {
-        q: "Why does multilingual copy need to be adapted rather than just translated?",
-        a: "Because tone, phrasing and the way an audience responds differ from one language to another. Communication has to be written for the audience it addresses.",
+        q: "Why is locally written copy better than direct translation?",
+        a: "Because language carries cultural context. Natural phrasing, familiar expressions and the right tone make communication more relevant to the people it addresses.",
       },
       {
-        q: "Do you work with competing clubs in the same area?",
-        a: "We do not work simultaneously with a direct competitor in the same category and market.",
+        q: "Does Epic Digital Hub work with competing clubs in the same area?",
+        a: "No. We work with one brand per niche, per city. We don't take on direct local competitors while an existing partnership is active.",
       },
     ],
     "origins-cafe": [
       {
-        q: "What marketing services does Epic Digital Hub manage for Origins Coffee & Drinks?",
-        a: "We built the loyalty system and work across the brand's communication ecosystem: Google profiles, in-store materials, menus and social media.",
+        q: "What marketing services does Epic Digital Hub provide for Origins Coffee & Drinks?",
+        a: "We developed the digital loyalty platform and manage key areas of the brand's communication, including social media, Google Business Profiles, menus, photography and in-store marketing materials.",
       },
       {
-        q: "How does the Origins loyalty system work?",
-        a: "The customer keeps the card on their phone, and eligible interactions are recorded digitally with each visit. Returning customers can progress to the Gold tier.",
+        q: "How does the Origins digital loyalty programme work?",
+        a: "Customers keep their loyalty cards on their phones. Eligible visits are recorded digitally, and returning customers can progress to the Gold tier.",
       },
       {
-        q: "Why does a loyalty programme matter for a coffee shop?",
-        a: "For a business built on repeat visits, loyalty creates a direct link between the in-store experience and the digital relationship with the customer.",
+        q: "Why is a loyalty programme important for coffee shops?",
+        a: "Coffee shops depend heavily on repeat visits. A digital loyalty programme makes returning customers easier to recognise and gives the business a structured way to manage rewards.",
       },
       {
-        q: "What role do Google profiles play for a coffee shop with several locations?",
-        a: "They are part of the brand's local presence and must be managed together with the information, materials and communication of the other touchpoints.",
+        q: "Why are Google Business Profiles important for multi-location cafés?",
+        a: "Each location needs accurate information, relevant photography and a clear local presence. Well-maintained profiles help customers find the right café and understand what to expect before visiting.",
       },
       {
-        q: "Is coffee shop marketing just social media?",
-        a: "No. For Origins, the system includes social media, Google profiles, menus, in-store materials and the loyalty programme.",
+        q: "Is social media enough to market a coffee shop?",
+        a: "No. Social media is one part of the customer experience. For Origins, we also work on local search visibility, loyalty, menus, photography and communication inside the cafés.",
       },
       {
-        q: "How do you keep the same identity online and in the locations?",
-        a: "By using one shared communication system for social media, menus, physical materials and the brand's other touchpoints.",
+        q: "How do you maintain brand consistency across several locations?",
+        a: "We establish shared standards for visual identity, copy and photography, then adapt the content to the products, audience and context of each location.",
       },
       {
-        q: "Do you work with other coffee shops in Oradea?",
-        a: "No. While Origins is an active client, we do not work with a competing coffee shop in Oradea.",
+        q: "Does Epic Digital Hub work with other coffee shops in Oradea?",
+        a: "No. Origins is our exclusive coffee shop partner in Oradea. We don't work with competing brands in the same local market.",
       },
     ],
     thermx: [
       {
         q: "What is ThermX?",
-        a: "ThermX is a nanoceramic thermal-insulation membrane produced by Nano Revolution and spray-applied in a millimetre-scale layer for the thermal insulation of buildings.",
+        a: "ThermX is a nanoceramic thermal-insulation membrane produced by Nano Revolution. It is designed for building insulation and applied by spraying in a millimetre-scale layer.",
       },
       {
         q: "How is ThermX applied?",
-        a: "Based on the information used in the project, ThermX is spray-applied in a millimetre-scale layer.",
+        a: "ThermX is spray-applied to building surfaces in a thin, millimetre-scale layer, according to the product's technical specifications.",
       },
       {
         q: "What is ThermX used for?",
-        a: "The product is intended for the thermal insulation of buildings and is positioned as a technical solution based on a nanoceramic thermal-insulation membrane.",
+        a: "ThermX is intended for the thermal insulation of buildings. Its positioning centres on nanoceramic membrane technology and its specific application method.",
       },
       {
-        q: "How is communication built for a technical product?",
-        a: "The process has to start from a verified information base. Only then can the same data be adapted for the website, SEO, commercial materials and campaigns.",
+        q: "How do you market a highly technical product?",
+        a: "We start by establishing accurate product information, identifying the audiences and understanding their buying criteria. We then develop the positioning, website, SEO content and campaigns around that foundation.",
       },
       {
-        q: "How do you verify technical claims before publication?",
-        a: "In the ThermX project we work from a single source of data. No technical claim enters communication before it has been verified and documented.",
+        q: "How do you verify technical claims before publishing them?",
+        a: "For ThermX, we consolidated the product specifications into a documented technical reference. Claims are checked against that source before being used in marketing or sales materials.",
       },
       {
-        q: "Why does a technical product need a single source of information?",
-        a: "So the website, the commercial materials and the marketing communication use the same information, with no differences between channels.",
+        q: "Why is a single technical reference important?",
+        a: "It prevents conflicting specifications from appearing across the website, sales presentations and advertising. Customers and industry professionals receive consistent information, regardless of where they encounter the product.",
       },
       {
-        q: "What did Epic Digital Hub build for ThermX?",
-        a: "We consolidated the technical data and built the positioning, the marketing strategy, the SEO strategy, the website and the full product-launch system.",
+        q: "What did Epic Digital Hub deliver for ThermX?",
+        a: "We developed the technical reference document, product positioning, brand dossier, market research, buyer profiles, 12-month marketing strategy, SEO strategy, website and product launch, including presentations, scripts, video and campaign content.",
       },
     ],
   },

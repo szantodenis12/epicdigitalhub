@@ -428,6 +428,15 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
             </h2>
           </Parallax>
 
+          {/* The deck's closing paragraph, which carries the two-working-days
+              promise. It sits between the heading and the form because that is
+              where the deck puts it, and because the form is the thing it is
+              asking you to fill in. Capped at the reading measure like the rest
+              of the body copy. */}
+          <p className="mt-8 max-w-[44em] text-lg leading-[1.5] text-white/60 md:text-xl">
+            {copy.contact.body}
+          </p>
+
           {/* `md:flex-1`, NOT `flex-1`. On a phone this form is `flex-col`, and
               in a column `flex: 1 1 0%` sets the HEIGHT basis — it beat `h-16`
               and collapsed both inputs to their content height, about 18px,

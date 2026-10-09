@@ -2,9 +2,11 @@
    `applyPage`), moved here so it sits with the rest of the subpage copy. */
 
 const en = {
+  meta: { title: "Work With Us | Epic Digital Hub", description: "We work with one brand per niche, per city. Tell us about your business and we'll check whether we can work together." },
   kicker: "Apply",
-  title: "If your category is still available, let us talk.",
-  intro: "One brand per niche, per city. Tell us where you play and we will answer with a straight yes or no.",
+  title: "Good partnerships start with the right fit.",
+  intro:
+    "We work with one brand per niche, per city. Before discussing your project, we'll check whether your market is available and whether we're the right team for your business. Tell us a little about what you do and what you're looking to achieve. We'll take it from there.",
   fields: {
     name: "Your name",
     business: "Business name",
@@ -14,8 +16,8 @@ const en = {
     goal: "Where do you want to go?",
     budget: "Monthly marketing budget (estimate)",
   },
-  submit: "Check availability",
-  note: "We answer within 2 working days.",
+  submit: "Check Availability",
+  note: "We'll get back to you within two business days.",
   states: {
     checking: "Checking your category…",
     receivedTitle: "Your category is open.",
@@ -31,8 +33,9 @@ const en = {
 };
 
 const ro: typeof en = {
+  meta: { title: "Aplică pentru colaborare | Epic Digital Hub", description: "Lucrăm cu un singur brand din fiecare nișă, în fiecare oraș. Verifică dacă putem colabora și primește un răspuns în maximum două zile lucrătoare." },
   kicker: "Aplică",
-  title: "Dacă în categoria ta mai e loc, hai să vorbim.",
+  title: "Mai putem colabora cu un brand din nișa ta?",
   intro: "Un singur brand pe nișă, pe oraș. Spune-ne unde joci și răspundem cu un da sau un nu clar.",
   fields: {
     name: "Numele tău",
@@ -44,7 +47,7 @@ const ro: typeof en = {
     budget: "Buget lunar de marketing (estimare)",
   },
   submit: "Verifică disponibilitatea",
-  note: "Răspundem în 2 zile lucrătoare.",
+  note: "Îți răspundem în maximum două zile lucrătoare.",
   states: {
     checking: "Verificăm categoria ta…",
     receivedTitle: "Categoria ta e liberă.",

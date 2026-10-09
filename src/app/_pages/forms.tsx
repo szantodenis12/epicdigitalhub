@@ -22,7 +22,11 @@ import { CONTAINER, PageHero, TextSection } from "../_components/page-kit";
 
 export function applyMetadata(locale: Locale) {
   const d = applyContent[locale];
-  return buildMetadata(locale, { path: APPLY_PATH, title: d.kicker, description: d.intro });
+  return buildMetadata(locale, {
+    path: APPLY_PATH,
+    title: d.meta?.title ? { absolute: d.meta.title } : d.kicker,
+    description: d.meta?.description ?? d.intro,
+  });
 }
 
 export function ApplyPage({ locale }: { locale: Locale }) {
@@ -57,7 +61,11 @@ export function ApplyPage({ locale }: { locale: Locale }) {
 
 export function auditMetadata(locale: Locale) {
   const d = auditContent[locale];
-  return buildMetadata(locale, { path: AUDIT_PATH, title: d.kicker, description: d.intro });
+  return buildMetadata(locale, {
+    path: AUDIT_PATH,
+    title: d.meta?.title ? { absolute: d.meta.title } : d.kicker,
+    description: d.meta?.description ?? d.intro,
+  });
 }
 
 export function AuditPage({ locale }: { locale: Locale }) {

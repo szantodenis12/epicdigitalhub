@@ -40,18 +40,29 @@ export { caseStudyParams };
 
 export function caseStudiesMetadata(locale: Locale) {
   const d = caseStudiesContent[locale];
-  return buildMetadata(locale, { path: CASE_STUDIES_PATH, title: d.kicker, description: d.intro });
+  return buildMetadata(locale, {
+    path: CASE_STUDIES_PATH,
+    title: d.meta?.title ? { absolute: d.meta.title } : d.kicker,
+    description: d.meta?.description ?? d.intro,
+  });
 }
 
 export function CaseStudiesIndex({ locale }: { locale: Locale }) {
   const d = caseStudiesContent[locale];
+  /* Drafts have a page and a URL but no place in the listing — see
+     `draftCaseStudySlugs` in the content file. */
+  const studies = d.studies.filter((study) => !study.draft);
   return (
     <PageFrame locale={locale} path={CASE_STUDIES_PATH}>
       <PageHero
         label={d.kicker}
         title={d.title}
         intro={[d.intro]}
-        aside={<KeyList items={d.studies.map((study) => study.vertical)} />}
+        /* Unique industries, not one per study: three automotive pages share
+           "Automotive / Oradea" and two share "Hospitality / Oradea" since the
+           KGM/Chery/Jeep split, and the deck's own "Domenii" list is a list of
+           industries. Duplicates also collided as React keys. */
+        aside={<KeyList items={[...new Set(studies.map((study) => study.vertical))]} />}
       />
 
       {/* Picture-led, alternating sides, each image drifting on the page’s
@@ -59,7 +70,7 @@ export function CaseStudiesIndex({ locale }: { locale: Locale }) {
           without their sticky stack. */}
       <section className="bg-[#F5F2F2] pb-28">
         <div className={`${CONTAINER} flex flex-col gap-24 md:gap-32`}>
-          {d.studies.map((study, i) => (
+          {studies.map((study, i) => (
             <Link
               key={study.slug}
               href={localePath(locale, caseStudyPath(study.slug))}
@@ -116,8 +127,9 @@ export function caseStudyMetadata(locale: Locale, slug: string) {
   if (!study) return {};
   return buildMetadata(locale, {
     path: caseStudyPath(slug),
-    title: study.title,
-    description: study.summary,
+    title: study.meta?.title ? { absolute: study.meta.title } : study.title,
+    description: study.meta?.description ?? study.summary,
+    noindex: study.draft,
   });
 }
 

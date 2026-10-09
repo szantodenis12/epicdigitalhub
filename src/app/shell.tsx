@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { COPY, LOCALES, type Locale, localeHref, localePath } from "./content";
 import { SITE_URL } from "./robots";
+import { Analytics } from "@vercel/analytics/next";
 
 /* ---------------------------------------------------------------------------
    Shared root shell.
@@ -40,6 +41,8 @@ export type PageMeta = {
   path: string;
   title: string | { absolute: string };
   description: string;
+  /** keep this page out of the index - used by draft case studies */
+  noindex?: boolean;
 };
 
 /**
@@ -99,7 +102,7 @@ export function buildMetadata(locale: Locale, page?: PageMeta): Metadata {
       description: page ? description : m.twitterDescription,
       images: ["/images/og-hero.webp"],
     },
-    robots: { index: true, follow: true },
+    robots: page?.noindex ? { index: false, follow: false } : { index: true, follow: true },
   };
 }
 
@@ -203,6 +206,10 @@ export function Shell({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(locale)) }}
         />
         {children}
+        {/* Vercel Web Analytics. It renders nothing and injects its script
+            itself, so it sits at the end of <body> in the one shell both
+            locales share - one include covers /, /ro and every subpage. */}
+        <Analytics />
       </body>
     </html>
   );

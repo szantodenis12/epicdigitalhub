@@ -12,7 +12,7 @@ import {
   caseStudyPath,
   servicePath,
 } from "./routes";
-import { articleParams, caseStudyParams, serviceParams } from "./route-params";
+import { articleParams, publishedCaseStudyParams, serviceParams } from "./route-params";
 
 /**
  * Every real, indexable URL, in both locales.
@@ -32,7 +32,7 @@ const PAGES: [path: string, priority: number][] = [
   [SERVICES_PATH, 0.8],
   ...serviceParams().map(({ slug }) => [servicePath(slug), 0.7] as [string, number]),
   [CASE_STUDIES_PATH, 0.7],
-  ...caseStudyParams().map(({ slug }) => [caseStudyPath(slug), 0.6] as [string, number]),
+  ...publishedCaseStudyParams().map(({ slug }) => [caseStudyPath(slug), 0.6] as [string, number]),
   [ARTICLES_PATH, 0.6],
   ...articleParams().map(({ slug }) => [articlePath(slug), 0.5] as [string, number]),
   [NICHES_PATH, 0.7],

@@ -27,7 +27,10 @@ const articleMeta = (a: { category: string; date: string; readingTime: string })
 
 export function articlesMetadata(locale: Locale) {
   const d = articlesContent[locale];
-  return buildMetadata(locale, { path: ARTICLES_PATH, title: d.kicker, description: d.intro });
+  return buildMetadata(locale, {
+    path: ARTICLES_PATH, title: d.meta?.title ? { absolute: d.meta.title } : d.kicker,
+    description: d.meta?.description ?? d.intro,
+  });
 }
 
 export function ArticlesIndex({ locale }: { locale: Locale }) {
@@ -50,7 +53,7 @@ export function ArticlesIndex({ locale }: { locale: Locale }) {
                 index={i}
                 href={localePath(locale, articlePath(article.slug))}
                 title={article.title}
-                body={article.dek}
+                body={article.cardBody ?? article.dek}
                 meta={articleMeta(article)}
               />
             ))}
@@ -70,7 +73,7 @@ export function articleMetadata(locale: Locale, slug: string) {
   if (!article) return {};
   return buildMetadata(locale, {
     path: articlePath(slug),
-    title: article.title,
+    title: article.metaTitle ? { absolute: article.metaTitle } : article.title,
     description: article.dek,
   });
 }

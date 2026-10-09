@@ -23,7 +23,7 @@ export function nichesMetadata(locale: Locale) {
   const d = nichesContent[locale];
   return buildMetadata(locale, {
     path: NICHES_PATH,
-    title: d.kicker,
+    title: d.meta.title ? { absolute: d.meta.title } : d.kicker,
     description: d.meta.description,
   });
 }

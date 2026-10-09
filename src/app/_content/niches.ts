@@ -62,22 +62,22 @@ type IndustrySeed = { id: string; en: string; ro: string; niches: NicheSeed[] };
 const TAXONOMY: IndustrySeed[] = [
   {
     id: "horeca",
-    en: "HoReCa",
+    en: "Hospitality & Food",
     ro: "HoReCa",
     niches: [
-      { id: "cafenea", en: "Coffee shop / specialty coffee", ro: "Cafenea / specialty coffee" },
+      { id: "cafenea", en: "Coffee shop / Specialty coffee", ro: "Cafenea / Cafea de specialitate" },
       { id: "hotel", en: "Hotel", ro: "Hotel" },
       { id: "restaurant", en: "Restaurant", ro: "Restaurant" },
-      { id: "pub-bar", en: "Pub / bar", ro: "Pub / bar" },
-      { id: "pensiune", en: "Guesthouse / rural tourism", ro: "Pensiune / turism rural" },
+      { id: "pub-bar", en: "Pub / Bar", ro: "Pub / Bar" },
+      { id: "pensiune", en: "Guesthouse / Rural tourism", ro: "Pensiune / Turism rural" },
       { id: "catering", en: "Catering", ro: "Catering" },
-      { id: "cofetarie", en: "Pastry / confectionery", ro: "Cofetărie / patiserie" },
+      { id: "cofetarie", en: "Bakery / Patisserie", ro: "Cofetărie / Patiserie" },
     ],
   },
   {
     id: "medical",
-    en: "Medical & health",
-    ro: "Medical & sănătate",
+    en: "Medical & Healthcare",
+    ro: "Medical și sănătate",
     niches: [
       { id: "stomatologie", en: "Dental clinic", ro: "Stomatologie" },
       { id: "clinica-medicala", en: "Medical clinic", ro: "Clinică medicală" },
@@ -88,8 +88,8 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "auto",
-    en: "Auto & moto",
-    ro: "Auto & moto",
+    en: "Automotive & Mobility",
+    ro: "Auto și moto",
     niches: [
       { id: "showroom-auto", en: "Car showroom / dealership", ro: "Showroom / dealer auto" },
       { id: "service-auto", en: "Car service", ro: "Service auto" },
@@ -99,8 +99,8 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "agro-industrie",
-    en: "Agro & industry",
-    ro: "Agro & industrie",
+    en: "Agriculture & Industry",
+    ro: "Agricultură și industrie",
     niches: [
       { id: "utilaje-agricole", en: "Agro machinery", ro: "Utilaje agricole" },
       { id: "constructii", en: "Construction", ro: "Construcții" },
@@ -111,8 +111,8 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "evenimente",
-    en: "Events & entertainment",
-    ro: "Evenimente & entertainment",
+    en: "Events & Entertainment",
+    ro: "Evenimente și divertisment",
     niches: [
       { id: "garden-evenimente", en: "Event venue / garden", ro: "Local de evenimente / garden" },
       { id: "sala-evenimente", en: "Private events hall", ro: "Sală de evenimente private" },
@@ -121,7 +121,7 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "servicii-profesionale",
-    en: "Professional services",
+    en: "Professional Services",
     ro: "Servicii profesionale",
     niches: [
       { id: "avocatura", en: "Law firm", ro: "Avocatură" },
@@ -133,8 +133,8 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "beauty-lifestyle",
-    en: "Beauty & lifestyle",
-    ro: "Beauty & lifestyle",
+    en: "Beauty & Lifestyle",
+    ro: "Beauty și lifestyle",
     niches: [
       { id: "salon-infrumusetare", en: "Beauty salon", ro: "Salon de înfrumusețare" },
       { id: "fitness", en: "Gym", ro: "Sală de fitness" },
@@ -144,8 +144,8 @@ const TAXONOMY: IndustrySeed[] = [
   },
   {
     id: "curatenie",
-    en: "Cleaning & maintenance",
-    ro: "Curățenie & întreținere",
+    en: "Cleaning & Maintenance",
+    ro: "Curățenie și întreținere",
     niches: [
       { id: "curatatorie-haine", en: "Dry cleaning", ro: "Curățătorie haine" },
       { id: "curatare-incaltaminte", en: "Sneaker cleaning", ro: "Curățare încălțăminte" },
@@ -249,118 +249,121 @@ export type NichesCopy = {
     openOfTotal: string;
   };
   closing: { heading: string; cta: string; manifesto: string };
-  meta: { description: string };
+  meta: { title?: string; description: string };
 };
 
 const en: NichesCopy = {
-  kicker: "The niche map",
+  kicker: "The Niche Map",
   title: "We don't lock industries. We lock niches.",
-  intro:
-    "Origins is a coffee shop. That takes the coffee shop position in Oradea, nothing more. A restaurant, a pub or a guesthouse can still sign.",
-  heroSub: "Pick your city, find your niche, see whether the position is still open.",
+  intro: "Exclusivity is specific. Here's how it works in Oradea.",
+  heroSub:
+    "Origins holds the coffee shop niche in Oradea. Not the entire hospitality industry. Restaurants, pubs and guesthouses remain eligible to work with us. Find your city. Check your niche. If it's available, the position could be yours.",
   exampleKicker: "The rule, on real examples",
   industryOpen: "the industry stays open",
   how: {
-    kicker: "How it works",
+    kicker: "How exclusivity works",
     blocks: [
       {
-        title: "What counts as a niche",
-        body: "A niche is exactly what you do, not the field you operate in. Coffee shop does not mean HoReCa. Hotel Maxim holds the hotel position, not the city's entire tourism. The sharper the position, the more your exclusivity is worth.",
+        title: "Your niche, not your entire industry.",
+        body: "We define niches by what a business actually does, not by broad industry labels. A coffee shop isn't the same as a restaurant. A hotel isn't the same as a guesthouse. Exclusivity applies to your specific market position.",
       },
       {
-        title: "One niche, one city, one brand",
-        body: "In every city we sign a single brand per niche. While we work together, your direct competitor does not get in. Not at double the price either.",
+        title: "One niche. One city. One client.",
+        body: "We partner with only one brand in each niche, in each city. While our partnership is active, we won't work with a direct local competitor. No exceptions. No competing offers.",
       },
       {
-        title: "When the niche is taken",
-        body: "Two options: you join the waiting list, or, if you are in another city, your position is most likely still open. The rule applies per city, not per country.",
+        title: "What if your niche is taken?",
+        body: "You can join the waiting list or check availability in another city. Exclusivity is location-specific. A niche that's taken in Oradea may still be available in Cluj-Napoca, Timișoara or elsewhere.",
       },
       {
-        title: "How you check",
-        body: "Pick your city, then an industry, or search your niche directly. If it is open, you apply on the spot. If it is not on the list, tell us and we add it.",
+        title: "How to check availability",
+        body: "Select your city and industry, or search for your niche directly. If it's available, you can apply immediately. If you can't find your niche, let us know and we'll review it.",
       },
     ],
   },
   checker: {
-    kicker: "Check your niche",
-    sub: "Pick a city and an industry to see where every niche stands, or search yours directly.",
+    kicker: "Find your niche",
+    sub: "See which positions are taken, which are available and where your brand could fit.",
     cityLabel: "City",
-    searchPlaceholder: "Search your niche (barbershop, car service, law firm...)",
+    searchPlaceholder: "Search for your niche...",
     searchEmpty: "Nothing by that name on the list.",
     counters: { ocupat: "Taken", in_discutie: "In talks", liber: "Open" },
     statusLabel: { ocupat: "Taken", in_discutie: "In talks", liber: "Open" },
     reserve: "Claim the position",
-    notListed: "Your niche is not on the list?",
-    notListedCta: "Tell us about it",
+    notListed: "Can't find your niche?",
+    notListedCta: "Request a niche review",
     namesNote:
-      "Brand names appear only for active clients. Two positions reach beyond their own town: agro machinery is held nationally, and the event garden across Bihor.",
-    updated: "Updated",
+      "Client names are displayed only for active partnerships. Some exclusivity agreements extend beyond individual cities: agricultural machinery across Romania and event gardens throughout Bihor County.",
+    updated: "Last updated",
     openOfTotal: "open / total",
   },
   closing: {
-    heading: "One position per niche. If yours is open, we can talk this week.",
+    heading: "Your market. Your position. If your niche is still available, let's discuss what we could build together.",
     cta: "Apply for your niche",
-    manifesto: "Read the manifesto: one brand per niche",
+    manifesto: "Read our exclusivity manifesto",
   },
   meta: {
+    title: "The Niche Map | Exclusive Marketing Partnerships | Epic Digital Hub",
     description:
-      "The niche map: which positions are taken and which are open, city by city. We lock niches, not industries — one brand per niche, per city.",
+      "Check which business niches are available in your city. Epic Digital Hub works with one brand per niche, per city. Find out if yours is open.",
   },
 };
 
 const ro: typeof en = {
   kicker: "Harta nișelor",
-  title: "Nu blocăm industrii. Blocăm nișe.",
+  title: "Strategia ta nu ajunge și la concurență.",
   intro:
-    "Origins e cafenea. Asta ocupă poziția de cafenea în Oradea, atât. Un restaurant, un pub sau o pensiune poate semna oricând.",
-  heroSub: "Alege orașul, caută nișa ta și vezi dacă poziția e încă liberă.",
-  exampleKicker: "Regula, pe exemple reale",
+    "Lucrăm cu un singur brand din fiecare nișă, în fiecare oraș. Asta înseamnă că, pe durata colaborării, nu preluăm proiecte pentru concurenții tăi direcți.",
+  heroSub:
+    "Colaborarea cu o cafenea din Oradea nu ne împiedică să lucrăm cu un restaurant, un pub sau o pensiune din același oraș. Exclusivitatea privește concurența directă, nu întregul domeniu HoReCa. Verifică dacă nișa ta este disponibilă.",
+  exampleKicker: "Cum arată asta în practică?",
   industryOpen: "industria rămâne deschisă",
   how: {
     kicker: "Cum funcționează",
     blocks: [
       {
-        title: "Ce înseamnă o nișă",
-        body: "Nișa e exact ce faci tu, nu domeniul în care activezi. Cafenea nu înseamnă HoReCa. Hotel Maxim ocupă poziția de hotel, nu tot turismul din oraș. Cu cât poziția e definită mai precis, cu atât exclusivitatea ta valorează mai mult.",
+        title: "Definim nișa, nu doar industria.",
+        body: "Nu tratăm toate afacerile dintr-un domeniu ca fiind concurente. O cafenea și un restaurant fac parte din HoReCa, dar nu concurează neapărat pentru aceiași clienți. Stabilim nișa în funcție de activitatea afacerii, oferta comercială și piața în care activează.",
       },
       {
-        title: "O nișă, un oraș, un brand",
-        body: "În fiecare oraș semnăm un singur brand pe nișă. Cât timp lucrăm împreună, concurentul tău direct nu intră. Nici la preț dublu.",
+        title: "Un singur brand. O singură nișă. Un singur oraș.",
+        body: "În fiecare oraș, colaborăm cu un singur brand din aceeași nișă. Pe durata contractului, nu acceptăm proiecte de la concurenții săi direcți. Exclusivitatea nu este negociabilă, indiferent de bugetul oferit.",
       },
       {
-        title: "Când nișa e luată",
-        body: "Ai două variante: intri pe lista de așteptare sau, dacă ești în alt oraș, poziția ta e cel mai probabil liberă. Regula se aplică pe oraș, nu pe țară.",
+        title: "Ce se întâmplă dacă nișa este ocupată?",
+        body: "Te poți înscrie pe lista de așteptare. Dacă activezi într-un alt oraș, putem verifica separat disponibilitatea. Exclusivitatea este locală, cu excepția categoriilor pentru care stabilim o acoperire regională sau națională.",
       },
       {
-        title: "Cum verifici",
-        body: "Alege orașul, apoi industria, sau caută direct nișa ta. Dacă e liberă, aplici pe loc. Dacă nu apare în listă, scrie-ne și o adăugăm.",
+        title: "Cum verifici disponibilitatea?",
+        body: "Selectează orașul și domeniul de activitate sau caută direct nișa care te interesează. Dacă este disponibilă, poți trimite o solicitare. Dacă nu o găsești în listă, contactează-ne pentru verificare.",
       },
     ],
   },
   checker: {
-    kicker: "Verifică nișa ta",
-    sub: "Alege orașul și industria ca să vezi statusul fiecărei nișe, sau caut-o direct pe a ta.",
+    kicker: "Verifică disponibilitatea nișei tale",
+    sub: "Alege orașul și domeniul de activitate sau caută direct nișa.",
     cityLabel: "Oraș",
-    searchPlaceholder: "Caută nișa ta (barbershop, service auto, avocatură...)",
+    searchPlaceholder: "Ex.: restaurant, clinică veterinară, salon de înfrumusețare",
     searchEmpty: "Nimic cu numele ăsta în listă.",
     counters: { ocupat: "Ocupate", in_discutie: "În discuție", liber: "Libere" },
-    statusLabel: { ocupat: "Ocupat", in_discutie: "În discuție", liber: "Liber" },
+    statusLabel: { ocupat: "Ocupată", in_discutie: "În discuție", liber: "Disponibilă" },
     reserve: "Rezervă poziția",
-    notListed: "Nișa ta nu e în listă?",
+    notListed: "Nu găsești nișa ta?",
     notListedCta: "Scrie-ne despre ea",
     namesNote:
-      "Numele de brand apar doar la clienții activi. Două poziții trec dincolo de orașul lor: utilajele agricole sunt ocupate la nivel național, iar gardenul de evenimente în tot Bihorul.",
-    updated: "Actualizat",
-    openOfTotal: "libere / total",
+      "Numele brandurilor sunt afișate doar pentru clienții activi. În cazul utilajelor agricole, exclusivitatea se aplică la nivel național, iar pentru categoria cluburilor de tip garden, la nivelul județului Bihor.",
+    updated: "Situația din",
+    openOfTotal: "Nișe disponibile / Total",
   },
   closing: {
-    heading: "O singură poziție pe nișă. Dacă a ta e liberă, putem vorbi săptămâna asta.",
+    heading: "O singură poziție pentru fiecare nișă. Dacă nișa ta este disponibilă, putem discuta despre o colaborare.",
     cta: "Aplică pentru nișa ta",
-    manifesto: "Citește manifestul: un singur brand pe nișă",
+    manifesto: "Citește manifestul nostru despre exclusivitate",
   },
   meta: {
+    title: "Harta nișelor | Epic Digital Hub",
     description:
-      "Harta nișelor: ce poziții sunt ocupate și care sunt libere, oraș cu oraș. Blocăm nișe, nu industrii — un singur brand pe nișă, pe oraș.",
+      "Verifică disponibilitatea nișei tale în orașul în care activezi. Epic Digital Hub colaborează cu un singur brand din fiecare nișă, oferind exclusivitate față de concurenții direcți.",
   },
 };
 

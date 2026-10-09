@@ -55,7 +55,7 @@ if (typeof window !== "undefined") {
    user's call, so the home page still shows six verticals; ThermX keeps its
    case study at /case-studies/thermx. */
 const WORK_VISUALS = [
-  { bg: "#1FDB93", fg: "#1F1F1F", img: "/images/work-auto.webp", case: "kgm-chery-oradea" },
+  { bg: "#1FDB93", fg: "#1F1F1F", img: "/images/work-auto.webp", case: "kgm-oradea" },
   { bg: "#1F1F1F", fg: "#F5F2F2", img: "/images/work-dental.webp", case: "dentalnet" },
   {
     bg: "#D2F9EA",

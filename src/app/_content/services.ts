@@ -92,49 +92,52 @@ const ro: ServicesCopy = {
   applyPrefill: "Serviciul care mă interesează: ",
   hub: {
     kicker: "Ce facem",
-    h1: "Un singur plan. Tot ce trebuie ca să-l pui în mișcare.",
+    h1: "O singură strategie. Toate serviciile de care ai nevoie.",
     paragraphs: [
-      "Reclamele aduc oameni. Conținutul construiește familiaritate. Site-ul îi ajută să decidă. Datele ne arată unde merită să continuăm.",
-      "La Epic, toate pleacă de la aceeași strategie. Alegem ce are nevoie brandul tău, stabilim ordinea și ne ocupăm de execuție. Ai o echipă care înțelege întregul business și știe ce rol are fiecare lucru pe care îl face.",
+      "Reclamele atrag potențiali clienți. Conținutul le câștigă încrederea. Site-ul îi ajută să ia o decizie. Datele ne arată ce funcționează și unde merită să investim.",
+      "La Epic Digital Hub, toate serviciile lucrează în aceeași direcție. Alegem soluțiile potrivite pentru businessul tău, stabilim prioritățile și ne ocupăm de implementare. Lucrezi cu o echipă care înțelege imaginea de ansamblu, nu doar fiecare canal în parte.",
     ],
-    ctaPrimary: "Verifică disponibilitatea nișei tale",
+    ctaPrimary: "Verifică disponibilitatea în domeniul tău",
     ctaSecondary: "Vezi serviciile",
     start: {
       kicker: "De unde începem",
-      heading: "Mai întâi, vedem ce trebuie să se schimbe.",
+      heading: "Înainte să propunem soluții, vrem să înțelegem problema.",
       paragraphs: [
-        "Poate ai trafic, dar prea puține cereri. Poate vinzi bine prin recomandări, însă online nu se vede nivelul businessului. Sau poate investești deja în marketing și încă nu ai o explicație clară pentru rezultate.",
-        "Începem de acolo. Ne uităm la ofertă, public, concurență și la traseul unui client până la achiziție. Apoi stabilim ce construim, ce corectăm și ce merită buget acum.",
+        "Poate site-ul tău atrage vizitatori, dar prea puțini devin clienți. Poate primești recomandări, însă imaginea businessului tău în online nu reflectă calitatea serviciilor. Sau investești deja în marketing, dar nu știi cât de eficiente sunt campaniile.",
+        "Analizăm oferta, publicul, concurența și parcursul clientului, de la primul contact până la achiziție. Pe baza acestor informații, stabilim prioritățile și îți recomandăm investițiile care pot aduce cele mai bune rezultate.",
       ],
     },
     listKicker: "Serviciile",
     steps: {
       kicker: "Cum începem",
-      heading: "O discuție concretă, înainte de orice propunere.",
+      heading: "Înainte de orice ofertă, avem o discuție concretă.",
       items: [
         {
-          title: "Verificăm nișa.",
-          body: "Lucrăm cu un singur brand pe nișă, în fiecare oraș. Verificăm dacă există suprapuneri cu parteneriatele active.",
+          title: "Analizăm piața și concurența.",
+          body:
+            "Lucrăm cu un singur brand din fiecare nișă, în fiecare oraș. De aceea, verificăm mai întâi dacă există un parteneriat activ care ar putea crea un conflict de interese.",
         },
         {
-          title: "Schițăm direcția.",
-          body: "Dacă există disponibilitate, conturăm prioritățile, canalele relevante și primele 90 de zile.",
+          title: "Stabilim direcția.",
+          body:
+            "Dacă domeniul este disponibil, discutăm despre obiective, priorități, canalele potrivite și planul pentru primele 90 de zile.",
         },
         {
-          title: "Decidem împreună.",
-          body: "Clarificăm responsabilitățile, livrabilele și bugetul. Începem când planul are sens pentru ambele echipe.",
+          title: "Decidem împreună ce urmează.",
+          body:
+            "Stabilim clar ce face fiecare echipă, ce livrăm și ce buget este necesar. Începem colaborarea doar atunci când există o direcție agreată de ambele părți.",
         },
       ],
     },
     closing: {
-      heading: "Spune-ne unde vrei să ajungă businessul tău.",
-      line: "Noi venim cu o perspectivă asupra a ceea ce trebuie construit până acolo.",
+      heading: "Spune-ne ce vrei să obții pentru businessul tău.",
+      line: "Îți spunem ce considerăm că trebuie făcut pentru a ajunge acolo.",
       cta: "Verifică disponibilitatea nișei tale",
     },
     meta: {
       title: "Servicii de marketing și dezvoltare web | Epic Digital Hub",
       description:
-        "Strategie, campanii PPC, SEO și GEO, social media, video, design și dezvoltare web. O echipă, un plan comun. Vezi serviciile Epic Digital Hub.",
+        "Strategie de marketing, campanii PPC, SEO și GEO, social media, producție video, design și dezvoltare web. Servicii coordonate de o singură echipă.",
     },
   },
   exclusivity: {
@@ -149,83 +152,97 @@ const ro: ServicesCopy = {
     {
       slug: "campanii-ppc",
       num: "01",
-      name: "Campanii Media PPC",
+      name: "Campanii PPC",
       hubDescription:
         "Campanii Google și Meta construite în jurul ofertei tale și al unui obiectiv comercial clar. Urmărim ce se întâmplă după click și ajustăm bugetele pe baza rezultatelor.",
-      hubLink: "Vezi cum lucrăm cu reclamele",
+      hubLink: "Vezi cum gestionăm campaniile",
       hero: {
-        h1: "Bugetul tău trebuie să aibă o explicație.",
+        h1: "Fiecare leu investit trebuie să aibă un scop.",
         paragraphs: [
-          "Unde se duce. Ce aduce. Ce schimbăm mai departe.",
-          "Construim și gestionăm campanii Google și Meta pornind de la oferta ta, de la oamenii care ar putea cumpăra și de la ce se întâmplă după ce ajung pe site. Fiecare campanie are un obiectiv, un mod de măsurare și un motiv pentru care primește buget.",
+          "Unde investim. Ce rezultate obținem. Ce schimbăm în continuare.",
+          "Creăm și administrăm campanii Google Ads și Meta Ads pornind de la oferta ta, publicul căruia te adresezi și obiectivele comerciale. Nu urmărim doar clickuri sau afișări, ci ceea ce se întâmplă după ele.",
+          "Fiecare campanie are un obiectiv definit, un buget justificat și indicatori prin care îi evaluăm performanța.",
         ],
-        cta: "Hai să discutăm despre campaniile tale",
+        cta: "Discută cu noi despre campaniile tale",
       },
       direction: {
         kicker: "Ce urmărim",
-        heading: "De la reclamă până la cerere sau comandă.",
+        heading:
+          "Nu contează doar câți oameni ajung pe site. Contează ce fac acolo.",
         paragraphs: [
-          "Un mesaj bun poate aduce vizitatori. Ca investiția să aibă sens, trebuie să funcționeze și pagina pe care ajung, formularul pe care îl completează și modul în care preiei cererea.",
-          "Privim tot acest traseu. Dacă problema este în ofertă sau în site, o discutăm înainte să creștem bugetul. Dacă o campanie aduce cereri nepotrivite, schimbăm mesajul, direcționarea sau criteriile după care o evaluăm.",
+          "O reclamă poate atrage vizitatori, dar rezultatele depind și de ceea ce găsesc după ce dau click: oferta, pagina de destinație, formularul de contact și modul în care sunt preluate solicitările.",
+          "Analizăm întregul parcurs. Dacă problema este în ofertă sau pe site, o identificăm înainte să recomandăm creșterea bugetului. Dacă reclamele atrag persoane nepotrivite, ajustăm mesajele, audiențele și criteriile de optimizare.",
         ],
       },
       deliverablesTitle: "Ce include colaborarea",
       deliverables: [
         {
-          title: "Analiza conturilor și a ofertei.",
-          body: "Vedem ce s-a testat, ce a produs rezultate și ce informații lipsesc.",
+          title: "Analiza conturilor și a ofertei",
+          body:
+            "Verificăm campaniile anterioare, rezultatele obținute și datele disponibile. Identificăm ce merită păstrat și ce trebuie corectat.",
         },
         {
-          title: "Planul de campanii.",
-          body: "Stabilim rolul fiecărui canal, publicurile, mesajele și alocarea inițială a bugetului.",
+          title: "Strategia de campanii",
+          body:
+            "Stabilim canalele potrivite, audiențele, mesajele, obiectivele și distribuția inițială a bugetului.",
         },
         {
-          title: "Texte și direcții creative.",
-          body: "Construim variante relevante pentru produs, public și etapa de cumpărare.",
+          title: "Texte și concepte creative",
+          body:
+            "Pregătim mesaje și materiale publicitare adaptate produsului, publicului și etapei în care se află potențialul client.",
         },
         {
-          title: "Configurare și lansare.",
-          body: "Organizăm conturile, campaniile și măsurarea conversiilor relevante.",
+          title: "Configurare și lansare",
+          body:
+            "Organizăm conturile și campaniile, configurăm măsurarea conversiilor și pregătim lansarea.",
         },
         {
-          title: "Optimizare continuă.",
-          body: "Verificăm căutările, excluderile, audiențele și materialele. Ajustăm pe baza datelor acumulate.",
+          title: "Optimizare continuă",
+          body:
+            "Analizăm termenii de căutare, excluderile, audiențele, reclamele și rezultatele. Ajustăm campaniile pe baza datelor, nu a presupunerilor.",
         },
         {
-          title: "Raportare explicată.",
-          body: "Vezi rezultatele, limitele datelor și deciziile pentru perioada următoare.",
+          title: "Analiză și raportare",
+          body:
+            "Primești rapoarte clare despre performanță, limitele măsurării și deciziile propuse pentru perioada următoare.",
         },
       ],
       how: {
-        kicker: "Cum lucrăm",
-        heading: "Începem cu ipoteze clare. Continuăm cu ce confirmă datele.",
+        kicker: "Testare și optimizare",
+        heading: "Testăm cu un scop. Optimizăm pe baza rezultatelor.",
         paragraphs: [
-          "Stabilim ce vrem să aflăm din primele campanii și ce buget putem aloca testării. Urmărim rezultatele suficient cât să avem o bază de decizie, apoi ajustăm mesajele și distribuția investiției. Creșterea bugetului vine împreună cu o justificare comercială.",
+          "Stabilim de la început ce vrem să verificăm și ce buget alocăm testelor. Lăsăm campaniile să acumuleze suficiente date pentru a lua decizii relevante, apoi ajustăm mesajele și distribuția bugetului.",
+          "Recomandăm creșterea investiției atunci când rezultatele oferă argumente comerciale pentru această decizie.",
         ],
       },
       faq: [
         {
           q: "Cu ce buget ar trebui să începem?",
-          a: "Depinde de piață, ofertă, aria geografică și obiectiv. Stabilim separat bugetul plătit platformelor, costul administrării și producția materialelor, în funcție de proiect.",
+          a:
+            "Depinde de industrie, concurență, ofertă, zona geografică și obiective. Bugetul de publicitate, administrarea campaniilor și producția materialelor sunt stabilite separat, în funcție de proiect.",
         },
         {
           q: "Puteți prelua campanii care rulează deja?",
-          a: "Da. Începem prin a verifica structura conturilor, istoricul și măsurarea. Păstrăm ceea ce are sens și propunem modificări argumentate.",
+          a:
+            "Da. Analizăm structura conturilor, istoricul campaniilor și configurarea măsurării. Păstrăm ce funcționează și intervenim acolo unde există motive concrete.",
         },
         {
           q: "Cum evaluăm rezultatele?",
-          a: "În funcție de business: cereri relevante, programări, comenzi sau alte acțiuni comerciale. Atunci când datele sunt disponibile, legăm costul promovării de calitatea cererilor și de vânzările generate.",
+          a:
+            "Prin indicatori relevanți pentru business: cereri calificate, programări, comenzi sau alte conversii importante. Acolo unde datele permit, analizăm și legătura dintre costul promovării și vânzările generate.",
         },
       ],
       closing: {
-        heading: "Ce ar trebui să aducă următorul tău buget de promovare?",
-        line: "Pornim de la această întrebare și construim campaniile în jurul răspunsului.",
+        heading:
+          "Ce rezultate ar trebui să îți aducă următorul buget de publicitate?",
+        line:
+          "Pornim de la obiectivele tale și construim campaniile în jurul lor.",
         cta: "Discută cu Epic",
       },
       meta: {
-        title: "Campanii PPC Google și Meta | Epic Digital Hub",
+        title: "Campanii PPC Google Ads și Meta Ads | Epic Digital Hub",
         description:
-          "Campanii Google și Meta cu obiective clare, optimizare continuă și raportare explicată. Conectăm reclamele cu oferta, site-ul și rezultatele comerciale.",
+          "Administrare campanii Google Ads și Meta Ads. Strategie, creație, optimizare și raportare, cu accent pe cereri relevante, vânzări și rezultate măsurabile.",
       },
     },
     {
@@ -234,82 +251,100 @@ const ro: ServicesCopy = {
       name: "SEO și GEO",
       hubDescription:
         "Punem în ordine informația despre businessul tău: în site, în căutări și în sursele din care sistemele AI își construiesc răspunsurile. Conținut clar, structură bună, prezență coerentă.",
-      hubLink: "Vezi cum construim vizibilitatea",
+      hubLink: "Vezi cum îți creștem vizibilitatea",
       hero: {
-        h1: "Când oamenii caută ce faci tu, trebuie să înțeleagă de ce să te aleagă.",
+        h1: "Să fii găsit e important. Să fii ales contează și mai mult.",
         paragraphs: [
-          "Construim o prezență online clară pentru oameni, motoare de căutare și sisteme AI. Punem în ordine site-ul, dezvoltăm conținut relevant și facem informațiile despre businessul tău mai ușor de găsit și de interpretat.",
+          "Optimizăm prezența digitală a brandului tău pentru motoarele de căutare și sistemele AI.",
+          "Corectăm problemele tehnice, organizăm informațiile și dezvoltăm conținut care răspunde întrebărilor reale ale clienților. Obiectivul este ca businessul tău să fie mai ușor de găsit, de înțeles și de evaluat.",
         ],
-        cta: "Hai să discutăm despre vizibilitatea ta",
+        cta: "Hai să discutăm despre vizibilitatea ta online",
       },
       direction: {
-        kicker: "Direcția",
-        heading: "Răspunsuri bune, susținute de un site bine construit.",
+        kicker: "Abordarea noastră",
+        heading: "Conținut relevant. Structură corectă. Informații credibile.",
         paragraphs: [
-          "Pornim de la întrebările pe care le au clienții înainte să cumpere: ce oferi, cui i se potrivește, cum funcționează și de ce ar avea încredere în tine.",
-          "SEO urmărește vizibilitatea în rezultatele organice ale motoarelor de căutare. GEO adaugă atenție asupra felului în care informația despre brand poate fi înțeleasă și folosită în răspunsurile generate de AI. Le abordăm împreună, prin aceeași bază: informație utilă, structură accesibilă și afirmații care pot fi susținute.",
+          "Înainte să cumpere, oamenii caută informații. Vor să știe ce oferi, cât de potrivite sunt serviciile tale, cum lucrezi și ce te diferențiază.",
+          "SEO urmărește îmbunătățirea vizibilității în rezultatele organice ale motoarelor de căutare.",
+          "GEO se concentrează pe modul în care informațiile despre un brand pot fi interpretate și utilizate de sistemele de inteligență artificială în răspunsurile generate.",
+          "Abordăm aceste două direcții împreună, pornind de la aceleași principii: informații corecte, conținut bine organizat și o structură tehnică accesibilă.",
         ],
       },
-      deliverablesTitle: "Ce lucrăm",
+      deliverablesTitle: "Ce optimizăm",
       deliverables: [
         {
-          title: "Audit tehnic și de conținut.",
-          body: "Identificăm paginile slabe, informațiile lipsă și problemele care îngreunează accesul la conținut.",
+          title: "Audit tehnic și de conținut",
+          body:
+            "Identificăm problemele de indexare, paginile care necesită îmbunătățiri, informațiile lipsă și obstacolele tehnice care afectează accesibilitatea conținutului.",
         },
         {
-          title: "Cercetarea căutărilor.",
-          body: "Grupăm subiectele după serviciile tale și după intenția oamenilor care caută.",
+          title: "Cercetarea cuvintelor-cheie și a intențiilor de căutare",
+          body:
+            "Analizăm ce caută potențialii clienți și organizăm subiectele în funcție de servicii, relevanță și intenția de cumpărare.",
         },
         {
-          title: "Structura site-ului.",
-          body: "Organizăm paginile și legăturile dintre ele, astfel încât fiecare să aibă un rol clar.",
+          title: "Arhitectura website-ului",
+          body:
+            "Organizăm paginile, navigarea și legăturile interne pentru ca informațiile să fie accesibile și ușor de parcurs.",
         },
         {
-          title: "Pagini de servicii și conținut util.",
-          body: "Explicăm concret oferta, procesul, diferențele și întrebările frecvente.",
+          title: "Pagini de servicii și conținut informativ",
+          body:
+            "Dezvoltăm conținut care explică oferta, avantajele, procesul de lucru și răspunde întrebărilor frecvente ale clienților.",
         },
         {
-          title: "Prezență locală.",
-          body: "Aliniem informațiile despre locație, servicii și date de contact, acolo unde businessul are relevanță locală.",
+          title: "SEO local",
+          body:
+            "Optimizăm informațiile despre locații, servicii și datele de contact pentru businessurile care se adresează unei piețe locale.",
         },
         {
-          title: "Informații despre brand și date structurate.",
-          body: "Facem explicite relațiile dintre companie, servicii și persoanele relevante, unde implementarea permite.",
+          title: "Informații despre brand și date structurate",
+          body:
+            "Organizăm informațiile despre companie, servicii și persoanele relevante și implementăm date structurate acolo unde sunt aplicabile.",
         },
         {
-          title: "Monitorizare.",
-          body: "Urmărim vizibilitatea, traficul relevant și acțiunile comerciale pe care le putem măsura.",
+          title: "Monitorizare și analiză",
+          body:
+            "Urmărim vizibilitatea organică, traficul relevant și conversiile care pot fi măsurate, pentru a evalua rezultatele optimizărilor.",
         },
       ],
       how: {
         kicker: "Cum stabilim prioritățile",
-        heading: "Începem cu paginile care contează pentru business.",
+        heading:
+          "Începem cu paginile care pot influența direct rezultatele businessului.",
         paragraphs: [
-          "Corectăm mai întâi problemele care afectează accesul și înțelegerea site-ului. Dezvoltăm apoi paginile apropiate de decizia de cumpărare și extindem conținutul în funcție de întrebările reale ale publicului.",
+          "Corectăm mai întâi problemele tehnice care afectează accesul la conținut și indexarea.",
+          "Continuăm cu paginile de servicii și produsele importante, apoi dezvoltăm conținut suplimentar în funcție de întrebările publicului și oportunitățile identificate.",
+          "Nu publicăm conținut doar pentru a crește numărul de pagini. Fiecare intervenție trebuie să aibă o justificare.",
         ],
       },
       faq: [
         {
-          q: "Puteți garanta prima poziție sau apariția în răspunsurile AI?",
-          a: "Nu. Controlăm calitatea implementării și a conținutului. Selecția și ordonarea rezultatelor aparțin platformelor, iar vizibilitatea poate varia.",
+          q:
+            "Puteți garanta prima poziție în Google sau apariția în răspunsurile AI?",
+          a:
+            "Nu. Putem controla calitatea optimizărilor și a conținutului, dar afișarea și ordonarea rezultatelor sunt decise de platforme. Nicio agenție nu poate garanta aceste poziții.",
         },
         {
-          q: "Cât durează până vedem rezultate?",
-          a: "Depinde de starea site-ului, concurență și amploarea intervențiilor. Stabilim etape și indicatori de progres după audit, fără să promitem un termen identic pentru orice proiect.",
+          q: "Cât durează până apar rezultatele?",
+          a:
+            "Depinde de situația actuală a website-ului, nivelul concurenței și amploarea optimizărilor. După audit, stabilim un plan de lucru și indicatori prin care urmărim progresul.",
         },
         {
-          q: "Trebuie să publicăm articole în fiecare săptămână?",
-          a: "Frecvența vine după priorități. Uneori, rescrierea paginilor de servicii și corectarea structurii sunt primele lucruri de făcut.",
+          q: "Este necesar să publicăm articole în fiecare săptămână?",
+          a:
+            "Nu neapărat. În unele cazuri, optimizarea paginilor existente și corectarea problemelor tehnice pot avea prioritate față de publicarea de articole noi.",
         },
       ],
       closing: {
-        heading: "Să vedem cât de clar vorbește internetul despre businessul tău.",
-        cta: "Discută cu Epic",
+        heading:
+          "Cât de ușor îți găsesc clienții businessul atunci când au nevoie de el?",
+        cta: "Hai să analizăm vizibilitatea brandului tău",
       },
       meta: {
-        title: "SEO și GEO pentru brandul tău | Epic Digital Hub",
+        title: "Servicii SEO și GEO | Epic Digital Hub",
         description:
-          "Optimizare tehnică, conținut și prezență locală pentru un brand mai ușor de găsit și de înțeles în căutări și în experiențele AI.",
+          "Optimizare SEO și GEO pentru motoarele de căutare și platformele AI. Audit tehnic, structură, conținut, SEO local și date structurate.",
       },
     },
     {
@@ -318,165 +353,195 @@ const ro: ServicesCopy = {
       name: "Social Media Management",
       hubDescription:
         "Dăm conturilor tale o direcție pe care oamenii o pot recunoaște. Mesaje, design și conținut care se leagă de ceea ce vinzi și de felul în care vrei să fii perceput.",
-      hubLink: "Vezi cum gestionăm social media",
+      hubLink: "Vezi cum gestionăm comunicarea",
       hero: {
-        h1: "Brandul tău trebuie să se recunoască de la o postare la alta.",
+        h1: "Nu ai nevoie doar de postări. Ai nevoie de o direcție.",
         paragraphs: [
-          "În ce spune. În cum arată. În lucrurile pe care alege să le arate.",
-          "Gestionăm prezența ta în social media pornind de la poziționare, ofertă și public. Construim o direcție editorială pe care o putem susține în timp, cu materiale relevante și un proces de lucru clar.",
+          "Ce comunici, cum arată brandul și ce alegi să arăți despre businessul tău trebuie să aibă legătură.",
+          "Administrăm conturile de social media pornind de la poziționarea brandului, obiectivele comerciale și publicul căruia te adresezi.",
+          "Planificăm conținutul, pregătim materialele și coordonăm publicarea, astfel încât comunicarea să fie consecventă, relevantă și ușor de recunoscut.",
         ],
-        cta: "Hai să discutăm despre prezența ta în social media",
+        cta: "Hai să discutăm despre social media",
       },
       direction: {
-        kicker: "Ce construim",
-        heading: "Un motiv pentru care oamenii să te urmărească și să revină.",
+        kicker: "Rolul profilului",
+        heading:
+          "Profilul tău ar trebui să le spună oamenilor de ce să te aleagă.",
         paragraphs: [
-          "Un potențial client poate ajunge pe profilul tău după o reclamă, o recomandare sau o căutare. În câteva postări, ar trebui să înțeleagă ce faci, cum lucrezi și ce fel de business ești.",
-          "Alegem subiectele care construiesc această imagine: produsele și serviciile tale, oamenii din echipă, întrebările clienților, exemplele din activitatea de zi cu zi. Le transformăm într-o comunicare recognoscibilă și legată de obiectivele comerciale.",
+          "Cineva poate ajunge pe profilul tău după ce vede o reclamă, primește o recomandare sau caută informații despre business.",
+          "Primele postări ar trebui să îi ofere o imagine clară despre ceea ce faci, produsele sau serviciile tale și modul în care lucrezi.",
+          "Alegem subiecte relevante din activitatea businessului: produse, servicii, echipă, întrebările clienților, proiecte și momente importante. Le organizăm într-o comunicare consecventă, adaptată fiecărei platforme.",
         ],
       },
       deliverablesTitle: "Ce include colaborarea",
       deliverables: [
         {
-          title: "Auditul conturilor.",
-          body: "Verificăm profilurile, conținutul existent și felul în care se prezintă brandul.",
+          title: "Auditul conturilor",
+          body:
+            "Analizăm profilurile existente, materialele publicate și modul în care este prezentat brandul.",
         },
         {
-          title: "Direcție editorială.",
-          body: "Stabilim temele, tonul, formatele și rolul fiecărui canal.",
+          title: "Strategie editorială",
+          body:
+            "Stabilim direcția comunicării, subiectele principale, tonul, formatele și rolul fiecărei platforme.",
         },
         {
-          title: "Plan de conținut.",
-          body: "Organizăm publicarea în jurul activității businessului, lansărilor și campaniilor.",
+          title: "Calendar de conținut",
+          body:
+            "Planificăm postările în funcție de activitatea businessului, lansări, campanii și obiectivele stabilite.",
         },
         {
-          title: "Texte și materiale vizuale.",
-          body: "Pregătim postări, carusele și stories conform volumului agreat.",
+          title: "Copywriting și design",
+          body:
+            "Realizăm textele și materialele grafice pentru postări, carusele și stories, conform volumului agreat.",
         },
         {
-          title: "Coordonarea conținutului video.",
-          body: "Integrăm producția video în plan, cu livrabile stabilite separat în ofertă.",
+          title: "Coordonarea producției video",
+          body:
+            "Integrăm materialele video în planul editorial. Producția și livrabilele aferente sunt stabilite separat în ofertă.",
         },
         {
-          title: "Programare și publicare.",
-          body: "Ai un flux clar pentru feedback și aprobări.",
+          title: "Programare și publicare",
+          body:
+            "Organizăm aprobările, programăm conținutul și gestionăm publicarea conform calendarului stabilit.",
         },
         {
-          title: "Analiză și ajustări.",
-          body: "Evaluăm reacțiile relevante, vizitele, conversațiile și cererile pe care le putem atribui conținutului.",
+          title: "Analiză și optimizare",
+          body:
+            "Evaluăm interacțiunile relevante, vizitele pe profil, conversațiile și solicitările care pot fi atribuite activității din social media. Ajustăm direcția în funcție de rezultate.",
         },
       ],
       how: {
-        kicker: "Cum lucrăm împreună",
-        heading: "Noi ținem direcția. Tu aduci accesul la ce se întâmplă în business.",
+        kicker: "Cum colaborăm",
+        heading:
+          "Noi ne ocupăm de comunicare. Tu ne ții conectați la business.",
         paragraphs: [
-          "Stabilim o persoană de contact, un ritm de lucru și termene de feedback. Informațiile despre oferte, stocuri, evenimente sau schimbări ajung din timp, ca materialele să fie corecte și publicate când contează.",
+          "Stabilim de la început persoana de contact, ritmul de lucru și termenele pentru feedback și aprobări.",
+          "Avem nevoie să aflăm la timp despre oferte, produse, disponibilitate, evenimente și schimbări importante. Astfel putem crea materiale corecte și le putem publica atunci când sunt relevante.",
         ],
       },
       faq: [
         {
-          q: "Câte postări sunt necesare?",
-          a: "Stabilim volumul în funcție de canale, resurse și obiective. Propunerea arată exact ce tipuri de materiale producem și cât de des publicăm.",
+          q: "Câte postări sunt necesare lunar?",
+          a:
+            "Depinde de platforme, obiective și volumul de conținut disponibil. Stabilim numărul și tipul materialelor în propunerea de colaborare.",
         },
         {
           q: "Răspundeți și la mesaje sau comentarii?",
-          a: "Putem include moderarea în colaborare, cu intervale, tipuri de răspuns și reguli de escaladare stabilite. Întrebările comerciale sau tehnice care cer confirmări ajung la echipa ta.",
+          a:
+            "Putem include moderarea conturilor, cu intervale de disponibilitate și reguli de răspuns stabilite în prealabil. Solicitările comerciale sau tehnice care necesită confirmări sunt direcționate către echipa ta.",
         },
         {
           q: "Promovarea plătită este inclusă?",
-          a: "Planul de conținut și campaniile plătite sunt coordonate. Administrarea reclamelor și bugetul media sunt definite distinct în ofertă.",
+          a:
+            "Strategia de conținut și campaniile publicitare pot fi coordonate, însă administrarea reclamelor și bugetul media sunt stabilite separat în ofertă.",
         },
       ],
       closing: {
-        heading: "Ce înțelege despre tine cineva care îți vede profilul astăzi?",
-        cta: "Hai să construim direcția",
+        heading:
+          "Ce impresie lasă brandul tău cuiva care îți vizitează astăzi profilul?",
+        cta: "Hai să construim o comunicare mai bună",
       },
       meta: {
-        title: "Social Media Management | Epic Digital Hub",
+        title: "Administrare Social Media | Epic Digital Hub",
         description:
-          "Strategie editorială, texte, design și publicare pentru conturi social media coerente. Construim o prezență legată de brand și de obiectivele tale.",
+          "Strategie și administrare social media pentru branduri. Planificare editorială, copywriting, design, conținut video, publicare și analiză.",
       },
     },
     {
       slug: "continut-video",
       num: "04",
-      name: "Creare de Conținut Video",
+      name: "Producție Video",
       hubDescription:
         "Filmăm businessul tău, oamenii și produsele lui. Construim materiale pentru social media, reclame și site, pornind de la ce trebuie să înțeleagă clientul.",
-      hubLink: "Vezi cum producem conținut video",
+      hubLink: "Vezi cum realizăm conținutul video",
       hero: {
-        h1: "Arată-le cum e, înainte să ajungă la tine.",
+        h1: "Arată ce oferi. Nu doar spune.",
         paragraphs: [
-          "Atmosfera din locație. Oamenii cu care vor vorbi. Produsul în utilizare. Detaliile care explică diferența.",
-          "Producem conținut video pornind de la businessul tău și de la ce trebuie să vadă clientul ca să facă următorul pas. Filmăm la fața locului și pregătim materialele pentru canalele în care vor fi folosite.",
+          "Locația. Echipa. Produsele în utilizare. Detaliile pe care o fotografie sau un text nu le pot explica la fel de bine.",
+          "Realizăm conținut video care prezintă businessul tău așa cum este și pune în valoare ceea ce contează pentru clienți.",
+          "De la concept și filmare până la montaj și adaptarea pentru platformele pe care va fi publicat, fiecare material este construit pentru o utilizare precisă.",
         ],
         cta: "Hai să discutăm despre următoarea filmare",
       },
       direction: {
-        kicker: "De la idee la material",
-        heading: "O filmare bună începe cu o întrebare clară.",
+        kicker: "De la idee la materialul final",
+        heading:
+          "Înainte să filmăm, stabilim ce trebuie să transmită videoclipul.",
         paragraphs: [
-          "Ce vrem să înțeleagă omul după ce vede clipul?",
-          "Răspunsul decide scenariul, cadrele, ritmul și durata. Un video pentru o reclamă are altă construcție decât prezentarea unei locații sau explicația unui specialist. Planificăm producția în funcție de aceste utilizări.",
+          "Ce ar trebui să înțeleagă sau să facă un potențial client după ce îl urmărește?",
+          "Răspunsul ne ajută să definim scenariul, cadrele, ritmul și durata. O reclamă video are alte cerințe decât prezentarea unei locații sau explicațiile unui specialist. Organizăm producția în funcție de scopul și platforma fiecărui material.",
         ],
       },
       deliverablesTitle: "Ce putem produce",
       deliverables: [
         {
-          title: "Reels și clipuri scurte.",
-          body: "Idei concentrate, pregătite pentru consumul pe mobil.",
+          title: "Reels și videoclipuri scurte",
+          body:
+            "Conținut dinamic, cu mesaje concise, adaptat platformelor sociale și vizionării pe mobil.",
         },
         {
-          title: "Materiale pentru reclame.",
-          body: "Variante de început, mesaje și montaj pe care le putem testa în campanii.",
+          title: "Materiale video pentru reclame",
+          body:
+            "Videoclipuri cu mesaje, începuturi și variante de montaj pregătite pentru testare în campanii publicitare.",
         },
         {
-          title: "Prezentări de produse și servicii.",
-          body: "Demonstrații și explicații care răspund întrebărilor de dinaintea achiziției.",
+          title: "Prezentări de produse și servicii",
+          body:
+            "Demonstrații, explicații și prezentări care oferă clienților informațiile necesare înainte de achiziție.",
         },
         {
-          title: "Conținut cu echipa.",
-          body: "Interviuri, explicații și intervenții vorbite, pregătite astfel încât oamenii să se simtă firesc în fața camerei.",
+          title: "Conținut cu membrii echipei",
+          body:
+            "Interviuri, prezentări și explicații filmate într-un mod natural, fără discursuri rigide sau intervenții artificiale.",
         },
         {
-          title: "Filmări de locație și atmosferă.",
-          body: "Conținut pentru site, social media și promovarea experienței.",
+          title: "Filmări de locație și atmosferă",
+          body:
+            "Materiale care prezintă spațiul, serviciile și experiența oferită, pentru website, social media și campanii.",
         },
         {
-          title: "Conținut de eveniment.",
-          body: "Momente relevante și materiale care pot susține comunicarea edițiilor următoare.",
+          title: "Conținut video pentru evenimente",
+          body:
+            "Surprindem momentele importante și realizăm materiale care pot fi folosite atât pentru comunicarea evenimentului, cât și pentru promovarea edițiilor viitoare.",
         },
       ],
       how: {
-        kicker: "Cum decurge producția",
-        heading: "Pregătim înainte. Filmăm organizat. Livrăm pentru utilizări clare.",
+        kicker: "Cum lucrăm",
+        heading:
+          "Planificăm filmarea. Organizăm producția. Pregătim fiecare material pentru publicare.",
         paragraphs: [
-          "Stabilim mesajele, lista de cadre, persoanele implicate și logistica. La filmare, urmărim planul și păstrăm loc pentru momentele care apar natural. După montaj, pregătim versiunile, subtitrările și formatele convenite, cu un proces de feedback stabilit de la început.",
+          "Stabilim în avans subiectele, scenariile, cadrele, persoanele implicate și detaliile logistice.",
+          "În timpul filmării urmărim planul stabilit, fără să pierdem momentele spontane care merită surprinse.",
+          "După montaj, pregătim materialele în formatele convenite, cu subtitrări și adaptări acolo unde sunt necesare. Etapele de feedback și revizie sunt stabilite înainte de producție.",
         ],
       },
       faq: [
         {
           q: "Trebuie să venim noi cu ideile?",
-          a: "Pornim de la informațiile și obiectivele tale, iar noi dezvoltăm conceptele și scenariile. Experiența echipei tale ne ajută să păstrăm explicațiile corecte și credibile.",
+          a:
+            "Nu. Ne prezinți businessul și obiectivele, iar noi dezvoltăm conceptele și scenariile. Colaborăm cu echipa ta pentru ca informațiile și mesajele să fie corecte.",
         },
         {
-          q: "Putem filma mai multe materiale într-o zi?",
-          a: "Da, dacă pregătim din timp subiectele, oamenii și locațiile. Numărul final depinde de complexitatea fiecărui material.",
+          q: "Putem filma mai multe videoclipuri într-o singură zi?",
+          a:
+            "Da. Cu o planificare bună putem produce mai multe materiale în aceeași sesiune. Numărul depinde de complexitatea scenariilor, locații și persoanele implicate.",
         },
         {
-          q: "Sunt incluse materialele brute?",
-          a: "Livrabilele, accesul la materialele brute și condițiile de utilizare sunt clarificate în ofertă, înainte de producție.",
+          q: "Primim și materialele brute?",
+          a:
+            "Livrabilele finale, accesul la filmările brute și drepturile de utilizare sunt stabilite în ofertă, înainte de începerea producției.",
         },
       ],
       closing: {
-        heading: "Ce merită văzut din businessul tău?",
-        line: "Începem cu acel lucru și îi construim forma potrivită.",
+        heading: "Ce ar merita să vadă clienții înainte să te aleagă?",
+        line: "Hai să le arătăm.",
         cta: "Planifică un proiect video cu Epic",
       },
       meta: {
-        title: "Producție video pentru branduri | Epic Digital Hub",
+        title: "Producție video, Reels și reclame | Epic Digital Hub",
         description:
-          "Reels, reclame, prezentări și filmări de locație. Conținut video construit din activitatea reală a businessului, pentru social media și website.",
+          "Producție video pentru branduri: Reels, reclame, prezentări de produse, interviuri, filmări de locație și evenimente. De la concept la montaj.",
       },
     },
     {
@@ -487,82 +552,95 @@ const ro: ServicesCopy = {
         "Magazine în care produsele sunt ușor de găsit, informațiile sunt clare și comanda se poate finaliza simplu. Pregătite pentru promovare și pentru operațiunile din spatele vânzării.",
       hubLink: "Vezi cum construim magazine online",
       hero: {
-        h1: "De la primul produs văzut până la comanda confirmată.",
+        h1:
+          "Un magazin online gândit pentru cei care cumpără. Și pentru cei care îl administrează.",
         paragraphs: [
-          "Fiecare pas contează.",
-          "Construim magazine online în jurul modului în care oamenii caută, compară și cumpără produsele tale. Lucrăm la structură, pagini de produs și procesul de comandă, cu atenție și la ce se întâmplă în business după vânzare.",
+          "De la primul produs vizualizat până la confirmarea comenzii, fiecare etapă influențează experiența de cumpărare.",
+          "Dezvoltăm magazine online adaptate produselor tale, comportamentului clienților și modului în care funcționează businessul. Ne ocupăm de structură, design, funcționalități și procesul de comandă, fără să ignorăm partea de administrare și operațiunile de după vânzare.",
         ],
-        cta: "Hai să discutăm despre magazinul tău",
+        cta: "Hai să discutăm despre magazinul tău online",
       },
       direction: {
-        kicker: "Ce construim",
-        heading: "Un magazin pe care îl poți folosi și dezvolta.",
+        kicker: "Abordarea",
+        heading: "Ușor de cumpărat. Simplu de administrat.",
         paragraphs: [
-          "Clientul trebuie să găsească repede produsul, să înțeleagă ce primește și să vadă clar condițiile de cumpărare. Echipa ta trebuie să poată administra catalogul și comenzile fără ocoluri inutile.",
-          "Pornim de la numărul de produse, tipurile de variante, piețele în care vinzi și fluxurile de lucru existente. Alegerea platformei și a funcționalităților vine după aceste clarificări.",
+          "Clienții trebuie să găsească rapid produsele, să poată compara variantele și să înțeleagă condițiile de livrare și plată. În același timp, echipa ta trebuie să poată gestiona eficient produsele și comenzile.",
+          "Analizăm catalogul, tipurile de produse, piețele în care vinzi și procesele existente. Pe baza acestor informații, alegem platforma și funcționalitățile potrivite.",
         ],
       },
       deliverablesTitle: "Ce poate include proiectul",
       deliverables: [
         {
-          title: "Arhitectura catalogului.",
-          body: "Categorii, filtre și navigare construite pentru gama ta de produse.",
+          title: "Organizarea catalogului de produse",
+          body:
+            "Structurăm categoriile, filtrele și navigarea în funcție de gama de produse și de modul în care clienții caută.",
         },
         {
-          title: "Design și experiență pe mobil.",
-          body: "Pagini lizibile și acțiuni ușor de parcurs pe ecrane mici.",
+          title: "Design și optimizare pentru mobil",
+          body:
+            "Construim pagini clare, adaptate diferitelor dispozitive, cu navigare intuitivă și elemente de interacțiune accesibile.",
         },
         {
-          title: "Pagini de produs.",
-          body: "Structură pentru imagini, specificații, variante și informațiile necesare deciziei.",
+          title: "Pagini de produs",
+          body:
+            "Organizăm fotografiile, descrierile, specificațiile, variantele și informațiile relevante pentru decizia de cumpărare.",
         },
         {
-          title: "Coș și finalizarea comenzii.",
-          body: "Pași clari și informații vizibile despre costuri și livrare.",
+          title: "Coș de cumpărături și finalizarea comenzii",
+          body:
+            "Simplificăm pașii necesari plasării unei comenzi și afișăm clar costurile, metodele de plată și condițiile de livrare.",
         },
         {
-          title: "Integrări operaționale.",
-          body: "Plăți, curierat, facturare, gestiune sau CRM, în funcție de compatibilitate și de scopul agreat.",
+          title: "Integrări cu servicii externe",
+          body:
+            "Integrăm soluții de plată, curierat, facturare, gestiune sau CRM, în funcție de compatibilitatea platformei și cerințele proiectului.",
         },
         {
-          title: "Baza pentru promovare și măsurare.",
-          body: "Configurările stabilite pentru indexare, feeduri de produse și evenimente comerciale.",
+          title: "Optimizare pentru promovare și măsurare",
+          body:
+            "Pregătim elementele tehnice convenite pentru indexarea în motoarele de căutare, feedurile de produse și urmărirea conversiilor.",
         },
         {
-          title: "Testare și predare.",
-          body: "Verificăm scenariile importante de cumpărare și explicăm administrarea magazinului.",
+          title: "Testare și predare",
+          body:
+            "Verificăm funcționalitățile esențiale, simulăm procesul de cumpărare și explicăm echipei tale cum să administreze magazinul.",
         },
       ],
       how: {
         kicker: "Cum lucrăm",
-        heading: "Stabilim de la început ce trebuie să funcționeze la lansare.",
+        heading:
+          "Lansăm cu funcționalitățile de care ai nevoie. Dezvoltăm pe măsură ce businessul crește.",
         paragraphs: [
-          "Definim funcțiile esențiale și separăm dezvoltările care pot urma. Proiectăm, implementăm și testăm fluxul complet, inclusiv comenzile și integrările din proiect. Ai vizibilitate asupra responsabilităților, materialelor necesare și costurilor recurente ale soluțiilor alese.",
+          "Stabilim de la început ce trebuie să fie funcțional la lansare și ce poate fi adăugat ulterior.",
+          "Parcurgem etapele de design, dezvoltare și testare, inclusiv verificarea comenzilor și a integrărilor. Clarificăm responsabilitățile, materialele necesare și eventualele costuri recurente ale soluțiilor alese.",
         ],
       },
       faq: [
         {
-          q: "Puteți reface un magazin existent?",
-          a: "Da. Verificăm datele, platforma, structura adreselor și integrările. Planificăm ce se migrează și cum gestionăm schimbarea.",
+          q: "Puteți reface un magazin online existent?",
+          a:
+            "Da. Analizăm platforma actuală, catalogul, structura URL-urilor și integrările. Stabilim ce date trebuie migrate și planificăm tranziția pentru a limita problemele tehnice și comerciale.",
         },
         {
-          q: "Cine adaugă produsele?",
-          a: "Stabilim în ofertă volumul, formatul datelor și responsabilitatea pentru import, imagini și descrieri.",
+          q: "Cine se ocupă de adăugarea produselor?",
+          a:
+            "Stabilim în ofertă cine pregătește și introduce produsele, imaginile și descrierile, în funcție de volumul catalogului și formatul datelor disponibile.",
         },
         {
           q: "Ce se întâmplă după lansare?",
-          a: "Definim separat suportul, mentenanța și dezvoltările ulterioare. Magazinul poate continua să fie îmbunătățit pe baza utilizării și a datelor colectate.",
+          a:
+            "Putem stabili separat servicii de suport, mentenanță și dezvoltare ulterioară. Îmbunătățirile pot fi prioritizate în funcție de utilizarea magazinului și de datele colectate.",
         },
       ],
       closing: {
-        heading: "Cum ar trebui să se cumpere de la tine?",
+        heading: "Vrei să vinzi online? Începem cu experiența de cumpărare.",
         line: "Hai să proiectăm traseul complet.",
         cta: "Discută proiectul cu Epic",
       },
       meta: {
         title: "Dezvoltare magazine online | Epic Digital Hub",
         description:
-          "Magazine online cu structură clară, pagini de produs și un proces simplu de comandă. Design, dezvoltare și integrări adaptate businessului tău.",
+          "Dezvoltăm magazine online cu design personalizat, navigare intuitivă și un proces de comandă simplu. Soluții e-commerce adaptate businessului tău.",
       },
     },
     {
@@ -571,83 +649,100 @@ const ro: ServicesCopy = {
       name: "Dezvoltare Website-uri de Prezentare",
       hubDescription:
         "Site-uri care arată nivelul businessului tău și îl ajută pe vizitator să înțeleagă rapid de ce să te aleagă. Strategie, text, design și dezvoltare în același proiect.",
-      hubLink: "Vezi cum construim website-uri",
+      hubLink: "Vezi cum dezvoltăm website-uri",
       hero: {
-        h1: "Site-ul tău vorbește înainte să răspunzi la telefon.",
+        h1: "Site-ul tău trebuie să convingă înainte să vorbești cu clientul.",
         paragraphs: [
-          "Ar trebui să se ridice la nivelul businessului tău.",
-          "Construim website-uri care explică oferta, arată ce te diferențiază și conduc vizitatorul spre o acțiune clară. Textul, designul și dezvoltarea pornesc din aceeași direcție.",
+          "Pentru mulți clienți, website-ul este primul contact serios cu businessul tău. Ar trebui să reflecte calitatea serviciilor pe care le oferi.",
+          "Construim website-uri care prezintă clar oferta, evidențiază avantajele relevante și îi ajută pe vizitatori să facă următorul pas.",
+          "Strategia, textele, designul și dezvoltarea sunt gândite împreună, nu tratate ca etape fără legătură.",
         ],
         cta: "Hai să discutăm despre website-ul tău",
       },
       direction: {
-        kicker: "Rolul site-ului",
-        heading: "Să le fie clar cine ești și de ce merită să te contacteze.",
+        kicker: "Rolul website-ului",
+        heading:
+          "O experiență bună începe cu informațiile potrivite, în ordinea potrivită.",
         paragraphs: [
-          "Când cineva ajunge pe site, vine cu o întrebare, o nevoie sau o comparație în minte. Organizăm paginile în jurul acestor lucruri și construim argumentele în ordinea în care sunt utile.",
-          "Designul dă caracter brandului. Fotografiile și video-ul aduc context. Interacțiunile susțin experiența, cu atenție la lizibilitate, viteză și utilizarea pe mobil.",
+          "Când cineva ajunge pe site, caută un răspuns, compară opțiuni sau vrea să afle dacă serviciile tale sunt potrivite pentru el.",
+          "Organizăm conținutul pentru a răspunde acestor nevoi, fără informații inutile sau pași complicați.",
+          "Designul reflectă personalitatea brandului, fotografiile și videoclipurile completează prezentarea, iar interacțiunile sunt construite pentru o experiență rapidă și intuitivă, inclusiv pe mobil.",
         ],
       },
       deliverablesTitle: "Ce include proiectul",
       deliverables: [
         {
-          title: "Structura și traseele principale.",
-          body: "Stabilim paginile și acțiunile relevante pentru fiecare tip de vizitator.",
+          title: "Structura website-ului",
+          body:
+            "Stabilim paginile necesare, organizarea informațiilor și parcursul vizitatorilor în funcție de obiectivele businessului.",
         },
         {
-          title: "Textele.",
-          body: "Explicăm serviciile, diferențele și procesul de lucru într-un limbaj potrivit brandului.",
+          title: "Copywriting",
+          body:
+            "Scriem texte clare și convingătoare, care explică serviciile, evidențiază diferențele relevante și respectă vocea brandului.",
         },
         {
-          title: "Direcția vizuală.",
-          body: "Construim un design coerent cu poziționarea și materialele existente.",
+          title: "Design și experiență de utilizare",
+          body:
+            "Creăm o direcție vizuală adaptată poziționării brandului, cu atenție la navigare, lizibilitate și modul în care este prezentat conținutul.",
         },
         {
-          title: "Dezvoltarea.",
-          body: "Implementăm paginile și interacțiunile, adaptate pentru mobil, tabletă și desktop.",
+          title: "Dezvoltare web",
+          body:
+            "Implementăm paginile și funcționalitățile, cu design adaptat pentru desktop, tabletă și mobil.",
         },
         {
-          title: "Formulare și integrări.",
-          body: "Conectăm solicitările cu fluxul de lucru agreat, inclusiv CRM sau programări, unde este cazul.",
+          title: "Formulare și integrări",
+          body:
+            "Configurăm formularele și conexiunile necesare pentru preluarea solicitărilor, programări sau integrarea cu un CRM, în funcție de proiect.",
         },
         {
-          title: "Baza tehnică pentru SEO și măsurare.",
-          body: "Pregătim structura, metadatele și evenimentele stabilite în proiect.",
+          title: "Optimizare SEO tehnică și măsurare",
+          body:
+            "Pregătim structura tehnică, metadatele și configurările de măsurare incluse în proiect, pentru indexare și analiza interacțiunilor relevante.",
         },
         {
-          title: "Verificare și lansare.",
-          body: "Testăm navigarea, formularele și afișarea înainte de publicare.",
+          title: "Testare și lansare",
+          body:
+            "Verificăm navigarea, afișarea pe dispozitive diferite, formularele și funcționalitățile importante înainte de publicare.",
         },
       ],
       how: {
         kicker: "Cum lucrăm",
-        heading: "Clarificăm mesajul înainte să desenăm paginile.",
+        heading:
+          "Stabilim ce trebuie să spună website-ul înainte să decidem cum va arăta.",
         paragraphs: [
-          "Pornim de la obiective și conținut. Validăm structura, apoi direcția vizuală și implementarea. Fiecare etapă are un livrabil și un moment de feedback, ca proiectul să înainteze cu deciziile importante deja luate.",
+          "Începem cu obiectivele businessului și informațiile pe care trebuie să le comunicăm.",
+          "Definim structura, dezvoltăm textele și stabilim direcția vizuală înainte de implementare.",
+          "Fiecare etapă are livrabile și momente de feedback stabilite, astfel încât deciziile importante să fie luate la timp, iar proiectul să avanseze organizat.",
         ],
       },
       faq: [
         {
-          q: "Trebuie să avem textele și fotografiile pregătite?",
-          a: "Putem dezvolta textele pornind de la informațiile tale. Pentru imagini stabilim ce materiale pot fi folosite și dacă este nevoie de producție foto-video.",
+          q: "Trebuie să avem deja textele și fotografiile?",
+          a:
+            "Nu. Putem redacta textele pe baza informațiilor oferite de tine. Pentru partea vizuală, analizăm materialele existente și stabilim dacă este necesară o sesiune foto-video.",
         },
         {
-          q: "Vom putea actualiza singuri site-ul?",
-          a: "Stabilim de la început ce secțiuni trebuie administrate de echipa ta și alegem soluția tehnică în consecință.",
+          q: "Vom putea actualiza singuri website-ul?",
+          a:
+            "Da, dacă aceasta este una dintre cerințele proiectului. Stabilim de la început ce secțiuni trebuie să poată fi administrate de echipa ta și alegem soluția tehnică potrivită.",
         },
         {
-          q: "Puteți păstra domeniul actual?",
-          a: "Da. Planificăm mutarea, accesul la infrastructură și redirecționările necesare, în funcție de site-ul existent.",
+          q: "Putem păstra domeniul actual?",
+          a:
+            "Da. Analizăm infrastructura existentă și planificăm transferul sau conectarea noului website, inclusiv redirecționările necesare.",
         },
       ],
       closing: {
-        heading: "Businessul a evoluat. Se vede și pe site?",
+        heading:
+          "Businessul tău a evoluat. Website-ul îl reprezintă la același nivel?",
         cta: "Discută proiectul cu Epic",
       },
       meta: {
-        title: "Website-uri de prezentare | Epic Digital Hub",
+        title: "Creare website-uri de prezentare | Epic Digital Hub",
         description:
-          "Website-uri de prezentare construite din strategie, text și design. Pagini clare, experiență atent lucrată și integrare cu obiectivele businessului.",
+          "Website-uri de prezentare cu design personalizat, texte bine construite și dezvoltare web adaptată businessului. Strategie, UX, SEO tehnic și integrări.",
       },
     },
     {
@@ -656,79 +751,93 @@ const ro: ServicesCopy = {
       name: "Design Grafic",
       hubDescription:
         "O identitate vizuală care se păstrează de la prima reclamă până la ultima pagină din ofertă. Design pentru campanii, social media, print și materialele de care ai nevoie în vânzare.",
-      hubLink: "Vezi cum lucrăm cu designul",
+      hubLink: "Vezi cum lucrăm cu identitatea vizuală",
       hero: {
-        h1: "Același brand. Oriunde îl întâlnești.",
+        h1: "Un brand recognoscibil. În orice format.",
         paragraphs: [
-          "Într-o reclamă, pe o ofertă, într-un showroom sau pe un afiș.",
-          "Construim și aplicăm o direcție vizuală recognoscibilă. Fiecare material are un rol clar și aparține aceleiași identități, indiferent de format sau canal.",
+          "Pe un afiș, într-o reclamă, pe o prezentare comercială sau în social media, brandul tău trebuie să poată fi recunoscut.",
+          "Creăm identități vizuale și materiale grafice care respectă aceeași direcție, indiferent de format. Punem accent pe claritatea mesajului, calitatea execuției și consecvența identității.",
         ],
         cta: "Hai să discutăm despre imaginea brandului tău",
       },
       direction: {
-        kicker: "Ce aduce direcția vizuală",
-        heading: "Decizii care rămân coerente de la un proiect la următorul.",
+        kicker: "De ce contează identitatea vizuală",
+        heading:
+          "Identitatea trebuie să rămână consecventă, nu să fie reinventată la fiecare campanie.",
         paragraphs: [
-          "Culorile, tipografia, imaginile și felul în care așezi informația construiesc așteptări despre brand. Când regulile sunt clare, materialele noi pot evolua fără ca identitatea să se schimbe la fiecare campanie.",
-          "Pornim de la poziționare și de la utilizările reale. Un brand care comunică prețuri și oferte are alte nevoi decât unul care prezintă servicii tehnice sau experiențe premium.",
+          "Tipografia, culorile, imaginile și organizarea informației influențează felul în care este perceput un brand.",
+          "Când există reguli vizuale bine definite, materialele pot evolua fără să piardă elementele care fac brandul recognoscibil.",
+          "Pornim de la poziționarea și nevoile reale ale businessului. Un retailer care comunică frecvent promoții are alte cerințe decât o companie care prezintă servicii tehnice sau un brand premium.",
         ],
       },
       deliverablesTitle: "Ce putem realiza",
       deliverables: [
         {
-          title: "Identitate vizuală.",
-          body: "Logo, paletă cromatică, tipografie și reguli de utilizare, în funcție de proiect.",
+          title: "Identitate vizuală",
+          body:
+            "Logo, paletă cromatică, tipografie și reguli de utilizare, adaptate nevoilor și obiectivelor brandului.",
         },
         {
-          title: "Materiale pentru campanii.",
-          body: "Concepte vizuale și adaptări pentru formatele de promovare.",
+          title: "Materiale pentru campanii",
+          body:
+            "Concepte grafice și adaptări pentru reclame digitale, campanii de promovare și alte formate publicitare.",
         },
         {
-          title: "Design pentru social media.",
-          body: "Postări, carusele, stories și modele reutilizabile.",
+          title: "Design pentru social media",
+          body:
+            "Postări, carusele, stories și template-uri care asigură consecvența vizuală și eficientizează producția de conținut.",
         },
         {
-          title: "Materiale comerciale.",
-          body: "Prezentări, oferte, broșuri și fișe de produs.",
+          title: "Materiale comerciale",
+          body:
+            "Prezentări, oferte, broșuri, cataloage și fișe de produs, organizate pentru o comunicare clară și profesionistă.",
         },
         {
-          title: "Design pentru print.",
-          body: "Afișe, flyere, cărți de vizită și alte materiale pregătite la specificațiile de producție.",
+          title: "Design pentru print",
+          body:
+            "Afișe, flyere, cărți de vizită și alte materiale pregătite conform cerințelor tehnice de producție.",
         },
         {
-          title: "Ghid vizual.",
-          body: "Reguli suficient de clare pentru ca identitatea să poată fi aplicată consecvent.",
+          title: "Ghid de identitate vizuală",
+          body:
+            "Reguli de utilizare pentru logo, culori, fonturi și elemente grafice, astfel încât brandul să fie reprezentat corect în fiecare material.",
         },
       ],
       how: {
         kicker: "Cum lucrăm",
-        heading: "Mai întâi stabilim ce trebuie să comunice materialul.",
+        heading: "Designul începe cu mesajul, nu cu alegerea culorilor.",
         paragraphs: [
-          "Clarificăm publicul, mesajul, contextul și formatul. Propunem o direcție argumentată, o dezvoltăm prin feedback și pregătim fișierele pentru utilizările convenite. Pentru materiale recurente, construim o bază care face execuția mai coerentă și mai eficientă.",
+          "Înainte de execuție stabilim cui ne adresăm, ce trebuie comunicat, unde va apărea materialul și ce rezultat urmărim.",
+          "Propunem o direcție vizuală, o dezvoltăm pe baza feedbackului și pregătim fișierele pentru utilizările stabilite.",
+          "Pentru materialele recurente, putem crea un sistem vizual care păstrează coerența și reduce timpul necesar producției.",
         ],
       },
       faq: [
         {
           q: "Putem păstra logo-ul actual?",
-          a: "Da. Putem lucra în identitatea existentă sau putem propune ajustări acolo unde aplicarea ei creează probleme.",
+          a:
+            "Da. Putem lucra cu identitatea existentă sau putem recomanda ajustări punctuale atunci când există probleme de aplicare ori de lizibilitate.",
         },
         {
-          q: "Includeți și tiparul?",
-          a: "Pregătirea fișierelor și producția fizică sunt lucruri distincte. Stabilim în ofertă dacă proiectul include și coordonarea cu furnizorul de print.",
+          q: "Vă ocupați și de tipar?",
+          a:
+            "Pregătirea graficii pentru tipar și producția fizică sunt servicii diferite. Putem stabili în ofertă și coordonarea cu furnizorul de print.",
         },
         {
           q: "Primim fișierele editabile?",
-          a: "Formatele finale, fișierele sursă și licențele pentru fonturi sau imagini sunt clarificate înainte de începerea proiectului.",
+          a:
+            "Formatele de livrare, fișierele sursă și condițiile de licențiere pentru fonturi și imagini sunt stabilite înainte de începerea proiectului.",
         },
       ],
       closing: {
-        heading: "Pune toate materialele tale unul lângă altul. Se vede același brand?",
-        cta: "Construiește direcția vizuală cu Epic",
+        heading:
+          "Dacă ai pune toate materialele brandului tău unul lângă altul, ar arăta ca parte din aceeași identitate?",
+        cta: "Construiește identitatea vizuală cu Epic",
       },
       meta: {
         title: "Design grafic și identitate vizuală | Epic Digital Hub",
         description:
-          "Identitate vizuală, design pentru campanii, social media, print și materiale comerciale. O direcție coerentă în fiecare apariție a brandului.",
+          "Identitate vizuală, design pentru social media, campanii, materiale comerciale și print. Design adaptat brandului și tuturor canalelor de comunicare.",
       },
     },
     {
@@ -737,80 +846,92 @@ const ro: ServicesCopy = {
       name: "Email Marketing",
       hubDescription:
         "Continuăm conversația cu oamenii care și-au arătat deja interesul. Campanii și automatizări construite în jurul momentelor în care un mesaj este cu adevărat util.",
-      hubLink: "Vezi cum folosim emailul",
+      hubLink: "Vezi cum folosim email marketingul",
       hero: {
-        h1: "Ai deja atenția lor. Merită să continui conversația.",
+        h1: "Primul contact e doar începutul.",
         paragraphs: [
-          "Cineva s-a abonat, a cerut o ofertă sau a cumpărat de la tine. Următorul mesaj ar trebui să țină cont de acel moment.",
-          "Construim campanii de email și automatizări relevante pentru relația dintre brand și client. Stabilim cui îi scriem, de ce îi scriem și care este următorul pas firesc.",
+          "Un client s-a abonat la newsletter, a solicitat o ofertă sau a făcut o achiziție. Fiecare situație cere un mesaj diferit.",
+          "Creăm campanii de email și automatizări adaptate relației dintre brand și client. Stabilim cui ne adresăm, ce informații sunt relevante și când este potrivit să le trimitem.",
         ],
         cta: "Hai să discutăm despre email marketing",
       },
       direction: {
-        kicker: "Ce construim",
-        heading: "Mesaje pe care ai un motiv bun să le trimiți.",
+        kicker: "Abordarea",
+        heading: "Emailuri relevante, trimise la momentul potrivit.",
         paragraphs: [
-          "O lansare poate interesa un anumit segment. Un client nou poate avea nevoie de explicații. Cineva care a cumpărat deja poate fi pregătit pentru un produs complementar.",
-          "Organizăm comunicarea în jurul acestor situații. Păstrăm vocea brandului și pregătim emailuri care se citesc ușor, cu un mesaj principal și o acțiune clară.",
+          "Un client nou poate avea nevoie de informații suplimentare. Un abonat poate fi interesat de o lansare. Cineva care a cumpărat deja poate aprecia o recomandare complementară.",
+          "Construim comunicarea în funcție de aceste situații, nu doar în jurul unui calendar de trimiteri.",
+          "Fiecare email respectă identitatea brandului, transmite un mesaj clar și îi oferă destinatarului un motiv să îl citească.",
         ],
       },
       deliverablesTitle: "Ce poate include colaborarea",
       deliverables: [
         {
-          title: "Analiza bazei de contacte.",
-          body: "Verificăm sursele, calitatea datelor și modul în care au fost colectate permisiunile de comunicare.",
+          title: "Analiza bazei de contacte",
+          body:
+            "Verificăm proveniența contactelor, calitatea informațiilor și modul în care au fost obținute acordurile de comunicare.",
         },
         {
-          title: "Segmentarea.",
-          body: "Grupăm contactele în funcție de informațiile disponibile și de relația lor cu businessul.",
+          title: "Segmentarea audienței",
+          body:
+            "Organizăm contactele în categorii relevante, în funcție de datele disponibile, interese și istoricul interacțiunilor cu brandul.",
         },
         {
-          title: "Planul de campanii.",
-          body: "Stabilim temele, ritmul și legătura cu lansările sau ofertele tale.",
+          title: "Planificarea campaniilor",
+          body:
+            "Stabilim subiectele, frecvența și calendarul trimiterilor, în acord cu lansările, ofertele și obiectivele comerciale.",
         },
         {
-          title: "Texte și design.",
-          body: "Construim emailuri coerente cu brandul și adaptate pentru mobil.",
+          title: "Copywriting și design",
+          body:
+            "Scriem și construim emailuri adaptate identității brandului, ușor de parcurs și optimizate pentru dispozitive mobile.",
         },
         {
-          title: "Automatizări.",
-          body: "Mesaje de bun venit, după achiziție, de revenire sau pentru coșuri abandonate, unde datele, platforma și permisiunile permit.",
+          title: "Automatizări de email",
+          body:
+            "Configurăm, unde platforma, datele și permisiunile permit, mesaje de bun venit, comunicări după achiziție, campanii de reactivare și emailuri pentru coșuri abandonate.",
         },
         {
-          title: "Testare și analiză.",
-          body: "Verificăm afișarea, linkurile și indicatorii relevanți pentru fiecare tip de campanie.",
+          title: "Testare și analiză",
+          body:
+            "Verificăm afișarea mesajelor, funcționarea linkurilor și rezultatele campaniilor. Folosim datele disponibile pentru a îmbunătăți comunicările următoare.",
         },
       ],
       how: {
-        kicker: "Cum lucrăm",
-        heading: "Începem cu momentele care au un rol clar în relația cu clientul.",
+        kicker: "Automatizări",
+        heading: "Mesajul potrivit, trimis la momentul potrivit.",
         paragraphs: [
-          "Alegem fluxurile prioritare și stabilim declanșatoarele, conținutul și condițiile de oprire. Coordonăm automatizările cu mesajele trimise manual, astfel încât comunicarea să rămână utilă și ușor de urmărit.",
+          "Construim automatizări pentru situații concrete: confirmări, mesaje de bun venit, revenirea către clienții interesați sau comunicarea după o achiziție.",
+          "Stabilim când se trimite fiecare mesaj, ce informații trebuie să conțină și când comunicarea trebuie să se oprească. Integrăm automatizările în campaniile existente, astfel încât clienții să primească informații utile, într-o ordine logică.",
         ],
       },
       faq: [
         {
-          q: "Putem începe dacă avem puține contacte?",
-          a: "Da. Putem pune în ordine formularele de abonare și mesajele de bun venit, apoi dezvoltăm comunicarea pe măsură ce baza crește.",
+          q: "Putem începe dacă avem o bază mică de contacte?",
+          a:
+            "Da. Putem începe prin organizarea formularelor de abonare și configurarea mesajelor de bun venit. Pe măsură ce baza crește, dezvoltăm și comunicarea.",
         },
         {
-          q: "Cât de des trimitem emailuri?",
-          a: "În funcție de ce avem de comunicat, de așteptările abonaților și de reacțiile observate. Frecvența trebuie să poată fi susținută cu mesaje relevante.",
+          q: "Cât de des ar trebui să trimitem emailuri?",
+          a:
+            "Depinde de public, de tipul businessului și de informațiile pe care le ai de comunicat. Stabilim frecvența în funcție de relevanța mesajelor și de reacțiile abonaților.",
         },
         {
-          q: "Ce rezultate urmărim?",
-          a: "Clickuri, cereri, comenzi și venituri atribuibile, unde măsurarea permite, alături de livrare și dezabonări. Citim indicatorii împreună și ținem cont de limitele lor.",
+          q: "Cum măsurăm rezultatele?",
+          a:
+            "Urmărim clickurile, cererile, comenzile și, unde datele permit, veniturile atribuite campaniilor. Analizăm și rata de livrare, dezabonările și ceilalți indicatori relevanți, ținând cont de limitele măsurării.",
         },
       ],
       closing: {
-        heading: "Ce se întâmplă după primul contact cu brandul tău?",
-        line: "Hai să construim continuarea.",
+        heading:
+          "Ce se întâmplă după ce cineva devine interesat de brandul tău?",
+        line: "Construim comunicarea care urmează.",
         cta: "Discută cu Epic",
       },
       meta: {
         title: "Email marketing și automatizări | Epic Digital Hub",
         description:
-          "Campanii de email și automatizări adaptate relației cu clientul. Segmentare, texte, design și măsurare, conectate cu activitatea businessului tău.",
+          "Campanii de email marketing, newslettere și automatizări. Segmentare, copywriting, design și analiză pentru o comunicare relevantă cu clienții.",
       },
     },
     {
@@ -819,83 +940,100 @@ const ro: ServicesCopy = {
       name: "Tracking de Date",
       hubDescription:
         "Configurăm măsurarea acțiunilor care contează pentru business. Vezi de unde vin cererile, unde se pierd oamenii și ce poți decide pe baza datelor disponibile.",
-      hubLink: "Vezi cum măsurăm rezultatele",
+      hubLink: "Vezi cum măsurăm performanța",
       hero: {
-        h1: "Înainte de următorul buget, ai nevoie de date în care poți avea încredere.",
+        h1: "Dacă nu măsori corect, nu poți investi corect.",
         paragraphs: [
-          "De unde vin cererile. Ce fac oamenii pe site. Unde se opresc. Ce ajunge efectiv la echipa de vânzări.",
-          "Configurăm și verificăm măsurarea acțiunilor relevante pentru businessul tău. Construim o bază de analiză care te ajută să iei decizii și îți arată unde informațiile sunt incomplete.",
+          "De unde vin vizitatorii. Ce fac pe site. Unde abandonează. Câte solicitări ajung la echipa de vânzări.",
+          "Configurăm și verificăm instrumentele de măsurare pentru a înțelege mai bine rezultatele activităților de marketing.",
+          "Urmărim acțiunile relevante pentru business și explicăm inclusiv limitele datelor disponibile, astfel încât deciziile să nu se bazeze pe cifre interpretate greșit.",
         ],
         cta: "Hai să verificăm ce măsori",
       },
       direction: {
-        kicker: "De ce începem cu definițiile",
-        heading: "Ce numești conversie trebuie să însemne ceva pentru business.",
+        kicker: "De unde începem",
+        heading:
+          "Un click nu înseamnă o cerere. O cerere nu înseamnă o vânzare.",
         paragraphs: [
-          "Un click pe telefon, un formular trimis și o vânzare sunt etape diferite. Dacă le tratăm la fel, devine greu să înțelegem ce produc campaniile.",
-          "Stabilim acțiunile importante și relația dintre ele. Verificăm ce putem măsura în site, ce date există în platformele de promovare și ce informații poate completa echipa ta despre calitatea cererilor.",
+          "Fiecare acțiune reprezintă o etapă diferită în parcursul clientului. Dacă toate sunt tratate drept conversii echivalente, rezultatele campaniilor pot deveni înșelătoare.",
+          "Stabilim ce acțiuni sunt importante, cum pot fi urmărite și ce informații oferă fiecare platformă.",
+          "Acolo unde este posibil, corelăm datele din website și din campaniile publicitare cu informațiile despre cererile și vânzările înregistrate de echipa ta.",
         ],
       },
       deliverablesTitle: "Ce include proiectul",
       deliverables: [
         {
-          title: "Auditul implementării.",
-          body: "Verificăm instrumentele, evenimentele, lipsurile și posibilele dublări.",
+          title: "Auditul implementării existente",
+          body:
+            "Verificăm instrumentele instalate, evenimentele urmărite, eventualele erori, dublări și informațiile care lipsesc.",
         },
         {
-          title: "Planul de măsurare.",
-          body: "Definim conversiile și indicatorii pe care îi vom folosi în analiză.",
+          title: "Planul de măsurare",
+          body:
+            "Definim conversiile importante și indicatorii prin care vom evalua performanța website-ului și a campaniilor.",
         },
         {
-          title: "Configurarea instrumentelor.",
-          body: "Implementăm GA4, Google Tag Manager și conexiunile agreate, în funcție de infrastructură.",
+          title: "Configurarea instrumentelor",
+          body:
+            "Implementăm Google Analytics 4, Google Tag Manager și integrările stabilite, în funcție de infrastructura disponibilă.",
         },
         {
-          title: "Evenimente relevante.",
-          body: "Formulare, solicitări de contact, etape de cumpărare și achiziții, unde sunt aplicabile.",
+          title: "Urmărirea conversiilor",
+          body:
+            "Configurăm măsurarea acțiunilor relevante: formulare trimise, solicitări de contact, etape de cumpărare și comenzi finalizate, unde este aplicabil.",
         },
         {
-          title: "Etichetarea campaniilor.",
-          body: "Stabilim reguli consecvente pentru identificarea surselor de trafic.",
+          title: "Etichetarea campaniilor",
+          body:
+            "Stabilim reguli consecvente de etichetare pentru identificarea surselor de trafic și analiza performanței.",
         },
         {
-          title: "Integrarea cu mecanismul de consimțământ.",
-          body: "Adaptăm declanșarea instrumentelor la configurarea agreată și la alegerile utilizatorilor.",
+          title: "Integrarea mecanismului de consimțământ",
+          body:
+            "Adaptăm funcționarea instrumentelor de tracking la configurația agreată și la opțiunile de consimțământ ale utilizatorilor.",
         },
         {
-          title: "Validare și documentare.",
-          body: "Testăm scenariile importante și explicăm ce colectăm, cum interpretăm și ce limite există.",
+          title: "Testare și documentare",
+          body:
+            "Verificăm funcționarea evenimentelor și documentăm configurările, datele colectate și limitele măsurării.",
         },
       ],
       how: {
         kicker: "Cum folosim datele",
-        heading: "Fiecare raport trebuie să ajute la o decizie.",
+        heading: "Datele sunt utile atunci când te ajută să iei decizii.",
         paragraphs: [
-          "Organizăm indicatorii în jurul întrebărilor pe care le ai: ce canal aduce cereri relevante, unde se întrerupe cumpărarea și ce pagină merită îmbunătățită. Când informațiile permit, conectăm analiza cu rezultatele înregistrate în CRM sau în sistemul de comenzi.",
+          "Nu este suficient să colectăm informații. Trebuie să știm ce întrebări vrem să clarificăm.",
+          "Care canal aduce solicitări relevante? Unde abandonează clienții procesul de cumpărare? Ce pagini trebuie îmbunătățite?",
+          "Organizăm analiza în jurul acestor întrebări. Atunci când infrastructura permite, corelăm informațiile cu datele din CRM sau din sistemul de comenzi.",
         ],
       },
       faq: [
         {
-          q: "Putem măsura absolut toate vizitele și vânzările?",
-          a: "Nu. Consimțământul, setările dispozitivelor și felul în care oamenii folosesc mai multe canale limitează vizibilitatea. Explicăm aceste limite în analiză.",
+          q: "Putem măsura toate vizitele și vânzările?",
+          a:
+            "Nu integral. Consimțământul utilizatorilor, setările dispozitivelor și interacțiunile prin mai multe canale pot limita colectarea și atribuirea datelor. Explicăm aceste limite atunci când analizăm rezultatele.",
         },
         {
-          q: "De ce diferă cifrele dintre platforme?",
-          a: "Instrumentele pot folosi reguli și ferestre de atribuire diferite. Verificăm implementarea și stabilim ce sursă folosim pentru fiecare tip de decizie.",
+          q:
+            "De ce diferă rezultatele dintre Google Analytics și platformele de publicitate?",
+          a:
+            "Platformele pot folosi metode și intervale diferite pentru atribuirea conversiilor. Verificăm dacă măsurarea funcționează corect și stabilim ce surse de date folosim pentru fiecare analiză.",
         },
         {
-          q: "Putem lega formularele de vânzările finale?",
-          a: "În multe proiecte, da, dacă există infrastructura și un proces consecvent de actualizare a cererilor. Fezabilitatea se stabilește după verificarea sistemelor.",
+          q: "Putem urmări dacă o solicitare s-a transformat în vânzare?",
+          a:
+            "În multe cazuri, da. Depinde de sistemele folosite și de modul în care sunt înregistrate și actualizate solicitările. Verificăm posibilitățile de integrare înainte să propunem o soluție.",
         },
       ],
       closing: {
-        heading: "Ce decizie amâni pentru că nu ai date suficient de clare?",
-        cta: "Discută măsurarea cu Epic",
+        heading: "Știi exact ce rezultate obții din bugetul tău de marketing?",
+        cta: "Hai să verificăm datele",
       },
       meta: {
-        title: "Tracking, GA4 și măsurarea conversiilor | Epic Digital Hub",
+        title:
+          "Tracking, Google Analytics 4 și măsurarea conversiilor | Epic Digital Hub",
         description:
-          "Audit și configurare tracking pentru formulare, cereri și achiziții. Date explicate, implementare verificată și indicatori legați de business.",
+          "Configurare GA4, Google Tag Manager și tracking de conversii. Audit, implementare, testare și analiză pentru decizii de marketing bazate pe date.",
       },
     },
     {
@@ -904,84 +1042,95 @@ const ro: ServicesCopy = {
       name: "Consultanță",
       hubDescription:
         "Punem ordine în obiective, ofertă, canale și bugete. Pleci cu priorități explicate și un plan pe care echipa ta îl poate pune în lucru.",
-      hubLink: "Vezi cum arată consultanța",
+      hubLink: "Vezi cum stabilim strategia",
       hero: {
-        h1: "Să stabilim ce merită făcut acum.",
+        h1: "Mai întâi stabilim ce merită făcut.",
         paragraphs: [
-          "Poate ai o echipă, câțiva furnizori și multe idei. Ceea ce lipsește este ordinea: ce are prioritate, cine răspunde și cum îți dai seama că merge.",
-          "Lucrăm cu tine la direcția de marketing a businessului. Analizăm situația, punem întrebările dificile și construim un plan pe care îl poți folosi în deciziile de zi cu zi.",
+          "Poate ai deja o echipă de marketing, mai mulți colaboratori și suficiente idei. Ce lipsește este o direcție comună: ce facem mai întâi, cine se ocupă și cum evaluăm rezultatele.",
+          "Te ajutăm să iei decizii mai bine fundamentate. Analizăm situația actuală, discutăm deschis despre probleme și stabilim un plan pe care îl poți aplica în activitatea de zi cu zi.",
         ],
-        cta: "Hai să discutăm despre direcția ta",
+        cta: "Hai să discutăm despre strategia ta",
       },
       direction: {
-        kicker: "Când are sens",
-        heading: "Când trebuie să iei o decizie înainte să mai investești.",
+        kicker: "Când ai nevoie de consultanță",
+        heading: "Când urmează să investești, e bine să știi exact în ce.",
         paragraphs: [
-          "Lansezi un brand. Intri pe o piață nouă. Ai crescut și comunicarea a rămas în urmă. Sau investești în mai multe canale, dar nu ai o imagine comună a rezultatelor.",
-          "Consultanța începe cu problema concretă. Ne uităm la ce există, discutăm cu oamenii implicați și separăm ce știm din date de ceea ce trebuie încă verificat.",
+          "Pregătești lansarea unui brand. Vrei să intri pe o piață nouă. Businessul a crescut, dar comunicarea nu a ținut pasul. Sau investești în mai multe canale fără să ai o imagine clară asupra performanței lor.",
+          "Pornim de la situația concretă. Analizăm ce există, discutăm cu persoanele implicate și identificăm informațiile pe care ne putem baza, dar și aspectele care trebuie verificate.",
         ],
       },
       deliverablesTitle: "Ce putem clarifica",
       deliverables: [
         {
-          title: "Poziționarea.",
-          body: "Pentru cine este oferta ta și ce motive are acel public să te aleagă.",
+          title: "Poziționarea",
+          body:
+            "Cui te adresezi, cum te diferențiezi și de ce ar trebui clienții să te aleagă.",
         },
         {
-          title: "Oferta comercială.",
-          body: "Cum prezinți produsele și serviciile și unde apar neclarități în decizia de cumpărare.",
+          title: "Oferta comercială",
+          body:
+            "Cum îți prezinți produsele sau serviciile și ce poate împiedica un potențial client să ia o decizie.",
         },
         {
-          title: "Traseul clientului.",
-          body: "Cum trece de la primul contact la cerere, achiziție și revenire.",
+          title: "Parcursul clientului",
+          body:
+            "Cum ajunge cineva de la primul contact cu brandul la solicitarea unei oferte, achiziție și o eventuală revenire.",
         },
         {
-          title: "Rolul canalelor.",
-          body: "Ce trebuie să facă site-ul, reclamele, conținutul și comunicarea directă.",
+          title: "Rolul canalelor de marketing",
+          body:
+            "Ce trebuie să obțină website-ul, campaniile plătite, social media și celelalte forme de comunicare.",
         },
         {
-          title: "Bugetele și prioritățile.",
-          body: "Unde investim acum, ce testăm și ce poate aștepta.",
+          title: "Bugetele și prioritățile",
+          body:
+            "Unde merită să investești acum, ce trebuie testat și ce poate fi amânat.",
         },
         {
-          title: "Organizarea execuției.",
-          body: "Responsabilități, ritm de lucru și informațiile de care echipa are nevoie.",
+          title: "Organizarea implementării",
+          body:
+            "Cine răspunde de fiecare activitate, cum se coordonează echipele și ce informații sunt necesare pentru execuție.",
         },
         {
-          title: "Măsurarea.",
-          body: "Indicatorii după care evaluăm progresul și momentele în care revizuim planul.",
+          title: "Măsurarea rezultatelor",
+          body:
+            "Ce indicatori urmărim, cum evaluăm progresul și când este necesar să ajustăm strategia.",
         },
       ],
       how: {
-        kicker: "Cu ce rămâi",
-        heading: "O direcție scrisă și pași care pot fi puși în lucru.",
+        kicker: "Ce primești",
+        heading: "O strategie clară, pe care echipa ta o poate aplica.",
         paragraphs: [
-          "În funcție de proiect, livrabilul poate include diagnosticul situației, recomandările de poziționare, rolul canalelor și un plan pentru primele 90 de zile. Fiecare prioritate vine cu motivul pentru care este importantă și cu dependențele de care trebuie să ținem cont.",
+          "În funcție de proiect, livrăm o analiză a situației actuale, recomandări de poziționare, direcții pentru fiecare canal și un plan de acțiune pentru primele 90 de zile.",
+          "Fiecare recomandare este însoțită de o justificare, o prioritate și condițiile necesare pentru implementare.",
         ],
       },
       faq: [
         {
-          q: "Putem lucra cu Epic dacă avem deja o echipă internă?",
-          a: "Da, în funcție de disponibilitatea nișei. Putem construi direcția împreună cu echipa ta și clarifica felul în care o pune în practică.",
+          q: "Putem colabora cu Epic dacă avem deja o echipă internă?",
+          a:
+            "Da, în funcție de disponibilitatea domeniului. Putem lucra direct cu echipa ta pentru a defini strategia, responsabilitățile și modul de implementare.",
         },
         {
-          q: "Trebuie să continuăm și cu implementarea?",
-          a: "Nu. Stabilim de la început dacă proiectul este de consultanță, de implementare sau le include pe ambele.",
+          q: "Suntem obligați să continuăm cu implementarea?",
+          a:
+            "Nu. Colaborarea poate include doar consultanță, doar implementare sau ambele. Stabilim acest lucru înainte de începerea proiectului.",
         },
         {
-          q: "Este o singură întâlnire?",
-          a: "Formatul depinde de problemă. Poate fi un proiect delimitat sau o colaborare cu întâlniri periodice, analiză și ajustarea priorităților.",
+          q: "Consultanța presupune o singură întâlnire?",
+          a:
+            "Depinde de complexitatea proiectului. Poate fi o intervenție punctuală sau o colaborare pe termen mai lung, cu întâlniri periodice, analiză și ajustări.",
         },
       ],
       closing: {
-        heading: "Care este decizia pe care businessul tău trebuie să o ia acum?",
-        line: "De acolo începem.",
+        heading: "Ce decizie importantă trebuie să ia businessul tău acum?",
+        line: "De aici putem începe.",
         cta: "Discută cu Epic",
       },
       meta: {
         title: "Consultanță și strategie de marketing | Epic Digital Hub",
         description:
-          "Claritate în poziționare, ofertă, canale și bugete. Consultanță de marketing cu priorități explicate și un plan pe care echipa ta îl poate aplica.",
+          "Consultanță de marketing pentru poziționare, ofertă, canale, bugete și priorități. Analizăm businessul și stabilim un plan concret de acțiune.",
       },
     },
   ],
@@ -992,50 +1141,55 @@ const en: ServicesCopy = {
   faqTitle: "Frequently asked questions",
   applyPrefill: "Service I'm interested in: ",
   hub: {
-    kicker: "What we do",
-    h1: "One plan. Everything you need to set it in motion.",
+    kicker: "What We Do",
+    h1: "One strategy. Every part working together.",
     paragraphs: [
-      "Ads bring people in. Content builds familiarity. The website helps them decide. The data shows us where it's worth continuing.",
-      "At Epic, everything starts from the same strategy. We choose what your brand needs, set the order, and handle the execution. You get a team that understands the whole business and knows what role each piece of work plays.",
+      "Advertising generates interest. Content builds familiarity. Your website turns consideration into action. Data tells us what's working.",
+      "At Epic Digital Hub, strategy comes first. We determine what your business needs, prioritise the work and manage execution across the relevant channels.",
+      "One team. A clear direction. No disconnected marketing efforts.",
     ],
     ctaPrimary: "Check your niche availability",
-    ctaSecondary: "See the services",
+    ctaSecondary: "Explore our services",
     start: {
-      kicker: "Where we start",
-      heading: "First, we look at what needs to change.",
+      kicker: "Where We Start",
+      heading: "Before we spend, we look at what's holding you back.",
       paragraphs: [
-        "Maybe you have traffic but too few enquiries. Maybe you sell well through referrals, but online, the level of your business doesn't show. Or maybe you already invest in marketing and still don't have a clear explanation for the results.",
-        "That's where we begin. We look at the offer, the audience, the competition and the path a client takes to a purchase. Then we decide what to build, what to fix and what deserves budget now.",
+        "You might be getting traffic but too few enquiries. Your business may have a strong reputation offline but an online presence that doesn't reflect it. Or perhaps you're investing in marketing without knowing what's producing results.",
+        "We examine your offer, audience, competitors and customer journey. Then we decide what needs fixing, what deserves investment and what can wait.",
       ],
     },
-    listKicker: "The services",
+    listKicker: "Our Services",
     steps: {
       kicker: "How we begin",
-      heading: "A concrete conversation before any proposal.",
+      heading: "We establish the fit before the scope.",
       items: [
         {
-          title: "We check the niche.",
-          body: "We work with one brand per niche, in each city. We check for overlaps with active partnerships.",
+          title: "We check your niche.",
+          body:
+            "We work with one brand per niche, per city. Every potential partnership begins with an exclusivity check.",
         },
         {
-          title: "We sketch the direction.",
-          body: "If the niche is available, we outline the priorities, the relevant channels and the first 90 days.",
+          title: "We identify the priorities.",
+          body:
+            "If your niche is available, we assess your priorities, recommend the relevant channels and outline the first 90 days.",
         },
         {
-          title: "We decide together.",
-          body: "We clarify responsibilities, deliverables and budget. We start when the plan makes sense for both teams.",
+          title: "We agree on the direction.",
+          body:
+            "We agree on responsibilities, deliverables and budgets before work begins.",
         },
       ],
     },
     closing: {
-      heading: "Tell us where you want your business to go.",
-      line: "We come with a view of what needs to be built to get there.",
-      cta: "Check your niche availability",
+      heading: "Let's talk about where your business needs to go.",
+      line: "We'll help determine what it takes to get there.",
+      cta: "Start a conversation",
     },
     meta: {
-      title: "Marketing and web development services | Epic Digital Hub",
+      title:
+        "Marketing, Branding & Web Development Services | Epic Digital Hub",
       description:
-        "Strategy, PPC campaigns, SEO and GEO, social media, video, design and web development. One team, one shared plan. See the Epic Digital Hub services.",
+        "Strategy, branding, Google and Meta Ads, SEO, GEO, social media, video production and web development. One team coordinating every channel.",
     },
   },
   exclusivity: {
@@ -1050,83 +1204,96 @@ const en: ServicesCopy = {
     {
       slug: "campanii-ppc",
       num: "01",
-      name: "PPC Media Campaigns",
+      name: "PPC Advertising",
       hubDescription:
-        "Google and Meta campaigns built around your offer and a clear commercial objective. We follow what happens after the click and adjust budgets based on results.",
-      hubLink: "See how we work with ads",
+        "Google and Meta campaigns built around commercial objectives.",
+      hubLink: "Explore PPC advertising",
       hero: {
-        h1: "Your budget should have an explanation.",
+        h1: "Every advertising budget needs a reason.",
         paragraphs: [
-          "Where it goes. What it brings back. What we change next.",
-          "We build and manage Google and Meta campaigns starting from your offer, from the people who might buy, and from what happens after they reach your site. Every campaign has an objective, a way of being measured and a reason it gets budget.",
+          "Know where your budget goes, what it produces and what we recommend next.",
+          "We plan and manage Google Ads and Meta Ads campaigns around your offer, target customers and commercial objectives.",
+          "Every campaign has a defined purpose, measurable actions and an accountable budget.",
         ],
-        cta: "Let's talk about your campaigns",
+        cta: "Discuss your advertising",
       },
       direction: {
-        kicker: "What we look at",
-        heading: "From the ad to the enquiry or the order.",
+        kicker: "Beyond the Click",
+        heading: "Traffic is only useful when it leads somewhere.",
         paragraphs: [
-          "A good message can bring visitors. For the investment to make sense, the page they land on, the form they fill in and the way you handle the enquiry have to work too.",
-          "We look at that whole path. If the problem is in the offer or the site, we discuss it before raising the budget. If a campaign brings the wrong kind of enquiries, we change the message, the targeting or the criteria we judge it by.",
+          "An effective ad can bring visitors to your website. But the landing page, offer, enquiry process and follow-up determine whether those visits become business opportunities.",
+          "We examine the entire journey.",
+          "If your website is losing potential customers, increasing ad spend won't solve the problem. If campaigns attract the wrong enquiries, we adjust the messaging, targeting or optimisation criteria.",
+          "The objective isn't more activity. It's better commercial performance.",
         ],
       },
-      deliverablesTitle: "What the collaboration includes",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Account and offer analysis.",
-          body: "We see what has been tested, what produced results and what information is missing.",
+          title: "Account & Offer Analysis",
+          body:
+            "We review existing campaigns, historical performance, previous tests and gaps in measurement.",
         },
         {
-          title: "The campaign plan.",
-          body: "We set the role of each channel, the audiences, the messages and the initial budget allocation.",
+          title: "Campaign Strategy",
+          body:
+            "We define channel roles, target audiences, messaging and initial budget allocation.",
         },
         {
-          title: "Copy and creative directions.",
-          body: "We build variants that fit the product, the audience and the buying stage.",
+          title: "Copy & Creative Direction",
+          body:
+            "We develop advertising messages and creative variations suited to the product, audience and buying stage.",
         },
         {
-          title: "Setup and launch.",
-          body: "We organize the accounts, the campaigns and the measurement of the conversions that matter.",
+          title: "Setup & Launch",
+          body:
+            "We structure campaigns, configure the relevant accounts and establish conversion measurement.",
         },
         {
-          title: "Ongoing optimization.",
-          body: "We review search terms, exclusions, audiences and creatives. We adjust based on the data we accumulate.",
+          title: "Ongoing Optimisation",
+          body:
+            "We review search terms, exclusions, audiences, placements and creatives, using performance data to guide changes.",
         },
         {
-          title: "Reporting, explained.",
-          body: "You see the results, the limits of the data and the decisions for the next period.",
+          title: "Reporting & Recommendations",
+          body:
+            "We explain the results, identify what the data can and cannot tell us, and recommend the next actions.",
         },
       ],
       how: {
         kicker: "How we work",
-        heading: "We start with clear hypotheses. We continue with what the data confirms.",
+        heading: "Test. Measure. Make the next decision.",
         paragraphs: [
-          "We decide what we want to learn from the first campaigns and what budget we can allocate to testing. We follow the results long enough to have a basis for decisions, then adjust the messages and the distribution of the investment. Budget increases come with a commercial justification.",
+          "We begin with defined assumptions and a testing budget.",
+          "As campaigns accumulate meaningful data, we refine messaging, targeting and budget allocation. We recommend increasing spend when the commercial evidence supports it.",
         ],
       },
       faq: [
         {
-          q: "What budget should we start with?",
-          a: "It depends on the market, the offer, the geographic area and the objective. We set the media budget paid to the platforms, the cost of management and the production of creatives separately, per project.",
+          q: "What budget do we need for Google Ads or Meta Ads?",
+          a:
+            "It depends on your market, offer, geographic coverage and objectives. We calculate platform advertising spend, campaign management fees and creative production costs separately.",
         },
         {
-          q: "Can you take over campaigns that are already running?",
-          a: "Yes. We start by reviewing the account structure, the history and the measurement. We keep what makes sense and propose changes we can argue for.",
+          q: "Can you take over existing advertising campaigns?",
+          a:
+            "Yes. We audit the account structure, campaign history and conversion tracking before recommending changes. We retain what's working and address what isn't.",
         },
         {
-          q: "How do we judge the results?",
-          a: "By what fits the business: relevant enquiries, bookings, orders or other commercial actions. Where the data is available, we connect the cost of advertising to the quality of the enquiries and the sales they generate.",
+          q: "How do you measure advertising performance?",
+          a:
+            "We focus on relevant enquiries, bookings, purchases and other business outcomes. Where tracking allows, we also assess lead quality, acquisition costs and revenue attributed to advertising.",
         },
       ],
       closing: {
-        heading: "What should your next advertising budget bring back?",
-        line: "We start from that question and build the campaigns around the answer.",
-        cta: "Talk to Epic",
+        heading: "What should your next advertising budget achieve?",
+        line: "That's the question we answer before launching a campaign.",
+        cta: "Plan your campaigns",
       },
       meta: {
-        title: "Google and Meta PPC campaigns | Epic Digital Hub",
+        title: "Google Ads & Meta Ads Management | Epic Digital Hub",
         description:
-          "Google and Meta campaigns with clear objectives, ongoing optimization and reporting that gets explained. We connect the ads to the offer, the site and the commercial results.",
+          "Google Ads and Meta Ads campaigns with clear objectives, conversion tracking, ongoing optimisation and transparent reporting. Advertising tied to business results.",
       },
     },
     {
@@ -1134,83 +1301,102 @@ const en: ServicesCopy = {
       num: "02",
       name: "SEO & GEO",
       hubDescription:
-        "We put the information about your business in order: on your site, in search, and in the sources AI systems build their answers from. Clear content, good structure, a coherent presence.",
-      hubLink: "See how we build visibility",
+        "Search visibility across Google and AI-powered discovery.",
+      hubLink: "Explore SEO & GEO",
       hero: {
-        h1: "When people search for what you do, they should understand why to choose you.",
+        h1: "Be found. Be understood. Be worth choosing.",
         paragraphs: [
-          "We build a clear online presence for people, search engines and AI systems. We put the site in order, develop relevant content and make the information about your business easier to find and to interpret.",
+          "Being visible is only part of the job. People also need to understand what you offer and why it's relevant to them.",
+          "We improve website structure, technical accessibility and content quality to support organic search visibility and make your business information easier for AI-powered systems to interpret.",
         ],
-        cta: "Let's talk about your visibility",
+        cta: "Discuss your search visibility",
       },
       direction: {
-        kicker: "The direction",
-        heading: "Good answers, backed by a well-built site.",
+        kicker: "Search Has Changed. The Fundamentals Still Matter.",
+        heading: "Clear information, properly structured.",
         paragraphs: [
-          "We start from the questions clients have before they buy: what you offer, who it fits, how it works and why they should trust you.",
-          "SEO is about visibility in the organic results of search engines. GEO adds attention to how information about the brand can be understood and used in AI-generated answers. We approach them together, through the same base: useful information, accessible structure and claims that can be backed up.",
+          "People search with questions, comparisons and specific needs. Your website should answer them accurately and help them make informed decisions.",
+          "SEO improves how your website can be discovered through organic search results.",
+          "GEO — Generative Engine Optimisation — focuses on making information about your brand clear, accessible and suitable for interpretation by AI-powered search and answer systems.",
+          "Both depend on the same essentials: sound technical structure, useful content and verifiable information.",
         ],
       },
-      deliverablesTitle: "What we work on",
+      deliverablesTitle: "What We Work On",
       deliverables: [
         {
-          title: "Technical and content audit.",
-          body: "We identify weak pages, missing information and the problems that make content hard to access.",
+          title: "Technical & Content Audit",
+          body:
+            "We identify technical barriers, weak pages, missing information and content that needs restructuring.",
         },
         {
-          title: "Search research.",
-          body: "We group topics by your services and by the intent of the people searching.",
+          title: "Search Research",
+          body:
+            "We analyse search queries and intent, organising relevant topics around your services and customers' needs.",
         },
         {
-          title: "Site structure.",
-          body: "We organize the pages and the links between them so each one has a clear role.",
+          title: "Website Architecture",
+          body:
+            "We structure pages, navigation and internal links so information is accessible and each page has a defined purpose.",
         },
         {
-          title: "Service pages and useful content.",
-          body: "We explain the offer, the process, the differences and the frequent questions in concrete terms.",
+          title: "Service Pages & Content",
+          body:
+            "We develop content that explains your services, processes, relevant differences and frequently asked questions.",
         },
         {
-          title: "Local presence.",
-          body: "We align the information about location, services and contact details wherever the business has local relevance.",
+          title: "Local SEO",
+          body:
+            "We align business information, locations, services and contact details across relevant local platforms.",
         },
         {
-          title: "Brand information and structured data.",
-          body: "We make the relationships between the company, its services and the relevant people explicit, where the implementation allows.",
+          title: "Structured Data & Brand Information",
+          body:
+            "Where technically appropriate, we implement structured data that clarifies relationships between your business, services and relevant professionals.",
         },
         {
-          title: "Monitoring.",
-          body: "We track visibility, relevant traffic and the commercial actions we can measure.",
+          title: "Performance Monitoring",
+          body:
+            "We track organic visibility, relevant traffic and measurable business actions, using the findings to prioritise improvements.",
         },
       ],
       how: {
-        kicker: "How we set priorities",
-        heading: "We start with the pages that matter for the business.",
+        kicker: "How We Prioritise",
+        heading: "Start where search meets business value.",
         paragraphs: [
-          "First we fix the problems that affect access to and understanding of the site. Then we develop the pages closest to the buying decision and extend the content based on the audience's real questions.",
+          "We first address technical and structural problems that prevent pages from being accessed or understood.",
+          "Then we improve the pages most closely connected to customer decisions, before expanding the content around relevant search demand.",
+          "The priority isn't publishing more. It's making the right information easier to find.",
         ],
       },
       faq: [
         {
-          q: "Can you guarantee the first position, or appearing in AI answers?",
-          a: "No. We control the quality of the implementation and the content. The selection and ordering of results belong to the platforms, and visibility can vary.",
+          q:
+            "Can you guarantee first-page Google rankings or inclusion in AI-generated answers?",
+          a:
+            "No. Search engines and AI platforms determine which sources they display. We can improve the technical quality, clarity and relevance of your content, but rankings and AI citations cannot be guaranteed.",
         },
         {
-          q: "How long until we see results?",
-          a: "It depends on the state of the site, the competition and the scale of the work. We set stages and progress indicators after the audit, without promising the same timeline for every project.",
+          q: "How long does SEO take to produce results?",
+          a:
+            "It depends on your website's current condition, competition, search demand and scope of work. We establish priorities and performance indicators after the initial audit.",
         },
         {
-          q: "Do we have to publish articles every week?",
-          a: "Frequency follows priorities. Sometimes, rewriting the service pages and fixing the structure are the first things to do.",
+          q: "Do we need to publish new articles every week?",
+          a:
+            "Not necessarily. Improving service pages, correcting technical issues and strengthening existing content may be more valuable than maintaining a fixed publishing schedule.",
         },
       ],
       closing: {
-        heading: "Let's see how clearly the internet talks about your business.",
-        cta: "Talk to Epic",
+        heading: "Can people find the right information about your business?",
+        line:
+          "Let's examine what search engines and AI systems can access today.",
+        cta: "Review your SEO & GEO",
       },
       meta: {
-        title: "SEO and GEO for your brand | Epic Digital Hub",
+        title:
+          "SEO & Generative Engine Optimisation Services | Epic Digital Hub",
         description:
-          "Technical optimization, content and local presence for a brand that is easier to find and to understand, in search and in AI experiences.",
+          "Technical SEO, content strategy, local search and GEO. Make your business easier to find, understand and evaluate across search engines and AI-powered platforms.",
       },
     },
     {
@@ -1218,337 +1404,399 @@ const en: ServicesCopy = {
       num: "03",
       name: "Social Media Management",
       hubDescription:
-        "We give your accounts a direction people can recognize. Messages, design and content tied to what you sell and to how you want to be perceived.",
-      hubLink: "See how we manage social media",
+        "Content planning, creation and management shaped by your brand and audience.",
+      hubLink: "Explore social media",
       hero: {
-        h1: "Your brand should be recognizable from one post to the next.",
+        h1: "Every post should belong to the same brand.",
         paragraphs: [
-          "In what it says. In how it looks. In the things it chooses to show.",
-          "We manage your social media presence starting from positioning, offer and audience. We build an editorial direction we can sustain over time, with relevant materials and a clear working process.",
+          "Not just in appearance. In tone, subject matter and what the brand chooses to communicate.",
+          "We manage social media accounts around your positioning, audience and commercial priorities.",
+          "The result is a consistent editorial direction, supported by content your business can sustain.",
         ],
-        cta: "Let's talk about your social media presence",
+        cta: "Discuss your social media",
       },
       direction: {
-        kicker: "What we build",
-        heading: "A reason for people to follow you and come back.",
+        kicker: "More Than a Publishing Schedule",
+        heading: "Give people a reason to pay attention.",
         paragraphs: [
-          "A potential client can land on your profile after an ad, a recommendation or a search. Within a few posts, they should understand what you do, how you work and what kind of business you are.",
-          "We choose the topics that build that image: your products and services, the people on your team, your clients' questions, examples from the day-to-day work. We turn them into communication that is recognizable and tied to your commercial goals.",
+          "Someone might visit your profile after seeing an advertisement, receiving a recommendation or searching for your business.",
+          "Your content should quickly establish what you do, what you offer and what kind of experience customers can expect.",
+          "We draw on your products, services, people and day-to-day activity to develop content with substance.",
+          "The goal isn't to fill a calendar. It's to build a recognisable brand presence that supports the business.",
         ],
       },
-      deliverablesTitle: "What the collaboration includes",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Account audit.",
-          body: "We review the profiles, the existing content and the way the brand presents itself.",
+          title: "Account Audit",
+          body:
+            "We assess your existing profiles, content, brand presentation and areas for improvement.",
         },
         {
-          title: "Editorial direction.",
-          body: "We set the themes, the tone, the formats and the role of each channel.",
+          title: "Editorial Strategy",
+          body:
+            "We define the topics, tone of voice, formats and purpose of each relevant channel.",
         },
         {
-          title: "Content plan.",
-          body: "We organize publishing around the business's activity, launches and campaigns.",
+          title: "Content Planning",
+          body:
+            "We organise content around business activity, launches, promotions and communication priorities.",
         },
         {
-          title: "Copy and visuals.",
-          body: "We prepare posts, carousels and stories at the agreed volume.",
+          title: "Copywriting & Design",
+          body:
+            "We produce the agreed volume of posts, carousels, stories and supporting visual materials.",
         },
         {
-          title: "Video content coordination.",
-          body: "We integrate video production into the plan, with deliverables set separately in the offer.",
+          title: "Video Content Coordination",
+          body:
+            "We incorporate video into the editorial plan, with production requirements and deliverables agreed separately.",
         },
         {
-          title: "Scheduling and publishing.",
-          body: "You get a clear flow for feedback and approvals.",
+          title: "Scheduling & Publishing",
+          body:
+            "We coordinate the content calendar, approvals and publishing process.",
         },
         {
-          title: "Analysis and adjustments.",
-          body: "We evaluate the relevant reactions, the visits, the conversations and the enquiries we can attribute to the content.",
+          title: "Performance Analysis",
+          body:
+            "We evaluate engagement, profile visits, conversations and attributable enquiries, then adjust the direction where needed.",
         },
       ],
       how: {
-        kicker: "How we work together",
-        heading: "We hold the direction. You bring access to what's happening in the business.",
+        kicker: "How We Collaborate",
+        heading:
+          "We manage the communication. You keep us close to the business.",
         paragraphs: [
-          "We agree on a contact person, a working rhythm and feedback deadlines. Information about offers, stock, events or changes reaches us in time, so the materials are accurate and published when they matter.",
+          "We establish a contact person, communication schedule and approval process.",
+          "Your team provides timely updates on products, availability, offers, events and operational changes.",
+          "That access allows us to create accurate content and publish it when it's relevant.",
         ],
       },
       faq: [
         {
-          q: "How many posts do we need?",
-          a: "We set the volume based on channels, resources and objectives. The proposal shows exactly what types of materials we produce and how often we publish.",
+          q: "How many social media posts should we publish each month?",
+          a:
+            "The right volume depends on your objectives, channels and available resources. Our proposal specifies the number, format and frequency of the materials included.",
         },
         {
-          q: "Do you also answer messages and comments?",
-          a: "We can include moderation in the collaboration, with agreed time windows, response types and escalation rules. Commercial or technical questions that need confirmation go to your team.",
+          q: "Do you respond to comments and private messages?",
+          a:
+            "Community management can be included, with agreed response times and escalation procedures. Technical or commercial questions requiring confirmation are referred to your team.",
         },
         {
-          q: "Is paid promotion included?",
-          a: "The content plan and the paid campaigns are coordinated. Ad management and the media budget are defined separately in the offer.",
+          q: "Does social media management include paid advertising?",
+          a:
+            "Organic content and paid campaigns are planned together where relevant, but advertising management and media budgets are quoted separately.",
         },
       ],
       closing: {
-        heading: "What does someone who sees your profile today understand about you?",
-        cta: "Let's build the direction",
+        heading:
+          "What does your social media presence say about your business?",
+        line: "Let's make sure it's saying the right things.",
+        cta: "Build your social media strategy",
       },
       meta: {
-        title: "Social Media Management | Epic Digital Hub",
+        title: "Social Media Management & Content Strategy | Epic Digital Hub",
         description:
-          "Editorial strategy, copy, design and publishing for coherent social media accounts. We build a presence tied to the brand and to your objectives.",
+          "Strategic social media management, copywriting, graphic design, content planning and publishing. Consistent communication built around your brand.",
       },
     },
     {
       slug: "continut-video",
       num: "04",
-      name: "Video Content Production",
+      name: "Video Production",
       hubDescription:
-        "We film your business, its people and its products. We build materials for social media, ads and the website, starting from what the client needs to understand.",
-      hubLink: "See how we produce video",
+        "Reels, advertising creatives, product videos and on-location production.",
+      hubLink: "Explore video production",
       hero: {
-        h1: "Show them what it's like, before they get to you.",
+        h1: "Some things are better shown.",
         paragraphs: [
-          "The atmosphere in the location. The people they'll talk to. The product in use. The details that explain the difference.",
-          "We produce video content starting from your business and from what the client needs to see to take the next step. We shoot on location and prepare the materials for the channels they'll be used in.",
+          "Your people. Your product. Your space. The details customers want to see before choosing you.",
+          "We produce video content that represents the business as it is and communicates what makes it worth considering.",
+          "From concept and filming to editing and delivery, each production is planned for its intended audience and platform.",
         ],
-        cta: "Let's talk about your next shoot",
+        cta: "Plan your next video shoot",
       },
       direction: {
-        kicker: "From idea to material",
-        heading: "A good shoot starts with a clear question.",
+        kicker: "From Concept to Camera",
+        heading: "Every video needs a purpose.",
         paragraphs: [
-          "What do we want the viewer to understand after watching the clip?",
-          "The answer decides the script, the shots, the rhythm and the length. A video for an ad is built differently from a location presentation or a specialist's explanation. We plan the production around these uses.",
+          "What should someone understand, remember or do after watching?",
+          "That answer shapes the script, shot selection, pacing and final edit.",
+          "An advertising video needs a different structure from a product demonstration. A specialist interview serves a different purpose from a venue presentation.",
+          "We plan accordingly.",
         ],
       },
-      deliverablesTitle: "What we can produce",
+      deliverablesTitle: "What We Produce",
       deliverables: [
         {
-          title: "Reels and short clips.",
-          body: "Concentrated ideas, prepared for mobile consumption.",
+          title: "Reels & Short-Form Content",
+          body:
+            "Focused, engaging videos developed for mobile-first platforms.",
         },
         {
-          title: "Ad materials.",
-          body: "Opening variants, messages and edits we can test in campaigns.",
+          title: "Video Advertising",
+          body:
+            "Campaign-ready creatives with alternative openings, messages and edits for testing.",
         },
         {
-          title: "Product and service presentations.",
-          body: "Demonstrations and explanations that answer the questions people have before buying.",
+          title: "Product & Service Videos",
+          body:
+            "Demonstrations and explanations that help customers understand what they're buying.",
         },
         {
-          title: "Content with your team.",
-          body: "Interviews, explanations and spoken pieces, prepared so people feel natural on camera.",
+          title: "Team & Expert Content",
+          body:
+            "Interviews, professional explanations and on-camera presentations that feel natural and credible.",
         },
         {
-          title: "Location and atmosphere footage.",
-          body: "Content for the website, social media and promoting the experience.",
+          title: "Location & Atmosphere Videos",
+          body:
+            "Footage for websites, social media and campaigns, showing the physical experience behind the brand.",
         },
         {
-          title: "Event content.",
-          body: "Relevant moments and materials that can support the communication of future editions.",
+          title: "Event Coverage",
+          body:
+            "Video content documenting key moments and supporting promotion for future editions.",
         },
       ],
       how: {
-        kicker: "How production works",
-        heading: "We prepare in advance. We shoot organized. We deliver for clear uses.",
+        kicker: "Our Production Process",
+        heading: "Planned carefully. Filmed efficiently.",
         paragraphs: [
-          "We set the messages, the shot list, the people involved and the logistics. On the shoot, we follow the plan and leave room for the moments that come up naturally. After the edit, we prepare the agreed versions, subtitles and formats, with a feedback process set from the start.",
+          "Before filming, we establish the concepts, scripts, shot list, participants and logistics.",
+          "During production, we follow a clear schedule while making room for authentic moments.",
+          "We then edit and prepare the agreed versions, including subtitles and platform-specific formats where required.",
+          "Deliverables and revision stages are agreed before production begins.",
         ],
       },
       faq: [
         {
-          q: "Do we have to come up with the ideas?",
-          a: "We start from your information and objectives, and we develop the concepts and scripts. Your team's experience helps us keep the explanations accurate and credible.",
+          q: "Do we need to provide the video ideas?",
+          a:
+            "No. We develop concepts and scripts based on your objectives and business information. Your team's expertise helps ensure the content is accurate.",
         },
         {
-          q: "Can we shoot several materials in one day?",
-          a: "Yes, if we prepare the topics, the people and the locations in advance. The final number depends on the complexity of each material.",
+          q: "Can you produce several videos in one filming day?",
+          a:
+            "Yes. With advance planning, we can organise multiple topics, participants and setups into one shoot. The number of deliverables depends on production complexity.",
         },
         {
-          q: "Is the raw footage included?",
-          a: "The deliverables, access to raw footage and the terms of use are clarified in the offer, before production.",
+          q: "Is raw footage included?",
+          a:
+            "Raw footage availability, usage rights and final deliverable formats are specified in the project proposal.",
         },
       ],
       closing: {
-        heading: "What is worth seeing in your business?",
-        line: "We start with that and build the right form for it.",
-        cta: "Plan a video project with Epic",
+        heading: "Your business has something worth showing.",
+        line: "Let's decide how best to film it.",
+        cta: "Start a video project",
       },
       meta: {
-        title: "Video production for brands | Epic Digital Hub",
+        title: "Video Production & Reels for Brands | Epic Digital Hub",
         description:
-          "Reels, ads, presentations and location footage. Video content built from the real activity of the business, for social media and the website.",
+          "Professional video production for brands. Social media reels, video ads, product presentations, interviews and event coverage.",
       },
     },
     {
       slug: "magazine-online",
       num: "05",
-      name: "Online Store Development",
+      name: "E-commerce Development",
       hubDescription:
-        "Stores where products are easy to find, information is clear and the order is simple to complete. Ready for promotion and for the operations behind the sale.",
-      hubLink: "See how we build online stores",
+        "Online stores designed around products, customers and the buying process.",
+      hubLink: "Explore e-commerce",
       hero: {
-        h1: "From the first product viewed to the confirmed order.",
+        h1: "Make buying from you easier.",
         paragraphs: [
-          "Every step counts.",
-          "We build online stores around the way people search for, compare and buy your products. We work on the structure, the product pages and the ordering process, with attention to what happens in the business after the sale.",
+          "From finding the right product to placing an order, every step matters.",
+          "We design and develop online stores around how customers browse, compare and buy. We also consider what happens after checkout, so the website fits the way your business operates.",
         ],
-        cta: "Let's talk about your store",
+        cta: "Discuss your online store",
       },
       direction: {
-        kicker: "What we build",
-        heading: "A store you can use and grow.",
+        kicker: "Built for Customers. Practical for Your Team.",
+        heading: "A better shopping experience, front to back.",
         paragraphs: [
-          "The client has to find the product quickly, understand what they're getting and see the buying terms clearly. Your team has to be able to manage the catalog and the orders without pointless detours.",
-          "We start from the number of products, the types of variants, the markets you sell in and the existing workflows. The choice of platform and features comes after these clarifications.",
+          "Customers need to find products easily, understand what they're buying and see delivery costs and conditions before checkout.",
+          "Your team needs to manage products, inventory and orders without unnecessary complexity.",
+          "We assess your catalogue, product variations, target markets and existing processes before recommending a platform or technical features.",
         ],
       },
-      deliverablesTitle: "What the project can include",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Catalog architecture.",
-          body: "Categories, filters and navigation built for your product range.",
+          title: "Catalogue Architecture",
+          body:
+            "Categories, filters and navigation organised around your product range and customer search behaviour.",
         },
         {
-          title: "Design and mobile experience.",
-          body: "Readable pages and actions that are easy to complete on small screens.",
+          title: "Responsive Design",
+          body:
+            "Clear layouts, intuitive navigation and straightforward purchasing on mobile, tablet and desktop.",
         },
         {
-          title: "Product pages.",
-          body: "Structure for images, specifications, variants and the information the decision needs.",
+          title: "Product Pages",
+          body:
+            "Structured product information, imagery, specifications and variants that help customers make informed decisions.",
         },
         {
-          title: "Cart and checkout.",
-          body: "Clear steps and visible information about costs and delivery.",
+          title: "Cart & Checkout",
+          body:
+            "An ordering process with clear steps, visible costs and accessible delivery information.",
         },
         {
-          title: "Operational integrations.",
-          body: "Payments, couriers, invoicing, inventory or CRM, depending on compatibility and the agreed scope.",
+          title: "Business Integrations",
+          body:
+            "Payment gateways, courier services, invoicing, inventory systems and CRM integrations, subject to compatibility and project scope.",
         },
         {
-          title: "The base for promotion and measurement.",
-          body: "The agreed setup for indexing, product feeds and commercial events.",
+          title: "SEO & Measurement Setup",
+          body:
+            "Technical foundations for search indexing, product feeds and agreed conversion events.",
         },
         {
-          title: "Testing and handover.",
-          body: "We verify the important buying scenarios and explain how to run the store.",
+          title: "Testing & Handover",
+          body:
+            "We test key purchasing scenarios and provide guidance on managing the store after launch.",
         },
       ],
       how: {
-        kicker: "How we work",
-        heading: "We establish from the start what has to work at launch.",
+        kicker: "Our Development Process",
+        heading: "Define the essentials. Build them properly.",
         paragraphs: [
-          "We define the essential features and separate the developments that can follow. We design, implement and test the complete flow, including the orders and the integrations in the project. You get visibility over responsibilities, the materials needed and the recurring costs of the chosen solutions.",
+          "We establish what the store needs at launch and which features can follow later.",
+          "Design, development, checkout and integrations are planned and tested as part of the complete purchasing journey.",
+          "Responsibilities, content requirements and recurring platform costs are clarified before development begins.",
         ],
       },
       faq: [
         {
-          q: "Can you rebuild an existing store?",
-          a: "Yes. We review the data, the platform, the URL structure and the integrations. We plan what gets migrated and how we manage the change.",
+          q: "Can you redesign or rebuild an existing online store?",
+          a:
+            "Yes. We review the existing platform, product data, URL structure and integrations before planning the redesign or migration.",
         },
         {
-          q: "Who adds the products?",
-          a: "We set in the offer the volume, the data format and the responsibility for the import, the images and the descriptions.",
+          q: "Who uploads the products?",
+          a:
+            "We agree on catalogue size, product data, images, descriptions and import responsibilities before the project begins.",
         },
         {
-          q: "What happens after launch?",
-          a: "Support, maintenance and further development are defined separately. The store can keep improving based on usage and the data collected.",
+          q: "What happens after the store goes live?",
+          a:
+            "Maintenance, technical support and further development are scoped separately. Improvements can be prioritised using customer behaviour and sales data.",
         },
       ],
       closing: {
-        heading: "How should buying from you work?",
-        line: "Let's design the complete path.",
-        cta: "Discuss the project with Epic",
+        heading: "How easy is it to buy from your business?",
+        line: "Let's make the entire process work better.",
+        cta: "Start an e-commerce project",
       },
       meta: {
-        title: "Online store development | Epic Digital Hub",
+        title: "E-commerce Website Development | Epic Digital Hub",
         description:
-          "Online stores with clear structure, product pages and a simple ordering process. Design, development and integrations adapted to your business.",
+          "Custom e-commerce development focused on product discovery, mobile shopping, checkout and business integrations. Built around how your customers buy.",
       },
     },
     {
       slug: "website-uri-prezentare",
       num: "06",
-      name: "Company Website Development",
+      name: "Website Development",
       hubDescription:
-        "Websites that show the level of your business and help the visitor quickly understand why to choose you. Strategy, copy, design and development in the same project.",
-      hubLink: "See how we build websites",
+        "Business websites that communicate clearly and support enquiries and sales.",
+      hubLink: "Explore website development",
       hero: {
-        h1: "Your website speaks before you answer the phone.",
+        h1: "Your website speaks before you do.",
         paragraphs: [
-          "It should live up to the level of your business.",
-          "We build websites that explain the offer, show what sets you apart and lead the visitor toward a clear action. The copy, the design and the development start from the same direction.",
+          "Make sure it represents the business you've built.",
+          "We create websites that explain your offer, establish what makes your business relevant and guide visitors towards the next step.",
+          "Strategy, copy, design and development are handled as one project, not separate assignments.",
         ],
-        cta: "Let's talk about your website",
+        cta: "Discuss your website",
       },
       direction: {
-        kicker: "The site's role",
-        heading: "Make it clear who you are and why you're worth contacting.",
+        kicker: "Your Most Important First Impression",
+        heading: "Give people the information they came for.",
         paragraphs: [
-          "When someone lands on the site, they come with a question, a need or a comparison in mind. We organize the pages around those things and build the arguments in the order they're useful.",
-          "The design gives the brand character. Photography and video bring context. The interactions support the experience, with attention to readability, speed and mobile use.",
+          "Visitors arrive with questions. They're evaluating your services, comparing alternatives or deciding whether to contact you.",
+          "We structure the website around those decisions, presenting the right information in the right order.",
+          "Design expresses your brand's character. Photography and video provide context. Navigation and interactions make the experience intuitive.",
+          "Every element needs to justify its place.",
         ],
       },
-      deliverablesTitle: "What the project includes",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Structure and main paths.",
-          body: "We set the pages and the relevant actions for each type of visitor.",
+          title: "Website Architecture",
+          body:
+            "We define the page structure, navigation and relevant user journeys based on your business objectives.",
         },
         {
-          title: "The copy.",
-          body: "We explain the services, the differences and the working process in language that fits the brand.",
+          title: "Copywriting",
+          body:
+            "We write clear, brand-specific content that explains your services, differentiators and working process.",
         },
         {
-          title: "Visual direction.",
-          body: "We build a design coherent with the positioning and the existing materials.",
+          title: "Art Direction & UI Design",
+          body:
+            "We develop a visual direction aligned with your positioning, identity and existing brand materials.",
         },
         {
-          title: "Development.",
-          body: "We implement the pages and the interactions, adapted for mobile, tablet and desktop.",
+          title: "Responsive Development",
+          body:
+            "We build the website and its interactions for mobile, tablet and desktop.",
         },
         {
-          title: "Forms and integrations.",
-          body: "We connect the enquiries with the agreed workflow, including CRM or bookings where needed.",
+          title: "Forms & Integrations",
+          body:
+            "We connect enquiries to the agreed workflow, including CRM or booking integrations where required.",
         },
         {
-          title: "The technical base for SEO and measurement.",
-          body: "We prepare the structure, the metadata and the events set in the project.",
+          title: "SEO & Analytics Foundations",
+          body:
+            "We prepare technical structure, metadata and the tracking events included in the project.",
         },
         {
-          title: "Review and launch.",
-          body: "We test navigation, forms and rendering before publishing.",
+          title: "Testing & Launch",
+          body:
+            "We review navigation, responsiveness, forms and key interactions before publication.",
         },
       ],
       how: {
-        kicker: "How we work",
-        heading: "We clarify the message before we draw the pages.",
+        kicker: "Our Development Process",
+        heading: "The message comes before the layout.",
         paragraphs: [
-          "We start from objectives and content. We validate the structure, then the visual direction and the implementation. Each stage has a deliverable and a feedback moment, so the project moves forward with the important decisions already made.",
+          "We begin with your business objectives and the information visitors need.",
+          "From there, we establish the website architecture, develop the copy and define the visual direction.",
+          "Design and development follow an agreed sequence, with clear deliverables and review stages.",
+          "This keeps the project focused and reduces unnecessary revisions.",
         ],
       },
       faq: [
         {
-          q: "Do we need to have the copy and photos ready?",
-          a: "We can develop the copy starting from your information. For images, we establish what materials can be used and whether photo or video production is needed.",
+          q: "Do we need to provide the website text and photography?",
+          a:
+            "No. We can develop the copy based on information from your business. For photography and video, we assess existing materials and determine whether new production is required.",
         },
         {
-          q: "Will we be able to update the site ourselves?",
-          a: "We establish from the start which sections your team needs to manage and choose the technical solution accordingly.",
+          q: "Will we be able to update the website ourselves?",
+          a:
+            "Yes, where content management is included in the agreed scope. We identify which sections your team needs to manage and select the technical approach accordingly.",
         },
         {
-          q: "Can you keep our current domain?",
-          a: "Yes. We plan the move, the access to the infrastructure and the necessary redirects, depending on the existing site.",
+          q: "Can we keep our existing domain name?",
+          a:
+            "Yes. We plan the transition around your existing domain, hosting setup and any necessary redirects.",
         },
       ],
       closing: {
-        heading: "The business has evolved. Does the website show it?",
-        cta: "Discuss the project with Epic",
+        heading: "Your business has moved forward. Has your website kept up?",
+        cta: "Start your website project",
       },
       meta: {
-        title: "Company websites | Epic Digital Hub",
+        title: "Business Website Design & Development | Epic Digital Hub",
         description:
-          "Company websites built from strategy, copy and design. Clear pages, a carefully crafted experience and integration with the business's objectives.",
+          "Business websites built around strategy, copywriting, design and development. Clear messaging, responsive experiences and conversion-focused structure.",
       },
     },
     {
@@ -1556,80 +1804,95 @@ const en: ServicesCopy = {
       num: "07",
       name: "Graphic Design",
       hubDescription:
-        "A visual identity that holds from the first ad to the last page of a proposal. Design for campaigns, social media, print and the materials you need in sales.",
-      hubLink: "See how we work with design",
+        "Brand identities, campaign visuals and commercial materials.",
+      hubLink: "Explore graphic design",
       hero: {
-        h1: "The same brand. Wherever you meet it.",
+        h1: "One brand. A consistent impression.",
         paragraphs: [
-          "In an ad, on a proposal, in a showroom or on a poster.",
-          "We build and apply a recognizable visual direction. Every material has a clear role and belongs to the same identity, whatever the format or channel.",
+          "An advertisement. A presentation. A showroom display. A printed brochure.",
+          "Different formats, but the same brand behind them.",
+          "We develop visual identities and design systems that make your communication recognisable across every relevant channel.",
         ],
-        cta: "Let's talk about your brand's image",
+        cta: "Discuss your brand design",
       },
       direction: {
-        kicker: "What the visual direction brings",
-        heading: "Decisions that stay coherent from one project to the next.",
+        kicker: "Design That Holds Together",
+        heading: "Consistency comes from decisions, not repetition.",
         paragraphs: [
-          "The colors, the typography, the images and the way you lay out information build expectations about the brand. When the rules are clear, new materials can evolve without the identity changing with every campaign.",
-          "We start from the positioning and the real uses. A brand that communicates prices and offers has different needs from one that presents technical services or premium experiences.",
+          "Typography, colour, imagery and layout all influence how people perceive your business.",
+          "Clear visual standards allow campaigns and materials to evolve without losing the brand's identity.",
+          "We base our design decisions on positioning, audience and practical requirements.",
+          "A technical company needs to communicate differently from a hospitality brand. A promotional campaign has different demands from a corporate presentation.",
+          "The design has to serve the message.",
         ],
       },
-      deliverablesTitle: "What we can create",
+      deliverablesTitle: "What We Design",
       deliverables: [
         {
-          title: "Visual identity.",
-          body: "Logo, color palette, typography and usage rules, depending on the project.",
+          title: "Visual Identity",
+          body:
+            "Logo design, colour systems, typography and usage standards, according to project scope.",
         },
         {
-          title: "Campaign materials.",
-          body: "Visual concepts and adaptations for the promotion formats.",
+          title: "Campaign Creative",
+          body:
+            "Visual concepts and adaptations for digital advertising and promotional campaigns.",
         },
         {
-          title: "Social media design.",
+          title: "Social Media Design",
           body: "Posts, carousels, stories and reusable templates.",
         },
         {
-          title: "Commercial materials.",
-          body: "Presentations, proposals, brochures and product sheets.",
+          title: "Commercial Materials",
+          body:
+            "Presentations, proposals, brochures, product sheets and sales materials.",
         },
         {
-          title: "Print design.",
-          body: "Posters, flyers, business cards and other materials prepared to production specifications.",
+          title: "Print Design",
+          body:
+            "Posters, flyers, business cards and other artwork prepared to production specifications.",
         },
         {
-          title: "Visual guide.",
-          body: "Rules clear enough for the identity to be applied consistently.",
+          title: "Brand Guidelines",
+          body:
+            "Practical design rules that help maintain a consistent identity across teams and channels.",
         },
       ],
       how: {
-        kicker: "How we work",
-        heading: "First we establish what the material has to communicate.",
+        kicker: "How We Work",
+        heading: "First, the message. Then the design.",
         paragraphs: [
-          "We clarify the audience, the message, the context and the format. We propose a direction we can argue for, develop it through feedback and prepare the files for the agreed uses. For recurring materials, we build a base that makes execution more coherent and more efficient.",
+          "We establish the audience, purpose, content and format before developing the visual direction.",
+          "After review and refinement, we prepare the agreed files for their intended applications.",
+          "For recurring needs, we create reusable design structures that support consistency and efficient production.",
         ],
       },
       faq: [
         {
-          q: "Can we keep our current logo?",
-          a: "Yes. We can work within the existing identity or propose adjustments where applying it creates problems.",
+          q: "Can we keep our existing logo?",
+          a:
+            "Yes. We can work within your current visual identity and recommend adjustments where needed.",
         },
         {
-          q: "Do you handle printing too?",
-          a: "Preparing the files and the physical production are separate things. We establish in the offer whether the project also includes coordinating with the print supplier.",
+          q: "Do you also handle printing?",
+          a:
+            "Print-ready design and physical production are separate services. If required, we can include coordination with printing suppliers in the project scope.",
         },
         {
-          q: "Do we get the editable files?",
-          a: "The final formats, the source files and the licenses for fonts or images are clarified before the project starts.",
+          q: "Will we receive editable design files?",
+          a:
+            "Final formats, source file delivery and any applicable font or image licences are defined in the proposal before work begins.",
         },
       ],
       closing: {
-        heading: "Put all your materials side by side. Is it the same brand?",
-        cta: "Build the visual direction with Epic",
+        heading:
+          "Put every brand asset side by side. Does it all look like the same business?",
+        cta: "Build your visual identity",
       },
       meta: {
-        title: "Graphic design and visual identity | Epic Digital Hub",
+        title: "Graphic Design & Visual Identity | Epic Digital Hub",
         description:
-          "Visual identity, design for campaigns, social media, print and commercial materials. One coherent direction in every appearance of the brand.",
+          "Graphic design for brands, advertising campaigns, social media and print. Visual identities and marketing materials designed to work together.",
       },
     },
     {
@@ -1637,252 +1900,293 @@ const en: ServicesCopy = {
       num: "08",
       name: "Email Marketing",
       hubDescription:
-        "We continue the conversation with the people who have already shown interest. Campaigns and automations built around the moments when a message is genuinely useful.",
-      hubLink: "See how we use email",
+        "Campaigns and automated communication built around customer behaviour.",
+      hubLink: "Explore email marketing",
       hero: {
-        h1: "You already have their attention. The conversation deserves to continue.",
+        h1: "The first interaction shouldn't be the last.",
         paragraphs: [
-          "Someone subscribed, asked for an offer or bought from you. The next message should take that moment into account.",
-          "We build email campaigns and automations that are relevant to the relationship between brand and client. We establish who we write to, why we write to them and what the natural next step is.",
+          "Someone subscribes, requests a quote or makes a purchase. What happens next should reflect that interaction.",
+          "We develop email campaigns and automated communication based on customer behaviour, business objectives and the relationship you've already established.",
+          "Every message needs a relevant audience, a clear purpose and a reason to be sent.",
         ],
-        cta: "Let's talk about email marketing",
+        cta: "Discuss email marketing",
       },
       direction: {
-        kicker: "What we build",
-        heading: "Messages you have a good reason to send.",
+        kicker: "Communication Worth Opening",
+        heading: "Send emails people have a reason to read.",
         paragraphs: [
-          "A launch can interest a certain segment. A new client may need explanations. Someone who has already bought may be ready for a complementary product.",
-          "We organize the communication around these situations. We keep the brand's voice and prepare emails that read easily, with one main message and a clear action.",
+          "A product launch won't interest everyone. New customers may need guidance. Existing customers may benefit from a related offer.",
+          "We organise email communication around these differences.",
+          "The writing stays consistent with your brand. The design works across devices. Each email focuses on a clear message and an appropriate next action.",
         ],
       },
-      deliverablesTitle: "What the collaboration can include",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Contact base analysis.",
-          body: "We review the sources, the quality of the data and the way communication permissions were collected.",
+          title: "Contact Database Analysis",
+          body:
+            "We review where your contacts come from, the available customer information and how marketing consent was collected.",
         },
         {
-          title: "Segmentation.",
-          body: "We group contacts based on the available information and their relationship with the business.",
+          title: "Audience Segmentation",
+          body:
+            "We organise contacts according to relevant characteristics, customer history and available behavioural data.",
         },
         {
-          title: "The campaign plan.",
-          body: "We set the themes, the rhythm and the connection with your launches or offers.",
+          title: "Campaign Planning",
+          body:
+            "We establish topics, frequency and timing in relation to product launches, promotions and customer needs.",
         },
         {
-          title: "Copy and design.",
-          body: "We build emails coherent with the brand and adapted for mobile.",
+          title: "Copywriting & Design",
+          body:
+            "We create branded email content, structured for readability and optimised for mobile devices.",
         },
         {
-          title: "Automations.",
-          body: "Welcome messages, post-purchase, win-back or abandoned cart flows, where the data, the platform and the permissions allow.",
+          title: "Automated Email Sequences",
+          body:
+            "Welcome emails, post-purchase communication, re-engagement campaigns and abandoned cart reminders, where the platform, data and permissions allow.",
         },
         {
-          title: "Testing and analysis.",
-          body: "We check the rendering, the links and the indicators relevant to each type of campaign.",
+          title: "Testing & Analysis",
+          body:
+            "We check email rendering, links and campaign performance, then use the findings to improve future communication.",
         },
       ],
       how: {
-        kicker: "How we work",
-        heading: "We start with the moments that have a clear role in the client relationship.",
+        kicker: "How We Build Automations",
+        heading: "The right message starts with the right trigger.",
         paragraphs: [
-          "We choose the priority flows and set the triggers, the content and the stop conditions. We coordinate the automations with the manually sent messages, so the communication stays useful and easy to follow.",
+          "We identify the customer interactions that justify automated communication.",
+          "For each sequence, we define its trigger, message, timing and stopping conditions.",
+          "Automated emails are coordinated with regular campaigns to avoid unnecessary overlap and repetitive messaging.",
         ],
       },
       faq: [
         {
-          q: "Can we start if we have few contacts?",
-          a: "Yes. We can put the signup forms and the welcome messages in order, then develop the communication as the base grows.",
+          q: "Can we start email marketing with a small contact list?",
+          a:
+            "Yes. We can begin with subscription forms, contact management and welcome emails, then expand the communication as your audience grows.",
         },
         {
-          q: "How often do we send emails?",
-          a: "It depends on what there is to communicate, on the subscribers' expectations and on the reactions we observe. The frequency has to be sustainable with relevant messages.",
+          q: "How often should we send marketing emails?",
+          a:
+            "Frequency depends on your audience, the relevance of your content and subscriber engagement. We recommend a schedule supported by genuine reasons to communicate, rather than sending emails simply to maintain volume.",
         },
         {
-          q: "What results do we track?",
-          a: "Clicks, enquiries, orders and attributable revenue, where measurement allows, alongside deliverability and unsubscribes. We read the indicators together and keep their limits in mind.",
+          q: "How do you measure email marketing performance?",
+          a:
+            "We assess deliverability, clicks, enquiries, purchases and attributable revenue where tracking allows. Unsubscribe rates and other engagement signals also help us evaluate relevance.",
         },
       ],
       closing: {
-        heading: "What happens after the first contact with your brand?",
-        line: "Let's build what comes next.",
-        cta: "Talk to Epic",
+        heading: "What happens after someone first engages with your brand?",
+        line: "We build the communication that follows.",
+        cta: "Plan your email marketing",
       },
       meta: {
-        title: "Email marketing and automations | Epic Digital Hub",
+        title: "Email Marketing & Automation Services | Epic Digital Hub",
         description:
-          "Email campaigns and automations adapted to the client relationship. Segmentation, copy, design and measurement, connected to your business's activity.",
+          "Email marketing campaigns, segmentation and automated customer journeys. Relevant messages, considered timing and measurable results.",
       },
     },
     {
       slug: "tracking-date",
       num: "09",
-      name: "Data Tracking",
+      name: "Analytics & Tracking",
       hubDescription:
-        "We set up the measurement of the actions that matter for the business. See where enquiries come from, where people drop off and what you can decide based on the available data.",
-      hubLink: "See how we measure results",
+        "Conversion tracking and reporting that connect marketing activity to business outcomes.",
+      hubLink: "Explore analytics",
       hero: {
-        h1: "Before the next budget, you need data you can trust.",
+        h1: "Better decisions start with better data.",
         paragraphs: [
-          "Where the enquiries come from. What people do on the site. Where they stop. What actually reaches the sales team.",
-          "We set up and verify the measurement of the actions relevant to your business. We build an analysis base that helps you make decisions and shows you where the information is incomplete.",
+          "Where do your enquiries come from? Which pages influence decisions? Where do potential customers leave? What happens after someone submits a form?",
+          "We implement and verify tracking that helps answer these questions, while making the limitations of the available data clear.",
         ],
-        cta: "Let's check what you're measuring",
+        cta: "Audit your tracking",
       },
       direction: {
-        kicker: "Why we start with definitions",
-        heading: "What you call a conversion has to mean something for the business.",
+        kicker: "Measure What Matters",
+        heading: "Not every conversion has the same value.",
         paragraphs: [
-          "A click on a phone number, a submitted form and a sale are different stages. If we treat them the same, it becomes hard to understand what the campaigns produce.",
-          "We establish the important actions and the relationship between them. We check what we can measure on the site, what data exists in the advertising platforms and what information your team can add about the quality of the enquiries.",
+          "A phone-number click, a submitted enquiry and a completed purchase represent different stages of the customer journey.",
+          "Treating them as equivalent can distort your understanding of performance.",
+          "We define the actions that matter, establish how they're measured and assess which data can be connected to real commercial outcomes.",
         ],
       },
-      deliverablesTitle: "What the project includes",
+      deliverablesTitle: "What's Included",
       deliverables: [
         {
-          title: "Implementation audit.",
-          body: "We review the tools, the events, the gaps and the possible duplications.",
+          title: "Tracking Audit",
+          body:
+            "We review existing analytics tools, events, missing data and potential duplicate measurements.",
         },
         {
-          title: "The measurement plan.",
-          body: "We define the conversions and the indicators we'll use in the analysis.",
+          title: "Measurement Strategy",
+          body:
+            "We define meaningful conversions, performance indicators and the reporting structure.",
         },
         {
-          title: "Tool configuration.",
-          body: "We implement GA4, Google Tag Manager and the agreed connections, depending on the infrastructure.",
+          title: "Tool Configuration",
+          body:
+            "We configure Google Analytics 4, Google Tag Manager and relevant integrations, according to your technical infrastructure.",
         },
         {
-          title: "Relevant events.",
-          body: "Forms, contact requests, buying stages and purchases, where applicable.",
+          title: "Conversion Events",
+          body:
+            "We implement tracking for relevant actions such as form submissions, contact requests, checkout stages and purchases.",
         },
         {
-          title: "Campaign tagging.",
-          body: "We set consistent rules for identifying traffic sources.",
+          title: "Campaign Tagging",
+          body:
+            "We establish consistent traffic-source identification and campaign tracking conventions.",
         },
         {
-          title: "Consent integration.",
-          body: "We adapt how the tools fire to the agreed configuration and to users' choices.",
+          title: "Consent Integration",
+          body:
+            "We configure tracking behaviour in relation to the implemented consent system and users' choices.",
         },
         {
-          title: "Validation and documentation.",
-          body: "We test the important scenarios and explain what we collect, how we interpret it and what limits exist.",
+          title: "Testing & Documentation",
+          body:
+            "We validate key tracking scenarios and document what is measured, how it works and where limitations remain.",
         },
       ],
       how: {
-        kicker: "How we use the data",
-        heading: "Every report should help with a decision.",
+        kicker: "From Reporting to Decisions",
+        heading: "Data is useful when it changes what you do next.",
         paragraphs: [
-          "We organize the indicators around the questions you have: which channel brings relevant enquiries, where the purchase breaks off and which page deserves improvement. When the information allows, we connect the analysis with the results recorded in the CRM or the order system.",
+          "We organise reporting around practical business questions.",
+          "Which channels generate relevant enquiries? Where do customers abandon the buying process? Which pages need improvement?",
+          "Where the systems allow, we connect website and advertising data with information from your CRM or order management platform.",
         ],
       },
       faq: [
         {
-          q: "Can we measure absolutely every visit and sale?",
-          a: "No. Consent, device settings and the way people use several channels limit visibility. We explain these limits in the analysis.",
+          q: "Can we track every visitor and every sale?",
+          a:
+            "No. Consent preferences, device settings, tracking restrictions and multi-channel customer journeys limit measurement. We explain these limitations rather than presenting estimates as exact figures.",
         },
         {
-          q: "Why do the numbers differ between platforms?",
-          a: "The tools can use different rules and attribution windows. We verify the implementation and establish which source we use for each type of decision.",
+          q:
+            "Why do Google Analytics and advertising platforms report different numbers?",
+          a:
+            "Platforms may use different attribution models, conversion definitions and reporting windows. We verify the implementation and establish which data source is appropriate for each decision.",
         },
         {
-          q: "Can we connect the forms to final sales?",
-          a: "In many projects, yes, if the infrastructure exists and there's a consistent process for updating the enquiries. Feasibility is established after reviewing the systems.",
+          q: "Can we connect website enquiries to completed sales?",
+          a:
+            "In many cases, yes. It depends on your CRM, website infrastructure and how consistently enquiries are managed. We assess feasibility before implementation.",
         },
       ],
       closing: {
-        heading: "What decision are you postponing because the data isn't clear enough?",
-        cta: "Discuss measurement with Epic",
+        heading: "Which decisions are you making without reliable data?",
+        line: "Let's improve the information behind them.",
+        cta: "Discuss analytics & tracking",
       },
       meta: {
-        title: "Tracking, GA4 and conversion measurement | Epic Digital Hub",
+        title:
+          "GA4, Google Tag Manager & Conversion Tracking | Epic Digital Hub",
         description:
-          "Tracking audit and setup for forms, enquiries and purchases. Explained data, verified implementation and indicators tied to the business.",
+          "GA4 setup, Google Tag Manager, conversion tracking and analytics audits. Reliable measurement for enquiries, purchases and marketing decisions.",
       },
     },
     {
       slug: "consultanta-marketing",
       num: "10",
-      name: "Consulting",
+      name: "Marketing Consulting",
       hubDescription:
-        "We put order in objectives, offer, channels and budgets. You leave with priorities explained and a plan your team can put to work.",
-      hubLink: "See what consulting looks like",
+        "Positioning, planning and commercial priorities backed by research and analysis.",
+      hubLink: "Explore consulting",
       hero: {
-        h1: "Let's establish what's worth doing now.",
+        h1: "Know what matters. Then decide what comes next.",
         paragraphs: [
-          "Maybe you have a team, a few suppliers and plenty of ideas. What's missing is the order: what takes priority, who is responsible and how you can tell it's working.",
-          "We work with you on the marketing direction of the business. We analyze the situation, ask the difficult questions and build a plan you can use in day-to-day decisions.",
+          "You may already have a marketing team, external suppliers and plenty of ideas. What you need is a clear set of priorities: what comes first, who handles it and how you'll measure progress.",
+          "We assess your business, challenge assumptions and turn the findings into a practical marketing plan.",
         ],
-        cta: "Let's talk about your direction",
+        cta: "Discuss your marketing strategy",
       },
       direction: {
-        kicker: "When it makes sense",
-        heading: "When you have to make a decision before investing more.",
+        kicker: "When Consulting Makes Sense",
+        heading: "Before the next major decision.",
         paragraphs: [
-          "You're launching a brand. Entering a new market. You've grown and the communication has fallen behind. Or you invest in several channels but don't have a shared picture of the results.",
-          "Consulting starts with the concrete problem. We look at what exists, talk to the people involved and separate what we know from data from what still has to be verified.",
+          "You're launching a brand, entering a new market or reconsidering your positioning. Your business has grown, but its marketing hasn't kept pace. Or you're investing across several channels without a reliable view of performance.",
+          "We begin with the specific decision you're facing.",
+          "We examine existing information, speak with the relevant people and distinguish established facts from assumptions that still need testing.",
         ],
       },
-      deliverablesTitle: "What we can clarify",
+      deliverablesTitle: "What We Can Clarify",
       deliverables: [
         {
-          title: "Positioning.",
-          body: "Who your offer is for and what reasons that audience has to choose you.",
+          title: "Brand Positioning",
+          body:
+            "Who you're targeting, what sets your offer apart and why customers should choose you.",
         },
         {
-          title: "The commercial offer.",
-          body: "How you present the products and services and where the buying decision gets unclear.",
+          title: "Commercial Offer",
+          body:
+            "How your products or services are presented, priced and understood throughout the buying process.",
         },
         {
-          title: "The client's path.",
-          body: "How they move from first contact to enquiry, purchase and return.",
+          title: "Customer Journey",
+          body:
+            "The steps customers take from initial interest to enquiry, purchase and repeat business.",
         },
         {
-          title: "The role of the channels.",
-          body: "What the website, the ads, the content and the direct communication each have to do.",
+          title: "Channel Strategy",
+          body:
+            "The role of your website, advertising, content and direct communication.",
         },
         {
-          title: "Budgets and priorities.",
-          body: "Where we invest now, what we test and what can wait.",
+          title: "Budgets & Priorities",
+          body: "Where to invest, what to test and which activities can wait.",
         },
         {
-          title: "Organizing the execution.",
-          body: "Responsibilities, working rhythm and the information the team needs.",
+          title: "Execution Planning",
+          body:
+            "Responsibilities, timelines, workflows and the information required by everyone involved.",
         },
         {
-          title: "Measurement.",
-          body: "The indicators we judge progress by and the moments when we revisit the plan.",
+          title: "Performance Measurement",
+          body:
+            "The indicators that matter, how to interpret them and when to reassess the strategy.",
         },
       ],
       how: {
-        kicker: "What you leave with",
-        heading: "A written direction and steps that can be put to work.",
+        kicker: "What You Receive",
+        heading: "A strategy you can actually use.",
         paragraphs: [
-          "Depending on the project, the deliverable can include a diagnosis of the situation, positioning recommendations, the role of the channels and a plan for the first 90 days. Every priority comes with the reason it matters and the dependencies we have to account for.",
+          "Depending on the scope, the project may include a marketing assessment, positioning recommendations, channel priorities and a 90-day action plan.",
+          "Recommendations are supported by clear reasoning, with responsibilities and dependencies identified before implementation.",
         ],
       },
       faq: [
         {
-          q: "Can we work with Epic if we already have an in-house team?",
-          a: "Yes, depending on niche availability. We can build the direction together with your team and clarify how they put it into practice.",
+          q:
+            "Can we work with Epic Digital Hub if we already have an internal marketing team?",
+          a:
+            "Yes, subject to niche availability. We can develop the strategy alongside your team and establish how recommendations will be implemented.",
         },
         {
-          q: "Do we have to continue with the implementation?",
-          a: "No. We establish from the start whether the project is consulting, implementation or both.",
+          q: "Do we have to hire Epic Digital Hub for implementation?",
+          a:
+            "No. Consulting can be a standalone project or part of a broader partnership. We agree on the scope before starting.",
         },
         {
-          q: "Is it a single meeting?",
-          a: "The format depends on the problem. It can be a defined project or a collaboration with periodic meetings, analysis and adjusted priorities.",
+          q: "Is consulting a one-time meeting or an ongoing service?",
+          a:
+            "Both formats are possible. Depending on your needs, we can work on a defined strategic project or provide ongoing guidance through scheduled reviews and planning sessions.",
         },
       ],
       closing: {
-        heading: "What is the decision your business has to make now?",
-        line: "That's where we start.",
-        cta: "Talk to Epic",
+        heading: "What's the next important decision for your business?",
+        line: "Let's make it an informed one.",
+        cta: "Book a strategy discussion",
       },
       meta: {
-        title: "Marketing consulting and strategy | Epic Digital Hub",
+        title: "Marketing Strategy & Consulting | Epic Digital Hub",
         description:
-          "Clarity in positioning, offer, channels and budgets. Marketing consulting with priorities explained and a plan your team can apply.",
+          "Marketing consulting for businesses that need clearer positioning, stronger offers, better budget decisions and an actionable strategy.",
       },
     },
   ],

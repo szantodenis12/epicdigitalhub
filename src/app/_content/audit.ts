@@ -3,29 +3,30 @@
 // api/audit/route.ts); only the page around it follows the locale.
 
 const en = {
+  meta: { title: "Free Website Audit | Epic Digital Hub", description: "Get a free, automated website audit covering first impressions, navigation, trust signals and basic SEO. Enter your URL and receive your report in minutes." },
   kicker: "Free audit",
-  title: "What a new customer sees on your website.",
+  title: "See your website through your customers' eyes.",
   intro:
-    "Enter your website address and our system reads it and writes a report here, on this page, in a few minutes. Automated and free. A strategist reads every report after that.",
+    "You know your business. But does someone visiting your website for the first time understand it just as clearly? Enter your website address and get a free assessment of what visitors see, how easily they can find what they need and what might be stopping them from taking the next step.",
 
   what: {
-    kicker: "What we check",
+    kicker: "What we look at",
     items: [
       {
-        t: "The first seconds",
-        d: "What a first-time visitor understands from the first screen: what you sell, for whom, and what they are supposed to do next.",
+        t: "First impressions",
+        d: "What does someone understand within the first few seconds? We look at how clearly your homepage communicates what you offer, who it's for and what visitors should do next.",
       },
       {
-        t: "The path to contact or purchase",
-        d: "How many steps it takes to reach a phone number, a form or a cart, and where that path breaks.",
+        t: "The path to conversion",
+        d: "How easy is it to take action? We review the journey from landing on your website to contacting your business, submitting an enquiry or completing a purchase. We identify unnecessary steps and potential points of friction.",
       },
       {
-        t: "Trust",
-        d: "Contact details, prices, signs that a real company answers behind the site.",
+        t: "Trust and credibility",
+        d: "Does your website give people enough confidence to choose you? We assess visible contact information, business details, pricing where relevant and other elements that help visitors determine whether they can trust your company.",
       },
       {
-        t: "What Google sees",
-        d: "Titles, descriptions, page structure. What a search engine actually reads from your site.",
+        t: "Search visibility",
+        d: "Can search engines understand your website? We examine basic SEO elements, including page titles, meta descriptions, headings and content structure, to identify issues that could affect how your pages are understood by search engines.",
       },
     ],
   },
@@ -37,8 +38,8 @@ const en = {
       email: "Email",
       url: "Website address (e.g. yourcompany.com)",
     },
-    submit: "Generate the report",
-    note: "The report is written here, on this page, in Romanian. It takes a few minutes.",
+    submit: "Generate My Free Report",
+    note: "Your report is generated automatically in Romanian and displayed on this page. It usually takes a few minutes.",
   },
 
   states: {
@@ -61,36 +62,37 @@ const en = {
   },
 
   closing: {
-    kicker: "After the report",
-    body: "The report is written automatically by our system, from your site's public pages. A strategist reads every report and can walk through it with you in 30 minutes.",
-    cta: "Talk to a strategist",
+    kicker: "What happens next?",
+    body: "Your report is generated from publicly accessible information on your website. Every report is subsequently reviewed by a member of our strategy team. If you'd like to discuss the findings, you can book a 30-minute conversation to go through the key points and potential next steps. No obligation to work with us.",
+    cta: "Talk to a Strategist",
   },
 };
 
 const ro: typeof en = {
+  meta: { title: "Audit gratuit pentru website | Epic Digital Hub", description: "Află cum este perceput website-ul tău de un potențial client. Primești gratuit, în câteva minute, un raport automat cu observații despre claritatea mesajului, experiența de navigare, credibilitate și SEO." },
   kicker: "Audit gratuit",
-  title: "Ce vede un client nou pe site-ul tău.",
+  title: "Cum arată website-ul tău prin ochii unui client nou?",
   intro:
-    "Pui adresa site-ului, sistemul nostru îl citește și scrie un raport aici, pe pagină, în câteva minute. Automat și gratuit. Un strateg citește apoi fiecare raport.",
+    "Analizăm ce înțelege un vizitator atunci când intră pentru prima dată pe website-ul tău, cât de ușor găsește informațiile importante și ce îl poate împiedica să te contacteze sau să cumpere.",
 
   what: {
-    kicker: "Ce verificăm",
+    kicker: "Ce analizăm",
     items: [
       {
-        t: "Primele secunde",
-        d: "Ce înțelege un om nou din primul ecran: ce vinzi, pentru cine și ce are de făcut mai departe.",
+        t: "Prima impresie",
+        d: "Cât de repede înțelege un vizitator ce oferi, cui te adresezi și care este următorul pas.",
       },
       {
-        t: "Drumul până la contact sau comandă",
-        d: "Câți pași sunt până la telefon, formular sau coș și unde se rupe drumul.",
+        t: "Experiența de navigare",
+        d: "Cât de simplu ajunge un potențial client de la prima pagină la formularul de contact, apel telefonic sau finalizarea unei comenzi. Identificăm pașii inutili și punctele în care poate abandona procesul.",
       },
       {
-        t: "Încredere",
-        d: "Date de contact, prețuri, semne că în spatele site-ului răspunde o firmă reală.",
+        t: "Credibilitatea",
+        d: "Verificăm dacă website-ul oferă suficiente informații pentru a inspira încredere: date de contact, informații despre companie, prețuri și alte elemente relevante pentru decizia de cumpărare.",
       },
       {
-        t: "Ce vede Google",
-        d: "Titluri, descrieri, structura paginilor. Ce citește efectiv un motor de căutare din site-ul tău.",
+        t: "Vizibilitatea în Google",
+        d: "Analizăm elementele de bază ale optimizării SEO: titluri, meta descrieri și structura paginilor, pentru a identifica eventualele probleme care pot afecta indexarea și vizibilitatea în rezultatele căutării.",
       },
     ],
   },
@@ -102,8 +104,8 @@ const ro: typeof en = {
       email: "Email",
       url: "Adresa site-ului (ex. firmata.ro)",
     },
-    submit: "Generează raportul",
-    note: "Raportul se scrie aici, pe pagină. Durează câteva minute.",
+    submit: "Generează raportul gratuit",
+    note: "Raportul va apărea direct pe această pagină, în câteva minute.",
   },
 
   states: {
@@ -126,9 +128,9 @@ const ro: typeof en = {
   },
 
   closing: {
-    kicker: "După raport",
-    body: "Raportul e scris automat de sistemul nostru, pe baza paginilor publice ale site-ului. Un strateg citește fiecare raport și îl poate parcurge cu tine în 30 de minute.",
-    cta: "Vorbește cu un strateg",
+    kicker: "Ce urmează după audit?",
+    body: "Raportul este generat automat, pe baza informațiilor publice disponibile pe website-ul tău. Ulterior, un strateg din echipa noastră analizează rezultatele și poate discuta cu tine, într-o sesiune de 30 de minute, principalele observații și oportunități de îmbunătățire.",
+    cta: "Discută cu un strateg",
   },
 };
 
