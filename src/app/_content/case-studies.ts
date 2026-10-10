@@ -289,10 +289,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         title: "Jeep Oradea",
         summary:
           "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
-        /* Placeholder: there is no Jeep imagery in the repo yet, and the
-           automotive photo is a Chery - the wrong brand on this page. The
-           brand mark stands in until the first materials arrive. */
-        img: "/images/og-hero.webp",
+        img: "/images/work-jeep.webp",
         intro:
           "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
         sections: [
@@ -674,10 +671,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         title: "Jeep Oradea",
         summary:
           "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
-        /* Placeholder: there is no Jeep imagery in the repo yet, and the
-           automotive photo is a Chery - the wrong brand on this page. The
-           brand mark stands in until the first materials arrive. */
-        img: "/images/og-hero.webp",
+        img: "/images/work-jeep.webp",
         intro:
           "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
         sections: [
@@ -1101,6 +1095,18 @@ export const caseVideos: Record<string, CaseVideo[]> = {
       src: "/videos/cases/chery-oradea-2.mp4",
       poster: "/videos/cases/chery-oradea-2.jpg",
       title: { ro: "Reel: Tiggo 8 CSH", en: "Reel: Chery Tiggo 8 CSH" },
+    },
+  ],
+  "jeep-oradea": [
+    {
+      /* 91 seconds, which is why this file is 14.4MB where the other reels are
+         3.5-5MB: per second of footage it sits on the same ladder (720x1280,
+         CRF 34 against their 30 - off-road footage, all motion and foliage,
+         compresses far worse than a showroom). `preload="none"` on the card
+         means none of it moves until someone taps it. */
+      src: "/videos/cases/jeep-oradea-1.mp4",
+      poster: "/videos/cases/jeep-oradea-1.jpg",
+      title: { ro: "Reel — Jeep Compass, off-road", en: "Video: Reel — Jeep Compass off-road" },
     },
   ],
   "harmony-garden": [

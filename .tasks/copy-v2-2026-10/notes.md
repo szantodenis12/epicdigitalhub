@@ -148,10 +148,16 @@ page and cannot front the other two:
   top and bottom rows. A flat fill banded, because that backdrop is a gradient
   with a vignette; stretching its edge rows carries the gradient into the
   padding and the join is invisible. 57KB.
-- Jeep has NO Jeep imagery anywhere on this machine - not in the repo, not in
-  Downloads. Its card and hero currently show the EDH brand frame, which on a
-  car brand's case study reads as a missing image. One photograph fixes it, and
-  it is the only thing still wrong with that page.
+- Jeep had NO imagery of its own and ran on the EDH brand frame, which on a car
+  brand's case study read as a missing image. **Resolved 10 Oct**: the client
+  sent a Compass studio shot and a 91-second off-road reel.
+  `work-jeep.webp` is the 3:2 source cropped to the 1448x1086 every other
+  work-\*.webp uses, trimmed from the left where there is only empty floor so the
+  car keeps its place. The reel is `jeep-oradea-1.mp4`, 720x1280 at CRF 34 —
+  14.4MB against the other reels' 3.5-5MB, because it is three times longer;
+  per second of footage it is on the same ladder, and off-road footage of
+  motion and foliage compresses far worse than a showroom. Nothing downloads
+  until someone taps the card (`preload="none"`).
 
 **The combined stat tile went.** "2 mărci, zero reciclare între ele" was true of
 the pair and false on either page alone; the two that hold per brand (the 40s
