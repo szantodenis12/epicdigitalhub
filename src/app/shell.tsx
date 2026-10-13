@@ -122,9 +122,18 @@ export function buildMetadata(locale: Locale, page?: PageMeta): Metadata {
  * public storefront address, and it still carries the identity signals that
  * matter (name, logo, region, contact).
  *
- * `sameAs` is intentionally absent: the footer's social links are still
- * `href="#"`, and asserting profile URLs we do not have would be a false claim
- * in structured data. Add them here the moment the real URLs exist.
+ * `sameAs` lists the three profiles the footer links to. Keep it in step with
+ * those links: a profile asserted here that the site does not link to (or the
+ * reverse) is the kind of mismatch that makes entity matching distrust both.
+ *
+ * `logo` is a raster built for this field and nothing else, by
+ * scratchpad/logo2.mjs: it rasterises the site's own LogoLockup paths (ink on
+ * white, 1280x265, so both sides clear Google's 112px floor). It is NOT
+ * nav-logo.svg, which this once pointed at - that file is the template's
+ * "NBNZIA" wordmark, white with mix-blend-mode:difference, so it was both the
+ * wrong brand and invisible on a white background. Regenerate it from
+ * logo.tsx if the lockup ever changes; the SVGs under /icons are unsuitable
+ * (one is the template's, the other depends on webfonts a crawler lacks).
  *
  * One @id shared by both locales, because it is ONE organisation. Only the
  * human-readable description is localised.
@@ -138,6 +147,13 @@ function organizationSchema(locale: Locale) {
     url: SITE_URL,
     description: COPY[locale].meta.schemaDescription,
     email: "contact@epicdigitalhub.ro",
+    telephone: "+40755473154",
+    logo: `${SITE_URL}/icons/organization-logo.png`,
+    sameAs: [
+      "https://www.facebook.com/epicdigitalhub.ro",
+      "https://www.instagram.com/epicdigitalhub.ro",
+      "https://www.linkedin.com/company/epicdigitalhub",
+    ],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Oradea",

@@ -211,24 +211,36 @@ body {
    same divider that fills 15% of the viewport's height on a desktop filled
    4.5% here.
 
-   340 user units lands it back at ~96px rendered, which is that same 15%. It
-   is a deliberate trade: fewer characters are on screen at once (~6 instead of
-   ~14), and the sentence reads as it sweeps rather than all at once. The sweep
-   also gets faster for free - the travel is derived from the string's measured
-   length, so longer text covers more ground over the same 3240px pin, which
-   takes dead scroll out of the section rather than adding it.
+   340 user units fixed that but overshot: it rendered at 106px, which put
+   ~6 characters on screen - under two words - and a client reading the phone
+   reported seeing "only 4 words" and never getting to the end of the sentence.
+   Measured per candidate at 390px wide (perChar = getComputedTextLength() x
+   unit / length):
+
+     340 -> 106px,  63px/char,  ~6 chars    (too few words to read)
+     260 ->  81px,  48px/char,  ~8 chars
+     220 ->  68px,  41px/char, ~10 chars    <- this
+     160 ->  50px,  30px/char, ~13 chars    (back to a thin line)
+
+   220 is the middle: the type still carries the section at 8% of the viewport
+   height, and the sentence now crosses in 4.5 screenfuls instead of 8. The
+   travel is derived from the measured string length, so a smaller face also
+   shortens the pin - this took ~400px of scroll out of the section rather than
+   adding any.
 
    The transform is the other half of the empty-space problem: -30% of the
    element's own 300px box lifted the arc 90px, so the ink sat at y~350 on an
-   844px screen with everything below it blank. -10% centres the INK (not the
-   box - the glyphs sit above the path, so the two are not the same thing) at
-   y~411 against a centre of 422. */
+   844px screen with everything below it blank. The percentage centres the INK,
+   not the box - the glyphs sit above the path, so the two are not the same
+   thing, and a smaller face moves the ink down relative to the path. At 220px
+   the ink band measures y 349..429, so -1% (3px) puts its middle on 422, the
+   centre of an 844px screen. */
 @media (max-width: 767px) {
   .curved-textpath-size {
-    font-size: 340px;
+    font-size: 220px;
   }
   .curved-arc {
-    transform: translate(0, -10%) scale(1.1);
+    transform: translate(0, -1%) scale(1.1);
   }
 }
 
@@ -243,9 +255,59 @@ body {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.marquee-track { animation: marquee-loop 26s linear infinite; }
+/* The track is promoted to its own layer, and the row is given vertical room.
+
+   Both halves of one bug. The row is `overflow-hidden` around a 10px uppercase
+   line whose box is ~12px tall, which puts Romanian diacritics right on the
+   clip edge: the breve on Ă, the comma below Ț and Ș have nowhere to go. On a
+   layer that is being re-rastered 26 seconds at a time while the page scrolls,
+   that shows up as fragments — a T wearing a comma it does not own, an E with a
+   tail, a mark floating above the line. Photographed mid-scroll on a phone
+   before this: "CONTACȚEA" and "-NĘ" in a marquee that reads CONTACTEAZĂ-NE.
+
+   `will-change` makes the compositor allocate the layer once, with bounds that
+   include the ink, instead of re-deriving them per frame. `leading-[1.8]` is
+   what stops the clip edge cutting through the accents in the first place. */
+.marquee-track {
+  animation: marquee-loop 26s linear infinite;
+  will-change: transform;
+  line-height: 1.8;
+}
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
+  .marquee-track {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+/* The track fades out before the braces.
+
+   The `{` and `}` are positioned absolutely ON the edges, with no background of
+   their own (the row sits on cream in one place and on near-black in another,
+   so there is no single colour to paint them with). The `w-max` track therefore
+   slid its text UNDER them, and a letter landing behind the `}` read as a
+   glyph that does not exist: photographed as "CONTACTEAZ" with the brace fused
+   onto the Z. A mask is background-agnostic, which painting the braces would
+   not be: the text is simply gone by the time it reaches them. It goes on the
+   track's wrapper rather than the row, because a mask applies to the whole
+   subtree - on the row it faded the braces too, and a half-faded brace over
+   half-faded text still read as one mangled glyph.
+
+   The stops are the brace's measured ink box, not a guess - a `Range` around
+   the brace reports 16..21.7px in from the row's edge (24..29.7 at md, where
+   the padding steps to px-6). So the mask is fully transparent across the
+   first 24px, where the brace lives, and fades in over the next 20. The whole
+   transition sits INSIDE the brace's inset, which is why the row still reads
+   as a continuous strip rather than a band with soft ends. */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 24px, #000 44px, #000 calc(100% - 44px), transparent calc(100% - 24px));
+  mask-image: linear-gradient(to right, transparent 24px, #000 44px, #000 calc(100% - 44px), transparent calc(100% - 24px));
+}
+@media (min-width: 768px) {
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent 32px, #000 54px, #000 calc(100% - 54px), transparent calc(100% - 32px));
+    mask-image: linear-gradient(to right, transparent 32px, #000 54px, #000 calc(100% - 54px), transparent calc(100% - 32px));
+  }
 }
 @media (min-width: 992px) {
   .btn:hover .btn-arrow-bottom { transform: translateX(-9.7rem) rotate(90deg); }
@@ -300,6 +362,36 @@ a.footer-email:hover .footer-email-underline { transform: scaleX(1); transform-o
 }
 .rise-word > span {
   display: inline-block;
+}
+
+/* ---------------------------------------------------------------------------
+   Romanian needs more leading than English at display sizes.
+
+   Measured off `grotesk` itself with canvas `actualBoundingBox`, per 100px of
+   font-size: a cap reaches 73 above the baseline, the marks on Ă/Â/Î reach 97,
+   and the comma below Ș/Ț drops 25 under it. So for two stacked lines the
+   minimum leading that keeps ink apart is:
+
+     a plain cap under a comma-below   0.73 + 0.25 = 0.98
+     a mark under a plain letter       0.97 + 0.00 = 0.97
+     a mark under a comma-below        0.97 + 0.25 = 1.22
+
+   The display headings are set between 0.92 and 1.05, which is under both of
+   the common cases - and it showed. On /ro/niches the comma of Ș in "ȘI" landed
+   on the E of "CONCURENȚĂ" one line below, and the breve of Ă in "SĂ" landed
+   under the E of "SPUNE-NE" above it. Photographed on a phone, that reads as
+   diacritics being eaten by the next line.
+
+   1.1 clears both common cases with ~0.12em to spare. It is scoped to
+   `lang="ro"` (set on <html> in shell.tsx) so English keeps the tighter
+   leading it was designed with, and it is deliberately NOT on the home hero:
+   that headline is "Your competitors can't hire us." in BOTH locales, so it
+   has no marks to collide. A mark directly beneath a comma-below would still
+   need 1.22 - no current heading stacks that way, and a display face set that
+   loose would be a different design decision.
+   ------------------------------------------------------------------------ */
+html[lang="ro"] .ro-leading {
+  line-height: 1.1;
 }
 
 /* ---------------------------------------------------------------------------

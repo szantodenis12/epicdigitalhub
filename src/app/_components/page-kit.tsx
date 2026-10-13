@@ -131,7 +131,7 @@ export function PageHero({
         <Label className="intro-fade mb-8">{label}</Label>
         <RiseTitle
           text={title}
-          className="max-w-[20ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[5.6vw]"
+          className="ro-leading max-w-[20ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[5.6vw]"
         />
         {(intro.length > 0 || children || aside) && (
           <div className={`mt-16 ${GRID}`}>

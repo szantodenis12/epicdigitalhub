@@ -18,6 +18,7 @@
 import { notFound } from "next/navigation";
 import { type Locale, localePath } from "../content";
 import { buildMetadata } from "../shell";
+import { SITE_URL } from "../robots";
 import { APPLY_PATH, SERVICES_PATH, applyPath, servicePath } from "../routes";
 import { serviceParams } from "../route-params";
 import { servicesContent } from "../_content/services";
@@ -56,7 +57,7 @@ function ClosingStatement({
       <div className={CONTAINER}>
         {heading && (
           <Parallax distance={56}>
-            <h2 className="max-w-[22ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[5.2vw]">
+            <h2 className="ro-leading max-w-[22ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[5.2vw]">
               {heading}
             </h2>
           </Parallax>
@@ -193,6 +194,34 @@ export function serviceMetadata(locale: Locale, slug: string) {
   });
 }
 
+/* Service, per locale. As on the case studies, the organisation is not
+   repeated: `provider` is a reference to the node shell.tsx already emits.
+   `areaServed` mirrors that Organization's, so the two never disagree about
+   where the work happens. No offers or ratings: there is no public pricing and
+   no review data, and structured data must not assert what the page does not. */
+function serviceJsonLd(locale: Locale, slug: string) {
+  const service = findService(locale, slug);
+  if (!service) return [];
+  const page = `${SITE_URL}${localePath(locale, servicePath(slug))}`;
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": `${page}#service`,
+      name: service.name,
+      description: service.meta.description,
+      inLanguage: locale,
+      url: page,
+      provider: { "@id": `${SITE_URL}/#organization` },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Bihor" },
+        { "@type": "Country", name: "Romania" },
+      ],
+    },
+  ];
+}
+
 export function ServicePage({ locale, slug }: { locale: Locale; slug: string }) {
   const d = servicesContent[locale];
   const service = findService(locale, slug);
@@ -202,6 +231,10 @@ export function ServicePage({ locale, slug }: { locale: Locale; slug: string }) 
 
   return (
     <PageFrame locale={locale} path={servicePath(slug)}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd(locale, slug)) }}
+      />
       <PageHero
         label={`${d.hub.kicker} / ${service.name}`}
         title={service.hero.h1}
@@ -252,7 +285,7 @@ export function ServicePage({ locale, slug }: { locale: Locale; slug: string }) 
       <section className="bg-[#1FDB93] py-24 text-[#1F1F1F]">
         <div className={CONTAINER}>
           <Parallax distance={40}>
-            <h2 className="max-w-[20ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[4.8vw]">
+            <h2 className="ro-leading max-w-[20ch] text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[4.8vw]">
               {d.exclusivity.heading}
             </h2>
           </Parallax>

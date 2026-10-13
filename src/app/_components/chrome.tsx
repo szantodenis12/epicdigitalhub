@@ -425,7 +425,7 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
               that overwhelmed the section. 4.6vw with a `ch`-based measure lets
               it set naturally. */}
           <Parallax reduceMotion={reduceMotion} distance={56}>
-            <h2 className="mt-16 max-w-[24ch] text-[8vw] font-medium leading-[1.02] tracking-[-0.02em] uppercase md:text-[4.6vw]">
+            <h2 className="ro-leading mt-16 max-w-[24ch] text-[8vw] font-medium leading-[1.02] tracking-[-0.02em] uppercase md:text-[4.6vw]">
               {copy.contact.headingLead}{" "}
               <span className="text-[#1FDB93]">{copy.contact.headingAccent}</span>
             </h2>
@@ -528,6 +528,7 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
                 ))}
               </div>
             </div>
+            <div className="flex flex-col gap-8 md:gap-10">
             <div>
               <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.write}</p>
               {/* 22px below `sm`. The old address ran 18px past the right edge
@@ -541,6 +542,20 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
                 contact@epicdigitalhub.ro
                 <span className="footer-email-underline absolute left-0 -bottom-1 h-1 w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out" />
               </a>
+            </div>
+            {/* Same hover treatment as the email (the .footer-email rule only
+                moves the underline, so it is reused rather than duplicated).
+                Smaller than the email: it is the secondary route in. */}
+            <div>
+              <p className="text-xs uppercase tracking-[0.1em] text-white/40">{copy.contact.call}</p>
+              <a
+                href="tel:+40755473154"
+                className="footer-email relative mt-3 inline-block text-[22px] tracking-[-0.01em] sm:text-[28px]"
+              >
+                0755 473 154
+                <span className="footer-email-underline absolute left-0 -bottom-1 h-1 w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out" />
+              </a>
+            </div>
             </div>
           </div>
 

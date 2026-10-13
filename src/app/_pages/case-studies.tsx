@@ -80,7 +80,7 @@ export function CaseStudiesIndex({ locale }: { locale: Locale }) {
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Image
                     src={study.img}
-                    alt={study.title}
+                    alt={study.imgAlt}
                     fill
                     sizes="(min-width: 768px) 45vw, 100vw"
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
@@ -94,7 +94,7 @@ export function CaseStudiesIndex({ locale }: { locale: Locale }) {
                     {study.vertical}
                   </span>
                 </div>
-                <h2 className="mt-5 text-[34px] font-medium leading-[1.05] tracking-[-0.02em] uppercase md:text-[3.2vw]">
+                <h2 className="ro-leading mt-5 text-[34px] font-medium leading-[1.05] tracking-[-0.02em] uppercase md:text-[3.2vw]">
                   {study.title}
                 </h2>
                 <p className="mt-6 max-w-[48ch] text-lg leading-[1.5] text-[#1F1F1F]/80">
@@ -228,7 +228,7 @@ export function CaseStudyPage({ locale, slug }: { locale: Locale; slug: string }
           <div className="relative aspect-[3/2] w-full overflow-hidden md:aspect-[21/9]">
             <Image
               src={study.img}
-              alt={study.title}
+              alt={study.imgAlt}
               fill
               priority
               sizes="(min-width: 1680px) 1648px, 100vw"

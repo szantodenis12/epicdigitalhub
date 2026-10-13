@@ -120,17 +120,40 @@ export function CurvedDivider({
          below that wants to be a real on-screen distance goes through it. */
       const unit = (textPath.ownerSVGElement?.getBoundingClientRect().width ?? VIEWBOX_W) / VIEWBOX_W;
 
-      /* The bare ratio, no safety margin, verified by counting dark pixels in
-         the arc's band rather than by reading a box: the screen is empty from
-         ~97% of the pin on a phone, and from ~95% on a desktop. A margin here
-         only buys more empty scroll at the tail.
+      /* No safety margin, verified by counting dark pixels in the arc's band
+         rather than by reading a box. A margin here only buys empty scroll at
+         the tail.
 
          Worth knowing if this ever needs re-checking: `getBoundingClientRect`
          on a `<textPath>` does NOT track the glyphs. It reported the same
          `-63..26` box at both ends of the sweep, which read as "26px of the
          last letter is still on screen" and sent me adding a clearance that
          was not needed. Count pixels. */
-      const endOffset = -((textLength / totalLength) * 100);
+      /* ...and it stops when the trailing glyph leaves the SCREEN, not when it
+         reaches the start of the path. Those are far apart: the path runs from
+         x=-700 to x=2216 in a 1516-unit viewBox, so its first ~770 units are
+         off the left edge by construction. Ending on the path start spent them
+         as empty scroll - counted in ink, the phone's screen was blank from 85%
+         of the pin onwards. `getScreenCTM` is what makes this exact rather than
+         arithmetic on the width: it already carries the squeeze AND the scale
+         on `.curved-arc`, so the same derivation holds on a desktop (where it
+         trims a smaller tail) and at any width in between. */
+      const ctm = path.getScreenCTM();
+      let offLeft = 0;
+      if (ctm) {
+        const screenX = (len: number) => {
+          const pt = path.getPointAtLength(len);
+          return pt.x * ctm.a + pt.y * ctm.c + ctm.e;
+        };
+        // the path enters from the left, so screenX rises with length: walk in
+        // from 0 until it is on screen, then keep the last length that was not
+        const step = totalLength / 400;
+        for (let l = 0; l < totalLength; l += step) {
+          if (screenX(l) >= 0) break;
+          offLeft = l;
+        }
+      }
+      const endOffset = -(((textLength - offLeft) / totalLength) * 100);
       textPath.setAttribute("startOffset", `${startOffset}%`);
 
       if (reduceMotion || !pinRef.current || !stickyRef.current) return;

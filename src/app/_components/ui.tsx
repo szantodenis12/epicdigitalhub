@@ -196,15 +196,21 @@ export function EyebrowMarquee({ label }: { label: string }) {
           as siblings, the `w-max` track pushed them out of the row and then
           slid across them. */}
       <span className="pointer-events-none absolute left-0 z-10 px-4 md:px-6">{"{"}</span>
-      <div className="marquee-track flex w-max shrink-0 items-center">
-        {half}
-        <div aria-hidden className="flex shrink-0 items-center">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <span key={i} className="flex shrink-0 items-center">
-              <span className="whitespace-nowrap">{label}</span>
-              <LogoGlyph className="mx-8 h-3 w-auto md:mx-12" />
-            </span>
-          ))}
+      {/* The track is masked by its OWN wrapper, not by the row: a mask applies
+          to the whole subtree, so masking the row faded the braces along with
+          the text and they still overlapped. The braces are outside this div,
+          so they stay crisp while the text is gone before it reaches them. */}
+      <div className="marquee-mask w-full overflow-hidden">
+        <div className="marquee-track flex w-max shrink-0 items-center">
+          {half}
+          <div aria-hidden className="flex shrink-0 items-center">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <span key={i} className="flex shrink-0 items-center">
+                <span className="whitespace-nowrap">{label}</span>
+                <LogoGlyph className="mx-8 h-3 w-auto md:mx-12" />
+              </span>
+            ))}
+          </div>
         </div>
       </div>
       <span className="pointer-events-none absolute right-0 z-10 px-4 md:px-6">{"}"}</span>

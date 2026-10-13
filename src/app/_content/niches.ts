@@ -363,7 +363,7 @@ const ro: typeof en = {
   meta: {
     title: "Harta nișelor | Epic Digital Hub",
     description:
-      "Verifică disponibilitatea nișei tale în orașul în care activezi. Epic Digital Hub colaborează cu un singur brand din fiecare nișă, oferind exclusivitate față de concurenții direcți.",
+      "Verifică disponibilitatea nișei tale în orașul în care activezi. Epic Digital Hub colaborează cu un singur brand din fiecare nișă, oferind exclusivitate.",
   },
 };
 

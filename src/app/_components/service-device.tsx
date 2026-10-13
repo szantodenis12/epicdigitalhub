@@ -186,7 +186,7 @@ export function DeviceBand({
       <BandLines slug={slug} />
       <div className="relative mx-auto w-full max-w-[var(--site-max)] px-4 pb-12 md:pb-16">
         <p className="text-[11px] tracking-[0.1em] text-white/60 uppercase">{label}</p>
-        <h2 className="mt-5 max-w-[16ch] text-[11vw] leading-[0.92] font-medium tracking-[-0.03em] uppercase md:text-[5.6vw]">
+        <h2 className="ro-leading mt-5 max-w-[16ch] text-[11vw] leading-[0.92] font-medium tracking-[-0.03em] uppercase md:text-[5.6vw]">
           {title}
         </h2>
       </div>

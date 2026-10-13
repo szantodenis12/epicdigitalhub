@@ -12,6 +12,22 @@ const nextConfig: NextConfig = {
      be dropped by the string literal and leave "." matching any character. */
   async headers() {
     return [
+      /* Baseline hardening for every route.
+
+         No Content-Security-Policy, on purpose. Measurement here runs through
+         Google Tag Manager, which injects GA4 and the Meta Pixel at runtime,
+         plus Vercel Analytics; a policy written without a report-only run
+         against the live tag set would block some of them and nothing would
+         say so — the numbers would just stop. Add one only after a
+         Content-Security-Policy-Report-Only pass. */
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "(?<host>.*\.vercel\.app)" }],

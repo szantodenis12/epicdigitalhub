@@ -14,6 +14,8 @@ export type CaseStudy = {
   title: string;
   summary: string;
   img: string;
+  /** what the cover photo shows, for the card and the hero; the title alone says nothing about the image */
+  imgAlt: string;
   intro: string;
   /** exactly three: context → what we built → what changed */
   sections: CaseSection[];
@@ -79,6 +81,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am reconstruit complet website-ul și am reorganizat comunicarea digitală a hotelului, de la social media și profilul Google până la campaniile de promovare. Rezultatul: cu 20% mai multe rezervări în șase luni.",
         img: "/images/work-hotel.webp",
+        imgAlt: "Fațada Hotel Maxim, luminată la apus",
         intro:
           "Hotel Maxim este un hotel de familie, situat la câteva minute de centrul istoric al Oradiei. Avea deja o reputație bună, construită prin experiența oaspeților și recomandările acestora. Prezența online nu reflecta însă calitatea serviciilor oferite.",
         sections: [
@@ -120,6 +123,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Două clinici stomatologice, două categorii de pacienți. Am dezvoltat direcții distincte de comunicare, identități vizuale adaptate și o prezență online care respectă rigorile domeniului medical.",
         img: "/images/work-dental.webp",
+        imgAlt: "Cabinet DentalNet cu scaune roșii și ecrane cu radiografii, ușa cu logo-ul clinicii",
         intro:
           "DentalNet are două clinici stomatologice în Oradea: una dedicată adulților și una copiilor. Ambele și-au construit reputația în timp, în principal prin recomandările pacienților. Comunicarea digitală avea însă nevoie de o direcție mai clară, adaptată fiecărei categorii de pacienți.",
         sections: [
@@ -164,6 +168,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am refăcut integral website-ul, am reorganizat catalogul de utilaje și am restructurat campaniile Google și Meta Ads. Am pus accent pe informații tehnice corecte și pe generarea cererilor de ofertă.",
         img: "/images/work-agro.webp",
+        imgAlt: "Utilaj agricol Mamut cu discuri, într-un câmp la apus",
         intro:
           "Agro Salso este un dealer de utilaje agricole din Bihor, cu livrări în toată România și un portofoliu extins de echipamente. Produsele erau competitive, dar website-ul, campaniile și materialele comerciale aveau nevoie de o reorganizare completă.",
         sections: [
@@ -214,6 +219,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
            automotive photo is a Chery and cannot front a KGM page, and the
            carousel as a whole is a social graphic, not a hero. */
         img: "/images/work-kgm.webp",
+        imgAlt: "SUV KGM Actyon bronz, văzut din spate, pe fundal de studio",
         intro:
           "Pentru KGM Oradea, am construit o direcție de comunicare care pune în valoare modelele, tehnologia și dotările disponibile. Fiecare material este realizat pe baza informațiilor oficiale, cu accent pe ceea ce contează pentru un potențial cumpărător.",
         sections: [
@@ -251,6 +257,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am dezvoltat comunicarea locală a unui brand auto nou pe piață, cu prezentări de modele, materiale video și campanii construite în jurul informațiilor tehnice și ofertelor oficiale.",
         img: "/images/work-auto.webp",
+        imgAlt: "Chery Tiggo 9 Super Hybrid verde, într-un showroom cu ferestre panoramice",
         intro:
           "Chery a intrat pe piața din Oradea cu o gamă de SUV-uri și tehnologii hibride încă puțin cunoscute publicului local. Am construit o comunicare care prezintă modelele, explică tehnologia și oferă cumpărătorilor informațiile necesare pentru a compara versiunile disponibile.",
         sections: [
@@ -290,6 +297,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
         img: "/images/work-jeep.webp",
+        imgAlt: "Jeep Compass verde într-o hală de beton",
         intro:
           "Jeep este un brand auto cu o identitate bine definită și o istorie recunoscută în segmentul SUV-urilor și al vehiculelor 4×4. Comunicarea locală trebuie să pună în valoare această identitate, dar și să ofere informații concrete despre modelele și ofertele disponibile în showroom.",
         sections: [
@@ -326,6 +334,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am coordonat comunicarea unui sezon de evenimente, cu identități vizuale distincte, conținut produs săptămânal și mesaje adaptate publicului local.",
         img: "/images/work-events.webp",
+        imgAlt: "DJ pe scenă în fața publicului, la un eveniment în aer liber, noaptea",
         intro:
           "Harmony Garden este un club de vară din Valea lui Mihai, aproape de granița cu Ungaria, cu un public predominant maghiar. Am coordonat comunicarea întregului sezon, de la identitatea fiecărui eveniment până la materialele de promovare și conținutul publicat săptămânal.",
         sections: [
@@ -365,6 +374,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am organizat comunicarea pentru mai multe locații, păstrând o identitate comună. Proiectul include conținutul digital, prezența locală și dezvoltarea programului de fidelizare.",
         img: "/images/work-cafe.webp",
+        imgAlt: "Barul Origins Coffee, cu rafturi cu plante și meniul pe panou",
         intro:
           "Origins Coffee & Drinks are patru locații în Oradea, fiecare cu un public și un ritm propriu. Am construit o comunicare comună pentru întregul brand, adaptată fiecărei locații, și am dezvoltat o platformă digitală de fidelizare pentru clienți.",
         sections: [
@@ -406,6 +416,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Am construit poziționarea și comunicarea de lansare pentru un produs tehnic nou. Am pornit de la documentația produsului și am dezvoltat website-ul și materialele de prezentare.",
         img: "/images/work-industrial.webp",
+        imgAlt: "Strat alb de izolație pulverizat pe un acoperiș industrial plat",
         intro:
           "ThermX este o membrană nanoceramică pentru termoizolația clădirilor, aplicată prin pulverizare. Am construit strategia de marketing și comunicarea de lansare pornind de la documentația tehnică, astfel încât informațiile despre produs să fie clare, corecte și consecvente.",
         sections: [
@@ -458,12 +469,13 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
     studies: [
       {
         slug: "hotel-maxim",
-        meta: { title: "Hotel Maxim — Hospitality Marketing Case Study | Epic Digital Hub", description: "How Epic Digital Hub rebuilt Hotel Maxim's digital presence in Oradea, connecting its website, Google Ads, SEO and social media. Bookings increased by 20% in six months." },
+        meta: { title: "Hotel Maxim — Hospitality Marketing Case Study | Epic Digital Hub", description: "How Epic Digital Hub rebuilt Hotel Maxim's digital presence in Oradea. Bookings increased by 20% in six months." },
         vertical: "Hospitality / Oradea",
         title: "Hotel Maxim",
         summary:
           "A well-established hotel whose digital presence fell short of its reputation. We rebuilt its direct booking channels through website improvements, content, Google optimisation and targeted advertising.",
         img: "/images/work-hotel.webp",
+        imgAlt: "Hotel Maxim façade lit up at sunset",
         intro:
           "Hotel Maxim is a family-run hotel within walking distance of Oradea's historic centre. Years of guest recommendations had earned it a strong reputation. Its online presence, however, told a different story.",
         sections: [
@@ -505,6 +517,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Two dental clinics. Different patients, different communication needs. We developed distinct visual identities and content systems, guided by the same professional standards.",
         img: "/images/work-dental.webp",
+        imgAlt: "DentalNet treatment room with red chairs and X-ray screens, clinic logo on the door",
         intro:
           "DentalNet operates two dental clinics in Oradea: one serving adults and one dedicated to children. Years of patient referrals had established its reputation, but its digital visibility had yet to reflect its standing in the local market.",
         sections: [
@@ -547,6 +560,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Advertising without reliable conversion tracking. Inconsistent product information. A website disconnected from sales. We rebuilt the marketing infrastructure around verified specifications, qualified enquiries and measurable actions.",
         img: "/images/work-agro.webp",
+        imgAlt: "Mamut tillage machine with disc blades in a field at sunset",
         intro:
           "Based in Bihor, Agro Salso supplies agricultural machinery across Romania. Its extensive product range was commercially competitive, but the website, advertising and sales materials lacked the consistency needed to support purchasing decisions.",
         sections: [
@@ -593,6 +607,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
            automotive photo is a Chery and cannot front a KGM page, and the
            carousel as a whole is a social graphic, not a hero. */
         img: "/images/work-kgm.webp",
+        imgAlt: "Bronze KGM Actyon SUV seen from the rear on a studio backdrop",
         intro:
           "For KGM Oradea, we developed a consistent digital communication approach built around the vehicles themselves. Distinctive visuals, clear product explanations and commercial content that gives buyers the information they need.",
         sections: [
@@ -626,12 +641,13 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
       },
       {
         slug: "chery-oradea",
-        meta: { title: "Chery Oradea — Automotive Marketing & Content Production | Epic Digital Hub", description: "Automotive marketing for Chery Oradea. Model launches, social media, hybrid technology videos and product-specific content based on verified specifications and official prices." },
+        meta: { title: "Chery Oradea — Automotive Marketing & Content Production | Epic Digital Hub", description: "Automotive marketing for Chery Oradea. Model launches, social media, hybrid technology videos and product-specific content." },
         vertical: "Automotive / Oradea",
         title: "Chery Oradea",
         summary:
           "Introducing a new automotive brand to the local market. Model-specific content built around verified specifications, powertrains, equipment and official pricing.",
         img: "/images/work-auto.webp",
+        imgAlt: "Green Chery Tiggo 9 Super Hybrid in a showroom with panoramic windows",
         intro:
           "Introducing Chery to the local market meant making an unfamiliar automotive brand easier to understand. We developed content that answers practical buying questions, from hybrid technology and equipment to model differences and pricing.",
         sections: [
@@ -666,12 +682,13 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
       },
       {
         slug: "jeep-oradea",
-        meta: { title: "Jeep Oradea — Automotive Marketing Case Study | Epic Digital Hub", description: "Automotive marketing for Jeep Oradea. Dedicated brand communication, model-specific content, vehicle campaigns and video production based on official product information." },
+        meta: { title: "Jeep Oradea — Automotive Marketing Case Study | Epic Digital Hub", description: "Automotive marketing for Jeep Oradea. Dedicated brand communication, model-specific content, vehicle campaigns and video production." },
         vertical: "Automotive / Oradea",
         title: "Jeep Oradea",
         summary:
           "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
         img: "/images/work-jeep.webp",
+        imgAlt: "Green Jeep Compass in a concrete hall",
         intro:
           "Jeep has a distinctive identity built around capability, versatility and a long-standing off-road heritage. Our communication approach focuses on translating those qualities into clear, relevant information about the vehicles available to local buyers.",
         sections: [
@@ -709,6 +726,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "An entire event season, managed from concept to execution. Individual event identities, weekly creative production and communication tailored to the local audience.",
         img: "/images/work-events.webp",
+        imgAlt: "DJ on stage facing the crowd at a night-time open-air event",
         intro:
           "Harmony Garden is a summer club in Valea lui Mihai, near the Hungarian border, serving a predominantly Hungarian-speaking audience. With a packed seasonal calendar, every weekend needs its own reason to attend.",
         sections: [
@@ -747,6 +765,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Multiple locations. Different customer groups. One recognisable brand. We aligned content, local visibility and customer loyalty across the brand's physical and digital presence.",
         img: "/images/work-cafe.webp",
+        imgAlt: "Origins Coffee counter with plant shelves and the menu board",
         intro:
           "Four locations across Oradea, each with its own audience and daily rhythm. Our role was to keep Origins recognisable everywhere, while giving each location the communication it needed.",
         sections: [
@@ -785,6 +804,7 @@ export const caseStudiesContent: Record<Locale, CaseStudiesContent> = {
         summary:
           "Bringing a technical product to market starts with getting the facts right. We established a reliable information base before developing the positioning, website and launch communication.",
         img: "/images/work-industrial.webp",
+        imgAlt: "White coating sprayed onto a flat industrial roof",
         intro:
           "ThermX is a nanoceramic thermal-insulation membrane developed by Nano Revolution. Bringing a technical product to market required more than a convincing presentation. Every claim needed a reliable source, and every audience needed information it could understand.",
         sections: [

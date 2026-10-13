@@ -69,7 +69,7 @@ const en = {
 };
 
 const ro: typeof en = {
-  meta: { title: "Audit gratuit pentru website | Epic Digital Hub", description: "Află cum este perceput website-ul tău de un potențial client. Primești gratuit, în câteva minute, un raport automat cu observații despre claritatea mesajului, experiența de navigare, credibilitate și SEO." },
+  meta: { title: "Audit gratuit pentru website | Epic Digital Hub", description: "Află cum este perceput website-ul tău de un potențial client. Primești gratuit, în câteva minute, un raport automat cu observații despre claritatea mesajului." },
   kicker: "Audit gratuit",
   title: "Cum arată website-ul tău prin ochii unui client nou?",
   intro:

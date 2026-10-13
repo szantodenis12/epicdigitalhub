@@ -511,7 +511,7 @@ const en: ArticlesCopy = {
 };
 
 const ro: ArticlesCopy = {
-  meta: { title: "Articole despre marketing și strategie | Epic Digital Hub", description: "Articole despre strategie de marketing, poziționare, branding, exclusivitate și măsurarea rezultatelor. Analize și recomandări pentru decizii de marketing mai bine fundamentate." },
+  meta: { title: "Articole despre marketing și strategie | Epic Digital Hub", description: "Articole despre strategie de marketing, poziționare, branding, exclusivitate și măsurarea rezultatelor. Analize și recomandări." },
   kicker: "Articole",
   title: "Marketingul, dincolo de campanii și cifre.",
   intro:
@@ -528,7 +528,7 @@ const ro: ArticlesCopy = {
       date: "03.09.2026",
       category: "Măsurare",
       title: "Ce ar trebui să urmărești într-un raport lunar de marketing",
-      dek: "Ce indicatori merită urmăriți într-un raport de marketing? De la vizibilitate și interacțiuni la solicitări, conversii și costuri de achiziție. Află cum evaluezi rezultatele agenției tale.",
+      dek: "Ce indicatori merită urmăriți într-un raport de marketing? De la vizibilitate și interacțiuni la solicitări, conversii și costuri de achiziție.",
       readingTime: "5 minute de citit",
       metaTitle: "Ce trebuie să conțină un raport lunar de marketing | Epic Digital Hub",
       sections: [
@@ -639,7 +639,7 @@ const ro: ArticlesCopy = {
       date: "17.06.2026",
       category: "Exclusivitate",
       title: "De ce nu lucrăm cu branduri concurente",
-      dek: "La Epic Digital Hub colaborăm cu un singur brand din fiecare nișă, în fiecare oraș. Află de ce am ales acest model și ce înseamnă exclusivitatea pentru strategia și interesele companiei tale.",
+      dek: "La Epic Digital Hub colaborăm cu un singur brand din fiecare nișă, în fiecare oraș. Află de ce am ales acest model și ce înseamnă exclusivitatea.",
       readingTime: "5 minute de citit",
       metaTitle: "De ce nu lucrăm cu branduri concurente | Epic Digital Hub",
       sections: [
@@ -747,7 +747,7 @@ const ro: ArticlesCopy = {
       date: "08.04.2026",
       category: "Sisteme de brand",
       title: "Ce este un sistem de brand. Și ce nu este.",
-      dek: "Ce înseamnă un sistem de brand, ce elemente îl compun și cum îl diferențiezi de o simplă identitate vizuală. Un ghid despre poziționare, strategie și comunicare coerentă.",
+      dek: "Ce înseamnă un sistem de brand, ce elemente îl compun și cum îl diferențiezi de o simplă identitate vizuală.",
       readingTime: "6 minute de citit",
       metaTitle: "Ce este un sistem de brand și cum se construiește | Epic Digital Hub",
       sections: [
@@ -846,7 +846,7 @@ const ro: ArticlesCopy = {
       date: "12.02.2026",
       category: "Strategie",
       title: "De ce marketingul făcut pe bucăți nu funcționează",
-      dek: "Social media, website și reclame gestionate separat, fără o strategie comună. Află de ce această abordare poate limita rezultatele și cum funcționează un sistem de marketing integrat.",
+      dek: "Social media, website și reclame gestionate separat, fără o strategie comună. Află de ce această abordare poate limita rezultatele.",
       readingTime: "6 minute de citit",
       metaTitle: "De ce marketingul făcut pe bucăți nu funcționează | Epic Digital Hub",
       sections: [

@@ -8,7 +8,7 @@ import path from "node:path";
 import Link from "next/link";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { type Locale, localePath } from "../content";
+import { type Locale } from "../content";
 import { buildMetadata } from "../shell";
 import { LEGAL_PATHS, type LegalKey, legalPath } from "../routes";
 import { PageFrame } from "../_components/chrome";
@@ -47,13 +47,31 @@ function loadLegal(locale: Locale, key: LegalKey) {
   return { title, updated, body, description };
 }
 
+// The first paragraph is the policy's opening, often one long sentence. Search
+// snippets cap near 160 characters, so keep whole sentences and, failing that,
+// cut at the last comma instead of leaving a dangling "..." mid-clause.
+function fitDescription(text: string, max = 160) {
+  if (text.length <= max) return text;
+  const sentences = text.split(/(?<=[.!?])\s+/);
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s}` : s;
+    if (next.length > max) break;
+    out = next;
+  }
+  if (out) return out;
+  const cut = text.slice(0, max);
+  const comma = cut.lastIndexOf(",");
+  return `${(comma > 80 ? cut.slice(0, comma) : cut.slice(0, cut.lastIndexOf(" "))).trimEnd()}.`;
+}
+
 export function legalMetadata(locale: Locale, key: LegalKey) {
   const { title, description } = loadLegal(locale, key);
   return buildMetadata(locale, {
     path: LEGAL_PATHS[key][locale],
     paths: LEGAL_PATHS[key],
     title,
-    description: description.length > 200 ? `${description.slice(0, 197).trimEnd()}...` : description,
+    description: fitDescription(description),
   });
 }
 

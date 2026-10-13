@@ -16,7 +16,7 @@
    backgrounds intentionally left neutral.
    ========================================================================= */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { LogoMark, LogoWordmark, MARK_PATHS_HERO } from "./logo";
 import { COPY, type Locale, localePath } from "./content";
@@ -639,7 +639,7 @@ function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
                     <div className="flex items-start justify-between gap-4">
                       <motion.h3
                         {...reveal(0)}
-                        className="text-[30px] leading-[1.05] font-medium tracking-[-0.02em] uppercase md:text-[38px]"
+                        className="ro-leading text-[30px] leading-[1.05] font-medium tracking-[-0.02em] uppercase md:text-[38px]"
                       >
                         {w.name}
                       </motion.h3>
@@ -657,7 +657,7 @@ function WorkGrid({ reduceMotion }: { reduceMotion: boolean }) {
 
                   <WorkCardMedia
                     src={v.img}
-                    alt={`${w.name} project preview`}
+                    alt={w.alt}
                     reduceMotion={reduceMotion}
                   />
 
@@ -1470,7 +1470,14 @@ export default function Site({ locale }: { locale: Locale }) {
             {[copy.hero.line1, copy.hero.line2].map((line, li) => {
               const words = line.split(" ");
               return (
-                <span key={line} className="block overflow-hidden">
+                /* The space after the first LINE matters to a screen reader and
+                   to nothing else. Each line is its own block, so the sentence
+                   looks right without it - but the only spaces in the markup
+                   were the ones between words inside a line, and the accessible
+                   name came out as "Your competitorscan't hire us." Between two
+                   block children this text node collapses to nothing visually. */
+                <Fragment key={line}>
+                <span className="block overflow-hidden">
                   {words.map((word, wi) => {
                     /* Per WORD, not per line. A whole line rising as one block
                        is the move every site makes; the words arriving in
@@ -1504,6 +1511,8 @@ export default function Site({ locale }: { locale: Locale }) {
                     );
                   })}
                 </span>
+                {li === 0 ? " " : null}
+                </Fragment>
               );
             })}
           </h1>
