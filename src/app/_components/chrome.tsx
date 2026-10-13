@@ -12,6 +12,8 @@
    ========================================================================= */
 
 import { useEffect, useRef, useState } from "react";
+import { trackLead } from "../analytics";
+import { FooterLegal } from "./footer-legal";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { LogoLockup } from "../logo";
@@ -385,6 +387,7 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      trackLead("enquiry");
       form.reset();
       setPhase("sent");
       window.setTimeout(() => setPhase("idle"), 2500);
@@ -545,6 +548,12 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
             <span>{copy.contact.footerLine}</span>
             <span>{copy.contact.footerBased}</span>
           </div>
+
+          {/* Legal band: the three policies, the cookie settings that reopen
+              the consent banner, the company's registration details and the
+              ANPC pictogram. Below the studio line because it is compliance
+              furniture, not part of the site's own voice. */}
+          <FooterLegal />
         </div>
       </section>
   );

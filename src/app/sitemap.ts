@@ -6,6 +6,7 @@ import {
   ARTICLES_PATH,
   AUDIT_PATH,
   CASE_STUDIES_PATH,
+  LEGAL_PATHS,
   NICHES_PATH,
   SERVICES_PATH,
   articlePath,
@@ -49,9 +50,14 @@ const url = (locale: Locale, path: string) => {
   return p === "/" ? SITE_URL : `${SITE_URL}${p}`;
 };
 
+/** Legal pages sit below everything else. Their slugs differ per locale, so
+    each hreflang group is built from the per-locale map in LEGAL_PATHS rather
+    than from one shared path. */
+const LEGAL_PRIORITY = 0.3;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  return PAGES.flatMap(([path, priority]) => {
+  const regular = PAGES.flatMap(([path, priority]) => {
     const languages = {
       en: url("en", path),
       ro: url("ro", path),
@@ -65,4 +71,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages },
     }));
   });
+  const legal = Object.values(LEGAL_PATHS).flatMap((paths) => {
+    const languages = {
+      en: url("en", paths.en),
+      ro: url("ro", paths.ro),
+      "x-default": url("en", paths.en),
+    };
+    return LOCALES.map((locale) => ({
+      url: url(locale, paths[locale]),
+      lastModified,
+      changeFrequency: "yearly" as const,
+      priority: LEGAL_PRIORITY,
+      alternates: { languages },
+    }));
+  });
+  return [...regular, ...legal];
 }

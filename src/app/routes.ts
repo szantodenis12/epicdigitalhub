@@ -10,6 +10,8 @@
    The slug lists live in route-params.ts, which only server code imports.
    ------------------------------------------------------------------------ */
 
+import type { Locale } from "./content";
+
 export const SERVICES_PATH = "/services";
 export const servicePath = (slug: string) => `${SERVICES_PATH}/${slug}`;
 
@@ -28,3 +30,20 @@ export const applyPath = (serviceSlug?: string) =>
 export const NICHES_PATH = "/niches";
 
 export const AUDIT_PATH = "/audit";
+
+/* The legal pages, and the ONE place in the site where a slug differs between
+   the locales: "privacy" is "confidentialitate" and "terms" is "termeni" in
+   Romanian, because a legal page is found by its Romanian name. Everything
+   else shares a slug (see the note on `localePath` in content.ts).
+
+   A page with a localised slug has to hand `buildMetadata` the whole `paths`
+   map, or its hreflang pair would point at a URL that does not exist. */
+export const LEGAL_PATHS = {
+  privacy: { en: "/privacy", ro: "/confidentialitate" },
+  cookies: { en: "/cookies", ro: "/cookies" },
+  terms: { en: "/terms", ro: "/termeni" },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+export type LegalKey = keyof typeof LEGAL_PATHS;
+
+export const legalPath = (locale: Locale, key: LegalKey) => LEGAL_PATHS[key][locale];

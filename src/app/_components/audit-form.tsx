@@ -17,6 +17,7 @@ import { useState } from "react";
 import type { auditContent, AuditErrorCode } from "../_content/audit";
 import { EyebrowMarquee } from "./ui";
 import { FIELD, SUBMIT } from "./apply-form";
+import { trackLead } from "../analytics";
 
 type AuditCopy = (typeof auditContent)["en"];
 type Phase = "idle" | "reading" | "writing" | "done" | "stopped" | "error";
@@ -231,6 +232,12 @@ export function AuditForm({ copy: d }: { copy: AuditCopy }) {
         setPhase("error");
         return;
       }
+
+      /* Here, not at `done`: this is the point the server accepted the
+         request and began streaming the report. A visitor who closes the tab
+         half way through still submitted, and a lead counted at `done` would
+         undercount by however many do that. */
+      trackLead("audit");
 
       setPhase("writing");
       const reader = res.body.getReader();

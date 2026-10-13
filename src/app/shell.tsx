@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { COPY, LOCALES, type Locale, localeHref, localePath } from "./content";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { SITE_URL } from "./robots";
+import { ConsentDefault } from "./_components/consent";
+import { CookieBanner } from "./_components/cookie-banner";
 import { Analytics } from "@vercel/analytics/next";
 
 /* ---------------------------------------------------------------------------
@@ -39,6 +42,11 @@ export const localeUrl = (locale: Locale, path = "") =>
     already carries the brand - the service pages' meta titles do. */
 export type PageMeta = {
   path: string;
+  /** Only for a page whose slug differs per locale (the legal pages): the path
+      in EVERY locale, so the hreflang set points at URLs that exist. Without
+      it the alternates are built from `path` in both locales, which is right
+      for every page that shares its slug and wrong for the ones that do not. */
+  paths?: Record<Locale, string>;
   title: string | { absolute: string };
   description: string;
   /** keep this page out of the index - used by draft case studies */
@@ -79,9 +87,9 @@ export function buildMetadata(locale: Locale, page?: PageMeta): Metadata {
          and Google picks one; with them it serves the right language per
          user. `x-default` points at English, which is the default here. */
       languages: {
-        en: localePath("en", path),
-        ro: localePath("ro", path),
-        "x-default": localePath("en", path),
+        en: localePath("en", page?.paths?.en ?? path),
+        ro: localePath("ro", page?.paths?.ro ?? path),
+        "x-default": localePath("en", page?.paths?.en ?? path),
       },
     },
     openGraph: {
@@ -199,7 +207,18 @@ export function Shell({
               "sessionStorage.setItem('edh:intro-played','1')}}catch(e){}",
           }}
         />
+
+        {/* Consent Mode v2's default state. It MUST come before the container:
+            a tag that fires before any default is set reads "no signal", which
+            Google treats as permission rather than as refusal. */}
+        <ConsentDefault />
       </head>
+
+      {/* Google Tag Manager, GTM-TPN89TBF. GA4 and the Meta Pixel are tags
+          INSIDE this container, not code in this repo, so Epic can change what
+          is measured without a deploy. The one include here covers both
+          locales, because both root layouts render this shell. */}
+      <GoogleTagManager gtmId="GTM-TPN89TBF" />
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script
           type="application/ld+json"
@@ -210,6 +229,10 @@ export function Shell({
             itself, so it sits at the end of <body> in the one shell both
             locales share - one include covers /, /ro and every subpage. */}
         <Analytics />
+
+        {/* Last in the body, and reopenable from the footer's "Cookie
+            settings" - see _components/cookie-banner.tsx. */}
+        <CookieBanner />
       </body>
     </html>
   );

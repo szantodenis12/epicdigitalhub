@@ -11,6 +11,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Locale } from "../content";
 import type { applyContent } from "../_content/apply";
+import { trackLead } from "../analytics";
 
 type ApplyCopy = (typeof applyContent)["en"];
 type Phase = "idle" | "sending" | "received" | "niche-taken" | "error";
@@ -90,6 +91,12 @@ function Form({
         setPhase("error");
         return;
       }
+      /* The lead is the submission, so it counts on either answer: a
+         visitor whose niche is already taken still applied, and the waiting
+         list is the thing the report is measuring. Niche and budget ride
+         along because the reports are built on them; nothing identifying
+         does. */
+      trackLead("apply", { niche: form.niche, budget: form.budget });
       setPhase(data.status === "niche-taken" ? "niche-taken" : "received");
     } catch {
       setPhase("error");
