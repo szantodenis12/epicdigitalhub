@@ -6,11 +6,12 @@
 
 ## Languages
 
-The site is published in Romanian and English. Romanian is the default and the
-primary audience (Oradea, Bihor, Romania).
+The site is published in English and Romanian. English is the default and is
+served from the root; Romanian lives under /ro. The audience is Oradea, Bihor
+and Romania.
 
-- Romanian: https://epicdigitalhub.ro/
-- English:  https://epicdigitalhub.ro/en
+- English (default): https://epicdigitalhub.ro/
+- Romanian: https://epicdigitalhub.ro/ro
 
 Both carry the same content; they are translations of one another, not
 different offerings.
