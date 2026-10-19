@@ -1,9 +1,11 @@
 "use client";
 
-/* Moved out of site.tsx unchanged, so the home page's two dividers and the
-   one on /services are the same component. `reduceMotion` is optional: the
-   home page passes the value it already holds, a subpage lets it read the
-   preference itself. */
+/* Moved out of site.tsx unchanged. Only the home page renders one now - the
+   second divider and the one on /services are both gone, verified by querying
+   for a `textPath` on each page in both motion modes - but it stays its own
+   module so a page can mount one without pulling in site.tsx. `reduceMotion`
+   is optional: the home page passes the value it already holds, a subpage
+   would let it read the preference itself. */
 
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "./gsap";
@@ -222,6 +224,33 @@ export function CurvedDivider({
       built.forEach((st) => st.kill());
     };
   }, [text, reduceMotion, widthKey]);
+
+  /* REDUCED MOTION gets the sentence, not the arc.
+
+     The arc is driven entirely by scroll: `startOffset` parks at 82.7%, which
+     is just off the RIGHT edge, and the scrub walks it left. With no scrub
+     there is no walk, so the section rendered as a full-height empty screen
+     with the sentence sitting off-canvas - measured at 844px tall with
+     startOffset stuck at 82.7% through the whole section. A client reported it
+     as "the text doesn't scroll to the end, it stays stuck somewhere", in both
+     locales, which is exactly what this looks like from the outside.
+
+     Phones are where this bites: iOS "Reduce Motion", Android "Remove
+     animations" and Chrome's battery saver all set the query, so this is not a
+     rare path. The honest answer is not a slower sweep - it is the words,
+     readably, with no motion at all. The arc was always decoration. */
+  if (reduceMotion) {
+    return (
+      <div data-nav-bg="light" className="relative flex min-h-screen flex-col items-center justify-center bg-[#F5F2F2] px-4 text-[#1F1F1F]">
+        <div className="absolute top-16 w-full px-4">
+          <EyebrowMarquee label={eyebrow ?? copy.eyebrow.process} />
+        </div>
+        <p className="ro-leading max-w-[18ch] text-center text-[9vw] font-medium leading-[0.98] tracking-[-0.025em] uppercase md:text-[5.2vw]">
+          {text}
+        </p>
+      </div>
+    );
+  }
 
   return (
     /* NO explicit height here. GSAP's pin creates its own pin-spacer
