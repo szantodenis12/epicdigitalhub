@@ -12,8 +12,31 @@ import { gsap, ScrollTrigger } from "./gsap";
 import { useCopy, usePrefersReducedMotion } from "./context";
 import { EyebrowMarquee } from "./ui";
 
+/* The visible arc is the source's own curve, from x=-700 to x=2216. The long
+   straight segment in front of it is ours, and it exists for Safari.
+
+   WebKit does not render a NEGATIVE `startOffset` on a textPath: it clamps the
+   offset to 0, so the text stops dead the instant the value crosses zero and
+   every frame after that paints it in the same place. Measured in Playwright's
+   WebKit against the live site - while the offset was positive the first
+   glyph tracked 457 -> 288 -> 119 -> -48 -> -715 CSS px, and from the first
+   negative value it read exactly 0 forever. Chromium extrapolates backwards off
+   the start of the path instead, which is why every emulated phone was fine and
+   a real iPhone was not. The sentence froze around "when you can".
+
+   So the sweep must never ask for a negative offset. The lead-in gives it
+   12000 user units of runway BEFORE the curve to travel through, which puts the
+   whole range comfortably positive. It continues the curve's own opening slope
+   (-52/230) so the join is tangent, and it lives at x -12700..-700, far off the
+   left of a viewport that only shows x 69..1447 - the sticky wrapper's
+   `overflow-hidden` keeps it out of sight. The offsets are derived from it at
+   runtime rather than hardcoded, so editing this `d` cannot silently desync
+   them. */
 const CURVE_PATH =
-  "M -700 252 C -470 200 -230 145 0 92.0674 C 528.5 -28.9327 977.5 -32.4328 1516.5 92.0674 C 1745 145 1980 200 2216 252";
+  "M -12700 2964 L -700 252 C -470 200 -230 145 0 92.0674 C 528.5 -28.9327 977.5 -32.4328 1516.5 92.0674 C 1745 145 1980 200 2216 252";
+
+/** Where the lead-in ends and the source's own curve begins. */
+const CURVE_START_X = -700;
 
 /** The SVG's own viewBox width - what one user unit is measured against. */
 const VIEWBOX_W = 1516;
@@ -95,27 +118,46 @@ export function CurvedDivider({
       built.forEach((st) => st.kill());
       built = [];
 
-      // Measured off the source across a full pin: startOffset runs
-      // 82.7% -> -150.87%. It does NOT start off-path - at progress 0 the text
-      // is already on screen (its left edge sits at x~33 on a 1905px viewport)
-      // and it simply travels left from there.
-      //
-      // Start: 82.7 is the source's own measured value - it parks the text just
-      // off the right edge, and the lead-in trigger below walks it into view as
-      // the section approaches.
-      const startOffset = 82.7;
-
-      // End: MUST be derived from THIS string's length, not hardcoded. -150.87
-      // was measured off the source and only ever cleared the source's own
-      // sentence; with our (longer) copy the text stopped with ~700px still on
-      // screen, froze there, and then dragged down over the next section.
-      // -(textLength / pathLength) * 100 is exactly the point at which the
-      // trailing glyph passes the start of the path, whatever the copy says.
       const totalLength = path.getTotalLength();
-      const textLength =
-        typeof textPath.getComputedTextLength === "function"
-          ? textPath.getComputedTextLength()
-          : totalLength;
+
+      /* Everything below is in USER UNITS, not percentages, and every value is
+         positive - see CURVE_PATH for why. `leadIn` is the length of the
+         off-screen runway, found by bisecting for the x where the source's own
+         curve begins, so it is read off the geometry instead of trusted. */
+      const pointAt = (len: number) => path.getPointAtLength(len);
+      let lo = 0;
+      let hi = totalLength;
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if (pointAt(mid).x < CURVE_START_X) lo = mid;
+        else hi = mid;
+      }
+      const leadIn = lo;
+      const curveLength = totalLength - leadIn;
+      /* Measured on a throwaway <text>, NOT on the textPath.
+
+         WebKit's `getComputedTextLength()` on a textPath reports only the
+         glyphs currently sitting on the path, so it changes with the scroll
+         position: parked at the start of the sweep it returned 562 user units
+         for a sentence Chromium measures at 7283. Feed that into the end offset
+         and the sweep comes out a quarter of its proper length - the same
+         "stops in the middle" symptom, arriving by a different route, and it
+         would surface only when a rebuild happened to run at the wrong moment.
+
+         A plain <text> is not on a path, so nothing is clipped out of the
+         measurement and both engines agree. `visibility: hidden` rather than
+         `display: none`, because a display:none element is not laid out and
+         measures 0. */
+      const measurer = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      measurer.setAttribute("class", textPath.getAttribute("class") ?? "");
+      measurer.setAttribute("visibility", "hidden");
+      measurer.setAttribute("x", "0");
+      measurer.setAttribute("y", "0");
+      measurer.textContent = text;
+      textPath.ownerSVGElement?.appendChild(measurer);
+      const measured = measurer.getComputedTextLength();
+      measurer.remove();
+      const textLength = measured > 0 ? measured : totalLength;
 
       /* One user unit renders as `unit` CSS px - the SVG is squeezed to fit the
          width, so this is 1.045 on a desktop and 0.28 on a phone. Everything
@@ -132,36 +174,51 @@ export function CurvedDivider({
          last letter is still on screen" and sent me adding a clearance that
          was not needed. Count pixels. */
       /* ...and it stops when the trailing glyph leaves the SCREEN, not when it
-         reaches the start of the path. Those are far apart: the path runs from
-         x=-700 to x=2216 in a 1516-unit viewBox, so its first ~770 units are
-         off the left edge by construction. Ending on the path start spent them
-         as empty scroll - counted in ink, the phone's screen was blank from 85%
-         of the pin onwards. `getScreenCTM` is what makes this exact rather than
+         reaches the start of the path. Those are far apart: even without the
+         lead-in the curve runs from x=-700, so its first ~770 units are off the
+         left edge by construction. Ending on the path start spent them as empty
+         scroll - counted in ink, the phone's screen was blank from 85% of the
+         pin onwards. `getScreenCTM` is what makes this exact rather than
          arithmetic on the width: it already carries the squeeze AND the scale
          on `.curved-arc`, so the same derivation holds on a desktop (where it
          trims a smaller tail) and at any width in between. */
       const ctm = path.getScreenCTM();
-      let offLeft = 0;
+      let offLeft = leadIn;
       if (ctm) {
         const screenX = (len: number) => {
-          const pt = path.getPointAtLength(len);
+          const pt = pointAt(len);
           return pt.x * ctm.a + pt.y * ctm.c + ctm.e;
         };
-        // the path enters from the left, so screenX rises with length: walk in
-        // from 0 until it is on screen, then keep the last length that was not
-        const step = totalLength / 400;
-        for (let l = 0; l < totalLength; l += step) {
-          if (screenX(l) >= 0) break;
-          offLeft = l;
+        // bisect for the length at which the path crosses the left edge; the
+        // lead-in is entirely off-screen, so the crossing is after it
+        let a = leadIn;
+        let z = totalLength;
+        for (let i = 0; i < 40; i++) {
+          const mid = (a + z) / 2;
+          if (screenX(mid) < 0) a = mid;
+          else z = mid;
         }
+        offLeft = a;
       }
-      const endOffset = -(((textLength - offLeft) / totalLength) * 100);
-      textPath.setAttribute("startOffset", `${startOffset}%`);
+
+      /* Start: the source's own 82.7%, measured across its curve - the text
+         parks just off the right edge and the lead-in trigger walks it in. It
+         is 82.7% OF THE CURVE, placed after the runway, not of the whole path.
+
+         End: derived from THIS string, not hardcoded. The trailing glyph has
+         left the screen once the text's start has travelled back to
+         `offLeft - textLength`. Clamped at 0 because that is the floor WebKit
+         enforces anyway; if a sentence ever got long enough to need a negative
+         value the lead-in is too short, and it should grow rather than the
+         sweep silently stalling. */
+      const startOffset = leadIn + 0.827 * curveLength;
+      const endOffset = Math.max(0, offLeft - textLength);
+      textPath.setAttribute("startOffset", `${startOffset}`);
 
       if (reduceMotion || !pinRef.current || !stickyRef.current) return;
 
       // the pin's length, derived from the travel rather than fixed
-      const travel = ((startOffset - endOffset) / 100) * totalLength * unit;
+      const travel = (startOffset - endOffset) * unit;
       const pinDistance = Math.max(600, Math.round(travel / TEXT_PX_PER_SCROLL_PX));
 
       // TWO triggers, because the pin and the text animation do NOT start at the
@@ -214,7 +271,7 @@ export function CurvedDivider({
         scrub: true,
         onUpdate: (self) => {
           const val = gsap.utils.interpolate(startOffset, endOffset, self.progress);
-          textPath.setAttribute("startOffset", `${val}%`);
+          textPath.setAttribute("startOffset", `${val}`);
         },
       });
 
