@@ -184,13 +184,33 @@ export function CurvedDivider({
         end: `+=${pinDistance}`,
         pin: stickyRef.current,
         scrub: true,
+        // refresh BEFORE the scrub trigger below, which reads this one's `end`.
+        // Higher priority refreshes first; the scrub starts earlier on the page,
+        // so without this it would refresh first and read a stale value.
+        refreshPriority: 1,
       });
 
-      const LEAD = Math.round(window.innerHeight * 0.25);
+      /* The scrub ends exactly where the PIN ends - the same absolute scroll
+         position, read off the pin itself rather than recomputed.
+
+         This used to be `+=${pinDistance + LEAD}` from a start a quarter of a
+         viewport earlier, and that arithmetic does not land on the pin's end:
+         starting 0.75vh early and running pinDistance + 0.25vh finishes 0.5vh
+         BEFORE the pin releases. On a 844px phone that is 422px of a 1131px
+         pin - 37% - so the sentence stopped around "when you" and the section
+         then scrolled away with the rest never shown. Reported exactly that way
+         from a phone, in both locales.
+
+         It looked correct in Chromium because GSAP reconciles the two triggers
+         when the pin inserts its spacer, which shifts the scrub's measured
+         start. Depending on that reconciliation is the bug: it is internal
+         behaviour, sensitive to refresh order and engine. A function `end`
+         returning the pin's own `end` is the same instant by construction, so
+         the sweep cannot finish early on any engine. */
       const textST = ScrollTrigger.create({
         trigger: pinRef.current,
         start: "top 25%",
-        end: `+=${pinDistance + LEAD}`,
+        end: () => pinST.end,
         scrub: true,
         onUpdate: (self) => {
           const val = gsap.utils.interpolate(startOffset, endOffset, self.progress);
