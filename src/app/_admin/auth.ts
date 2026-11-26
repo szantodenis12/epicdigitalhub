@@ -1,125 +1,91 @@
 /* ============================================================================
-   Sesiunea panoului de administrare: o singură parolă, un cookie semnat.
+   Autentificarea panoului de administrare: conturi Supabase Auth, nu o parolă
+   comună.
 
-   Panoul listează nume, adrese de email și numere de telefon ale unor oameni
-   reali, iar restul site-ului nu are deloc autentificare - deci tot ce ține
-   poarta închisă e aici, și e scris ca să nu aibă nevoie de nimic altceva
-   (bază de date, sesiuni pe server, dependențe noi).
+   DE CE: panoul listează numele și adresele de email ale unor oameni reali.
+   O singură parolă partajată nu spune cine a intrat, nu se poate revoca pentru
+   un singur om și o dată scursă (s-a întâmplat) obligă pe toată lumea să
+   schimbe. Echipa are deja conturi în proiectul Supabase în care stau și
+   lead-urile - aceleași ca pe team.epicdigitalhub.ro - deci intrarea se face cu
+   ele: fiecare cu parola lui, dezactivabil individual.
 
-   Cum ține:
-     - Parola stă doar în ADMIN_PASSWORD. Nu există valoare implicită: fără
-       variabilă, nimeni nu intră. Mai bine un panou inaccesibil decât unul
-       deschis cu o parolă ghicită din cod.
-     - Cookie-ul NU conține parola, ci `<expirare>.<HMAC-SHA256>` cu parola pe
-       post de cheie. Nu se poate fabrica fără parolă, iar dacă e furat nu
-       dezvăluie parola. Schimbarea lui ADMIN_PASSWORD invalidează automat
-       toate sesiunile, pentru că semnătura se derivă din ea.
-     - Verificarea parolei se face prin aceeași derivare: se compară două
-       digest-uri hex de 64 de caractere, mereu de aceeași lungime, deci
-       comparația pe durată constantă nu scurge nici lungimea parolei, nici cât
-       din ea e corect.
+   Doi pași, ambii obligatorii:
+     1. SESIUNEA: cookie-urile Supabase (@supabase/ssr) se verifică cu
+        `auth.getUser()`, care întreabă serverul Auth. Nu `getSession()`: acela
+        citește doar cookie-ul și nu dovedește nimic despre un cookie fabricat.
+     2. APARTENENȚA: un cont Supabase valid nu e destul. Trebuie să existe un
+        rând în `profiles` cu `active = true`. Altfel oricine ar avea un cont
+        în același proiect (alt produs, un client) ar intra aici. Căutarea se
+        face cu cheia service-role, pentru ca rezultatul să nu depindă de
+        politicile RLS de pe `profiles`; cheia rămâne pe server.
 
-   DE CE EXPIRAREA E ÎN INTERIORUL SEMNĂTURII, nu doar în `max-age`-ul
-   cookie-ului: `max-age` e o instrucțiune pentru browserul care a primit
-   cookie-ul, nu o regulă pe care o aplică serverul. Cine copiază valoarea - de
-   pe un laptop lăsat deschis, dintr-un log, de pe o mașină comună - și-o pune
-   singur, fără expirare, și intră la nesfârșit. Semnând și momentul expirării,
-   serverul refuză singur cookie-ul vechi, oricine l-ar prezenta. Costă două
-   rânduri și transformă „cookie furat = acces pe veci" în „acces până la data
-   semnată".
-
-   Web Crypto (`crypto.subtle`), nu `node:crypto`, pentru că fișierul e importat
-   și din proxy.ts.
+   Cheia publică (anon) singură ajunge la `signInWithPassword`; service-role
+   nu iese niciodată din procesul serverului.
    ========================================================================= */
 
-/** Numele cookie-ului de sesiune. Prefixul evită coliziuni cu orice altceva
-    de pe domeniu, iar panoul și proxy-ul citesc amândouă de aici. */
-export const ADMIN_COOKIE = "edh_admin";
+import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-/* Mesajul semnat e fix și public - secretul e cheia, nu mesajul. Versionat:
-   dacă vreodată se schimbă forma sesiunii, un mesaj nou invalidează cookie-urile
-   vechi fără să fie nevoie de altă parolă. */
-const SESSION_MESSAGE = "epic-digital-hub/admin/v2";
+export type AdminUser = { id: string; email: string; role: string };
 
-/** O săptămână. Suficient ca să nu ceară parola la fiecare deschidere, destul
-    de scurt ca un laptop uitat deschis să nu rămână logat luni de zile. */
-export const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+/** Nu există client Supabase în browser, deci cookie-urile de sesiune se
+    închid pentru `document.cookie`. */
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  path: "/",
+};
 
-const encoder = new TextEncoder();
+/** Fără URL sau cheie publică panoul e inaccesibil, nu deschis. */
+export function authConfigured(): boolean {
+  return Boolean(process.env.SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
 
-async function hmacHex(key: string, message: string): Promise<string> {
-  const cryptoKey = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(key),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
+/** Clientul de auth, legat de cookie-urile cererii curente. `cookies` vine de
+    la apelant (proxy, acțiune, rută) pentru că fiecare are altă sursă. */
+export function authClient(cookies: CookieMethodsServer): SupabaseClient {
+  return createServerClient(
+    process.env.SUPABASE_URL as string,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
+    { cookies, cookieOptions: COOKIE_OPTIONS },
   );
-  const signature = await crypto.subtle.sign("HMAC", cryptoKey, encoder.encode(message));
-  return Array.from(new Uint8Array(signature))
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
 }
 
-/**
- * Comparație care nu scurge prin timp. Parcurge mereu tot `a`, fără ieșire
- * devreme; `b` mai scurt nu oprește bucla, doar face diferența nenulă.
- * Cheamă-o numai pe digest-uri hex de aceeași lungime - ce compară panoul.
- */
-export function constantTimeEqual(a: string, b: string): boolean {
-  let diff = a.length ^ b.length;
-  for (let i = 0; i < a.length; i++) {
-    diff |= a.charCodeAt(i) ^ (b.charCodeAt(i) || 0);
-  }
-  return diff === 0;
+/* ----------------------------------------------------------------------------
+   REGULA DE ACCES - singurul loc. Acum: orice profil ACTIV intră, admin sau
+   membru. Ca să restrângi la admini, înlocuiește cu
+   `profile.active === true && profile.role === "admin"`.
+   -------------------------------------------------------------------------- */
+function isAllowed(profile: { active: boolean; role: string }): boolean {
+  return profile.active === true;
 }
 
-/** Semnătura pentru o sesiune care expiră la `exp` (secunde Unix). */
-function sign(password: string, exp: number): Promise<string> {
-  return hmacHex(password, `${SESSION_MESSAGE}|${exp}`);
+/** Profilul utilizatorului dacă are voie în panou, altfel null (fără rând,
+    inactiv, rol nepermis, eroare de rețea - toate la fel: refuzat). */
+export async function findAllowedProfile(
+  userId: string,
+): Promise<{ email: string; role: string } | null> {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+
+  const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  const { data, error } = await db
+    .from("profiles")
+    .select("email, role, active")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error || !data || !isAllowed(data)) return null;
+  return { email: data.email, role: data.role };
 }
 
-/**
- * Parola trimisă de formular e bună? Întoarce valoarea de pus în cookie, sau
- * null. Nu primește și nu întoarce niciodată parola mai departe.
- */
-export async function issueToken(candidate: string): Promise<string | null> {
-  const password = process.env.ADMIN_PASSWORD;
-  if (!password) return null;
-  /* Parola goală se respinge înainte de HMAC: Web Crypto refuză o cheie de
-     lungime zero cu o excepție, iar un POST fără câmp (formularul are
-     `required`, dar o cerere fabricată nu) ar da 500 în loc de „greșită".
-     Nu scurge nimic - că o parolă goală e greșită se știe oricum. */
-  if (!candidate) return null;
-
-  /* Se hash-uiește și candidatul, oricât de scurt sau de lung ar fi, ca să se
-     compare două șiruri de lungime fixă: altfel lungimea parolei s-ar citi din
-     timpul de răspuns. */
-  const given = await hmacHex(candidate, SESSION_MESSAGE);
-  const expected = await hmacHex(password, SESSION_MESSAGE);
-  if (!constantTimeEqual(given, expected)) return null;
-
-  const exp = Math.floor(Date.now() / 1000) + SESSION_MAX_AGE;
-  return `${exp}.${await sign(password, exp)}`;
-}
-
-/** Cookie-ul primit e o sesiune valabilă și neexpirată? Lipsa cookie-ului,
-    lipsa parolei din mediu, o semnătură greșită și o sesiune expirată dau
-    toate false - proxy-ul le tratează identic. */
-export async function verifySession(cookieValue: string | undefined): Promise<boolean> {
-  if (!cookieValue) return false;
-  const password = process.env.ADMIN_PASSWORD;
-  if (!password) return false;
-
-  const separator = cookieValue.indexOf(".");
-  if (separator < 1) return false;
-  const exp = Number(cookieValue.slice(0, separator));
-  const digest = cookieValue.slice(separator + 1);
-  if (!Number.isSafeInteger(exp) || !digest) return false;
-
-  /* Expirarea se verifică înaintea semnăturii, dar după ce forma a fost
-     validată: un cookie expirat nu merită un HMAC. */
-  if (exp * 1000 <= Date.now()) return false;
-
-  return constantTimeEqual(digest, await sign(password, exp));
+/** Sesiunea din cookie-uri + apartenența. Întoarce utilizatorul sau null. */
+export async function getAdminUser(supabase: SupabaseClient): Promise<AdminUser | null> {
+  if (!authConfigured()) return null;
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return null;
+  const profile = await findAllowedProfile(data.user.id);
+  if (!profile) return null;
+  return { id: data.user.id, email: profile.email, role: profile.role };
 }

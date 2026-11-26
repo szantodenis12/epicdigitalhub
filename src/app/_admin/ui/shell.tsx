@@ -183,6 +183,21 @@ function SidebarContent({
   active: string;
   onNavigate: () => void;
 }) {
+  /* Cine e conectat; vezi blocul de utilizator mai jos. */
+  const [who, setWho] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  useEffect(() => {
+    fetch("/admin/logout/me", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((u: { email: string; role: string } | null) => {
+        if (u) {
+          setWho(u.email);
+          setRole(u.role);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <>
       <div className="flex h-14 shrink-0 items-center gap-2.5 border-b border-line px-5">
@@ -234,17 +249,21 @@ function SidebarContent({
       </nav>
 
       {/* BLOCUL DE UTILIZATOR, în josul barei, ca în referință.
-          "Ieși" duce la pagina de login, nu șterge cookie-ul: sesiunea e a
-          porții (src/proxy.ts + _admin/auth.ts), iar un buton care ar încerca
-          să o invalideze de aici ar face-o prost. */}
+          Identitatea vine de la /admin/logout/me (pagina nu e a bării, deci nu
+          o primim ca prop); până răspunde, bara arată un placeholder. "Ieși"
+          duce la /admin/logout, care închide sesiunea Supabase. */}
       <div className="shrink-0 border-t border-line p-3">
         <div className="flex items-center gap-2.5 rounded-md px-2 py-2">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line-2 text-[0.6875rem] font-medium">
-            EDH
+            {(who ?? "EDH").slice(0, 2).toUpperCase()}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[0.75rem]">Epic Digital Hub</span>
-            <span className="block truncate text-[0.625rem] text-tinted">sesiune admin</span>
+            <span className="block truncate text-[0.75rem]" title={who ?? undefined}>
+              {who ?? "Epic Digital Hub"}
+            </span>
+            <span className="block truncate text-[0.625rem] text-tinted">
+              {role === "admin" ? "administrator" : role ? "membru" : " "}
+            </span>
           </span>
         </div>
         <div className="mt-1 flex items-center gap-1 px-2">

@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import "../../globals.css";
 import { login } from "./actions";
 
-/* Pagina de login a panoului. Intenționat sobră: un câmp, un buton, paleta
+/* Pagina de login a panoului. Intenționat sobră: două câmpuri, un buton, paleta
    întunecată a site-ului și nimic altceva. Nu e o pagină de marketing, iar
    partea desenată a panoului se face în altă parte - aici singura cerință e
    să nu scoată nimic în față până nu e cineva înăuntru.
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const MESAJE: Record<string, string> = {
-  "1": "Parolă greșită.",
+  "1": "Email sau parolă greșite.",
   "prea-multe": "Prea multe încercări. Mai încearcă în câteva minute.",
 };
 
@@ -37,11 +37,23 @@ export default async function AdminLoginPage({
         <p className="text-xs tracking-[0.2em] text-tinted uppercase">Epic Digital Hub</p>
         <h1 className="mt-3 text-2xl font-medium">Panou intern</h1>
         <p className="mt-2 text-sm text-secondary">
-          Pagina conține date de contact ale unor oameni reali. Intrarea cere parola.
+          Pagina conține date de contact ale unor oameni reali. Intri cu contul tău de echipă, același ca pe team.epicdigitalhub.ro.
         </p>
 
         <form action={login} className="mt-8 flex flex-col gap-3">
-          <label htmlFor="password" className="text-sm text-secondary">
+          <label htmlFor="email" className="text-sm text-secondary">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="username"
+            autoFocus
+            className="rounded-xl border border-line-2 bg-surface px-4 py-3 text-base text-foreground outline-none focus:border-accent"
+          />
+          <label htmlFor="password" className="mt-1 text-sm text-secondary">
             Parolă
           </label>
           <input
@@ -50,7 +62,6 @@ export default async function AdminLoginPage({
             type="password"
             required
             autoComplete="current-password"
-            autoFocus
             className="rounded-xl border border-line-2 bg-surface px-4 py-3 text-base text-foreground outline-none focus:border-accent"
           />
           <button

@@ -6,12 +6,14 @@
    greșeală aici l-ar opri în întregime - un panou incomod e infinit mai ieftin
    decât epicdigitalhub.ro căzut, deci nimic "deștept" pe celelalte rute.
 
-   Verificarea e optimistă, în sensul din documentația Next: citește cookie-ul
-   și redirecționează. Nu atinge baza de date și nu face I/O, doar un HMAC.
+   Sesiunea e una Supabase Auth și are și apartenență (profil activ) - vezi
+   _admin/auth.ts. Costul: câteva cereri către Supabase la fiecare încărcare de
+   /admin. Acceptabil pentru un panou cu patru utilizatori; în schimb un
+   cont dezactivat pierde accesul imediat, nu când expiră un cookie.
    ========================================================================= */
 
 import { NextResponse, type NextRequest } from "next/server";
-import { ADMIN_COOKIE, verifySession } from "./app/_admin/auth";
+import { authClient, getAdminUser } from "./app/_admin/auth";
 
 const LOGIN_PATH = "/admin/login";
 
@@ -34,13 +36,27 @@ export async function proxy(request: NextRequest) {
     return sealed(NextResponse.next());
   }
 
-  if (await verifySession(request.cookies.get(ADMIN_COOKIE)?.value)) {
-    return sealed(NextResponse.next());
+  /* Cookie-urile reîmprospătate (token nou după expirarea celui vechi) se
+     scriu și pe cerere, ca pagina să vadă sesiunea nouă, și pe răspuns, ca
+     browserul să o păstreze. */
+  let response = NextResponse.next({ request });
+  const supabase = authClient({
+    getAll: () => request.cookies.getAll(),
+    setAll: (list, headers) => {
+      list.forEach(({ name, value }) => request.cookies.set(name, value));
+      response = NextResponse.next({ request });
+      list.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+      Object.entries(headers ?? {}).forEach(([k, v]) => response.headers.set(k, v));
+    },
+  });
+
+  if (await getAdminUser(supabase)) {
+    return sealed(response);
   }
 
-  /* Fără cookie, cu cookie greșit sau fără ADMIN_PASSWORD în mediu: același
-     răspuns. Varianta "lipsește parola din mediu, deci las pe toți să intre"
-     e exact felul în care un panou cu date personale ajunge public.
+  /* Fără sesiune, cu sesiune expirată, cont fără profil activ sau cu Supabase
+     nesetat în mediu: același răspuns. Varianta "nu pot verifica, deci las să
+     intre" e exact felul în care un panou cu date personale ajunge public.
      `search` se golește: nu ducem parametrii cererii respinse în bara de
      adresă a login-ului. */
   const login = request.nextUrl.clone();
