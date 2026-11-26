@@ -1,0 +1,180 @@
+/* ============================================================================
+   CSS doar pentru /admin.
+
+   Fișierul e importat exclusiv din src/app/admin/layout.tsx, care e un root
+   layout separat (nu există src/app/layout.tsx; (en), (ro) și admin sunt
+   fiecare rădăcina lor). Deci nimic de aici nu ajunge vreodată pe site-ul
+   public, chiar dacă selectorii ar fi scriși larg.
+
+   Ce face:
+     1. redefinește tokenii din globals.css pentru tema deschisă,
+     2. adaugă tokenii pe care doar panoul îi are (cele trei serii, sus/jos),
+     3. două-trei ajustări de cromă (bară de scroll, antet lipicios de tabel).
+
+   Punctul 1 funcționează pentru că `@theme inline` din globals.css compilează
+   utilitarele în `var(--surface)`, `var(--text-tinted)` etc. - nu în valorile
+   lor. Rescrierea variabilelor sub un selector REȚINTEȘTE deci tot `bg-surface`
+   și `text-tinted` din markup, fără o a doua paletă de clase și fără `dark:`
+   pe fiecare element. Dacă `inline` dispare vreodată din globals.css, tema
+   deschisă se stinge în bloc - de asta scrie aici.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   TOKENII PANOULUI, valabili în ambele teme.
+
+   Culorile celor trei serii NU sunt accentul mărcii și nici nuanțe ale lui.
+   #1fdb93 are, în OKLCH, L 0.789 - mult peste banda 0.48-0.67 în care o
+   suprafață colorată se citește pe negru fără să ardă - și la trei serii
+   umplute ar fi fost oricum nevoie de trei nuanțe distincte, nu de una.
+   Triada e verificată cu validatorul paletei (ΔE adiacent 21+ la deuteranopie,
+   contrast >= 3:1 față de suprafață, cromă >= 0.1, toate în bandă), și ordinea
+   ei în stivă e ambră -> albastru -> verde tocmai pentru că perechile
+   adiacente așa sunt cele mai depărtate; ambră lângă verde era perechea slabă.
+
+   Verdele seriei `apply` e totuși din familia accentului, intenționat:
+   aplicațiile sunt lead-ul care contează, deci ele purtează culoarea casei.
+   ------------------------------------------------------------------------ */
+:root[data-admin-theme] {
+  --adm-contact: #b2861a;
+  --adm-audit: #4a86e8;
+  --adm-apply: #14a86f;
+
+  /* Indicatorii de variație. Nu stau niciodată singuri: lângă fiecare e o
+     săgeată și un semn, pentru că o diferență citită doar din culoare nu se
+     citește deloc de cel care nu distinge verdele de roșu. */
+  --adm-up: #1fdb93;
+  --adm-down: #e07a4f;
+
+  /* Grila graficului. Separată de --border-main pentru că o linie peste care
+     trec bare colorate trebuie să fie mai discretă decât marginea unui card. */
+  --adm-grid: #1a1a1a;
+  /* Fundalul "canelurii" barelor - urma coloanei pe care stă ziua. */
+  --adm-track: #121212;
+}
+
+/* ---------------------------------------------------------------------------
+   TEMA DESCHISĂ.
+
+   Nu e inversarea celei întunecate: hârtie caldă, nu alb rece, și panourile
+   urcă spre alb în loc să coboare spre negru (în întuneric --surface e mai
+   DESCHIS decât fundalul, aici e mai luminos decât el - în ambele cazuri
+   cardul se ridică de pe pagină, care e singura regulă care conta).
+
+   Valorile, cu contrastul față de --surface (#faf8f4):
+     --background       #f2efe9   hârtie caldă
+     --surface          #faf8f4   cardul
+     --surface-raised   #ffffff   ce stă peste card (antet de tabel, pastile)
+     --foreground       #1f1f1f   cerneala site-ului, 15.9:1
+     --text-secondary   #55524d   7.5:1
+     --text-tinted      #716d66   4.9:1   (etichete, destul pentru text mic)
+     --border-main      #e2ddd4
+     --border-secondary #cdc7bc
+     --accent           #0b7a50   4.9:1 - #1fdb93 ar fi dat 1.7:1 și ar fi
+                                  strălucit pe alb fără să se poată citi
+
+   Seriile coboară la aceeași triadă, verificată din nou pe suprafața deschisă.
+   ------------------------------------------------------------------------ */
+:root[data-admin-theme="light"] {
+  --background: #f2efe9;
+  --surface: #faf8f4;
+  --surface-raised: #ffffff;
+
+  --foreground: #1f1f1f;
+  --text-secondary: #55524d;
+  --text-tinted: #716d66;
+
+  --border-main: #e2ddd4;
+  --border-secondary: #cdc7bc;
+
+  --accent: #0b7a50;
+
+  --adm-contact: #9a7415;
+  --adm-audit: #2f6fd0;
+  --adm-apply: #0b7a50;
+
+  --adm-up: #0b7a50;
+  --adm-down: #b03e19;
+
+  --adm-grid: #e7e2d9;
+  --adm-track: #efebe3;
+}
+
+/* `::selection` din globals.css e accent + alb. Pe tema deschisă accentul e
+   #0b7a50, deci albul rămâne lizibil peste el; se repetă aici doar ca să
+   citească noua valoare și nu pe cea compilată în globals. */
+:root[data-admin-theme="light"] ::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------------------
+   Cromă.
+   ------------------------------------------------------------------------ */
+
+/* Bara de scroll a tabelului și a listelor: subțire și în culorile temei.
+   Fără asta, pe tema deschisă apărea o bandă gri de sistem lângă un card
+   aproape alb. */
+:root[data-admin-theme] * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-secondary) transparent;
+}
+
+/* Antetul tabelului rămâne pe loc când se derulează lista. Are nevoie de un
+   fundal OPAC: `position: sticky` nu scoate elementul din flux, deci rândurile
+   trec pe sub el, iar un antet transparent le-ar arăta prin litere. */
+.adm-sticky-head th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface-raised);
+}
+
+/* Numerele din carduri și din tabel: cifre de lățime egală.
+   Altfel un 1 e mai îngust decât un 8 și o coloană de date sau un contor care
+   urcă își mută virgula de la un cadru la altul. */
+.adm-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Inelul de focus. Panoul se folosește de la tastatură (tab prin filtre, prin
+   sortare, prin butoanele de copiere), iar `outline` implicit al browserului
+   dispare pe fundal negru. */
+:root[data-admin-theme] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   MIȘCARE REDUSĂ - și de ce e CSS, nu JS.
+
+   `usePrefersReducedMotion` (hook-ul site-ului) e un `useSyncExternalStore` cu
+   instantaneu de server `false`. Asta înseamnă că la hidratare React randează
+   întâi cu "mișcarea e permisă", iar `motion` își pornește tween-urile în
+   efectele lui de layout - ÎNAINTE ca efectul pasiv care corectează valoarea
+   să apuce să ruleze. Măsurat: cu `prefers-reduced-motion: reduce` pornit în
+   browser, la 300ms de la încărcare două din cele patru carduri erau încă în
+   plină estompare. Hook-ul nu e greșit; pur și simplu află prea târziu.
+
+   CSS află la timp. Media query-ul e evaluat când se parsează foaia de stil,
+   deci înainte de orice pictare și fără JS. `!important` bate stilul inline pe
+   care îl scrie `motion`, deci elementul stă pironit în starea finală cât timp
+   tween-ul rulează degeaba pe sub el: nicio mișcare pe ecran, nimic ascuns,
+   nimic de așteptat.
+
+   Clasele sunt puse de `useEnter` (panels.tsx) și de grupul unei bare
+   (charts.tsx). Donut-ul nu poate fi acoperit așa - `stroke-dashoffset` nu e
+   nici transform, nici opacitate, deci trasarea lui e pornită imperativ, dintr-un
+   efect care citește el însuși media query-ul (vezi charts.tsx).
+
+   Tot aici: globals.css taie deja orice `animation` și `transition` CSS la
+   0.01ms sub aceeași preferință, deci partea pur CSS e acoperită de acolo. */
+@media (prefers-reduced-motion: reduce) {
+  .adm-enter,
+  .adm-grow {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+

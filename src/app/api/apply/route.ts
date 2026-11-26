@@ -2,7 +2,7 @@
 
    From the handoff package's route: validate, check the niche against the
    taken list, store, answer with "received" or "niche-taken". Ported to
-   Vercel: storage is Redis (see _server/store.ts) and every application is
+   Vercel: storage is Postgres via Supabase (see _server/store.ts) and every application is
    also emailed. The visitor gets an error only if it could be neither stored
    nor emailed - otherwise nobody would ever see it. */
 

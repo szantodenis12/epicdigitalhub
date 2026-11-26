@@ -107,7 +107,7 @@ Folosim următorii furnizori (persoane împuternicite sau operatori independenț
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, măsurarea campaniilor Facebook și Instagram | date de navigare și evenimente (cu consimțământ) |
 | Cloudflare, Inc. (SUA) | rutarea emailurilor primite la adresa contact@epicdigitalhub.ro | corespondență (adrese de email, conținutul mesajelor) |
 | Google Ireland Limited / Google LLC (Gmail) | primirea, stocarea și trimiterea emailurilor | corespondență |
-| Upstash (SUA) — baza de date Redis, regiunea Frankfurt | stocarea solicitărilor trimise prin formulare | datele din formulare |
+| Supabase (Irlanda, UE) — bază de date PostgreSQL | stocarea solicitărilor trimise prin formulare | datele din formulare |
 | Resend (SUA) | trimiterea notificărilor prin email la primirea unei solicitări | datele din formulare |
 
 De asemenea, datele pot fi transmise:

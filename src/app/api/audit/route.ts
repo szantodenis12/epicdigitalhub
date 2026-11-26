@@ -3,7 +3,7 @@
 // Claude-written audit report back as plain text.
 //
 // From the handoff package, ported to Vercel: the per-IP throttle and the
-// lead store moved from process memory and a JSON file to Redis
+// lead store moved from process memory and a JSON file to Supabase
 // (_server/store.ts), and each lead is also emailed. The crawl, the SSRF
 // guard, the prompts and the stream are unchanged.
 
@@ -241,7 +241,7 @@ function pickInternalPages(home: PageRead, origin: URL, count: number): URL[] {
 }
 
 // ---------------------------------------------------------------------------
-// Lead storage: Redis + email, after the response has started streaming so
+// Lead storage: Supabase + email, after the response has started streaming so
 // neither delays the report. Best effort - never fails the request.
 // ---------------------------------------------------------------------------
 

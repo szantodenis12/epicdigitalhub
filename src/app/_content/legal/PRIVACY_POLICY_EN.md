@@ -107,7 +107,7 @@ We use the following providers (processors or independent controllers), with who
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, measurement of Facebook and Instagram campaigns | browsing data and events (with consent) |
 | Cloudflare, Inc. (USA) | routing of incoming email for contact@epicdigitalhub.ro | correspondence (email addresses, message content) |
 | Google Ireland Limited / Google LLC (Gmail) | receiving, storing and sending email | correspondence |
-| Upstash (USA) — Redis database, Frankfurt region | storage of requests submitted through the forms | form data |
+| Supabase (Ireland, EU) — PostgreSQL database | storage of requests submitted through the forms | form data |
 | Resend (USA) | sending the email notification when a request arrives | form data |
 
 Data may also be disclosed to:
