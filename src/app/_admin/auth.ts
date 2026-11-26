@@ -19,8 +19,12 @@
         face cu cheia service-role, pentru ca rezultatul să nu depindă de
         politicile RLS de pe `profiles`; cheia rămâne pe server.
 
-   Cheia publică (anon) singură ajunge la `signInWithPassword`; service-role
-   nu iese niciodată din procesul serverului.
+   Cheia publishable (anon) ajunge la `signInWithPassword`; service-role nu
+   iese niciodată din procesul serverului. Niciuna nu are prefixul
+   NEXT_PUBLIC_, pentru că aici nu există client Supabase în browser: tot
+   auth-ul se face pe server (proxy, acțiunea de login, ruta /me). Prefixul ar
+   fi scris cheia în bundle degeaba și ar fi împiedicat Vercel s-o salveze ca
+   Secret.
    ========================================================================= */
 
 import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
@@ -39,7 +43,7 @@ const COOKIE_OPTIONS = {
 
 /** Fără URL sau cheie publică panoul e inaccesibil, nu deschis. */
 export function authConfigured(): boolean {
-  return Boolean(process.env.SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
 }
 
 /** Clientul de auth, legat de cookie-urile cererii curente. `cookies` vine de
@@ -47,7 +51,7 @@ export function authConfigured(): boolean {
 export function authClient(cookies: CookieMethodsServer): SupabaseClient {
   return createServerClient(
     process.env.SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
+    process.env.SUPABASE_ANON_KEY as string,
     { cookies, cookieOptions: COOKIE_OPTIONS },
   );
 }
