@@ -11,7 +11,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Locale } from "../content";
 import type { applyContent } from "../_content/apply";
-import { trackLead } from "../analytics";
+import { newEventId, readConsent, trackLead } from "../analytics";
 
 type ApplyCopy = (typeof applyContent)["en"];
 type Phase = "idle" | "sending" | "received" | "niche-taken" | "error";
@@ -81,10 +81,17 @@ function Form({
     e.preventDefault();
     setPhase("sending");
     try {
+      const eventId = newEventId();
       const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, locale }),
+        body: JSON.stringify({
+          ...form,
+          locale,
+          eventId,
+          consent: readConsent() === "granted",
+          page: window.location.pathname,
+        }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
@@ -96,7 +103,9 @@ function Form({
          list is the thing the report is measuring. Niche and budget ride
          along because the reports are built on them; nothing identifying
          does. */
-      trackLead("apply", { niche: form.niche, budget: form.budget });
+      /* Formularul de aplicație nu cere email sau telefon, deci nu are ce
+         trimite la conversiile îmbunătățite - doar id-ul, pentru deduplicare. */
+      trackLead("apply", { eventId, niche: form.niche, budget: form.budget });
       setPhase(data.status === "niche-taken" ? "niche-taken" : "received");
     } catch {
       setPhase("error");

@@ -1,6 +1,6 @@
 # Cookie Policy
 
-**Last updated:** 12.10.2026
+**Last updated:** 26.11.2026
 **Route on the site:** `/cookies`
 
 This policy explains what cookies and similar technologies are, which of these technologies the website epicdigitalhub.ro uses, for what purpose and how you can manage your choice. It supplements the [Privacy Policy](/privacy).
@@ -51,7 +51,9 @@ We use **Google Analytics 4**, provided by Google Ireland Limited, to understand
 We have configured Google Analytics so that:
 - data is retained for 14 months;
 - the IP address is not stored (Google Analytics 4 does not log or store IP addresses);
-- names, email addresses and other form data are not sent to Google.
+- names, email addresses and other form data are not sent to Google Analytics.
+
+If you have also accepted marketing cookies, we additionally enable **Google signals**, which allow reports about visits made from several devices by the same person signed in to their Google account. They do not add new cookies to the table above and apply only with advertising consent.
 
 ### 3.3. Marketing (only with consent)
 
@@ -63,7 +65,17 @@ We use **Meta Pixel**, provided by Meta Platforms Ireland Limited, to measure th
 | `_fbc` | Meta | first-party, persistent | stores the click identifier when you arrive on the website from a Meta advertisement | 90 days |
 | `fr` | Meta (facebook.com) | third-party, persistent | delivery, measurement and relevance of advertisements | 90 days |
 
-In addition, when you accept marketing cookies, consent signals for advertising are sent to Google (Consent Mode v2). The website does not currently use Google Ads tags. If we introduce them, this policy will be updated.
+In addition to Meta Pixel in the browser, the "Lead" event is also sent from our server to Meta (Meta Conversions API), again only with your consent. This does not set additional cookies, but it uses the `_fbp` and `_fbc` cookies above and data such as email and telephone number hashed with SHA-256, the IP address and the browser user-agent. Details are set out in the [Privacy Policy](/privacy), section 6.1.
+
+We also use **Google Ads**, provided by Google Ireland Limited, for conversion measurement, remarketing and enhanced conversions (the email address and telephone number from the form are hashed in your browser before being sent to Google, only with `ad_user_data` consent).
+
+| Name | Provider | Type | Purpose | Duration |
+|---|---|---|---|---|
+| `_gcl_au` | Google | first-party, persistent | measures conversions from Google Ads advertisements | 90 days |
+| `_gcl_aw` | Google | first-party, persistent | stores the click identifier when you arrive on the website from a Google Ads advertisement | 90 days |
+| `IDE` | Google (doubleclick.net) | third-party, persistent | remarketing, delivery and measurement of Google advertisements | 13 months |
+
+In addition, when you accept marketing cookies, consent signals for advertising are sent to Google (Consent Mode v2).
 
 ### 3.4. Google Tag Manager
 
@@ -73,7 +85,7 @@ We use **Google Tag Manager** to manage the measurement code described above. Go
 
 The website uses Google Consent Mode v2. Until you make your choice, all storage categories (`analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`) are set to "denied" by default.
 
-If you decline, Google Analytics does not set cookies. Google may nevertheless receive cookieless signals (for example, the fact that a page view occurred), without persistent identifiers, which it uses for aggregated statistical estimates. Meta Pixel does not load at all.
+If you decline, Google Analytics does not set cookies. Google may nevertheless receive cookieless signals (for example, the fact that a page view occurred), without persistent identifiers, which it uses for aggregated statistical estimates. Meta Pixel does not load at all. Google Ads conversions, enhanced conversions, Google signals and sending events to Meta from our server work only after you accept.
 
 ## 5. How to manage your choice
 
@@ -89,6 +101,7 @@ If you decline, Google Analytics does not set cookies. Google may nevertheless r
 
 **Tools provided by the providers:**
 - Google Analytics: the opt-out browser add-on available at https://tools.google.com/dlpage/gaoptout;
+- Google Ads: ad personalisation settings at https://adssettings.google.com;
 - Meta: ad preferences in your Facebook or Instagram account (Accounts Centre → Ad preferences).
 
 Blocking all cookies in your browser may affect how some websites work. In the case of epicdigitalhub.ro, the content remains available without analytics or marketing cookies.

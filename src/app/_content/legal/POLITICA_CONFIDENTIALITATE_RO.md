@@ -1,6 +1,6 @@
 # Politica de confidențialitate
 
-**Ultima actualizare:** 12.10.2026
+**Ultima actualizare:** 26.11.2026
 **Rută pe site:** `/ro/confidentialitate`
 
 Această politică explică ce date personale colectează EPIC DIGITAL HUB S.R.L. prin site-ul epicdigitalhub.ro, în ce scop, pe ce temei legal, cât timp le păstrăm, cui le transmitem și ce drepturi aveți. Politica se aplică vizitatorilor site-ului, persoanelor care completează formularele de pe site și persoanelor care ne contactează prin email sau telefon.
@@ -57,11 +57,11 @@ Vă rugăm să nu ne transmiteți prin formulare date sensibile (de exemplu, dat
 
 **Date tehnice și jurnale de server:** atunci când accesați site-ul, furnizorul nostru de găzduire înregistrează automat date tehnice necesare funcționării și securității site-ului: adresa IP, data și ora accesării, pagina solicitată, tipul și versiunea browserului, sistemul de operare și pagina de pe care ați ajuns pe site.
 
-**Date de navigare și măsurare (doar cu acordul dumneavoastră):** dacă acceptați cookie-urile de statistică și marketing, colectăm prin Google Analytics 4 și Meta Pixel informații despre modul în care folosiți site-ul: paginile vizitate, durata vizitei, sursa traficului (de exemplu, căutare Google, reclamă, rețea socială), tipul dispozitivului, regiunea aproximativă și acțiunile efectuate pe site, cum ar fi trimiterea unui formular. Detaliile sunt prezentate în [Politica de cookie-uri](/ro/cookies).
+**Date de navigare și măsurare (doar cu acordul dumneavoastră):** dacă acceptați cookie-urile de statistică și marketing, colectăm prin Google Analytics 4, Meta Pixel și Google Ads informații despre modul în care folosiți site-ul: paginile vizitate, durata vizitei, sursa traficului (de exemplu, căutare Google, reclamă, rețea socială), tipul dispozitivului, regiunea aproximativă și acțiunile efectuate pe site, cum ar fi trimiterea unui formular. Detaliile sunt prezentate în [Politica de cookie-uri](/ro/cookies).
 
 Dacă refuzați cookie-urile, Google Analytics poate primi, prin funcția Consent Mode, semnale fără cookie-uri și fără identificatori persistenți, utilizate exclusiv pentru estimări statistice agregate. Meta Pixel nu se încarcă deloc fără acordul dumneavoastră.
 
-**Informații despre trimiterea formularelor:** atunci când trimiteți un formular, înregistrăm ca eveniment de măsurare doar tipul formularului (audit, aplicare sau solicitare), limba paginii și, pentru formularul de aplicare, nișa și bugetul selectate. **Numele, adresa de email, telefonul și site-ul dumneavoastră nu sunt transmise către Google Analytics sau Meta.**
+**Informații despre trimiterea formularelor:** atunci când trimiteți un formular, înregistrăm ca eveniment de măsurare tipul formularului (audit, aplicare sau solicitare), limba paginii și, pentru formularul de aplicare, nișa și bugetul selectate. **Numele, adresa de email și site-ul dumneavoastră nu sunt transmise către Google Analytics.** Dacă ați acceptat cookie-urile de marketing, adresa de email este trimisă către Meta și Google doar sub formă codificată (hash), pentru măsurarea reclamelor, așa cum este explicat la secțiunea 6.1.
 
 ### 2.3. Date primite din alte surse
 
@@ -79,7 +79,7 @@ Pentru a pregăti raportul de audit solicitat, analizăm informații publice des
 | Îndeplinirea obligațiilor legale (contabilitate, fiscalitate, arhivare) | date din contracte, facturi și documente justificative | art. 6 alin. (1) lit. c) — obligație legală |
 | Funcționarea și securitatea site-ului, prevenirea abuzurilor | date tehnice, jurnale de server | art. 6 alin. (1) lit. f) — interes legitim |
 | Statistici de utilizare a site-ului | date de navigare (Google Analytics 4) | art. 6 alin. (1) lit. a) — consimțământ |
-| Măsurarea campaniilor și publicitate personalizată | date de navigare și evenimente (Meta Pixel, semnale publicitare Google) | art. 6 alin. (1) lit. a) — consimțământ |
+| Măsurarea campaniilor și publicitate personalizată | date de navigare și evenimente (Meta Pixel, Meta Conversions API, Google Ads, semnale publicitare Google), inclusiv adresa de email codificată (hash) | art. 6 alin. (1) lit. a) — consimțământ |
 | Constatarea, exercitarea sau apărarea unor drepturi în instanță | datele relevante pentru litigiu | art. 6 alin. (1) lit. f) — interes legitim |
 
 Atunci când ne bazăm pe interesul legitim, am evaluat că acesta nu prevalează asupra drepturilor și libertăților dumneavoastră. Puteți obține detalii despre această evaluare scriindu-ne la contact@epicdigitalhub.ro.
@@ -105,6 +105,8 @@ Folosim următorii furnizori (persoane împuternicite sau operatori independenț
 | Vercel Inc. (SUA) | găzduirea site-ului, jurnale de server | date tehnice, conținutul formularelor transmise prin site |
 | Google Ireland Limited / Google LLC | Google Analytics 4, Google Tag Manager, Google Search Console | date de navigare (cu consimțământ), date tehnice |
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, măsurarea campaniilor Facebook și Instagram | date de navigare și evenimente (cu consimțământ) |
+| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — evenimentul „Lead" trimis de pe serverul nostru, pentru măsurarea conversiilor din reclame | adresa de email codificată (hash SHA-256), adresă IP, user-agent al browserului, cookie-urile `_fbp` și `_fbc` (doar cu consimțământ pentru marketing) |
+| Google Ireland Limited / Google LLC | Google Ads — măsurarea conversiilor, remarketing și conversii îmbunătățite | evenimente de conversiune, identificatori publicitari, adresa de email codificată (hash) în browser (doar cu consimțământ pentru publicitate) |
 | Cloudflare, Inc. (SUA) | rutarea emailurilor primite la adresa contact@epicdigitalhub.ro | corespondență (adrese de email, conținutul mesajelor) |
 | Google Ireland Limited / Google LLC (Gmail) | primirea, stocarea și trimiterea emailurilor | corespondență |
 | Supabase (Irlanda, UE) — bază de date PostgreSQL | stocarea solicitărilor trimise prin formulare | datele din formulare |
@@ -114,6 +116,16 @@ De asemenea, datele pot fi transmise:
 - **consultanților noștri** (contabil, avocat), în măsura necesară îndeplinirii obligațiilor legale sau apărării drepturilor noastre, aceștia având obligația de confidențialitate;
 - **autorităților publice** (de exemplu, ANAF, instanțe, organe de cercetare penală), atunci când legea ne obligă;
 - **unui eventual succesor**, în cazul unei reorganizări, fuziuni sau vânzări a activității, cu informarea prealabilă a dumneavoastră.
+
+### 6.1. Măsurarea reclamelor: Meta Conversions API, Google Ads și semnale Google
+
+Dacă ați acceptat cookie-urile de marketing, măsurăm care reclame duc la o solicitare. Pentru aceasta se întâmplă trei lucruri, toate **numai cu acordul dumneavoastră**. Dacă refuzați, nimic din cele de mai jos nu se trimite.
+
+- **Meta Conversions API.** Când trimiteți un formular, evenimentul „Lead" ajunge la Meta nu doar din browserul dumneavoastră (prin Meta Pixel), ci și direct de pe serverul nostru. Către Meta se transmit: adresa de email, **transformată în prealabil într-un cod ireversibil (hash SHA-256), niciodată în clar**; adresa IP; datele browserului (user-agent); cookie-urile `_fbp` și `_fbc`, dacă există. Scopul nostru este doar măsurarea conversiilor din reclame. Furnizor: Meta Platforms Ireland Limited.
+- **Google Ads și conversii îmbunătățite.** Măsurăm conversiile din reclamele Google și putem afișa reclame persoanelor care au vizitat site-ul (remarketing). Pentru conversii îmbunătățite, adresa de email din formular este preluată de eticheta Google, care o codifică (hash) în browserul dumneavoastră înainte de a le trimite către Google. Se aplică numai dacă ați acceptat consimțământul pentru datele utilizatorului în scop publicitar (`ad_user_data`). Furnizor: Google Ireland Limited.
+- **Semnale Google în Google Analytics 4.** Permit rapoarte care leagă vizitele făcute de pe mai multe dispozitive de aceeași persoană, atunci când este conectată la contul Google. Se activează numai cu consimțământul pentru publicitate.
+
+Datele codificate (hash) nu pot fi citite în clar de terți, dar rămân date personale, deoarece furnizorul le poate potrivi cu un cont pe care îl are deja. Pentru transferuri în afara SEE, vedeți secțiunea 7.
 
 ## 7. Transferuri în afara Spațiului Economic European
 
@@ -132,7 +144,7 @@ Puteți solicita informații despre garanțiile aplicabile scriindu-ne la contac
 | Date ale clienților și ale reprezentanților acestora | pe durata contractului și 3 ani după încetarea acestuia (termenul general de prescripție) |
 | Documente financiar-contabile (contracte, facturi) | 5 ani de la încheierea exercițiului financiar, conform Legii contabilității nr. 82/1991, sau perioada mai lungă prevăzută de lege pentru anumite categorii de documente |
 | Date de navigare în Google Analytics 4 | 14 luni |
-| Date transmise prin Meta Pixel | conform politicilor Meta, de regulă cel mult 2 ani |
+| Date transmise prin Meta Pixel și Meta Conversions API | conform politicilor Meta, de regulă cel mult 2 ani |
 | Jurnale de server | conform politicii furnizorului de găzduire, de regulă câteva zile sau săptămâni |
 | Alegerea privind cookie-urile | până la ștergerea datelor din browser sau până la modificarea alegerii |
 
@@ -144,7 +156,7 @@ Aplicăm măsuri tehnice și organizatorice adecvate riscului, printre care:
 - conexiune criptată HTTPS pe întregul site și politica HSTS;
 - acces la date limitat la persoanele care au nevoie de ele, cu autentificare în doi pași acolo unde furnizorii o permit;
 - utilizarea unor furnizori care oferă garanții recunoscute de securitate;
-- minimizarea datelor: nu transmitem date de identificare din formulare către instrumentele de analiză sau publicitate;
+- minimizarea datelor: nu transmitem numele sau conținutul formularelor către instrumentele de analiză sau publicitate, iar adresa de email este trimisă către Meta și Google doar cu acordul dumneavoastră și doar sub formă codificată (hash);
 - ștergerea periodică a datelor pentru care perioada de păstrare a expirat.
 
 Nicio metodă de transmitere sau stocare electronică nu este complet sigură. Dacă se produce o încălcare a securității datelor care prezintă un risc pentru drepturile dumneavoastră, vom notifica Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal și, după caz, persoanele vizate, în termenele prevăzute de GDPR.

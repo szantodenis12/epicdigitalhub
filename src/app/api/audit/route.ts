@@ -12,6 +12,7 @@ import { lookup } from "dns/promises";
 import Anthropic from "@anthropic-ai/sdk";
 import { isRateLimited, saveRecord } from "../../_server/store";
 import { notify } from "../../_server/notify";
+import { metaContextFrom, sendLeadToMeta } from "../../_server/meta-capi";
 
 // Generation takes 60-120s; Vercel's function limit must allow it (see the
 // deployment notes in README.md).
@@ -245,7 +246,10 @@ function pickInternalPages(home: PageRead, origin: URL, count: number): URL[] {
 // neither delays the report. Best effort - never fails the request.
 // ---------------------------------------------------------------------------
 
-async function saveLead(lead: { name: string; email: string; url: string; locale: string }) {
+async function saveLead(
+  lead: { name: string; email: string; url: string; locale: string },
+  meta?: Parameters<typeof sendLeadToMeta>[0],
+) {
   await saveRecord("audit-leads", lead);
   await notify(
     `Audit: ${lead.url}`,
@@ -256,6 +260,8 @@ async function saveLead(lead: { name: string; email: string; url: string; locale
     ],
     lead.email,
   );
+  // sendLeadToMeta nu aruncă; rămâne în același after(), ca să nu încetinească raportul.
+  if (meta) await sendLeadToMeta(meta);
 }
 
 // ---------------------------------------------------------------------------
@@ -428,7 +434,12 @@ export async function POST(req: NextRequest) {
   if (await isRateLimited("audit", ip, 3, 60 * 60)) return jsonError("throttled", 429);
 
   // The lead counts even if the crawl fails, so it is scheduled before it.
-  after(() => saveLead({ name, email, url: url.href, locale }));
+  const eventId = typeof body.eventId === "string" ? body.eventId.trim().slice(0, 100) : "";
+  const meta =
+    body.consent === true && eventId
+      ? { eventId, sourceUrl: new URL(typeof body.page === "string" && body.page.startsWith("/") ? body.page : "/audit", req.nextUrl.origin).href, email, ...metaContextFrom(req) }
+      : undefined;
+  after(() => saveLead({ name, email, url: url.href, locale }, meta));
 
   // --- Crawl: homepage, then up to 2 internal pages picked from its links.
   let home: PageRead;

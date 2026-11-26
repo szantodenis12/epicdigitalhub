@@ -48,7 +48,7 @@ function pageLanguage(): "ro" | "en" {
 /** `crypto.randomUUID` needs a secure context; a plain random id is a fine
     fallback, since this only has to be unique enough for Meta to deduplicate a
     browser event against the same event arriving over the Conversions API. */
-function eventId(): string {
+export function newEventId(): string {
   try {
     return crypto.randomUUID();
   } catch {
@@ -61,13 +61,45 @@ function eventId(): string {
  * button click, and not when the fields validate. A lead counted on click is a
  * lead that did not happen.
  */
-export function trackLead(form: LeadForm, details?: { niche?: string; budget?: string }) {
+export function trackLead(
+  form: LeadForm,
+  details?: {
+    niche?: string;
+    budget?: string;
+    /* ACELAȘI id pe care formularul l-a trimis și serverului. Serverul trimite
+       același eveniment către Meta prin Conversions API, iar Meta le unește
+       doar dacă poartă același `event_id`. Generat aici, după trimitere, ar fi
+       alt id și fiecare lead s-ar număra de două ori. Lipsa lui nu strică
+       nimic în browser, dar atunci deduplicarea nu are pe ce să se facă. */
+    eventId?: string;
+    /* Pentru conversiile îmbunătățite Google Ads. NEcriptate, cum cere Google -
+       le criptează tag-ul lui înainte să plece din browser. */
+    email?: string;
+    phone?: string;
+  },
+) {
+  const { eventId, email, phone, ...rest } = details ?? {};
+
+  /* Datele personale pleacă în dataLayer numai cu acordul pentru marketing.
+     `ad_user_data` face parte din aceeași alegere ca restul semnalelor, deci e
+     suficient să ne uităm la ea. Fără acord, evenimentul pleacă fără ele - nu
+     se anulează, doar nu cară date pe care n-avem voie să le cărăm. */
+  const consented = readConsent() === "granted";
+  const user_data =
+    consented && (email || phone)
+      ? {
+          ...(email ? { email_address: email.trim().toLowerCase() } : {}),
+          ...(phone ? { phone_number: phone.trim() } : {}),
+        }
+      : undefined;
+
   push({
     event: "lead_submit",
     form_name: form,
     page_language: pageLanguage(),
-    event_id: eventId(),
-    ...details,
+    event_id: eventId ?? newEventId(),
+    ...(user_data ? { user_data } : {}),
+    ...rest,
   });
 }
 

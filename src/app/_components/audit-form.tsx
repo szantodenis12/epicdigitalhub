@@ -17,7 +17,7 @@ import { useState } from "react";
 import type { auditContent, AuditErrorCode } from "../_content/audit";
 import { EyebrowMarquee } from "./ui";
 import { FIELD, SUBMIT } from "./apply-form";
-import { trackLead } from "../analytics";
+import { newEventId, readConsent, trackLead } from "../analytics";
 
 type AuditCopy = (typeof auditContent)["en"];
 type Phase = "idle" | "reading" | "writing" | "done" | "stopped" | "error";
@@ -218,12 +218,22 @@ export function AuditForm({ copy: d }: { copy: AuditCopy }) {
     setPhase("reading");
     setRaw("");
     try {
+      const eventId = newEventId();
       const res = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // The report is a deliverable for Romanian businesses — always
         // generated in Romanian, independent of the page's language.
-        body: JSON.stringify({ ...form, locale: "ro" }),
+        // eventId și consent merg la server pentru Meta Conversions API:
+        // același id în ambele părți, altfel lead-ul s-ar număra de două ori
+        body: JSON.stringify({
+          ...form,
+          locale: "ro",
+          eventId,
+          consent: readConsent() === "granted",
+          // pagina reală: ruta n-are de unde ști dacă vizitatorul e pe /audit sau /ro/audit
+          page: window.location.pathname,
+        }),
       });
       const type = res.headers.get("content-type") ?? "";
       if (!res.ok || type.includes("application/json") || !res.body) {
@@ -237,7 +247,7 @@ export function AuditForm({ copy: d }: { copy: AuditCopy }) {
          request and began streaming the report. A visitor who closes the tab
          half way through still submitted, and a lead counted at `done` would
          undercount by however many do that. */
-      trackLead("audit");
+      trackLead("audit", { eventId, email: form.email });
 
       setPhase("writing");
       const reader = res.body.getReader();

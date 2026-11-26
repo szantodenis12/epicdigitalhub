@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated:** 12.10.2026
+**Last updated:** 26.11.2026
 **Route on the site:** `/privacy`
 
 This policy explains what personal data EPIC DIGITAL HUB S.R.L. collects through the website epicdigitalhub.ro, for what purpose, on what legal basis, how long we keep it, who we share it with and what rights you have. The policy applies to visitors to the website, to people who complete the forms on the website and to people who contact us by email or telephone.
@@ -57,11 +57,11 @@ Please do not send us special categories of data through the forms (for example,
 
 **Technical data and server logs:** when you access the website, our hosting provider automatically records technical data necessary for the operation and security of the website: IP address, date and time of access, the page requested, browser type and version, operating system and the page from which you arrived on the website.
 
-**Browsing and measurement data (only with your consent):** if you accept analytics and marketing cookies, we collect, through Google Analytics 4 and Meta Pixel, information about how you use the website: pages visited, visit duration, traffic source (for example, Google search, an advertisement, a social network), device type, approximate region and actions taken on the website, such as submitting a form. Details are set out in the [Cookie Policy](/cookies).
+**Browsing and measurement data (only with your consent):** if you accept analytics and marketing cookies, we collect, through Google Analytics 4, Meta Pixel and Google Ads, information about how you use the website: pages visited, visit duration, traffic source (for example, Google search, an advertisement, a social network), device type, approximate region and actions taken on the website, such as submitting a form. Details are set out in the [Cookie Policy](/cookies).
 
 If you decline cookies, Google Analytics may receive, through the Consent Mode feature, signals without cookies and without persistent identifiers, used exclusively for aggregated statistical estimates. Meta Pixel does not load at all without your consent.
 
-**Information about form submissions:** when you submit a form, we record as a measurement event only the type of form (audit, application or enquiry), the page language and, for the application form, the selected niche and budget. **Your name, email address, telephone number and website are not sent to Google Analytics or Meta.**
+**Information about form submissions:** when you submit a form, we record as a measurement event the type of form (audit, application or enquiry), the page language and, for the application form, the selected niche and budget. **Your name, email address and website are not sent to Google Analytics.** If you accepted marketing cookies, your email address is sent to Meta and Google only in hashed form, to measure advertising, as explained in section 6.1.
 
 ### 2.3. Data received from other sources
 
@@ -79,7 +79,7 @@ To prepare the audit report you request, we analyse public information about the
 | Complying with legal obligations (accounting, tax, archiving) | data from contracts, invoices and supporting documents | Art. 6(1)(c) — legal obligation |
 | Operation and security of the website, prevention of abuse | technical data, server logs | Art. 6(1)(f) — legitimate interest |
 | Website usage statistics | browsing data (Google Analytics 4) | Art. 6(1)(a) — consent |
-| Campaign measurement and personalised advertising | browsing data and events (Meta Pixel, Google advertising signals) | Art. 6(1)(a) — consent |
+| Campaign measurement and personalised advertising | browsing data and events (Meta Pixel, Meta Conversions API, Google Ads, Google advertising signals), including the hashed email address | Art. 6(1)(a) — consent |
 | Establishing, exercising or defending legal claims | data relevant to the dispute | Art. 6(1)(f) — legitimate interest |
 
 Where we rely on legitimate interest, we have assessed that it is not overridden by your rights and freedoms. You can obtain details of this assessment by writing to us at contact@epicdigitalhub.ro.
@@ -105,6 +105,8 @@ We use the following providers (processors or independent controllers), with who
 | Vercel Inc. (USA) | website hosting, server logs | technical data, content of forms submitted through the website |
 | Google Ireland Limited / Google LLC | Google Analytics 4, Google Tag Manager, Google Search Console | browsing data (with consent), technical data |
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, measurement of Facebook and Instagram campaigns | browsing data and events (with consent) |
+| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — the "Lead" event sent from our server, to measure conversions from advertisements | email address hashed with SHA-256, IP address, browser user-agent, the `_fbp` and `_fbc` cookies (only with marketing consent) |
+| Google Ireland Limited / Google LLC | Google Ads — conversion measurement, remarketing and enhanced conversions | conversion events, advertising identifiers, email address hashed in the browser (only with advertising consent) |
 | Cloudflare, Inc. (USA) | routing of incoming email for contact@epicdigitalhub.ro | correspondence (email addresses, message content) |
 | Google Ireland Limited / Google LLC (Gmail) | receiving, storing and sending email | correspondence |
 | Supabase (Ireland, EU) — PostgreSQL database | storage of requests submitted through the forms | form data |
@@ -114,6 +116,16 @@ Data may also be disclosed to:
 - **our advisers** (accountant, lawyer), to the extent necessary to comply with legal obligations or to defend our rights, who are bound by confidentiality;
 - **public authorities** (for example, the National Agency for Fiscal Administration — ANAF, courts, criminal investigation bodies), where the law requires us to do so;
 - **a possible successor**, in the event of a reorganisation, merger or sale of the business, after informing you in advance.
+
+### 6.1. Advertising measurement: Meta Conversions API, Google Ads and Google signals
+
+If you accepted marketing cookies, we measure which advertisements lead to a request. Three things happen for this, all **only with your consent**. If you decline, none of the following is sent.
+
+- **Meta Conversions API.** When you submit a form, the "Lead" event reaches Meta not only from your browser (through Meta Pixel) but also directly from our server. The following is sent to Meta: your email address, **first converted into an irreversible code (SHA-256 hash), never in clear**; your IP address; browser details (user-agent); and the `_fbp` and `_fbc` cookies, if present. Our purpose is solely to measure conversions from advertisements. Provider: Meta Platforms Ireland Limited.
+- **Google Ads and enhanced conversions.** We measure conversions from Google advertisements and may show advertisements to people who have visited the website (remarketing). For enhanced conversions, the email address from the form is picked up by the Google tag, which hashes it in your browser before sending them to Google. This applies only if you accepted consent for advertising user data (`ad_user_data`). Provider: Google Ireland Limited.
+- **Google signals in Google Analytics 4.** They enable reports that link visits made from several devices by the same person when signed in to their Google account. They are activated only with advertising consent.
+
+Hashed data cannot be read in clear by third parties, but it remains personal data, because the provider can match it to an account it already holds. For transfers outside the EEA, see section 7.
 
 ## 7. Transfers outside the European Economic Area
 
@@ -132,7 +144,7 @@ You may request information about the applicable safeguards by writing to us at 
 | Data of clients and their representatives | for the duration of the contract and 3 years after its termination (the general limitation period) |
 | Financial and accounting documents (contracts, invoices) | 5 years from the end of the financial year, in accordance with Accounting Law no. 82/1991, or the longer period provided by law for certain categories of documents |
 | Browsing data in Google Analytics 4 | 14 months |
-| Data sent through Meta Pixel | in accordance with Meta's policies, generally no more than 2 years |
+| Data sent through Meta Pixel and Meta Conversions API | in accordance with Meta's policies, generally no more than 2 years |
 | Server logs | in accordance with the hosting provider's policy, generally a few days or weeks |
 | Your cookie choice | until the data is cleared from the browser or until you change your choice |
 
@@ -144,7 +156,7 @@ We apply technical and organisational measures appropriate to the risk, includin
 - encrypted HTTPS connection across the entire website and an HSTS policy;
 - access to data limited to the people who need it, with two-step authentication where providers allow it;
 - use of providers offering recognised security guarantees;
-- data minimisation: we do not send identifying data from forms to analytics or advertising tools;
+- data minimisation: we do not send your name or the content of forms to analytics or advertising tools, and your email address is sent to Meta and Google only with your consent and only in hashed form;
 - periodic deletion of data whose retention period has expired.
 
 No method of electronic transmission or storage is completely secure. If a personal data breach occurs that poses a risk to your rights, we will notify the National Supervisory Authority for Personal Data Processing and, where applicable, the data subjects, within the time limits set by the GDPR.

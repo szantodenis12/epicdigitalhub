@@ -6,10 +6,11 @@
    also emailed. The visitor gets an error only if it could be neither stored
    nor emailed - otherwise nobody would ever see it. */
 
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 import { findConflict } from "../../_server/intake";
 import { isRateLimited, saveRecord } from "../../_server/store";
 import { notify } from "../../_server/notify";
+import { metaContextFrom, sendLeadToMeta } from "../../_server/meta-capi";
 
 const REQUIRED = ["name", "business", "city", "niche"] as const;
 const MAX_LEN = 2_000;
@@ -68,6 +69,17 @@ export async function POST(req: NextRequest) {
 
   if (!stored && !emailed) {
     return Response.json({ ok: false, error: "not-saved" }, { status: 500 });
+  }
+
+  /* Lead către Meta (Conversions API): doar cu acord și cu eventId din
+     browser, pentru deduplicare. Formularul nu are email sau telefon, deci
+     se potrivește doar după cookie-urile pixelului; fără ele funcția nu
+     trimite nimic. */
+  const eventId = typeof body.eventId === "string" ? body.eventId.trim().slice(0, 100) : "";
+  if (body.consent === true && eventId) {
+    const meta = metaContextFrom(req);
+    const sourceUrl = new URL(typeof body.page === "string" && body.page.startsWith("/") ? body.page : "/apply", req.nextUrl.origin).href;
+    after(() => sendLeadToMeta({ eventId, sourceUrl, ...meta }));
   }
 
   // The taken client's name is internal; only the category goes back.

@@ -1,6 +1,6 @@
 # Politica de cookie-uri
 
-**Ultima actualizare:** 12.10.2026
+**Ultima actualizare:** 26.11.2026
 **Rută pe site:** `/ro/cookies`
 
 Această politică explică ce sunt cookie-urile și tehnologiile similare, ce astfel de tehnologii folosește site-ul epicdigitalhub.ro, în ce scop și cum vă puteți gestiona alegerea. Politica completează [Politica de confidențialitate](/ro/confidentialitate).
@@ -51,7 +51,9 @@ Folosim **Google Analytics 4**, furnizat de Google Ireland Limited, pentru a în
 Am configurat Google Analytics astfel încât:
 - datele să fie păstrate 14 luni;
 - adresa IP să nu fie stocată (Google Analytics 4 nu înregistrează și nu stochează adrese IP);
-- numele, emailul și celelalte date din formulare să nu fie transmise către Google.
+- numele, emailul și celelalte date din formulare să nu fie transmise către Google Analytics.
+
+Dacă ați acceptat și cookie-urile de marketing, activăm în plus **semnalele Google**, care permit rapoarte despre vizitele făcute de pe mai multe dispozitive de aceeași persoană conectată la contul Google. Acestea nu adaugă cookie-uri noi în tabelul de mai sus și se aplică numai cu consimțământul pentru publicitate.
 
 ### 3.3. Marketing (doar cu consimțământ)
 
@@ -63,7 +65,17 @@ Folosim **Meta Pixel**, furnizat de Meta Platforms Ireland Limited, pentru a mă
 | `_fbc` | Meta | proprie, persistentă | reține identificatorul clicului atunci când ajungeți pe site dintr-o reclamă Meta | 90 de zile |
 | `fr` | Meta (facebook.com) | a terților, persistentă | livrarea, măsurarea și relevanța reclamelor | 90 de zile |
 
-De asemenea, atunci când acceptați cookie-urile de marketing, semnalele de consimțământ pentru publicitate sunt transmise către Google (Consent Mode v2). În prezent, site-ul nu folosește etichete Google Ads. Dacă le vom introduce, această politică va fi actualizată.
+Pe lângă Meta Pixel din browser, evenimentul „Lead" este trimis și de pe serverul nostru către Meta (Meta Conversions API), tot numai cu acordul dumneavoastră. Aceasta nu setează cookie-uri suplimentare, dar folosește cookie-urile `_fbp` și `_fbc` de mai sus și date precum email și telefon codificate (hash SHA-256), adresa IP și user-agent-ul browserului. Detalii în [Politica de confidențialitate](/ro/confidentialitate), secțiunea 6.1.
+
+Folosim și **Google Ads**, furnizat de Google Ireland Limited, pentru măsurarea conversiilor, remarketing și conversii îmbunătățite (emailul și telefonul din formular sunt codificate în browserul dumneavoastră înainte de a fi trimise către Google, numai cu consimțământul `ad_user_data`).
+
+| Denumire | Furnizor | Tip | Scop | Durată |
+|---|---|---|---|---|
+| `_gcl_au` | Google | proprie, persistentă | măsoară conversiile din reclamele Google Ads | 90 de zile |
+| `_gcl_aw` | Google | proprie, persistentă | reține identificatorul clicului atunci când ajungeți pe site dintr-o reclamă Google Ads | 90 de zile |
+| `IDE` | Google (doubleclick.net) | a terților, persistentă | remarketing, livrarea și măsurarea reclamelor Google | 13 luni |
+
+De asemenea, atunci când acceptați cookie-urile de marketing, semnalele de consimțământ pentru publicitate sunt transmise către Google (Consent Mode v2).
 
 ### 3.4. Google Tag Manager
 
@@ -73,7 +85,7 @@ Folosim **Google Tag Manager** pentru a gestiona codurile de măsurare de mai su
 
 Site-ul folosește Google Consent Mode v2. Până la exprimarea alegerii, toate categoriile de stocare (`analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`) sunt setate implicit pe „refuzat".
 
-Dacă refuzați, Google Analytics nu setează cookie-uri. Google poate primi totuși semnale fără cookie-uri (de exemplu, faptul că a avut loc o vizualizare de pagină), fără identificatori persistenți, pe care le folosește pentru estimări statistice agregate. Meta Pixel nu se încarcă deloc.
+Dacă refuzați, Google Analytics nu setează cookie-uri. Google poate primi totuși semnale fără cookie-uri (de exemplu, faptul că a avut loc o vizualizare de pagină), fără identificatori persistenți, pe care le folosește pentru estimări statistice agregate. Meta Pixel nu se încarcă deloc. Conversiile Google Ads, conversiile îmbunătățite, semnalele Google și trimiterea evenimentelor către Meta de pe serverul nostru funcționează numai după ce acceptați.
 
 ## 5. Cum vă gestionați alegerea
 
@@ -89,6 +101,7 @@ Dacă refuzați, Google Analytics nu setează cookie-uri. Google poate primi tot
 
 **Instrumente puse la dispoziție de furnizori:**
 - Google Analytics: add-on-ul de dezactivare disponibil la https://tools.google.com/dlpage/gaoptout;
+- Google Ads: setările de personalizare a reclamelor, la https://adssettings.google.com;
 - Meta: preferințele pentru reclame din contul Facebook sau Instagram (Centrul de conturi → Preferințe pentru reclame).
 
 Blocarea tuturor cookie-urilor din browser poate afecta funcționarea unor site-uri. În cazul epicdigitalhub.ro, conținutul rămâne disponibil și fără cookie-uri de statistică sau marketing.

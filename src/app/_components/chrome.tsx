@@ -12,7 +12,7 @@
    ========================================================================= */
 
 import { useEffect, useRef, useState } from "react";
-import { trackLead } from "../analytics";
+import { newEventId, readConsent, trackLead } from "../analytics";
 import { FooterLegal } from "./footer-legal";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
@@ -375,19 +375,27 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
     const form = e.currentTarget;
     const data = new FormData(form);
     setPhase("sending");
+    /* Id-ul se face ÎNAINTE de trimitere și pleacă și la server: altfel
+       browserul și Conversions API ar raporta două evenimente diferite pentru
+       același lead, iar Meta l-ar număra de două ori. */
+    const eventId = newEventId();
+    const email = String(data.get("email") ?? "");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.get("name"),
-          email: data.get("email"),
+          email,
           page: localePath(locale, path),
           locale,
+          eventId,
+          // serverul nu poate citi alegerea din localStorage, deci i-o spunem
+          consent: readConsent() === "granted",
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
-      trackLead("enquiry");
+      trackLead("enquiry", { eventId, email });
       form.reset();
       setPhase("sent");
       window.setTimeout(() => setPhase("idle"), 2500);

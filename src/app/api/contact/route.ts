@@ -3,9 +3,10 @@
    Until now that form only flashed "sent" and threw the details away. It
    now stores and emails them like an application. */
 
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 import { isRateLimited, saveRecord } from "../../_server/store";
 import { notify } from "../../_server/notify";
+import { metaContextFrom, sendLeadToMeta } from "../../_server/meta-capi";
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -44,6 +45,16 @@ export async function POST(req: NextRequest) {
 
   if (!stored && !emailed) {
     return Response.json({ ok: false, error: "not-saved" }, { status: 500 });
+  }
+
+  /* Meta primește Lead-ul doar cu acordul pentru marketing și cu același
+     eventId ca în browser (deduplicare). În after(), ca să nu întârzie
+     răspunsul; formularul nu cere telefon, deci pleacă doar emailul. */
+  const eventId = typeof body.eventId === "string" ? body.eventId.trim().slice(0, 100) : "";
+  if (body.consent === true && eventId) {
+    const meta = metaContextFrom(req);
+    const sourceUrl = new URL(page || "/", req.nextUrl.origin).href;
+    after(() => sendLeadToMeta({ eventId, sourceUrl, email, ...meta }));
   }
   return Response.json({ ok: true });
 }
