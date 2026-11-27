@@ -1,4 +1,5 @@
 import { getAdminData } from "../_admin/data";
+import { getVisitorData } from "../_admin/visitors";
 import { buildFixtureAdminData } from "../_admin/ui/fixture";
 import { Dashboard } from "../_admin/ui/dashboard";
 import { AdminShell } from "../_admin/ui/shell";
@@ -36,11 +37,15 @@ export default async function AdminPage({
      șterge `demo` de aici și fișierul _admin/ui/fixture.ts. */
   const demo = process.env.NODE_ENV !== "production" && params.demo === "1";
 
-  const data = demo ? buildFixtureAdminData() : await getAdminData();
+  /* Vizitatorii vin dintr-un serviciu separat (Vercel): în paralel, ca să nu se adune latențele. */
+  const [data, visitors] = await Promise.all([
+    demo ? buildFixtureAdminData() : getAdminData(),
+    getVisitorData(),
+  ]);
 
   return (
     <AdminShell storageOk={data.storageOk}>
-      <Dashboard data={data} />
+      <Dashboard data={data} visitors={visitors} />
     </AdminShell>
   );
 }

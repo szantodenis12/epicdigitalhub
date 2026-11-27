@@ -24,13 +24,14 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { LEAD_LABEL, type AdminData, type LeadKind, type Slice } from "../types";
+import { LEAD_LABEL, type AdminData, type LeadKind, type Slice, type VisitorData } from "../types";
 import { DailyBars, KindDonut, RANGES, type Range } from "./charts";
 import { ActivityFeed, CompactList, SplitPanel, StatCards, useEnter } from "./panels";
 import { KIND_COLOR, KIND_ORDER, Panel, fmtNum } from "./kit";
 import { LeadsTable } from "./leads-table";
+import { VisitorsSection } from "./visitors";
 
-export function Dashboard({ data }: { data: AdminData }) {
+export function Dashboard({ data, visitors }: { data: AdminData; visitors: VisitorData }) {
   const [range, setRange] = useState<Range>(30);
 
   /* Intrările celor două panouri mari sunt citite aici, nu inline în JSX:
@@ -152,6 +153,9 @@ export function Dashboard({ data }: { data: AdminData }) {
       </div>
 
       <LeadsTable leads={data.recent} index={12} />
+
+      {/* La sfârșit, ca ordinea de pe pagină să rămână cea din nav. */}
+      <VisitorsSection data={visitors} index={13} />
     </div>
   );
 }

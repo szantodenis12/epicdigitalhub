@@ -41,6 +41,7 @@ const NAV: { group: string; items: { id: string; label: string }[] }[] = [
       { id: "lead-uri", label: "Tabel complet" },
     ],
   },
+  { group: "Trafic", items: [{ id: "vizitatori", label: "Vizitatori" }] },
 ];
 
 const SECTION_IDS = NAV.flatMap((g) => g.items.map((i) => i.id));

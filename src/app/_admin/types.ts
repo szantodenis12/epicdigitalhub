@@ -86,3 +86,53 @@ export const EMPTY_ADMIN_DATA: AdminData = {
   nicheTaken: 0,
   storageOk: false,
 };
+
+/* ----------------------------------------------------------------------------
+   VIZITATORI (Vercel Web Analytics)
+
+   Cifrele există deja în Vercel; aici intră ca să nu mai fie nevoie de două
+   locuri pentru a răspunde la „câți au intrat și de unde". Sursa e API-ul
+   oficial Vercel, interogat pe server cu un token - deci numerele sunt
+   aceleași cu cele din Vercel, nu o a doua măsurătoare care ar diverge.
+
+   Vercel numără `pageviews` (afișări) și `visitors` (oameni). Le purtăm pe
+   amândouă peste tot: raportul dintre ele spune dacă lumea citește o pagină
+   sau trece prin ea.
+   -------------------------------------------------------------------------- */
+
+export type VisitorTotals = { pageviews: number; visitors: number };
+
+/** O zi din grafic. Zilele fără trafic sunt prezente, cu zero. */
+export type VisitorPoint = { date: string } & VisitorTotals;
+
+/** Un rând dintr-un top: pagină, sursă, țară, tip de dispozitiv. */
+export type VisitorSlice = { label: string } & VisitorTotals;
+
+export type VisitorData = {
+  /** false când lipsește tokenul: panoul spune asta, nu arată zerouri. */
+  configured: boolean;
+  /** false când Vercel a răspuns cu eroare - altă poveste decât „nesetat". */
+  ok: boolean;
+  last30: VisitorTotals;
+  prev30: VisitorTotals;
+  /** Zilnic, ultimele 30 de zile, cronologic. */
+  series: VisitorPoint[];
+  topPages: VisitorSlice[];
+  topReferrers: VisitorSlice[];
+  topCountries: VisitorSlice[];
+  devices: VisitorSlice[];
+};
+
+const NO_TOTALS: VisitorTotals = { pageviews: 0, visitors: 0 };
+
+export const EMPTY_VISITOR_DATA: VisitorData = {
+  configured: false,
+  ok: false,
+  last30: NO_TOTALS,
+  prev30: NO_TOTALS,
+  series: [],
+  topPages: [],
+  topReferrers: [],
+  topCountries: [],
+  devices: [],
+};
