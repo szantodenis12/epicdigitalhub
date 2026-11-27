@@ -75,12 +75,13 @@ function fromAudit(raw: Record<string, unknown>): Lead {
   return { ...base(raw, "audit"), url: str(raw.url) };
 }
 
-/* Atenție: /api/apply NU salvează email - formularul de aplicație cere nume,
-   business, oraș, nișă, nu adresă. Rămâne "", iar panoul trebuie să afișeze
-   gol, nu "undefined". */
+/* Atenție: email-ul și telefonul au fost adăugate formularului de aplicație
+   mai târziu, deci aplicațiile vechi nu le au. Rămân "", iar panoul trebuie să
+   afișeze gol, nu "undefined". Telefonul e opțional și pentru cele noi. */
 function fromApplication(raw: Record<string, unknown>): Lead {
   return {
     ...base(raw, "apply"),
+    phone: str(raw.phone),
     business: str(raw.business),
     city: str(raw.city),
     niche: str(raw.niche),

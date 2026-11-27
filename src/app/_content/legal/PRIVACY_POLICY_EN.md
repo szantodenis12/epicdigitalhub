@@ -39,6 +39,8 @@ We have not appointed a Data Protection Officer (DPO), as our activities do not 
 **The "Check Availability" form (Apply page):**
 - name;
 - business name;
+- email address;
+- telephone number (optional);
 - city;
 - field of activity (niche);
 - business website;
@@ -61,7 +63,7 @@ Please do not send us special categories of data through the forms (for example,
 
 If you decline cookies, Google Analytics may receive, through the Consent Mode feature, signals without cookies and without persistent identifiers, used exclusively for aggregated statistical estimates. Meta Pixel does not load at all without your consent.
 
-**Information about form submissions:** when you submit a form, we record as a measurement event the type of form (audit, application or enquiry), the page language and, for the application form, the selected niche and budget. **Your name, email address and website are not sent to Google Analytics.** If you accepted marketing cookies, your email address is sent to Meta and Google only in hashed form, to measure advertising, as explained in section 6.1.
+**Information about form submissions:** when you submit a form, we record as a measurement event the type of form (audit, application or enquiry), the page language and, for the application form, the selected niche and budget. **Your name, email address, telephone number and website are not sent to Google Analytics.** If you accepted marketing cookies, your email address and, if you provided it, your telephone number are sent to Meta and Google only in hashed form, to measure advertising, as explained in section 6.1.
 
 ### 2.3. Data received from other sources
 
@@ -79,7 +81,7 @@ To prepare the audit report you request, we analyse public information about the
 | Complying with legal obligations (accounting, tax, archiving) | data from contracts, invoices and supporting documents | Art. 6(1)(c) — legal obligation |
 | Operation and security of the website, prevention of abuse | technical data, server logs | Art. 6(1)(f) — legitimate interest |
 | Website usage statistics | browsing data (Google Analytics 4) | Art. 6(1)(a) — consent |
-| Campaign measurement and personalised advertising | browsing data and events (Meta Pixel, Meta Conversions API, Google Ads, Google advertising signals), including the hashed email address | Art. 6(1)(a) — consent |
+| Campaign measurement and personalised advertising | browsing data and events (Meta Pixel, Meta Conversions API, Google Ads, Google advertising signals), including the hashed email address and telephone number | Art. 6(1)(a) — consent |
 | Establishing, exercising or defending legal claims | data relevant to the dispute | Art. 6(1)(f) — legitimate interest |
 
 Where we rely on legitimate interest, we have assessed that it is not overridden by your rights and freedoms. You can obtain details of this assessment by writing to us at contact@epicdigitalhub.ro.
@@ -105,8 +107,8 @@ We use the following providers (processors or independent controllers), with who
 | Vercel Inc. (USA) | website hosting, server logs | technical data, content of forms submitted through the website |
 | Google Ireland Limited / Google LLC | Google Analytics 4, Google Tag Manager, Google Search Console | browsing data (with consent), technical data |
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, measurement of Facebook and Instagram campaigns | browsing data and events (with consent) |
-| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — the "Lead" event sent from our server, to measure conversions from advertisements | email address hashed with SHA-256, IP address, browser user-agent, the `_fbp` and `_fbc` cookies (only with marketing consent) |
-| Google Ireland Limited / Google LLC | Google Ads — conversion measurement, remarketing and enhanced conversions | conversion events, advertising identifiers, email address hashed in the browser (only with advertising consent) |
+| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — the "Lead" event sent from our server, to measure conversions from advertisements | email address and telephone number (if provided) hashed with SHA-256, IP address, browser user-agent, the `_fbp` and `_fbc` cookies (only with marketing consent) |
+| Google Ireland Limited / Google LLC | Google Ads — conversion measurement, remarketing and enhanced conversions | conversion events, advertising identifiers, email address and telephone number (if provided) hashed in the browser (only with advertising consent) |
 | Cloudflare, Inc. (USA) | routing of incoming email for contact@epicdigitalhub.ro | correspondence (email addresses, message content) |
 | Google Ireland Limited / Google LLC (Gmail) | receiving, storing and sending email | correspondence |
 | Supabase (Ireland, EU) — PostgreSQL database | storage of requests submitted through the forms | form data |
@@ -121,8 +123,8 @@ Data may also be disclosed to:
 
 If you accepted marketing cookies, we measure which advertisements lead to a request. Three things happen for this, all **only with your consent**. If you decline, none of the following is sent.
 
-- **Meta Conversions API.** When you submit a form, the "Lead" event reaches Meta not only from your browser (through Meta Pixel) but also directly from our server. The following is sent to Meta: your email address, **first converted into an irreversible code (SHA-256 hash), never in clear**; your IP address; browser details (user-agent); and the `_fbp` and `_fbc` cookies, if present. Our purpose is solely to measure conversions from advertisements. Provider: Meta Platforms Ireland Limited.
-- **Google Ads and enhanced conversions.** We measure conversions from Google advertisements and may show advertisements to people who have visited the website (remarketing). For enhanced conversions, the email address from the form is picked up by the Google tag, which hashes it in your browser before sending them to Google. This applies only if you accepted consent for advertising user data (`ad_user_data`). Provider: Google Ireland Limited.
+- **Meta Conversions API.** When you submit a form, the "Lead" event reaches Meta not only from your browser (through Meta Pixel) but also directly from our server. The following is sent to Meta: your email address and, if you provided it, your telephone number, **first converted into irreversible codes (SHA-256 hash), never in clear**; your IP address; browser details (user-agent); and the `_fbp` and `_fbc` cookies, if present. Our purpose is solely to measure conversions from advertisements. Provider: Meta Platforms Ireland Limited.
+- **Google Ads and enhanced conversions.** We measure conversions from Google advertisements and may show advertisements to people who have visited the website (remarketing). For enhanced conversions, the email address and, if you provided it, the telephone number from the form are picked up by the Google tag, which hashes them in your browser before sending them to Google. This applies only if you accepted consent for advertising user data (`ad_user_data`). Provider: Google Ireland Limited.
 - **Google signals in Google Analytics 4.** They enable reports that link visits made from several devices by the same person when signed in to their Google account. They are activated only with advertising consent.
 
 Hashed data cannot be read in clear by third parties, but it remains personal data, because the provider can match it to an account it already holds. For transfers outside the EEA, see section 7.
@@ -156,7 +158,7 @@ We apply technical and organisational measures appropriate to the risk, includin
 - encrypted HTTPS connection across the entire website and an HSTS policy;
 - access to data limited to the people who need it, with two-step authentication where providers allow it;
 - use of providers offering recognised security guarantees;
-- data minimisation: we do not send your name or the content of forms to analytics or advertising tools, and your email address is sent to Meta and Google only with your consent and only in hashed form;
+- data minimisation: we do not send your name or the content of forms to analytics or advertising tools, and your email address and telephone number are sent to Meta and Google only with your consent and only in hashed form;
 - periodic deletion of data whose retention period has expired.
 
 No method of electronic transmission or storage is completely secure. If a personal data breach occurs that poses a risk to your rights, we will notify the National Supervisory Authority for Personal Data Processing and, where applicable, the data subjects, within the time limits set by the GDPR.

@@ -273,8 +273,9 @@ export function Delta({ now, before }: { now: number; before: number }) {
  * una sau alta. Confirmarea e pe buton, în loc de pe adresă, ca textul să nu
  * se schimbe sub cursor și să nu mute coloana.
  *
- * `/api/apply` nu cere email (vezi _admin/data.ts), deci la aplicații câmpul e
- * gol - și se arată gol, cu o liniuță, nu ca un buton care nu copiază nimic.
+ * Aplicațiile trimise înainte ca formularul să ceară email n-au unul, deci
+ * câmpul e gol - și se arată gol, cu o liniuță, nu ca un buton care nu
+ * copiază nimic.
  */
 export function EmailCell({ email }: { email: string }) {
   const [copied, setCopied] = useState(false);

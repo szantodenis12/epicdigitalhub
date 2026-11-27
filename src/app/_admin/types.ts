@@ -26,6 +26,8 @@ export type Lead = {
   kind: LeadKind;
   name: string;
   email: string;
+  /** Doar formularul de aplicație îl cere, și acolo e opțional. */
+  phone?: string;
   locale: string;
   /** contact: pagina de pe care a scris */
   page?: string;

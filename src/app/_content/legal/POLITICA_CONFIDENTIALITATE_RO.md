@@ -39,6 +39,8 @@ Nu am desemnat un responsabil cu protecția datelor (DPO), deoarece activitatea 
 **Formularul „Verifică disponibilitatea" (pagina Aplică):**
 - nume;
 - denumirea afacerii;
+- adresa de email;
+- numărul de telefon (opțional);
 - orașul;
 - domeniul de activitate (nișa);
 - site-ul afacerii;
@@ -61,7 +63,7 @@ Vă rugăm să nu ne transmiteți prin formulare date sensibile (de exemplu, dat
 
 Dacă refuzați cookie-urile, Google Analytics poate primi, prin funcția Consent Mode, semnale fără cookie-uri și fără identificatori persistenți, utilizate exclusiv pentru estimări statistice agregate. Meta Pixel nu se încarcă deloc fără acordul dumneavoastră.
 
-**Informații despre trimiterea formularelor:** atunci când trimiteți un formular, înregistrăm ca eveniment de măsurare tipul formularului (audit, aplicare sau solicitare), limba paginii și, pentru formularul de aplicare, nișa și bugetul selectate. **Numele, adresa de email și site-ul dumneavoastră nu sunt transmise către Google Analytics.** Dacă ați acceptat cookie-urile de marketing, adresa de email este trimisă către Meta și Google doar sub formă codificată (hash), pentru măsurarea reclamelor, așa cum este explicat la secțiunea 6.1.
+**Informații despre trimiterea formularelor:** atunci când trimiteți un formular, înregistrăm ca eveniment de măsurare tipul formularului (audit, aplicare sau solicitare), limba paginii și, pentru formularul de aplicare, nișa și bugetul selectate. **Numele, adresa de email, numărul de telefon și site-ul dumneavoastră nu sunt transmise către Google Analytics.** Dacă ați acceptat cookie-urile de marketing, adresa de email și, dacă l-ați completat, numărul de telefon sunt trimise către Meta și Google doar sub formă codificată (hash), pentru măsurarea reclamelor, așa cum este explicat la secțiunea 6.1.
 
 ### 2.3. Date primite din alte surse
 
@@ -79,7 +81,7 @@ Pentru a pregăti raportul de audit solicitat, analizăm informații publice des
 | Îndeplinirea obligațiilor legale (contabilitate, fiscalitate, arhivare) | date din contracte, facturi și documente justificative | art. 6 alin. (1) lit. c) — obligație legală |
 | Funcționarea și securitatea site-ului, prevenirea abuzurilor | date tehnice, jurnale de server | art. 6 alin. (1) lit. f) — interes legitim |
 | Statistici de utilizare a site-ului | date de navigare (Google Analytics 4) | art. 6 alin. (1) lit. a) — consimțământ |
-| Măsurarea campaniilor și publicitate personalizată | date de navigare și evenimente (Meta Pixel, Meta Conversions API, Google Ads, semnale publicitare Google), inclusiv adresa de email codificată (hash) | art. 6 alin. (1) lit. a) — consimțământ |
+| Măsurarea campaniilor și publicitate personalizată | date de navigare și evenimente (Meta Pixel, Meta Conversions API, Google Ads, semnale publicitare Google), inclusiv adresa de email și numărul de telefon codificate (hash) | art. 6 alin. (1) lit. a) — consimțământ |
 | Constatarea, exercitarea sau apărarea unor drepturi în instanță | datele relevante pentru litigiu | art. 6 alin. (1) lit. f) — interes legitim |
 
 Atunci când ne bazăm pe interesul legitim, am evaluat că acesta nu prevalează asupra drepturilor și libertăților dumneavoastră. Puteți obține detalii despre această evaluare scriindu-ne la contact@epicdigitalhub.ro.
@@ -105,8 +107,8 @@ Folosim următorii furnizori (persoane împuternicite sau operatori independenț
 | Vercel Inc. (SUA) | găzduirea site-ului, jurnale de server | date tehnice, conținutul formularelor transmise prin site |
 | Google Ireland Limited / Google LLC | Google Analytics 4, Google Tag Manager, Google Search Console | date de navigare (cu consimțământ), date tehnice |
 | Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Pixel, măsurarea campaniilor Facebook și Instagram | date de navigare și evenimente (cu consimțământ) |
-| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — evenimentul „Lead" trimis de pe serverul nostru, pentru măsurarea conversiilor din reclame | adresa de email codificată (hash SHA-256), adresă IP, user-agent al browserului, cookie-urile `_fbp` și `_fbc` (doar cu consimțământ pentru marketing) |
-| Google Ireland Limited / Google LLC | Google Ads — măsurarea conversiilor, remarketing și conversii îmbunătățite | evenimente de conversiune, identificatori publicitari, adresa de email codificată (hash) în browser (doar cu consimțământ pentru publicitate) |
+| Meta Platforms Ireland Limited / Meta Platforms, Inc. | Meta Conversions API — evenimentul „Lead" trimis de pe serverul nostru, pentru măsurarea conversiilor din reclame | adresa de email și numărul de telefon (dacă a fost completat) codificate (hash SHA-256), adresă IP, user-agent al browserului, cookie-urile `_fbp` și `_fbc` (doar cu consimțământ pentru marketing) |
+| Google Ireland Limited / Google LLC | Google Ads — măsurarea conversiilor, remarketing și conversii îmbunătățite | evenimente de conversiune, identificatori publicitari, adresa de email și numărul de telefon (dacă a fost completat) codificate (hash) în browser (doar cu consimțământ pentru publicitate) |
 | Cloudflare, Inc. (SUA) | rutarea emailurilor primite la adresa contact@epicdigitalhub.ro | corespondență (adrese de email, conținutul mesajelor) |
 | Google Ireland Limited / Google LLC (Gmail) | primirea, stocarea și trimiterea emailurilor | corespondență |
 | Supabase (Irlanda, UE) — bază de date PostgreSQL | stocarea solicitărilor trimise prin formulare | datele din formulare |
@@ -121,8 +123,8 @@ De asemenea, datele pot fi transmise:
 
 Dacă ați acceptat cookie-urile de marketing, măsurăm care reclame duc la o solicitare. Pentru aceasta se întâmplă trei lucruri, toate **numai cu acordul dumneavoastră**. Dacă refuzați, nimic din cele de mai jos nu se trimite.
 
-- **Meta Conversions API.** Când trimiteți un formular, evenimentul „Lead" ajunge la Meta nu doar din browserul dumneavoastră (prin Meta Pixel), ci și direct de pe serverul nostru. Către Meta se transmit: adresa de email, **transformată în prealabil într-un cod ireversibil (hash SHA-256), niciodată în clar**; adresa IP; datele browserului (user-agent); cookie-urile `_fbp` și `_fbc`, dacă există. Scopul nostru este doar măsurarea conversiilor din reclame. Furnizor: Meta Platforms Ireland Limited.
-- **Google Ads și conversii îmbunătățite.** Măsurăm conversiile din reclamele Google și putem afișa reclame persoanelor care au vizitat site-ul (remarketing). Pentru conversii îmbunătățite, adresa de email din formular este preluată de eticheta Google, care o codifică (hash) în browserul dumneavoastră înainte de a le trimite către Google. Se aplică numai dacă ați acceptat consimțământul pentru datele utilizatorului în scop publicitar (`ad_user_data`). Furnizor: Google Ireland Limited.
+- **Meta Conversions API.** Când trimiteți un formular, evenimentul „Lead" ajunge la Meta nu doar din browserul dumneavoastră (prin Meta Pixel), ci și direct de pe serverul nostru. Către Meta se transmit: adresa de email și, dacă l-ați completat, numărul de telefon, **transformate în prealabil în coduri ireversibile (hash SHA-256), niciodată în clar**; adresa IP; datele browserului (user-agent); cookie-urile `_fbp` și `_fbc`, dacă există. Scopul nostru este doar măsurarea conversiilor din reclame. Furnizor: Meta Platforms Ireland Limited.
+- **Google Ads și conversii îmbunătățite.** Măsurăm conversiile din reclamele Google și putem afișa reclame persoanelor care au vizitat site-ul (remarketing). Pentru conversii îmbunătățite, adresa de email și, dacă l-ați completat, numărul de telefon din formular sunt preluate de eticheta Google, care le codifică (hash) în browserul dumneavoastră înainte de a le trimite către Google. Se aplică numai dacă ați acceptat consimțământul pentru datele utilizatorului în scop publicitar (`ad_user_data`). Furnizor: Google Ireland Limited.
 - **Semnale Google în Google Analytics 4.** Permit rapoarte care leagă vizitele făcute de pe mai multe dispozitive de aceeași persoană, atunci când este conectată la contul Google. Se activează numai cu consimțământul pentru publicitate.
 
 Datele codificate (hash) nu pot fi citite în clar de terți, dar rămân date personale, deoarece furnizorul le poate potrivi cu un cont pe care îl are deja. Pentru transferuri în afara SEE, vedeți secțiunea 7.
@@ -156,7 +158,7 @@ Aplicăm măsuri tehnice și organizatorice adecvate riscului, printre care:
 - conexiune criptată HTTPS pe întregul site și politica HSTS;
 - acces la date limitat la persoanele care au nevoie de ele, cu autentificare în doi pași acolo unde furnizorii o permit;
 - utilizarea unor furnizori care oferă garanții recunoscute de securitate;
-- minimizarea datelor: nu transmitem numele sau conținutul formularelor către instrumentele de analiză sau publicitate, iar adresa de email este trimisă către Meta și Google doar cu acordul dumneavoastră și doar sub formă codificată (hash);
+- minimizarea datelor: nu transmitem numele sau conținutul formularelor către instrumentele de analiză sau publicitate, iar adresa de email și numărul de telefon sunt trimise către Meta și Google doar cu acordul dumneavoastră și doar sub formă codificată (hash);
 - ștergerea periodică a datelor pentru care perioada de păstrare a expirat.
 
 Nicio metodă de transmitere sau stocare electronică nu este complet sigură. Dacă se produce o încălcare a securității datelor care prezintă un risc pentru drepturile dumneavoastră, vom notifica Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal și, după caz, persoanele vizate, în termenele prevăzute de GDPR.

@@ -14,8 +14,8 @@
    - exact ce face amestecul util.
    ========================================================================= */
 
-import { useId, useMemo, useState } from "react";
-import { motion } from "motion/react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { LEAD_LABEL, type Lead, type LeadKind } from "../types";
 import { EmailCell, KindPill, Panel, fmtNum, fmtStamp } from "./kit";
 import { useEnter } from "./panels";
@@ -75,6 +75,7 @@ function haystack(lead: Lead): string {
   return [
     lead.name,
     lead.email,
+    lead.phone,
     lead.page,
     lead.url,
     lead.business,
@@ -97,6 +98,38 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortKey>("date");
   const [dir, setDir] = useState<SortDir>("desc");
+  const [open, setOpen] = useState<Lead | null>(null);
+  /* Elementul care a deschis sertarul, ținut ca focusul să se întoarcă exact
+     pe rândul de unde s-a plecat - altfel tastatura ar reîncepe de sus. */
+  const trigger = useRef<HTMLElement | null>(null);
+
+  const openLead = (lead: Lead, el: HTMLElement) => {
+    trigger.current = el;
+    setOpen(lead);
+  };
+  const close = () => {
+    setOpen(null);
+    const el = trigger.current;
+    if (el?.isConnected) el.focus();
+  };
+  /* Rândul întreg e țintă de clic, dar conține deja linkuri și butoane
+     (mailto, copiază, site): un clic pe ele nu trebuie să deschidă și sertarul. */
+  const rowProps = (lead: Lead) => ({
+    tabIndex: 0,
+    "aria-haspopup": "dialog" as const,
+    "aria-label": `Deschide ${lead.name || lead.email || "lead"}`,
+    onClick: (e: React.MouseEvent<HTMLElement>) => {
+      if ((e.target as HTMLElement).closest("a,button")) return;
+      openLead(lead, e.currentTarget);
+    },
+    onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => {
+      if (e.target !== e.currentTarget) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openLead(lead, e.currentTarget);
+      }
+    },
+  });
 
   const indexed = useMemo(
     () => leads.map((lead) => ({ lead, text: haystack(lead) })),
@@ -217,7 +250,8 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
                   {rows.map((lead) => (
                     <tr
                       key={lead.id || `${lead.kind}-${lead.createdAt}-${lead.name}`}
-                      className="border-b border-line/70 transition-colors last:border-0 hover:bg-raised"
+                      {...rowProps(lead)}
+                      className="cursor-pointer border-b border-line/70 transition-colors last:border-0 hover:bg-raised focus-visible:bg-raised"
                     >
                       <td className="adm-nums px-4 py-2.5 align-top text-[0.75rem] whitespace-nowrap text-secondary md:px-5">
                         <time dateTime={lead.createdAt}>{fmtStamp(lead.createdAt)}</time>
@@ -232,6 +266,14 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
                       </td>
                       <td className="max-w-0 px-2 py-2.5 align-top text-[0.8125rem]">
                         <EmailCell email={lead.email} />
+                        {lead.phone && (
+                          <a
+                            href={`tel:${lead.phone}`}
+                            className="adm-nums mt-0.5 block truncate text-[0.75rem] text-secondary underline decoration-line-2 underline-offset-2 hover:decoration-[var(--accent)]"
+                          >
+                            {lead.phone}
+                          </a>
+                        )}
                       </td>
                       <td className="px-2 py-2.5 pr-4 align-top md:pr-5">
                         <Details lead={lead} />
@@ -249,7 +291,8 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
               {rows.map((lead) => (
                 <li
                   key={lead.id || `${lead.kind}-${lead.createdAt}-${lead.name}`}
-                  className="px-4 py-3"
+                  {...rowProps(lead)}
+                  className="cursor-pointer px-4 py-3 focus-visible:bg-raised"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <KindPill kind={lead.kind} />
@@ -264,6 +307,13 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
                   <p className="mt-0.5 text-[0.8125rem]">
                     <EmailCell email={lead.email} />
                   </p>
+                  {lead.phone && (
+                    <p className="adm-nums mt-0.5 text-[0.8125rem] text-secondary">
+                      <a href={`tel:${lead.phone}`} className="underline decoration-line-2 underline-offset-2">
+                        {lead.phone}
+                      </a>
+                    </p>
+                  )}
                   <div className="mt-1.5">
                     <Details lead={lead} />
                   </div>
@@ -273,6 +323,7 @@ export function LeadsTable({ leads, index = 0 }: { leads: Lead[]; index?: number
           </>
         )}
       </Panel>
+      <AnimatePresence>{open && <LeadDrawer lead={open} onClose={close} />}</AnimatePresence>
     </motion.div>
   );
 }
@@ -355,5 +406,176 @@ function Details({ lead }: { lead: Lead }) {
         </span>
       ))}
     </div>
+  );
+}
+
+const stampFull = new Intl.DateTimeFormat("ro-RO", {
+  dateStyle: "long",
+  timeStyle: "medium",
+  timeZone: "Europe/Bucharest",
+});
+
+const extUrl = (v: string) => (v.startsWith("http") ? v : `https://${v}`);
+
+/** Sertarul cu tot ce a trimis persoana. Există pentru `goal`: tabelul îl
+    căuta, dar nu-l arăta nicăieri, deci mesajul real nu se putea citi. */
+function LeadDrawer({ lead, onClose }: { lead: Lead; onClose: () => void }) {
+  const titleId = useId();
+  const panel = useRef<HTMLElement>(null);
+  const closeBtn = useRef<HTMLButtonElement>(null);
+  const reduce = useReducedMotion();
+  /* `onClose` ținut într-un ref: dacă ar fi dependență, orice re-randare a
+     tabelului ar rula efectul din nou și ar fura focusul înapoi pe buton. */
+  const closeRef = useRef(onClose);
+  useEffect(() => {
+    closeRef.current = onClose;
+  });
+
+  /* Focusul intră pe butonul de închidere: e singurul element sigur prezent
+     la orice lead. Escape stă pe document, nu pe un element, ca să meargă
+     oriunde ar fi focusul în sertar. */
+  useEffect(() => {
+    closeBtn.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeRef.current();
+        return;
+      }
+      /* Cu aria-modal, Tab nu trebuie să scape în pagina de dedesubt. */
+      if (e.key !== "Tab" || !panel.current) return;
+      const f = panel.current.querySelectorAll<HTMLElement>("a[href],button");
+      if (f.length === 0) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  const link = "underline decoration-line-2 underline-offset-2 hover:decoration-[var(--accent)]";
+  const t = Date.parse(lead.createdAt);
+  const fields: { label: string; node: React.ReactNode }[] = [
+    { label: "nume", node: lead.name },
+    {
+      label: "email",
+      node: lead.email && (
+        <a href={`mailto:${lead.email}`} className={link}>
+          {lead.email}
+        </a>
+      ),
+    },
+    {
+      label: "telefon",
+      node: lead.phone && (
+        <a href={`tel:${lead.phone}`} className={link}>
+          {lead.phone}
+        </a>
+      ),
+    },
+    { label: "business", node: lead.business },
+    { label: "oraș", node: lead.city },
+    { label: "nișă", node: lead.niche },
+    { label: "buget", node: lead.budget },
+    {
+      label: "website",
+      node: lead.website && (
+        <a href={extUrl(lead.website)} target="_blank" rel="noreferrer noopener" className={`${link} break-all`}>
+          {lead.website}
+        </a>
+      ),
+    },
+    {
+      label: "site analizat",
+      node: lead.url && (
+        <a href={extUrl(lead.url)} target="_blank" rel="noreferrer noopener" className={`${link} break-all`}>
+          {lead.url}
+        </a>
+      ),
+    },
+    { label: "pagină", node: lead.page },
+    { label: "limbă", node: lead.locale },
+    /* Doar nișa ocupată merită un rând. Celălalt status, „received", e
+       valoarea internă a cazului normal: în engleză, și fără nimic de spus
+       cuiva care tocmai a deschis lead-ul. */
+    {
+      label: "status",
+      node:
+        lead.status === "niche-taken" ? (
+          <span style={{ color: "var(--adm-down)" }}>nișă ocupată</span>
+        ) : null,
+    },
+  ];
+
+  return (
+    <>
+      <motion.div
+        aria-hidden
+        className="fixed inset-0 z-40 bg-black/50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: reduce ? 0 : 0.2 }}
+        onClick={onClose}
+      />
+      <motion.aside
+        ref={panel}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-line bg-background shadow-2xl"
+        initial={reduce ? { opacity: 0 } : { x: "100%" }}
+        animate={reduce ? { opacity: 1 } : { x: 0 }}
+        exit={reduce ? { opacity: 0 } : { x: "100%" }}
+        transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <header className="flex items-start justify-between gap-3 border-b border-line px-5 py-4">
+          <div className="min-w-0">
+            <KindPill kind={lead.kind} />
+            <h2 id={titleId} className="mt-2 text-[1rem] break-words">
+              {lead.name || lead.email || "Lead"}
+            </h2>
+            <time dateTime={lead.createdAt} className="adm-nums mt-0.5 block text-[0.75rem] text-tinted">
+              {Number.isNaN(t) ? lead.createdAt : stampFull.format(t)}
+            </time>
+          </div>
+          <button
+            ref={closeBtn}
+            type="button"
+            onClick={onClose}
+            className="shrink-0 rounded-full border border-line px-3 py-1 text-[0.75rem] text-secondary transition-colors hover:text-foreground"
+          >
+            Închide
+          </button>
+        </header>
+        <div className="flex-1 overflow-y-auto px-5 py-4 text-[0.875rem]">
+          {/* Mesajul primul și întreg, cu rândurile păstrate: pentru el s-a
+              făcut sertarul. Contact și audit nu au `goal`, deci golul nu e o
+              eroare - se spune explicit, în loc să dispară secțiunea. */}
+          <h3 className="text-[0.625rem] tracking-[0.04em] text-tinted uppercase">Mesaj / obiectiv</h3>
+          {lead.goal ? (
+            <p className="mt-1.5 break-words whitespace-pre-wrap">{lead.goal}</p>
+          ) : (
+            <p className="mt-1.5 text-tinted">Nu a scris niciun mesaj.</p>
+          )}
+          <dl className="mt-5 space-y-3 border-t border-line pt-4">
+            {fields
+              .filter((f) => f.node)
+              .map((f) => (
+                <div key={f.label}>
+                  <dt className="text-[0.625rem] tracking-[0.04em] text-tinted uppercase">{f.label}</dt>
+                  <dd className="mt-0.5 break-words">{f.node}</dd>
+                </div>
+              ))}
+          </dl>
+        </div>
+      </motion.aside>
+    </>
   );
 }

@@ -54,6 +54,8 @@ function Form({
   const [phase, setPhase] = useState<Phase>("idle");
   const [form, setForm] = useState({
     name: "",
+    email: "",
+    phone: "",
     business: "",
     city: "",
     niche: "",
@@ -103,9 +105,15 @@ function Form({
          list is the thing the report is measuring. Niche and budget ride
          along because the reports are built on them; nothing identifying
          does. */
-      /* Formularul de aplicație nu cere email sau telefon, deci nu are ce
-         trimite la conversiile îmbunătățite - doar id-ul, pentru deduplicare. */
-      trackLead("apply", { eventId, niche: form.niche, budget: form.budget });
+      /* Email și telefon pleacă spre conversiile îmbunătățite; trackLead le
+         atașează doar dacă există acord pentru marketing. */
+      trackLead("apply", {
+        eventId,
+        niche: form.niche,
+        budget: form.budget,
+        email: form.email,
+        phone: form.phone,
+      });
       setPhase(data.status === "niche-taken" ? "niche-taken" : "received");
     } catch {
       setPhase("error");
@@ -130,8 +138,14 @@ function Form({
     );
   }
 
-  const field = (k: keyof typeof form, label: string, required = false) => (
+  const field = (
+    k: keyof typeof form,
+    label: string,
+    required = false,
+    extra: React.InputHTMLAttributes<HTMLInputElement> = {},
+  ) => (
     <input
+      {...extra}
       name={k}
       required={required}
       aria-label={label}
@@ -146,6 +160,8 @@ function Form({
     <form onSubmit={submit} className="flex flex-col gap-3">
       <div className="grid gap-3 md:grid-cols-2">
         {field("name", d.fields.name, true)}
+        {field("email", d.fields.email, true, { type: "email", autoComplete: "email" })}
+        {field("phone", d.fields.phone, false, { type: "tel", autoComplete: "tel" })}
         {field("business", d.fields.business, true)}
         {field("city", d.fields.city, true)}
         {field("niche", d.fields.niche, true)}

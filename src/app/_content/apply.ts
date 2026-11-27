@@ -9,6 +9,8 @@ const en = {
     "We work with one brand per niche, per city. Before discussing your project, we'll check whether your market is available and whether we're the right team for your business. Tell us a little about what you do and what you're looking to achieve. We'll take it from there.",
   fields: {
     name: "Your name",
+    email: "Your email",
+    phone: "Phone (optional)",
     business: "Business name",
     city: "City",
     niche: "Industry / niche",
@@ -39,6 +41,8 @@ const ro: typeof en = {
   intro: "Un singur brand pe nișă, pe oraș. Spune-ne unde joci și răspundem cu un da sau un nu clar.",
   fields: {
     name: "Numele tău",
+    email: "Emailul tău",
+    phone: "Telefon (opțional)",
     business: "Numele business-ului",
     city: "Orașul",
     niche: "Industria / nișa",

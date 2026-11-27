@@ -12,7 +12,7 @@ import { isRateLimited, saveRecord } from "../../_server/store";
 import { notify } from "../../_server/notify";
 import { metaContextFrom, sendLeadToMeta } from "../../_server/meta-capi";
 
-const REQUIRED = ["name", "business", "city", "niche"] as const;
+const REQUIRED = ["name", "email", "business", "city", "niche"] as const;
 const MAX_LEN = 2_000;
 
 export async function POST(req: NextRequest) {
@@ -31,6 +31,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str(body.email))) {
+    return Response.json({ ok: false, error: "missing-fields", field: "email" }, { status: 400 });
+  }
+
   // A human applies once or twice; this only stops a script filling the list.
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (await isRateLimited("apply", ip, 10, 60 * 60)) {
@@ -39,6 +43,8 @@ export async function POST(req: NextRequest) {
 
   const input = {
     name: str(body.name),
+    email: str(body.email),
+    phone: str(body.phone).slice(0, 40),
     business: str(body.business),
     city: str(body.city),
     niche: str(body.niche),
@@ -57,6 +63,8 @@ export async function POST(req: NextRequest) {
     [
       ["Status", conflict ? `nișă ocupată (${conflict.client})` : "nișă liberă"],
       ["Nume", input.name],
+      ["Email", input.email],
+      ["Telefon", input.phone],
       ["Business", input.business],
       ["Oraș", input.city],
       ["Nișă", input.niche],
@@ -72,14 +80,13 @@ export async function POST(req: NextRequest) {
   }
 
   /* Lead către Meta (Conversions API): doar cu acord și cu eventId din
-     browser, pentru deduplicare. Formularul nu are email sau telefon, deci
-     se potrivește doar după cookie-urile pixelului; fără ele funcția nu
-     trimite nimic. */
+     browser, pentru deduplicare. Email și telefon întăresc potrivirea peste
+     cookie-urile pixelului; meta-capi le normalizează și le hashuiește. */
   const eventId = typeof body.eventId === "string" ? body.eventId.trim().slice(0, 100) : "";
   if (body.consent === true && eventId) {
     const meta = metaContextFrom(req);
     const sourceUrl = new URL(typeof body.page === "string" && body.page.startsWith("/") ? body.page : "/apply", req.nextUrl.origin).href;
-    after(() => sendLeadToMeta({ eventId, sourceUrl, ...meta }));
+    after(() => sendLeadToMeta({ eventId, sourceUrl, email: input.email, phone: input.phone, ...meta }));
   }
 
   // The taken client's name is internal; only the category goes back.
