@@ -119,7 +119,7 @@ export function TrickButton({
 export function LocaleToggle({ className = "" }: { className?: string }) {
   const locale = useLocale();
   const copy = useCopy();
-  const path = usePagePath();
+  const paths = usePagePath();
   return (
     <div
       className={`flex items-center gap-1.5 tracking-[0.02em] uppercase ${className || "text-xs text-white"}`}
@@ -138,7 +138,7 @@ export function LocaleToggle({ className = "" }: { className?: string }) {
             </span>
           ) : (
             <a
-              href={localePath(l, path)}
+              href={localePath(l, paths[l])}
               hrefLang={l}
               lang={l}
               title={copy.switchTitle}

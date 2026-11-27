@@ -119,7 +119,7 @@ const components: Components = {
 export function LegalPage({ locale, legalKey }: { locale: Locale; legalKey: LegalKey }) {
   const { title, updated, body } = loadLegal(locale, legalKey);
   return (
-    <PageFrame locale={locale} path={legalPath(locale, legalKey)}>
+    <PageFrame locale={locale} path={legalPath(locale, legalKey)} paths={LEGAL_PATHS[legalKey]}>
       <PageHero label={KICKER[locale]} title={title}>
         <p className="text-sm text-[#1F1F1F]/70">{updated}</p>
       </PageHero>

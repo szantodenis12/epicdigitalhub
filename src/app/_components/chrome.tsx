@@ -20,7 +20,7 @@ import { LogoLockup } from "../logo";
 import { type Locale, localeHref, localePath } from "../content";
 import { APPLY_PATH } from "../routes";
 import { gsap, ScrollTrigger } from "./gsap";
-import { SiteProviders, useCopy, useLocale, usePagePath, usePrefersReducedMotion } from "./context";
+import { type PagePaths, SiteProviders, useCopy, useLocale, usePagePath, usePrefersReducedMotion } from "./context";
 import { EyebrowMarquee, LocaleToggle, NavLink, Parallax, TrickButton } from "./ui";
 
 /* ============================================================================
@@ -365,7 +365,7 @@ function ContactSpotlightEyebrow() {
 export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
   const copy = useCopy();
   const locale = useLocale();
-  const path = usePagePath();
+  const path = usePagePath()[locale];
   const [phase, setPhase] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   /* Stored and emailed by /api/contact. The button label carries the state,
@@ -594,15 +594,18 @@ export function ContactFooter({ reduceMotion }: { reduceMotion: boolean }) {
 export function PageFrame({
   locale,
   path,
+  paths,
   children,
 }: {
   locale: Locale;
   /** locale-independent path, e.g. "/services/seo-geo" */
   path: string;
+  /** only when the slug differs per locale (the legal pages) */
+  paths?: PagePaths;
   children: React.ReactNode;
 }) {
   return (
-    <SiteProviders locale={locale} path={path}>
+    <SiteProviders locale={locale} path={path} paths={paths}>
       <Frame>{children}</Frame>
     </SiteProviders>
   );

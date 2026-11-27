@@ -51,6 +51,13 @@ const nextConfig: NextConfig = {
         destination: "/ro/case-studies/kgm-oradea",
         permanent: true,
       },
+      /* Comutatorul de limbă de pe paginile legale genera slug-uri care nu
+         există (/ro/privacy, /confidentialitate etc.); Google le-a crawlat deja,
+         deci le trimitem permanent la URL-ul real. */
+      { source: "/ro/privacy", destination: "/ro/confidentialitate", permanent: true },
+      { source: "/ro/terms", destination: "/ro/termeni", permanent: true },
+      { source: "/confidentialitate", destination: "/privacy", permanent: true },
+      { source: "/termeni", destination: "/terms", permanent: true },
     ];
   },
 };

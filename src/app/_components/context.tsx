@@ -8,9 +8,12 @@ import { COPY, type Copy, type Locale } from "../content";
    through all of them would touch every signature for no benefit. */
 const CopyContext = createContext<Copy>(COPY.en);
 const LocaleContext = createContext<Locale>("en");
-/** The current page's locale-independent path ("" on the home page), so the
-    language toggle can point at the SAME page in the other locale. */
-const PathContext = createContext("");
+/** The current page's locale-independent path ("" on the home page), per locale,
+    so the language toggle can point at the SAME page in the other locale. Un
+    singur string nu ajunge: paginile legale au slug diferit în RO ("/privacy"
+    vs "/confidentialitate"), iar slug-ul limbii curente nu există în cealaltă. */
+export type PagePaths = Record<Locale, string>;
+const PathContext = createContext<PagePaths>({ en: "", ro: "" });
 
 export const useCopy = () => useContext(CopyContext);
 export const useLocale = () => useContext(LocaleContext);
@@ -19,16 +22,19 @@ export const usePagePath = () => useContext(PathContext);
 export function SiteProviders({
   locale,
   path = "",
+  paths,
   children,
 }: {
   locale: Locale;
   path?: string;
+  /** Doar pentru paginile cu slug localizat; restul folosesc `path` în ambele limbi. */
+  paths?: PagePaths;
   children: React.ReactNode;
 }) {
   return (
     <CopyContext.Provider value={COPY[locale]}>
       <LocaleContext.Provider value={locale}>
-        <PathContext.Provider value={path}>{children}</PathContext.Provider>
+        <PathContext.Provider value={paths ?? { en: path, ro: path }}>{children}</PathContext.Provider>
       </LocaleContext.Provider>
     </CopyContext.Provider>
   );
