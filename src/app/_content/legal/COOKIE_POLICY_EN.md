@@ -1,6 +1,6 @@
 # Cookie Policy
 
-**Last updated:** 26.11.2026
+**Last updated:** 27.11.2026
 **Route on the site:** `/cookies`
 
 This policy explains what cookies and similar technologies are, which of these technologies the website epicdigitalhub.ro uses, for what purpose and how you can manage your choice. It supplements the [Privacy Policy](/privacy).
@@ -51,7 +51,8 @@ We use **Google Analytics 4**, provided by Google Ireland Limited, to understand
 We have configured Google Analytics so that:
 - data is retained for 14 months;
 - the IP address is not stored (Google Analytics 4 does not log or store IP addresses);
-- names, email addresses and other form data are not sent to Google Analytics.
+- names, email addresses and other form data are not sent to Google Analytics;
+- Google signals are enabled only if you have accepted marketing cookies, for aggregated reports and remarketing (details in the [Privacy Policy](/privacy), section 2.2).
 
 If you have also accepted marketing cookies, we additionally enable **Google signals**, which allow reports about visits made from several devices by the same person signed in to their Google account. They do not add new cookies to the table above and apply only with advertising consent.
 

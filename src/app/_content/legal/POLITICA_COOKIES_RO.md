@@ -1,6 +1,6 @@
 # Politica de cookie-uri
 
-**Ultima actualizare:** 26.11.2026
+**Ultima actualizare:** 27.11.2026
 **Rută pe site:** `/ro/cookies`
 
 Această politică explică ce sunt cookie-urile și tehnologiile similare, ce astfel de tehnologii folosește site-ul epicdigitalhub.ro, în ce scop și cum vă puteți gestiona alegerea. Politica completează [Politica de confidențialitate](/ro/confidentialitate).
@@ -51,7 +51,8 @@ Folosim **Google Analytics 4**, furnizat de Google Ireland Limited, pentru a în
 Am configurat Google Analytics astfel încât:
 - datele să fie păstrate 14 luni;
 - adresa IP să nu fie stocată (Google Analytics 4 nu înregistrează și nu stochează adrese IP);
-- numele, emailul și celelalte date din formulare să nu fie transmise către Google Analytics.
+- numele, emailul și celelalte date din formulare să nu fie transmise către Google Analytics;
+- semnalele Google să fie activate doar dacă ați acceptat cookie-urile de marketing, pentru rapoarte agregate și remarketing (detalii în [Politica de confidențialitate](/ro/confidentialitate), secțiunea 2.2).
 
 Dacă ați acceptat și cookie-urile de marketing, activăm în plus **semnalele Google**, care permit rapoarte despre vizitele făcute de pe mai multe dispozitive de aceeași persoană conectată la contul Google. Acestea nu adaugă cookie-uri noi în tabelul de mai sus și se aplică numai cu consimțământul pentru publicitate.
 

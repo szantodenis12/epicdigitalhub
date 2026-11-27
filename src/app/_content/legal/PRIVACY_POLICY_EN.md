@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated:** 26.11.2026
+**Last updated:** 27.11.2026
 **Route on the site:** `/privacy`
 
 This policy explains what personal data EPIC DIGITAL HUB S.R.L. collects through the website epicdigitalhub.ro, for what purpose, on what legal basis, how long we keep it, who we share it with and what rights you have. The policy applies to visitors to the website, to people who complete the forms on the website and to people who contact us by email or telephone.
@@ -64,6 +64,8 @@ Please do not send us special categories of data through the forms (for example,
 If you decline cookies, Google Analytics may receive, through the Consent Mode feature, signals without cookies and without persistent identifiers, used exclusively for aggregated statistical estimates. Meta Pixel does not load at all without your consent.
 
 **Information about form submissions:** when you submit a form, we record as a measurement event the type of form (audit, application or enquiry), the page language and, for the application form, the selected niche and budget. **Your name, email address, telephone number and website are not sent to Google Analytics.** If you accepted marketing cookies, your email address and, if you provided it, your telephone number are sent to Meta and Google only in hashed form, to measure advertising, as explained in section 6.1.
+
+**Google signals:** if you have accepted marketing cookies, we use Google signals in Google Analytics 4. For visitors signed in to a Google account who have allowed ad personalisation, Google may associate browsing data with that account, to give us aggregated cross-device reports and remarketing lists. We do not receive any data from Google that identifies you. You can turn off personalisation in your Google account, at myadcenter.google.com.
 
 ### 2.3. Data received from other sources
 
@@ -147,6 +149,7 @@ You may request information about the applicable safeguards by writing to us at 
 | Financial and accounting documents (contracts, invoices) | 5 years from the end of the financial year, in accordance with Accounting Law no. 82/1991, or the longer period provided by law for certain categories of documents |
 | Browsing data in Google Analytics 4 | 14 months |
 | Data sent through Meta Pixel and Meta Conversions API | in accordance with Meta's policies, generally no more than 2 years |
+| Data sent to Google Ads | in accordance with Google's policies |
 | Server logs | in accordance with the hosting provider's policy, generally a few days or weeks |
 | Your cookie choice | until the data is cleared from the browser or until you change your choice |
 

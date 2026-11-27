@@ -23,7 +23,9 @@ import "server-only";
 
 /** ID-ul setului de date (pixelul). Public - apare oricum în pagină. */
 const PIXEL_ID = process.env.META_PIXEL_ID ?? "1791988975263032";
-const GRAPH_VERSION = "v21.0";
+/* v21.0 e retrasă de Meta pe 21 ianuarie 2027 (după aceea apelurile pică);
+   versiunea curentă e v26.0. META_GRAPH_VERSION permite mutarea fără deploy de cod. */
+const GRAPH_VERSION = process.env.META_GRAPH_VERSION || "v26.0";
 
 export type MetaLeadInput = {
   /** Același id pe care browserul îl pune în dataLayer. Fără el nu trimitem. */
@@ -93,7 +95,12 @@ export async function sendLeadToMeta(input: MetaLeadInput): Promise<boolean> {
     return false;
   }
 
+  /* DOAR pentru testare (Events Manager -> Test events): se șterge din mediu
+     după verificare, altfel evenimentele reale rămân marcate ca test. */
+  const testEventCode = process.env.META_TEST_EVENT_CODE;
+
   const payload = {
+    ...(testEventCode ? { test_event_code: testEventCode } : {}),
     data: [
       {
         event_name: "Lead",

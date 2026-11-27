@@ -1,6 +1,6 @@
 # Politica de confidențialitate
 
-**Ultima actualizare:** 26.11.2026
+**Ultima actualizare:** 27.11.2026
 **Rută pe site:** `/ro/confidentialitate`
 
 Această politică explică ce date personale colectează EPIC DIGITAL HUB S.R.L. prin site-ul epicdigitalhub.ro, în ce scop, pe ce temei legal, cât timp le păstrăm, cui le transmitem și ce drepturi aveți. Politica se aplică vizitatorilor site-ului, persoanelor care completează formularele de pe site și persoanelor care ne contactează prin email sau telefon.
@@ -64,6 +64,8 @@ Vă rugăm să nu ne transmiteți prin formulare date sensibile (de exemplu, dat
 Dacă refuzați cookie-urile, Google Analytics poate primi, prin funcția Consent Mode, semnale fără cookie-uri și fără identificatori persistenți, utilizate exclusiv pentru estimări statistice agregate. Meta Pixel nu se încarcă deloc fără acordul dumneavoastră.
 
 **Informații despre trimiterea formularelor:** atunci când trimiteți un formular, înregistrăm ca eveniment de măsurare tipul formularului (audit, aplicare sau solicitare), limba paginii și, pentru formularul de aplicare, nișa și bugetul selectate. **Numele, adresa de email, numărul de telefon și site-ul dumneavoastră nu sunt transmise către Google Analytics.** Dacă ați acceptat cookie-urile de marketing, adresa de email și, dacă l-ați completat, numărul de telefon sunt trimise către Meta și Google doar sub formă codificată (hash), pentru măsurarea reclamelor, așa cum este explicat la secțiunea 6.1.
+
+**Semnale Google:** dacă ați acceptat cookie-urile de marketing, folosim semnalele Google în Google Analytics 4. Pentru vizitatorii conectați la un cont Google care au permis personalizarea reclamelor, Google poate asocia datele de navigare cu contul respectiv, ca să ne ofere rapoarte agregate pe mai multe dispozitive și liste de remarketing. Nu primim de la Google date care să vă identifice. Puteți opri personalizarea din contul Google, la myadcenter.google.com.
 
 ### 2.3. Date primite din alte surse
 
@@ -147,6 +149,7 @@ Puteți solicita informații despre garanțiile aplicabile scriindu-ne la contac
 | Documente financiar-contabile (contracte, facturi) | 5 ani de la încheierea exercițiului financiar, conform Legii contabilității nr. 82/1991, sau perioada mai lungă prevăzută de lege pentru anumite categorii de documente |
 | Date de navigare în Google Analytics 4 | 14 luni |
 | Date transmise prin Meta Pixel și Meta Conversions API | conform politicilor Meta, de regulă cel mult 2 ani |
+| Date transmise către Google Ads | conform politicilor Google |
 | Jurnale de server | conform politicii furnizorului de găzduire, de regulă câteva zile sau săptămâni |
 | Alegerea privind cookie-urile | până la ștergerea datelor din browser sau până la modificarea alegerii |
 

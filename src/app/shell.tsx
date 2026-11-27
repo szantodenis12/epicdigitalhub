@@ -111,6 +111,10 @@ export function buildMetadata(locale: Locale, page?: PageMeta): Metadata {
       images: ["/images/og-hero.webp"],
     },
     robots: page?.noindex ? { index: false, follow: false } : { index: true, follow: true },
+    /* Token public de verificare a domeniului în Meta Business. Stă aici, nu
+       în layout, fiindcă Next îmbină metadata SUPERFICIAL pe cheie: orice
+       pagină care trece prin buildMetadata îl primește, deci și legalele. */
+    other: { "facebook-domain-verification": "j8cufzjkkgo1g7d4qvjbrrw8poehmq" },
   };
 }
 
